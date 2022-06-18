@@ -22,6 +22,8 @@ buildVers.build_tool = '31.0.0'
 buildVers.min_sdk = 21
 buildVers.target_sdk = 31
 
+buildVers.kotlin_version = '1.7.0'
+
 ext.buildVers = buildVers
 
 // classpath -----------------------------
