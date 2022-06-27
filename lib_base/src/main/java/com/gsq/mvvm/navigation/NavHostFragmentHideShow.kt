@@ -4,7 +4,7 @@ import android.view.View
 import androidx.navigation.Navigator
 import androidx.navigation.fragment.FragmentNavigator
 import androidx.navigation.fragment.NavHostFragment
-import me.hgj.mvvm.R
+import com.gsq.lib_base.R
 
 
 /**
@@ -28,6 +28,6 @@ class NavHostFragmentHideShow : NavHostFragment() {
                 id
                 // Fallback to using our own ID if this Fragment wasn't added via
                 // add(containerViewId, Fragment)
-            } else R.id.nav_host_fragment_container
+            } else androidx.navigation.fragment.R.id.nav_host_fragment_container
         }
 }
