@@ -1,11 +1,18 @@
 package com.gsq.iart.app.ext
 
 import android.app.Activity
+import android.view.View
+import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
+import com.gsq.iart.app.util.SettingUtil
+import com.gsq.iart.ui.fragment.HomeFragment
+import com.gsq.iart.ui.fragment.MineFragment
+import com.gsq.mvvm.base.appContext
+import com.yh.bottomnavigationex.BottomNavigationViewEx
 
 /**
  * 描述　:项目中自定义类的拓展函数
@@ -39,38 +46,58 @@ fun ViewPager2.init(
     return this
 }
 
-//fun ViewPager2.initMain(fragment: Fragment): ViewPager2 {
-//    //是否可滑动
-//    this.isUserInputEnabled = false
-//    this.offscreenPageLimit = 5
-//    //设置适配器
-//    adapter = object : FragmentStateAdapter(fragment) {
-//        override fun createFragment(position: Int): Fragment {
-//            when (position) {
-//                0 -> {
-//                    return HomeFragment()
-//                }
-//                1 -> {
-//                    return ProjectFragment()
-//                }
-//                2 -> {
-//                    return TreeArrFragment()
-//                }
-//                3 -> {
-//                    return PublicNumberFragment()
-//                }
-//                4 -> {
-//                    return MeFragment()
-//                }
-//                else -> {
-//                    return HomeFragment()
-//                }
-//            }
-//        }
-//        override fun getItemCount() = 5
+fun ViewPager2.initMain(fragment: Fragment): ViewPager2 {
+    //是否可滑动
+    this.isUserInputEnabled = false
+    this.offscreenPageLimit = 5
+    //设置适配器
+    adapter = object : FragmentStateAdapter(fragment) {
+        override fun createFragment(position: Int): Fragment {
+            when (position) {
+                0 -> {
+                    return HomeFragment()
+                }
+                1 -> {
+                    return MineFragment()
+                }
+                else -> {
+                    return HomeFragment()
+                }
+            }
+        }
+        override fun getItemCount() = 2
+    }
+    return this
+}
+
+fun BottomNavigationViewEx.init(navigationItemSelectedAction: (Int) -> Unit): BottomNavigationViewEx {
+    enableAnimation(true)
+//    enableShiftingMode(false)
+//    enableItemShiftingMode(true)
+//    itemIconTintList = SettingUtil.getColorStateList(SettingUtil.getColor(appContext))
+//    itemTextColor = SettingUtil.getColorStateList(appContext)
+    setTextSize(12F)
+//    setOnNavigationItemSelectedListener {
+//        navigationItemSelectedAction.invoke(it.itemId)
+//        true
 //    }
-//    return this
-//}
+    return this
+}
+
+
+/**
+ * 拦截BottomNavigation长按事件 防止长按时出现Toast ---- 追求完美的大屌群友提的bug
+ * @receiver BottomNavigationViewEx
+ * @param ids IntArray
+ */
+fun BottomNavigationViewEx.interceptLongClick(vararg ids:Int) {
+//    val bottomNavigationMenuView: ViewGroup = (this.getChildAt(0) as ViewGroup)
+//    for (index in ids.indices){
+//        bottomNavigationMenuView.getChildAt(index).findViewById<View>(ids[index]).setOnLongClickListener {
+//            true
+//        }
+//    }
+}
 
 /**
  * 隐藏软键盘

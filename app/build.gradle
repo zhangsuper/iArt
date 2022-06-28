@@ -20,9 +20,27 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    buildFeatures {
+        //这2个为非必选，想用哪个就保留那个 用的话一定要加上项目中的 ViewBinding & DataBinding 混淆规则
+        dataBinding = true
+        viewBinding = true
+    }
+    //使用Kotlin实验特性
+    androidExtensions {
+        experimental = true
+    }
     buildTypes {
-        release {
+        debug {
             minifyEnabled false
+            shrinkResources false
+            zipAlignEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+
+        release {
+            minifyEnabled true//开启混淆
+            shrinkResources true
+            zipAlignEnabled true//去除无用资源
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
@@ -36,34 +54,51 @@ android {
         jvmTarget = JavaVersion.VERSION_11
     }
 
-    buildFeatures {
-        dataBinding = true
-        viewBinding = true
-    }
-    lint {
+    lintOptions {
+        disable 'InvalidPackage'
+        disable "ResourceType"
         abortOnError false
-        checkReleaseBuilds false
+    }
+    dexOptions {
+        javaMaxHeapSize "4g"
+        jumboMode = true
+        preDexLibraries = false
+        additionalParameters = [
+                '--multi-dex',//多分包
+                '--set-max-idx-number=60000'//每个包内方法数上限
+        ]
     }
 }
 
 dependencies {
-
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'androidx.core:core-ktx:1.7.0'
-    implementation 'androidx.appcompat:appcompat:1.3.0'
-    implementation 'com.google.android.material:material:1.5.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
-//    implementation 'androidx.navigation:navigation-fragment-ktx:2.3.5'
-//    implementation 'androidx.navigation:navigation-ui-ktx:2.3.5'
+
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
 
     //项目核心框架
     implementation project(path: ':lib_base')
+
+    //androidx UI
+    implementation 'androidx.appcompat:appcompat:1.3.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+    implementation 'com.google.android.material:material:1.3.0'
+    implementation 'androidx.cardview:cardview:1.0.0'
+    implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
+    implementation 'androidx.preference:preference-ktx:1.1.1'
     //dialog
     implementation "com.afollestad.material-dialogs:lifecycle:3.3.0"
     implementation "com.afollestad.material-dialogs:core:3.3.0"
     implementation "com.afollestad.material-dialogs:color:3.3.0"
     implementation "com.afollestad.material-dialogs:datetime:3.3.0"
     implementation "com.afollestad.material-dialogs:bottomsheets:3.3.0"
+    //util
+    implementation 'com.blankj:utilcodex:1.26.0'
+    //底部bottomBar
+    implementation 'io.github.clistery:bottomnavigationex-ex:1.0.7'
+    implementation 'io.github.clistery:bottomnavigationex-130:1.0.7'
+    //微信开源项目，替代SP
+    implementation 'com.tencent:mmkv:1.0.22'
 }

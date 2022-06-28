@@ -20,7 +20,7 @@ ext.buildVers = [:]
 buildVers.compile_sdk = 31
 buildVers.build_tool = '31.0.0'
 buildVers.min_sdk = 21
-buildVers.target_sdk = 31
+buildVers.target_sdk = 30
 
 buildVers.kotlin_version = '1.7.0'
 

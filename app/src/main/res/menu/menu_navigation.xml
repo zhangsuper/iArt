@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/menu_home"
+        android:checked="true"
+        android:title="@string/main_tab_home"
+        android:icon="@drawable/home_tab"/>
+
+    <item
+        android:id="@+id/menu_mine"
+        android:title="@string/main_tab_mine"
+        android:icon="@drawable/mine_tab"/>
+
+</menu>
