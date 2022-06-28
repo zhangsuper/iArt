@@ -1,6 +1,7 @@
 package com.gsq.iart.app.ext
 
 import android.app.Activity
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
@@ -12,7 +13,9 @@ import com.gsq.iart.app.util.SettingUtil
 import com.gsq.iart.ui.fragment.HomeFragment
 import com.gsq.iart.ui.fragment.MineFragment
 import com.gsq.mvvm.base.appContext
+import com.yh.bottomnavigation_base.IMenuListener
 import com.yh.bottomnavigationex.BottomNavigationViewEx
+import kotlinx.android.synthetic.main.fragment_main.view.*
 
 /**
  * 描述　:项目中自定义类的拓展函数
@@ -77,26 +80,33 @@ fun BottomNavigationViewEx.init(navigationItemSelectedAction: (Int) -> Unit): Bo
 //    itemIconTintList = SettingUtil.getColorStateList(SettingUtil.getColor(appContext))
 //    itemTextColor = SettingUtil.getColorStateList(appContext)
     setTextSize(12F)
-//    setOnNavigationItemSelectedListener {
-//        navigationItemSelectedAction.invoke(it.itemId)
-//        true
-//    }
+    setIconSize(30F)
+    setMenuListener(object: IMenuListener{
+        override fun onNavigationItemSelected(
+            position: Int,
+            menu: MenuItem,
+            isReSelected: Boolean
+        ): Boolean {
+            navigationItemSelectedAction.invoke(menu.itemId)
+            return true
+        }
+    })
     return this
 }
 
 
 /**
- * 拦截BottomNavigation长按事件 防止长按时出现Toast ---- 追求完美的大屌群友提的bug
+ * 拦截BottomNavigation长按事件 防止长按时出现Toast
  * @receiver BottomNavigationViewEx
  * @param ids IntArray
  */
 fun BottomNavigationViewEx.interceptLongClick(vararg ids:Int) {
-//    val bottomNavigationMenuView: ViewGroup = (this.getChildAt(0) as ViewGroup)
-//    for (index in ids.indices){
-//        bottomNavigationMenuView.getChildAt(index).findViewById<View>(ids[index]).setOnLongClickListener {
-//            true
-//        }
-//    }
+    val bottomNavigationMenuView: ViewGroup = this.mainBottom.getBNMenuView()
+    for (index in ids.indices){
+        bottomNavigationMenuView.getChildAt(index).findViewById<View>(ids[index]).setOnLongClickListener {
+            true
+        }
+    }
 }
 
 /**

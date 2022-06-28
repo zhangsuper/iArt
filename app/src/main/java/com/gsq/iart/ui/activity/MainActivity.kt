@@ -1,24 +1,26 @@
 package com.gsq.iart.ui.activity
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.navigation.Navigation
+import com.blankj.utilcode.util.ToastUtils
 import com.gsq.iart.R
 import com.gsq.iart.app.base.BaseActivity
-import com.gsq.iart.databinding.ActivityMainNewBinding
+import com.gsq.iart.databinding.ActivityMainBinding
 import com.gsq.mvvm.base.viewmodel.BaseViewModel
 import com.gsq.mvvm.network.manager.NetState
 
 /**
  * 项目主页Activity
  */
-class MainActivity1: BaseActivity<BaseViewModel, ActivityMainNewBinding>() {
+class MainActivity: BaseActivity<BaseViewModel, ActivityMainBinding>() {
 
     var exitTime = 0L
     override fun initView(savedInstanceState: Bundle?) {
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                val nav = Navigation.findNavController(this@MainActivity1, R.id.main_fragment)
+                val nav = Navigation.findNavController(this@MainActivity, R.id.main_fragment)
                 if (nav.currentDestination != null && nav.currentDestination!!.id != R.id.mainFragment) {
                     //如果当前界面不是主页，那么直接调用返回即可
                     nav.navigateUp()
@@ -26,6 +28,7 @@ class MainActivity1: BaseActivity<BaseViewModel, ActivityMainNewBinding>() {
                     //是主页
                     if (System.currentTimeMillis() - exitTime > 2000) {
 //                        ToastUtils.showShort("再按一次退出程序")
+                        Toast.makeText(this@MainActivity,"再按一次退出程序", Toast.LENGTH_SHORT).show()
                         exitTime = System.currentTimeMillis()
                     } else {
                         finish()

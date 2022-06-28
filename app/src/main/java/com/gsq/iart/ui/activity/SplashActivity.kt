@@ -20,7 +20,7 @@ class SplashActivity: BaseActivity<BaseViewModel, ActivitySplashBinding>() {
         }
 
         splash_text.postDelayed({
-            startActivity(Intent(this, MainActivity1::class.java))
+            startActivity(Intent(this, MainActivity::class.java))
             finish()
             //带点渐变动画
             overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
