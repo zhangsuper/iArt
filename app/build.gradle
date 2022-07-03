@@ -73,6 +73,7 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'androidx.core:core-ktx:1.7.0'
+    implementation 'com.android.support:multidex:1.0.3'
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
@@ -101,4 +102,12 @@ dependencies {
     implementation 'io.github.clistery:bottomnavigationex-130:1.0.7'
     //微信开源项目，替代SP
     implementation 'com.tencent:mmkv:1.0.22'
+    //指示器库
+    implementation 'com.github.hackware1993:MagicIndicator:1.7.0'
+    //glide
+    implementation 'com.github.bumptech.glide:glide:4.11.0'
+    //BaseAdapter
+    implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:3.0.4'
+    //管理界面状态库
+    implementation 'com.kingja.loadsir:loadsir:1.3.8'
 }

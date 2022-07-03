@@ -1,11 +1,12 @@
-package com.gsq.iart.ui.fragment
+package com.gsq.iart.ui.fragment.search
 
 import android.os.Bundle
 import com.gsq.iart.app.base.BaseFragment
-import com.gsq.iart.databinding.FragmentHomeBinding
+import com.gsq.iart.databinding.FragmentSearchBinding
 import com.gsq.mvvm.base.viewmodel.BaseViewModel
 
-class HomeFragment: BaseFragment<BaseViewModel, FragmentHomeBinding>() {
+class SearchFragment: BaseFragment<BaseViewModel, FragmentSearchBinding>() {
     override fun initView(savedInstanceState: Bundle?) {
     }
+
 }

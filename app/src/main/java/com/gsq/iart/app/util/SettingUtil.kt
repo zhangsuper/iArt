@@ -12,7 +12,9 @@ import android.view.View
 import android.widget.ProgressBar
 import androidx.core.content.ContextCompat
 import com.gsq.iart.R
+import com.gsq.iart.app.weight.loadCallBack.LoadingCallback
 import com.gsq.mvvm.base.appContext
+import com.kingja.loadsir.core.LoadService
 import com.tencent.mmkv.MMKV
 import java.lang.reflect.InvocationTargetException
 import kotlin.math.roundToInt
@@ -169,14 +171,14 @@ object SettingUtil {
     /**
      * 设置loading的颜色 加载布局
      */
-//    fun setLoadingColor(color:Int,loadsir: LoadService<Any>) {
-//        loadsir.setCallBack(LoadingCallback::class.java) { _, view ->
-//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-//                view.findViewById<ProgressBar>(R.id.loading_progress).indeterminateTintMode = PorterDuff.Mode.SRC_ATOP
-//                view.findViewById<ProgressBar>(R.id.loading_progress).indeterminateTintList = getOneColorStateList(color)
-//            }
-//        }
-//    }
+    fun setLoadingColor(color:Int,loadsir: LoadService<Any>) {
+        loadsir.setCallBack(LoadingCallback::class.java) { _, view ->
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                view.findViewById<ProgressBar>(R.id.loading_progress).indeterminateTintMode = PorterDuff.Mode.SRC_ATOP
+                view.findViewById<ProgressBar>(R.id.loading_progress).indeterminateTintList = getOneColorStateList(color)
+            }
+        }
+    }
 
 
 }

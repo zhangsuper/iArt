@@ -1,9 +1,13 @@
 package com.gsq.iart.app.base
 
 import android.os.Bundle
+import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
+import com.chad.library.adapter.base.BaseQuickAdapter
+import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.gsq.iart.app.ext.dismissLoadingExt
 import com.gsq.iart.app.ext.showLoadingExt
+import com.gsq.iart.app.weight.CustomLoadMoreView
 import com.gsq.mvvm.base.activity.BaseVmVbActivity
 import com.gsq.mvvm.base.viewmodel.BaseViewModel
 
@@ -42,4 +46,26 @@ abstract class BaseActivity<VM : BaseViewModel, VB : ViewBinding> : BaseVmVbActi
         AutoSizeCompat.autoConvertDensityOfGlobal(super.getResources())
         return super.getResources()
     }*/
+
+    open fun onLoadMore() {
+
+    }
+
+    open fun <T> BaseQuickAdapter<T, BaseViewHolder>.init(
+        recyclerView: RecyclerView?,
+        isEnableLoadMore: Boolean = false
+    ): BaseQuickAdapter<T, BaseViewHolder> {
+        if (isEnableLoadMore) {
+            val loadMoreModule = loadMoreModule
+            loadMoreModule.isEnableLoadMore = true
+            val customLoadMoreView = CustomLoadMoreView()
+            loadMoreModule.loadMoreView = customLoadMoreView
+            loadMoreModule.preLoadNumber = 10
+            loadMoreModule.setOnLoadMoreListener {
+                onLoadMore()
+            }
+        }
+        recyclerView?.adapter = this
+        return this
+    }
 }

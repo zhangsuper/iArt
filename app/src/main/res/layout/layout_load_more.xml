@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="@dimen/dp_16"
+    android:paddingBottom="@dimen/dp_16">
+
+<!--    <com.gsq.iart.app.weight.LoadingView-->
+<!--        android:id="@+id/view_load_more_loading"-->
+<!--        android:layout_width="@dimen/dp_24"-->
+<!--        android:layout_height="@dimen/dp_24"-->
+<!--        android:layout_gravity="center"-->
+<!--        android:visibility="gone"-->
+<!--        app:loading_color="blue" />-->
+    <ProgressBar
+        android:id="@+id/view_load_more_loading"
+        android:layout_width="@dimen/dp_24"
+        android:layout_height="@dimen/dp_24"
+        android:layout_gravity="center"
+        android:visibility="gone"/>
+
+    <TextView
+        android:id="@+id/view_load_complete"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/dp_8"
+        android:layout_marginBottom="@dimen/dp_8"
+        android:gravity="center"
+        android:includeFontPadding="false"
+        android:text="@string/adapter_load_complete"
+        android:textColor="@color/color_999999"
+        android:textSize="@dimen/font_12"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/view_load_fail"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/dp_8"
+        android:layout_marginBottom="@dimen/dp_8"
+        android:gravity="center"
+        android:includeFontPadding="false"
+        android:text="@string/adapter_load_failed"
+        android:textColor="@color/color_999999"
+        android:textSize="@dimen/font_12"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/view_load_end"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/dp_8"
+        android:layout_marginBottom="@dimen/dp_8"
+        android:gravity="center"
+        android:includeFontPadding="false"
+        android:text="@string/adapter_load_end"
+        android:textColor="@color/color_999999"
+        android:textSize="@dimen/font_12"
+        android:visibility="gone"
+        tools:visibility="visible" />
+
+</FrameLayout>

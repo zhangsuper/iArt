@@ -1,4 +1,4 @@
-package com.gsq.iart.ui.fragment
+package com.gsq.iart.ui.fragment.mine
 
 import android.os.Bundle
 import com.gsq.iart.app.base.BaseFragment

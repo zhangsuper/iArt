@@ -9,6 +9,20 @@
         android:name="com.gsq.iart.ui.fragment.MainFragment"
         android:label="MainFragment">
 
+        <action
+            android:id="@+id/action_mainfragment_to_searchFragment"
+            app:destination="@+id/searchFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/searchFragment"
+        android:name="com.gsq.iart.ui.fragment.search.SearchFragment">
+
     </fragment>
 
 
