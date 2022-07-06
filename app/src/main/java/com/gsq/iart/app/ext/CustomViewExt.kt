@@ -22,12 +22,14 @@ import com.gsq.iart.app.util.SettingUtil
 import com.gsq.iart.app.weight.loadCallBack.EmptyCallback
 import com.gsq.iart.app.weight.loadCallBack.ErrorCallback
 import com.gsq.iart.app.weight.loadCallBack.LoadingCallback
+import com.gsq.iart.app.weight.recyclerview.DefineLoadMoreView
 import com.gsq.iart.ui.fragment.home.HomeFragment
 import com.gsq.iart.ui.fragment.mine.MineFragment
 import com.gsq.mvvm.base.appContext
 import com.gsq.mvvm.ext.util.toHtml
 import com.kingja.loadsir.core.LoadService
 import com.kingja.loadsir.core.LoadSir
+import com.yanzhenjie.recyclerview.SwipeRecyclerView
 import com.yh.bottomnavigation_base.IMenuListener
 import com.yh.bottomnavigationex.BottomNavigationViewEx
 import kotlinx.android.synthetic.main.fragment_main.view.*
@@ -95,6 +97,25 @@ fun RecyclerView.init(
     adapter = bindAdapter
     isNestedScrollingEnabled = isScroll
     return this
+}
+
+fun SwipeRecyclerView.initFooter(loadmoreListener: SwipeRecyclerView.LoadMoreListener): DefineLoadMoreView {
+    val footerView = DefineLoadMoreView(appContext)
+    //给尾部设置颜色
+    footerView.setLoadViewColor(SettingUtil.getOneColorStateList(appContext))
+    //设置尾部点击回调
+    footerView.setmLoadMoreListener(SwipeRecyclerView.LoadMoreListener {
+        footerView.onLoading()
+        loadmoreListener.onLoadMore()
+    })
+    this.run {
+        //添加加载更多尾部
+        addFooterView(footerView)
+        setLoadMoreView(footerView)
+        //设置加载更多回调
+        setLoadMoreListener(loadmoreListener)
+    }
+    return footerView
 }
 
 fun MagicIndicator.bindViewPager2(
@@ -263,11 +284,11 @@ fun <T> loadListData(
     data: ListDataUiState<T>,
     baseQuickAdapter: BaseQuickAdapter<T, *>,
     loadService: LoadService<*>,
-    recyclerView: RecyclerView,
-    swipeRefreshLayout: SwipeRefreshLayout
+    recyclerView: SwipeRecyclerView,
+    swipeRefreshLayout: SwipeRefreshLayout?
 ) {
-    swipeRefreshLayout.isRefreshing = false
-//    recyclerView.loadMoreFinish(data.isEmpty, data.hasMore)
+    swipeRefreshLayout?.isRefreshing = false
+    recyclerView.loadMoreFinish(data.isEmpty, data.hasMore)
     if (data.isSuccess) {
         //成功
         when {
@@ -292,7 +313,7 @@ fun <T> loadListData(
             //如果是第一页，则显示错误界面，并提示错误信息
             loadService.showError(data.errMessage)
         } else {
-//            recyclerView.loadMoreError(0, data.errMessage)
+            recyclerView.loadMoreError(0, data.errMessage)
         }
     }
 }

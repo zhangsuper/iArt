@@ -1,6 +1,8 @@
 package com.gsq.iart.app.base
 
 import android.os.Bundle
+import android.view.View
+import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
 import com.chad.library.adapter.base.BaseQuickAdapter
@@ -87,5 +89,76 @@ abstract class BaseFragment<VM : BaseViewModel, VB : ViewBinding> : BaseVmVbFrag
         }
         recyclerView?.adapter = this
         return this
+    }
+
+    protected var mFirstPage = true
+    open fun <T> BaseQuickAdapter<T, BaseViewHolder>.loadData(
+        list: List<T>?,
+        emptyView: View? = null,
+        hasNext: Int = 0,
+        showBottomView: Boolean = true
+    ) {
+        if (mFirstPage) {
+            setData(list, emptyView, hasNext, showBottomView)
+        } else {
+            addData(list, hasNext, showBottomView)
+        }
+    }
+
+    fun <T> BaseQuickAdapter<T, BaseViewHolder>.setData(
+        list: List<T>?,
+        emptyView: View? = null,
+        hasNext: Int = 0,
+        showBottomView: Boolean = true
+    ) {
+        mFirstPage = false
+        setList(list)
+        if (list.isNullOrEmpty()) {
+            if (data.isNullOrEmpty()) {//之前的adapter中没有数据
+                if (headerLayoutCount > 0) {
+                    emptyView?.let {
+                        removeAllFooterView()
+                        if (it.parent != null) {
+                            (it.parent as ViewGroup).removeView(it)
+                        }
+                        addFooterView(it)
+                    }
+                } else {
+                    emptyView?.let {
+                        if (emptyView.parent != null) {
+                            (emptyView.parent as ViewGroup).removeView(emptyView)
+                        }
+                        setEmptyView(emptyView)
+                    }
+                }
+            }
+        } else {
+            if (footerLayoutCount > 0) {
+                removeAllFooterView()
+            }
+            if (hasNext == 1) {
+                loadMoreModule.loadMoreComplete()
+            } else {
+                loadMoreModule.loadMoreEnd(!showBottomView)
+            }
+        }
+    }
+
+    fun <T> BaseQuickAdapter<T, BaseViewHolder>.addData(
+        list: List<T>?,
+        hasNext: Int = 0,
+        showBottomView: Boolean = true
+    ) {
+        mFirstPage = false
+        if (list == null) {
+            loadMoreModule.loadMoreFail()
+        } else {
+            addData(list)
+            if (hasNext == 1) {
+                loadMoreModule.loadMoreComplete()
+            } else {
+                loadMoreModule.loadMoreEnd(!showBottomView)
+            }
+        }
     }
 }

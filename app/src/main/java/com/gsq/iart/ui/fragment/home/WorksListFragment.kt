@@ -4,9 +4,7 @@ import android.os.Bundle
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.gsq.iart.app.base.BaseFragment
-import com.gsq.iart.app.ext.init
-import com.gsq.iart.app.ext.loadServiceInit
-import com.gsq.iart.app.ext.showLoading
+import com.gsq.iart.app.ext.*
 import com.gsq.iart.data.bean.HomeClassifyBean
 import com.gsq.iart.databinding.FragmentWorksListBinding
 import com.gsq.iart.ui.adapter.WorksAdapter
@@ -41,9 +39,13 @@ class WorksListFragment: BaseFragment<WorksViewModel, FragmentWorksListBinding>(
         }
         //初始化recyclerView和Adapter
         val layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
-        works_recycler_view.layoutManager = layoutManager
-        worksAdapter.init(works_recycler_view, true)
-//        works_recycler_view.init(layoutManager,worksAdapter)
+//        works_recycler_view.layoutManager = layoutManager
+//        worksAdapter.init(works_recycler_view, true)
+        works_recycler_view.init(layoutManager,worksAdapter)
+        works_recycler_view.initFooter {
+            //加载更多
+            requestData()
+        }
     }
 
     override fun lazyLoadData() {
@@ -66,7 +68,8 @@ class WorksListFragment: BaseFragment<WorksViewModel, FragmentWorksListBinding>(
     override fun createObserver() {
         super.createObserver()
         mViewModel.worksDataState.observe(viewLifecycleOwner, Observer {
-
+            //设值 新写了个拓展函数
+            loadListData(it, worksAdapter, loadsir, works_recycler_view, null)
         })
     }
 

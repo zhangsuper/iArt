@@ -23,6 +23,14 @@
     <string name="adapter_pull_refresh_fail">下拉刷新失败</string>
     <string name="adapter_pull_refresh_empty">暂无内容</string>
 
+    <!-- SwipeRecyclerView上拉加载更多的状态 -->
+    <string name="recyclerview_loading">正在努力加载，请稍后</string>
+    <string name="recyclerview_load_empty">暂时没有数据</string>
+    <string name="recyclerview_load_end">没有更多数据啦</string>
+    <string name="recyclerview_load_complete">点我加载更多</string>
+    <string name="recyclerview_load_fail">加载失败啦</string>
+
+
     <string name="main_tab_home">首页</string>
     <string name="main_tab_mine">我的</string>
     <string name="home_search_hint">作品、艺术家、分类、关键字</string>
