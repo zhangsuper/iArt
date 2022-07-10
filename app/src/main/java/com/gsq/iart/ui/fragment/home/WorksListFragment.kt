@@ -3,13 +3,15 @@ package com.gsq.iart.ui.fragment.home
 import android.os.Bundle
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.blankj.utilcode.util.SizeUtils
 import com.gsq.iart.app.base.BaseFragment
 import com.gsq.iart.app.ext.*
+import com.gsq.iart.app.weight.recyclerview.GridDividerItemDecoration
+import com.gsq.iart.app.weight.recyclerview.GridItemDecoration
 import com.gsq.iart.data.bean.HomeClassifyBean
 import com.gsq.iart.databinding.FragmentWorksListBinding
 import com.gsq.iart.ui.adapter.WorksAdapter
 import com.gsq.iart.viewmodel.WorksViewModel
-import com.gsq.mvvm.base.viewmodel.BaseViewModel
 import com.kingja.loadsir.core.LoadService
 import kotlinx.android.synthetic.main.fragment_works_list.*
 
@@ -29,18 +31,28 @@ class WorksListFragment: BaseFragment<WorksViewModel, FragmentWorksListBinding>(
             classifyBean = it.getSerializable("classifyBean") as? HomeClassifyBean?
         }
         classifyBean?.let {
-            text_content.text = it.name
+
         }
         //状态页配置
-        loadsir = loadServiceInit(works_recycler_view) {
+        loadsir = loadServiceInit(works_refresh_layout) {
             //点击重试时触发的操作
             loadsir.showLoading()
             requestData(true)
         }
+        //初始化 SwipeRefreshLayout
+        works_refresh_layout.init {
+            //触发刷新监听时请求数据
+            requestData(true)
+        }
         //初始化recyclerView和Adapter
         val layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
-//        works_recycler_view.layoutManager = layoutManager
-//        worksAdapter.init(works_recycler_view, true)
+        works_recycler_view.addItemDecoration(
+            GridItemDecoration(
+            2,
+            SizeUtils.dp2px(12f),
+            includeEdge = true, hasTopBottomSpace = true
+            )
+        )
         works_recycler_view.init(layoutManager,worksAdapter)
         works_recycler_view.initFooter {
             //加载更多
@@ -69,7 +81,7 @@ class WorksListFragment: BaseFragment<WorksViewModel, FragmentWorksListBinding>(
         super.createObserver()
         mViewModel.worksDataState.observe(viewLifecycleOwner, Observer {
             //设值 新写了个拓展函数
-            loadListData(it, worksAdapter, loadsir, works_recycler_view, null)
+            loadListData(it, worksAdapter, loadsir, works_recycler_view, works_refresh_layout)
         })
     }
 

@@ -5,5 +5,8 @@ import java.io.Serializable
 /**
  * 作品实体类
  */
-class WorksBean(name: String, author: String,url: String): Serializable {
+class WorksBean(var title: String,
+                var author: String,
+                var url: String,
+                var envelopePic: String): Serializable {
 }

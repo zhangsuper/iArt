@@ -14,6 +14,7 @@
     <color name="purple_700">#FF3700B3</color>
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
+    <color name="color_40000000">#40000000</color>
 
     <color name="color_141414">#141414</color>
     <color name="color_A7A7A7">#A7A7A7</color>
@@ -26,4 +27,5 @@
     <color name="color_EDEDED">#EDEDED</color>
     <color name="color_E0E0E0">#E0E0E0</color>
     <color name="color_F7F7F7">#F7F7F7</color>
+    <color name="color_000000">#000000</color>
 </resources>

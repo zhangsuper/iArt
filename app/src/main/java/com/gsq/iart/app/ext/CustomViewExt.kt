@@ -118,6 +118,17 @@ fun SwipeRecyclerView.initFooter(loadmoreListener: SwipeRecyclerView.LoadMoreLis
     return footerView
 }
 
+//设置适配器的列表动画
+fun BaseQuickAdapter<*, *>.setAdapterAnimation(mode: Int) {
+    //等于0，关闭列表动画 否则开启
+    if (mode == 0) {
+        this.animationEnable = false
+    } else {
+        this.animationEnable = true
+        this.setAnimationWithDefault(BaseQuickAdapter.AnimationType.values()[mode - 1])
+    }
+}
+
 fun MagicIndicator.bindViewPager2(
     viewPager: ViewPager2,
     mStringList: List<String> = arrayListOf(),
@@ -222,6 +233,17 @@ fun ViewPager2.initMain(fragment: Fragment): ViewPager2 {
         override fun getItemCount() = 2
     }
     return this
+}
+
+//初始化 SwipeRefreshLayout
+fun SwipeRefreshLayout.init(onRefreshListener: () -> Unit) {
+    this.run {
+        setOnRefreshListener {
+            onRefreshListener.invoke()
+        }
+        //设置主题颜色
+        setColorSchemeColors(SettingUtil.getColor(appContext))
+    }
 }
 
 fun BottomNavigationViewEx.init(navigationItemSelectedAction: (Int) -> Unit): BottomNavigationViewEx {
