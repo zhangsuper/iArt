@@ -1,8 +1,10 @@
 package com.gsq.iart.ui.fragment.search
 
 import android.os.Bundle
+import android.text.TextUtils
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.blankj.utilcode.util.ToastUtils
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
@@ -40,6 +42,14 @@ class SearchFragment: BaseFragment<SearchViewModel, FragmentSearchBinding>() {
         //初始化搜搜历史Recyclerview
         search_historyRv.init(layoutManager, historyAdapter, false)
         search_hotRv.init(layoutManager, hotAdapter, false)
+        search_btn.setOnClickListener {
+            var inputKey = search_input_view.text.toString()
+            if(!TextUtils.isEmpty(inputKey)){
+                CacheUtil.setSearchHistoryData(inputKey)
+            }else{
+                ToastUtils.showShort("请输入关键字")
+            }
+        }
     }
 
     override fun lazyLoadData() {
