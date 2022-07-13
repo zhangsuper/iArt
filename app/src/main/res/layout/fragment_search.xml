@@ -52,7 +52,10 @@
                 android:textSize="14sp"
                 android:textColor="@color/color_141414"
                 android:layout_marginLeft="6dp"
-                android:background="@null"/>
+                android:background="@null"
+                android:imeOptions="actionSearch"
+                android:maxLines="1"
+                android:inputType="text"/>
 
         </LinearLayout>
 

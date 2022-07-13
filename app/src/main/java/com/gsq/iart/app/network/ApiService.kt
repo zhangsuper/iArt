@@ -2,6 +2,7 @@ package com.gsq.iart.app.network
 
 import com.gsq.iart.data.bean.ApiPagerResponse
 import com.gsq.iart.data.bean.ApiResponse
+import com.gsq.iart.data.bean.SearchResponse
 import com.gsq.iart.data.bean.WorksBean
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -24,6 +25,9 @@ interface ApiService {
         @Path("page") pageNo: Int,
         @Query("cid") cid: Int
     ): ApiResponse<ApiPagerResponse<ArrayList<WorksBean>>>
+
+    @GET("hotkey/json")
+    suspend fun getSearchHotKey(): ApiResponse<ArrayList<SearchResponse>>
 
 
 }
