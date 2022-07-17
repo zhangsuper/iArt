@@ -3,16 +3,18 @@ package com.gsq.iart.ui.fragment.home
 import android.os.Bundle
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.airbnb.mvrx.asMavericksArgs
 import com.blankj.utilcode.util.SizeUtils
 import com.gsq.iart.app.base.BaseFragment
 import com.gsq.iart.app.ext.*
-import com.gsq.iart.app.weight.recyclerview.GridDividerItemDecoration
 import com.gsq.iart.app.weight.recyclerview.GridItemDecoration
+import com.gsq.iart.data.bean.ArgsType
 import com.gsq.iart.data.bean.HomeClassifyBean
 import com.gsq.iart.databinding.FragmentWorksListBinding
 import com.gsq.iart.ui.adapter.WorksAdapter
 import com.gsq.iart.viewmodel.WorksViewModel
 import com.kingja.loadsir.core.LoadService
+import com.airbnb.mvrx.args
 import kotlinx.android.synthetic.main.fragment_works_list.*
 
 /**
@@ -20,19 +22,13 @@ import kotlinx.android.synthetic.main.fragment_works_list.*
  */
 class WorksListFragment: BaseFragment<WorksViewModel, FragmentWorksListBinding>() {
 
+    private val args: ArgsType by args()
     //适配器
     private val worksAdapter: WorksAdapter by lazy { WorksAdapter() }
     //界面状态管理者
     private lateinit var loadsir: LoadService<Any>
 
-    private var classifyBean: HomeClassifyBean? = null
     override fun initView(savedInstanceState: Bundle?) {
-        arguments?.let {
-            classifyBean = it.getSerializable("classifyBean") as? HomeClassifyBean?
-        }
-        classifyBean?.let {
-
-        }
         //状态页配置
         loadsir = loadServiceInit(works_refresh_layout) {
             //点击重试时触发的操作
@@ -72,8 +68,17 @@ class WorksListFragment: BaseFragment<WorksViewModel, FragmentWorksListBinding>(
     }
 
     private fun requestData(isRefresh: Boolean = false){
-        classifyBean?.id?.let{
+        args.classifyId?.let{
             mViewModel.getWorksListData(isRefresh, it)
+        }
+    }
+
+    /**
+     * 搜索作品
+     */
+    fun searchData(key: String){
+        args.classifyId?.let{
+            mViewModel?.getWorksListData(true, it)
         }
     }
 
@@ -86,11 +91,17 @@ class WorksListFragment: BaseFragment<WorksViewModel, FragmentWorksListBinding>(
     }
 
     companion object {
-        fun newInstance(classifyBean: HomeClassifyBean): WorksListFragment {
-            val args = Bundle()
-            args.putSerializable("classifyBean",classifyBean)
+//        fun newInstance(classifyBean: HomeClassifyBean): WorksListFragment {
+//            val args = Bundle()
+//            args.putSerializable("classifyBean",classifyBean)
+//            val fragment = WorksListFragment()
+//            fragment.arguments = args
+//            return fragment
+//        }
+
+        fun start(args: ArgsType): WorksListFragment {
             val fragment = WorksListFragment()
-            fragment.arguments = args
+            fragment.arguments = args.asMavericksArgs()
             return fragment
         }
     }

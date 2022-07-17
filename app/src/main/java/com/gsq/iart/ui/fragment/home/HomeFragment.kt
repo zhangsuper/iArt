@@ -6,6 +6,8 @@ import com.gsq.iart.R
 import com.gsq.iart.app.base.BaseFragment
 import com.gsq.iart.app.ext.bindViewPager2
 import com.gsq.iart.app.ext.init
+import com.gsq.iart.data.Constant.COMPLEX_TYPE_GROUP
+import com.gsq.iart.data.bean.ArgsType
 import com.gsq.iart.data.bean.HomeClassifyBean
 import com.gsq.iart.databinding.FragmentHomeBinding
 import com.gsq.iart.viewmodel.HomeViewModel
@@ -62,7 +64,7 @@ class HomeFragment: BaseFragment<HomeViewModel, FragmentHomeBinding>() {
         mDataList.clear()
         tablist.forEach { classify ->
             mDataList.add(classify.name)
-            fragments.add(WorksListFragment.newInstance(classify))
+            fragments.add(WorksListFragment.start(ArgsType(COMPLEX_TYPE_GROUP,classify.id)))
         }
 
         home_magic_indicator.navigator.notifyDataSetChanged()

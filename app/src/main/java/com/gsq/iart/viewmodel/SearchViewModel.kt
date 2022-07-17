@@ -16,6 +16,8 @@ class SearchViewModel: BaseViewModel() {
     var searchHistoryList: MutableLiveData<ArrayList<String>> = MutableLiveData()
     var searchHotList: MutableLiveData<ResultState<ArrayList<SearchResponse>>> = MutableLiveData()
 
+    var itemClickKey: MutableLiveData<String> = MutableLiveData()
+
     /**
      * 获取热门数据
      */
