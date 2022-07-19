@@ -1,5 +1,6 @@
 package com.gsq.iart.ui.fragment.home
 
+import android.graphics.Typeface
 import android.os.Bundle
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
@@ -15,6 +16,11 @@ import com.gsq.iart.ui.adapter.WorksAdapter
 import com.gsq.iart.viewmodel.WorksViewModel
 import com.kingja.loadsir.core.LoadService
 import com.airbnb.mvrx.args
+import com.gsq.iart.R
+import com.gsq.iart.data.Constant.WORKS_SUB_TYPE_HOT
+import com.gsq.iart.data.Constant.WORKS_SUB_TYPE_NEW
+import com.gsq.mvvm.ext.view.gone
+import com.gsq.mvvm.ext.view.visible
 import kotlinx.android.synthetic.main.fragment_works_list.*
 
 /**
@@ -27,6 +33,7 @@ class WorksListFragment: BaseFragment<WorksViewModel, FragmentWorksListBinding>(
     private val worksAdapter: WorksAdapter by lazy { WorksAdapter() }
     //界面状态管理者
     private lateinit var loadsir: LoadService<Any>
+    private var subType: Int = WORKS_SUB_TYPE_HOT//1：热门  2：新上
 
     override fun initView(savedInstanceState: Bundle?) {
         //状态页配置
@@ -53,6 +60,37 @@ class WorksListFragment: BaseFragment<WorksViewModel, FragmentWorksListBinding>(
         works_recycler_view.initFooter {
             //加载更多
             requestData()
+        }
+
+        initTypeConditionView()
+    }
+
+    private fun initTypeConditionView(){
+        hot_tab.setOnClickListener {
+            if(subType == WORKS_SUB_TYPE_HOT){
+                return@setOnClickListener
+            }
+            subType = WORKS_SUB_TYPE_HOT
+            hot_tab.setTextColor(resources.getColor(R.color.color_141414))
+            hot_tab.typeface = Typeface.DEFAULT_BOLD
+            new_tab.setTextColor(resources.getColor(R.color.color_888888))
+            new_tab.typeface = Typeface.DEFAULT
+            hot_tab_indicator.visible()
+            new_tab_indicator.gone()
+            requestData(true)
+        }
+        new_tab.setOnClickListener {
+            if(subType == WORKS_SUB_TYPE_NEW){
+                return@setOnClickListener
+            }
+            subType = WORKS_SUB_TYPE_NEW
+            hot_tab.setTextColor(resources.getColor(R.color.color_888888))
+            hot_tab.typeface = Typeface.DEFAULT
+            new_tab.setTextColor(resources.getColor(R.color.color_141414))
+            new_tab.typeface = Typeface.DEFAULT_BOLD
+            hot_tab_indicator.gone()
+            new_tab_indicator.visible()
+            requestData(true)
         }
     }
 

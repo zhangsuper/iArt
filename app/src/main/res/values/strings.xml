@@ -35,5 +35,7 @@
     <string name="main_tab_mine">我的</string>
     <string name="home_search_hint">作品、艺术家、分类、关键字</string>
     <string name="search_text">搜索</string>
+    <string name="works_type_hot">热门</string>
+    <string name="works_type_new">新上</string>
 
 </resources>

@@ -1,7 +1,9 @@
 package com.gsq.iart.ui.adapter
 
+import com.blankj.utilcode.util.SizeUtils
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
+import com.google.android.material.imageview.ShapeableImageView
 import com.gsq.iart.R
 import com.gsq.iart.app.ext.setAdapterAnimation
 import com.gsq.iart.app.image.GlideHelper
@@ -17,6 +19,12 @@ class WorksAdapter: BaseQuickAdapter<WorksBean, BaseViewHolder>(R.layout.item_wo
     override fun convert(holder: BaseViewHolder, item: WorksBean) {
         holder.setText(R.id.item_works_name, item.title)
         holder.setText(R.id.item_works_desc, item.author)
-        GlideHelper.load(holder.getView(R.id.item_works_cover), item.envelopePic)
+        var imageView = holder.getView<ShapeableImageView>(R.id.item_works_cover)
+        GlideHelper.load(imageView, item.envelopePic)
+        if (holder.layoutPosition == 1){
+            imageView.layoutParams.height = SizeUtils.dp2px(318f)
+        }else{
+            imageView.layoutParams.height = SizeUtils.dp2px(208f)
+        }
     }
 }
