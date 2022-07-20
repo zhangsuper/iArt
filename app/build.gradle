@@ -118,4 +118,5 @@ dependencies {
     //官方的流式布局
     implementation 'com.google.android:flexbox:2.0.1'
     implementation 'com.airbnb.android:mavericks:2.6.1'
+    implementation 'com.github.XuDeveloper:XPopupWindow:1.0.1'
 }

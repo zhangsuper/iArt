@@ -38,4 +38,12 @@
     <string name="works_type_hot">热门</string>
     <string name="works_type_new">新上</string>
 
+    <string name="condition_year">年代</string>
+    <string name="condition_theme">题材</string>
+    <string name="condition_size">尺寸</string>
+    <string name="condition_screen">筛选</string>
+
+    <string name="app_reset">重置</string>
+    <string name="app_require">确定</string>
+
 </resources>

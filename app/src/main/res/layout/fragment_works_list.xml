@@ -17,8 +17,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            android:layout_marginTop="@dimen/dp_14">
+            app:layout_constraintLeft_toLeftOf="parent">
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -33,7 +32,8 @@
                     android:text="@string/works_type_hot"
                     android:textSize="@dimen/sp_14"
                     android:textColor="@color/color_141414"
-                    android:textStyle="bold"/>
+                    android:textStyle="bold"
+                    android:paddingTop="@dimen/dp_14"/>
 
                 <View
                     android:id="@+id/hot_tab_indicator"
@@ -57,7 +57,8 @@
                     android:layout_height="wrap_content"
                     android:text="@string/works_type_new"
                     android:textSize="@dimen/sp_14"
-                    android:textColor="@color/color_888888"/>
+                    android:textColor="@color/color_888888"
+                    android:paddingTop="@dimen/dp_14"/>
 
                 <View
                     android:id="@+id/new_tab_indicator"
@@ -71,9 +72,122 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/condition_detail_view"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@+id/condition_type_view">
+            android:layout_height="@dimen/dp_28"
+            android:layout_marginTop="@dimen/dp_12"
+            android:layout_marginStart="@dimen/dp_16"
+            android:layout_marginEnd="@dimen/dp_4"
+            app:layout_constraintTop_toBottomOf="@+id/condition_type_view"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:id="@+id/condition_years_view"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:layout_weight="1"
+                android:layout_marginRight="@dimen/dp_12"
+                android:background="@drawable/bg_white_conner_4">
+
+                <TextView
+                    android:id="@+id/tv_years"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/color_888888"
+                    android:textSize="@dimen/sp_14"
+                    android:text="@string/condition_year"
+                    android:layout_marginRight="@dimen/dp_6"/>
+
+                <ImageView
+                    android:id="@+id/iv_years_frame"
+                    android:layout_width="@dimen/dp_10"
+                    android:layout_height="@dimen/dp_10"
+                    android:src="@drawable/icon_frame"
+                    />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/condition_theme_view"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:layout_weight="1"
+                android:layout_marginRight="@dimen/dp_12"
+                android:background="@drawable/bg_white_conner_4">
+
+                <TextView
+                    android:id="@+id/tv_theme"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/color_888888"
+                    android:textSize="@dimen/sp_14"
+                    android:text="@string/condition_theme"
+                    android:layout_marginRight="@dimen/dp_6"/>
+
+                <ImageView
+                    android:id="@+id/iv_theme_frame"
+                    android:layout_width="@dimen/dp_10"
+                    android:layout_height="@dimen/dp_10"
+                    android:src="@drawable/icon_frame"
+                    />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/condition_size_view"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:layout_weight="1"
+                android:layout_marginRight="@dimen/dp_12"
+                android:background="@drawable/bg_white_conner_4">
+
+                <TextView
+                    android:id="@+id/tv_size"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/color_888888"
+                    android:textSize="@dimen/sp_14"
+                    android:text="@string/condition_size"
+                    android:layout_marginRight="@dimen/dp_6"/>
+
+                <ImageView
+                    android:id="@+id/iv_size_frame"
+                    android:layout_width="@dimen/dp_10"
+                    android:layout_height="@dimen/dp_10"
+                    android:src="@drawable/icon_frame"
+                    />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/condition_screen_view"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:layout_weight="1"
+                android:layout_marginRight="@dimen/dp_12"
+                android:background="@drawable/bg_white_conner_4">
+
+                <TextView
+                    android:id="@+id/tv_screen"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/color_888888"
+                    android:textSize="@dimen/sp_14"
+                    android:text="@string/condition_screen"
+                    android:layout_marginRight="@dimen/dp_6"/>
+
+                <ImageView
+                    android:id="@+id/iv_screen_frame"
+                    android:layout_width="@dimen/dp_10"
+                    android:layout_height="@dimen/dp_10"
+                    android:src="@drawable/icon_frame"
+                    />
+
+            </LinearLayout>
 
         </LinearLayout>
 
@@ -89,6 +203,8 @@
             android:id="@+id/works_recycler_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/dp_4"
+            android:paddingRight="@dimen/dp_4"
             android:scrollbars="none"
             app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 

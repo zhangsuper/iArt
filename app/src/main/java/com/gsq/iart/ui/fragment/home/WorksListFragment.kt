@@ -2,6 +2,7 @@ package com.gsq.iart.ui.fragment.home
 
 import android.graphics.Typeface
 import android.os.Bundle
+import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.airbnb.mvrx.asMavericksArgs
@@ -19,6 +20,7 @@ import com.airbnb.mvrx.args
 import com.gsq.iart.R
 import com.gsq.iart.data.Constant.WORKS_SUB_TYPE_HOT
 import com.gsq.iart.data.Constant.WORKS_SUB_TYPE_NEW
+import com.gsq.iart.ui.dialog.ConditionPopupWindow
 import com.gsq.mvvm.ext.view.gone
 import com.gsq.mvvm.ext.view.visible
 import kotlinx.android.synthetic.main.fragment_works_list.*
@@ -92,6 +94,27 @@ class WorksListFragment: BaseFragment<WorksViewModel, FragmentWorksListBinding>(
             new_tab_indicator.visible()
             requestData(true)
         }
+        condition_years_view.setOnClickListener {
+            //年代
+            showConditionPopupWindow()
+        }
+        condition_theme_view.setOnClickListener {
+            //题材
+            showConditionPopupWindow()
+        }
+        condition_size_view.setOnClickListener {
+            //尺寸
+            showConditionPopupWindow()
+        }
+        condition_screen_view.setOnClickListener {
+            //筛选
+            showConditionPopupWindow()
+        }
+    }
+
+    private fun showConditionPopupWindow(){
+        var popupWindow = ConditionPopupWindow(requireContext(), ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+        popupWindow.showAsDropDown(condition_detail_view)
     }
 
     override fun lazyLoadData() {
