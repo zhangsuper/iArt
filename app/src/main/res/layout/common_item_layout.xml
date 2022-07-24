@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mine_item_rootView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingLeft="@dimen/dp_16"
+    android:paddingRight="@dimen/dp_16">
+
+
+    <TextView
+        android:id="@+id/common_item_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:textSize="@dimen/font_16"
+        android:layout_marginTop="@dimen/dp_16"
+        android:layout_marginBottom="@dimen/dp_16"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:text="Title" />
+
+    <ImageView
+        android:id="@+id/common_item_allow"
+        android:layout_width="@dimen/dp_7"
+        android:layout_height="match_parent"
+        android:src="@drawable/icon_arrow"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <TextView
+        android:id="@+id/common_item_operation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/font_16"
+        android:textColor="@color/color_141414"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:text="@string/app_copy"/>
+
+    <TextView
+        android:id="@+id/common_item_sub_desc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/font_16"
+        android:textColor="@color/color_888888"
+        android:layout_marginRight="@dimen/dp_6"
+        app:layout_constraintRight_toLeftOf="@+id/common_item_operation"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:text="@string/app_copy"/>
+
+
+    <View
+        android:id="@+id/common_item_divider"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/dp_1"
+        android:background="#1A000000"
+        android:visibility="gone"
+        android:layout_marginTop="@dimen/dp_16"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/common_item_title"
+        tools:visibility="visible"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

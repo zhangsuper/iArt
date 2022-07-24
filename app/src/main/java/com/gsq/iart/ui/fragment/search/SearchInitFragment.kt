@@ -1,10 +1,7 @@
 package com.gsq.iart.ui.fragment.search
 
 import android.os.Bundle
-import android.text.TextUtils
-import android.view.inputmethod.EditorInfo
 import androidx.lifecycle.Observer
-import com.blankj.utilcode.util.ToastUtils
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent

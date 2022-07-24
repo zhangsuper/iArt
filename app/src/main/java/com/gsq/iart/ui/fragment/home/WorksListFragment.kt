@@ -18,6 +18,8 @@ import com.gsq.iart.viewmodel.WorksViewModel
 import com.kingja.loadsir.core.LoadService
 import com.airbnb.mvrx.args
 import com.gsq.iart.R
+import com.gsq.iart.data.Constant.COMPLEX_TYPE_COLLECT
+import com.gsq.iart.data.Constant.COMPLEX_TYPE_SEARCH
 import com.gsq.iart.data.Constant.WORKS_SUB_TYPE_HOT
 import com.gsq.iart.data.Constant.WORKS_SUB_TYPE_NEW
 import com.gsq.iart.ui.dialog.ConditionPopupWindow
@@ -68,7 +70,11 @@ class WorksListFragment: BaseFragment<WorksViewModel, FragmentWorksListBinding>(
     }
 
     private fun initTypeConditionView(){
+        if(args.complexType == COMPLEX_TYPE_COLLECT){
+            condition_view.gone()
+        }
         hot_tab.setOnClickListener {
+            //点击热门
             if(subType == WORKS_SUB_TYPE_HOT){
                 return@setOnClickListener
             }
@@ -82,6 +88,7 @@ class WorksListFragment: BaseFragment<WorksViewModel, FragmentWorksListBinding>(
             requestData(true)
         }
         new_tab.setOnClickListener {
+            //点击最新
             if(subType == WORKS_SUB_TYPE_NEW){
                 return@setOnClickListener
             }
@@ -129,8 +136,18 @@ class WorksListFragment: BaseFragment<WorksViewModel, FragmentWorksListBinding>(
     }
 
     private fun requestData(isRefresh: Boolean = false){
-        args.classifyId?.let{
-            mViewModel.getWorksListData(isRefresh, it)
+        when (args.complexType) {
+            COMPLEX_TYPE_SEARCH -> {
+                mViewModel.getWorksListData(isRefresh, 0)
+            }
+            COMPLEX_TYPE_COLLECT -> {
+                mViewModel.getWorksListData(isRefresh, 0)
+            }
+            else -> {
+                args.classifyId?.let {
+                    mViewModel.getWorksListData(isRefresh, it)
+                }
+            }
         }
     }
 
@@ -152,14 +169,6 @@ class WorksListFragment: BaseFragment<WorksViewModel, FragmentWorksListBinding>(
     }
 
     companion object {
-//        fun newInstance(classifyBean: HomeClassifyBean): WorksListFragment {
-//            val args = Bundle()
-//            args.putSerializable("classifyBean",classifyBean)
-//            val fragment = WorksListFragment()
-//            fragment.arguments = args
-//            return fragment
-//        }
-
         fun start(args: ArgsType): WorksListFragment {
             val fragment = WorksListFragment()
             fragment.arguments = args.asMavericksArgs()

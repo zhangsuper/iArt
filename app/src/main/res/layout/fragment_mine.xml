@@ -2,15 +2,156 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="@dimen/dp_16"
+    android:background="@color/color_EFF1F5"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <TextView
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/user_info_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="mine"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="@dimen/dp_36"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintLeft_toLeftOf="parent">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/iv_avatar"
+            android:layout_width="@dimen/dp_60"
+            android:layout_height="@dimen/dp_60"
+            android:scaleType="centerCrop"
+            android:padding="@dimen/dp_1"
+            android:src="@drawable/icon_avatar_default"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:shapeAppearanceOverlay="@style/CircleStyle"
+            app:strokeColor="@color/white"
+            app:strokeWidth="@dimen/dp_05"/>
+
+        <TextView
+            android:id="@+id/nike_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textColor="@color/color_141414"
+            android:layout_marginLeft="@dimen/dp_15"
+            android:layout_marginTop="@dimen/dp_4"
+            android:text="@string/app_login_in"
+            app:layout_constraintLeft_toRightOf="@+id/iv_avatar"
+            app:layout_constraintTop_toTopOf="parent"
+            />
+
+        <TextView
+            android:id="@+id/user_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:textColor="@color/color_888888"
+            android:layout_marginLeft="@dimen/dp_15"
+            android:layout_marginTop="@dimen/dp_10"
+            android:text="@string/app_login_get_vip"
+            app:layout_constraintLeft_toRightOf="@+id/iv_avatar"
+            app:layout_constraintTop_toBottomOf="@+id/nike_name"
+            />
+
+        <ImageView
+            android:id="@+id/icon_vip"
+            android:layout_width="@dimen/dp_24"
+            android:layout_height="@dimen/dp_24"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toRightOf="@+id/nike_name"
+            android:visibility="gone"/>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/vip_status_view"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_54"
+        android:layout_marginTop="@dimen/dp_18"
+        android:background="@drawable/bg_212a40_4b5068_conner_8"
+        app:layout_constraintTop_toBottomOf="@+id/user_info_view">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_16"
+            android:text="超级会员"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:textStyle="italic"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            />
+
+        <TextView
+            android:id="@+id/join_vip_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/vip_join"
+            android:paddingLeft="@dimen/dp_14"
+            android:paddingRight="@dimen/dp_14"
+            android:paddingTop="@dimen/dp_4"
+            android:paddingBottom="@dimen/dp_4"
+            android:layout_marginRight="@dimen/dp_16"
+            android:textColor="@color/color_2C344B"
+            android:textSize="12sp"
+            android:background="@drawable/bg_white_conner_24"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            />
+
+        <TextView
+            android:id="@+id/expired_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintRight_toLeftOf="@+id/join_vip_btn"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:textColor="@color/white"
+            android:textSize="12sp"
+            android:layout_marginRight="@dimen/dp_6"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="@dimen/dp_20"
+        app:layout_constraintTop_toBottomOf="@+id/vip_status_view"
+        android:background="@drawable/bg_white_conner_4">
+
+        <com.gsq.iart.app.weight.CommonItemLayout
+            android:id="@+id/item_collect"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:item_title="@string/mine_collect"
+            app:item_divider_visible="true"
+            app:item_right_icon_visible="true"/>
+
+
+        <com.gsq.iart.app.weight.CommonItemLayout
+            android:id="@+id/item_setting"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:item_title="@string/mine_setting"
+            app:item_divider_visible="true"
+            app:item_right_icon_visible="true"/>
+
+        <com.gsq.iart.app.weight.CommonItemLayout
+            android:id="@+id/item_contact"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:item_title="@string/mine_contact"
+            app:item_divider_visible="false"
+            app:item_right_icon_visible="false"
+            app:item_right_msg="@string/app_copy"
+            app:item_right_sub_msg="12345678"/>
+
+    </LinearLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

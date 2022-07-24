@@ -10,8 +10,38 @@
         android:label="MainFragment">
 
         <action
-            android:id="@+id/action_mainfragment_to_searchFragment"
+            android:id="@+id/action_mainFragment_to_searchFragment"
             app:destination="@+id/searchFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
+
+        <action
+            android:id="@+id/action_mainFragment_to_myCollectFragment"
+            app:destination="@+id/myCollectFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
+
+        <action
+            android:id="@+id/action_mainFragment_to_settingFragment"
+            app:destination="@+id/settingFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
+
+        <action
+            android:id="@+id/action_mainFragment_to_loginFragment"
+            app:destination="@+id/loginFragment"
+            app:enterAnim="@anim/slide_in_bottom"
+            app:popExitAnim="@anim/slide_out_bottom"/>
+
+        <action
+            android:id="@+id/action_mainFragment_to_memberFragment"
+            app:destination="@+id/memberFragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
@@ -24,6 +54,24 @@
         android:name="com.gsq.iart.ui.fragment.search.SearchFragment">
 
     </fragment>
+
+    <fragment
+        android:id="@+id/myCollectFragment"
+        android:name="com.gsq.iart.ui.fragment.mine.MyCollectFragment"/>
+
+
+    <fragment
+        android:id="@+id/settingFragment"
+        android:name="com.gsq.iart.ui.fragment.mine.SettingFragment"/>
+
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.gsq.iart.ui.fragment.mine.LoginFragment">
+    </fragment>
+
+    <fragment
+        android:id="@+id/memberFragment"
+        android:name="com.gsq.iart.ui.fragment.mine.MemberFragment"/>
 
 
 </navigation>

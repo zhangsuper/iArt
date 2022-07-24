@@ -6,6 +6,7 @@ import com.gsq.iart.R
 import com.gsq.iart.app.base.BaseFragment
 import com.gsq.iart.app.ext.bindViewPager2
 import com.gsq.iart.app.ext.init
+import com.gsq.iart.app.util.StatusBarUtil
 import com.gsq.iart.data.Constant.COMPLEX_TYPE_GROUP
 import com.gsq.iart.data.bean.ArgsType
 import com.gsq.iart.data.bean.HomeClassifyBean
@@ -24,8 +25,12 @@ class HomeFragment: BaseFragment<HomeViewModel, FragmentHomeBinding>() {
     //标题集合
     var mDataList: ArrayList<String> = arrayListOf()
 
-    override fun initView(savedInstanceState: Bundle?) {
+    override fun onResume() {
+        super.onResume()
+        StatusBarUtil.init(requireActivity(), statusBarColor = R.color.white)
+    }
 
+    override fun initView(savedInstanceState: Bundle?) {
         //初始化viewpager2
         home_view_pager.init(this, fragments)
         //初始化 magic_indicator
@@ -33,7 +38,7 @@ class HomeFragment: BaseFragment<HomeViewModel, FragmentHomeBinding>() {
 
         home_search_view.setOnClickListener {
             //跳转搜索节面
-            nav().navigateAction(R.id.action_mainfragment_to_searchFragment)
+            nav().navigateAction(R.id.action_mainFragment_to_searchFragment)
         }
 
     }
@@ -71,4 +76,5 @@ class HomeFragment: BaseFragment<HomeViewModel, FragmentHomeBinding>() {
         home_view_pager.adapter?.notifyDataSetChanged()
         home_view_pager.offscreenPageLimit = fragments.size
     }
+
 }

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="CommonItemLayout">
+        <attr name="item_title" format="reference|string" />
+        <attr name="item_right_msg" format="reference|string" />
+        <attr name="item_right_sub_msg" format="reference|string" />
+        <attr name="item_right_icon_visible" format="boolean" />
+        <attr name="item_divider_visible" format="boolean" />
+    </declare-styleable>
+
+    <declare-styleable name="CommonTitleLayout">
+        <attr name="title_string" format="reference" />
+    </declare-styleable>
+
+</resources>

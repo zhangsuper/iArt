@@ -45,5 +45,23 @@
 
     <string name="app_reset">重置</string>
     <string name="app_require">确定</string>
+    <string name="app_copy">复制</string>
+
+    <string name="app_login_in">登录 ></string>
+    <string name="app_login_get_vip">登录后可同步VIP特权</string>
+    <string name="vip_join">立即开通</string>
+    <string name="vip_continue">立即续费</string>
+    <string name="app_login_out">退出登录</string>
+
+    <string name="mine_collect">我的收藏</string>
+    <string name="mine_setting">设置</string>
+    <string name="mine_contact">联系客服</string>
+
+    <string name="app_privacy">隐私政策</string>
+    <string name="app_agreement">用户协议</string>
+    <string name="account_cancellation">账号注销</string>
+    <string name="collect_personal_information">收集个人信息说明</string>
+
+    <string name="my_member">我的会员</string>
 
 </resources>

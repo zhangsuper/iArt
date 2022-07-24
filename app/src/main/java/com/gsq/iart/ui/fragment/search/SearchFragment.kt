@@ -4,27 +4,15 @@ import android.os.Bundle
 import android.text.TextUtils
 import android.view.inputmethod.EditorInfo
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import com.blankj.utilcode.util.ToastUtils
-import com.google.android.flexbox.FlexDirection
-import com.google.android.flexbox.FlexboxLayoutManager
-import com.google.android.flexbox.JustifyContent
 import com.gsq.iart.R
 import com.gsq.iart.app.base.BaseFragment
-import com.gsq.iart.app.ext.init
-import com.gsq.iart.app.util.CacheUtil
 import com.gsq.iart.data.Constant.COMPLEX_TYPE_SEARCH
 import com.gsq.iart.data.bean.ArgsType
 import com.gsq.iart.databinding.FragmentSearchBinding
-import com.gsq.iart.ui.adapter.SearchHistoryAdapter
-import com.gsq.iart.ui.adapter.SearchHotAdapter
 import com.gsq.iart.ui.fragment.home.WorksListFragment
 import com.gsq.iart.viewmodel.SearchViewModel
-import com.gsq.mvvm.base.fragment.BaseVmDbFragment
-import com.gsq.mvvm.base.fragment.BaseVmFragment
 import com.gsq.mvvm.ext.nav
-import com.gsq.mvvm.ext.parseState
-import com.gsq.mvvm.ext.util.toJson
 import kotlinx.android.synthetic.main.fragment_search.*
 
 /**
@@ -32,7 +20,7 @@ import kotlinx.android.synthetic.main.fragment_search.*
  */
 class SearchFragment: BaseFragment<SearchViewModel, FragmentSearchBinding>() {
 
-    private val searchResultFragment: WorksListFragment by lazy { WorksListFragment.start(ArgsType(COMPLEX_TYPE_SEARCH,0)) }
+    private val searchResultFragment: WorksListFragment by lazy { WorksListFragment.start(ArgsType(COMPLEX_TYPE_SEARCH)) }
     private val searchInitFragment: SearchInitFragment by lazy { SearchInitFragment() }
 
 
@@ -83,10 +71,7 @@ class SearchFragment: BaseFragment<SearchViewModel, FragmentSearchBinding>() {
         var transaction = childFragmentManager.beginTransaction()
         transaction.replace(R.id.search_frameLayout, fragment)
         transaction.setReorderingAllowed(false)
-//        transaction.addToBackStack(null)
         transaction.commit()
     }
-
-
 
 }
