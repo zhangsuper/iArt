@@ -9,8 +9,10 @@ import com.blankj.utilcode.util.BarUtils
 import com.blankj.utilcode.util.ToastUtils
 import com.gsq.iart.R
 import com.gsq.iart.app.base.BaseActivity
+import com.gsq.iart.app.util.CacheUtil
 import com.gsq.iart.app.util.StatusBarUtil
 import com.gsq.iart.databinding.ActivityMainBinding
+import com.gsq.iart.ui.dialog.SecretDialog
 import com.gsq.mvvm.base.viewmodel.BaseViewModel
 import com.gsq.mvvm.network.manager.NetState
 
@@ -40,6 +42,9 @@ class MainActivity: BaseActivity<BaseViewModel, ActivityMainBinding>() {
                 }
             }
         })
+        if(!CacheUtil.isAgreePrivacy()) {
+            SecretDialog().show(supportFragmentManager)
+        }
     }
 
     override fun createObserver() {

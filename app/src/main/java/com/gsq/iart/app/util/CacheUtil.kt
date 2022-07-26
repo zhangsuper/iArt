@@ -67,6 +67,22 @@ object CacheUtil {
     }
 
     /**
+     * 是否同意隐私政策
+     */
+    fun isAgreePrivacy(): Boolean {
+        val kv = MMKV.mmkvWithID("app")
+        return kv.decodeBool("agreePrivacy", false)
+    }
+
+    /**
+     * 设置是否同意隐私政策
+     */
+    fun setAgreePrivacyStatus(isAgree: Boolean): Boolean {
+        val kv = MMKV.mmkvWithID("app")
+        return kv.encode("agreePrivacy", isAgree)
+    }
+
+    /**
      * 获取搜索历史缓存数据
      */
     fun getSearchHistoryData(): ArrayList<String> {

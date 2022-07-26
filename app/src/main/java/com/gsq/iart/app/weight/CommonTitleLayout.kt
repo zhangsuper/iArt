@@ -37,4 +37,10 @@ class CommonTitleLayout: RelativeLayout {
             listener.invoke()
         }
     }
+
+    fun setTitle(title: String) {
+        tv_title.text = title
+    }
+
+
 }

@@ -120,5 +120,8 @@ dependencies {
     implementation 'com.airbnb.android:mavericks:2.6.1'
     //PopupWindow
     implementation 'com.github.XuDeveloper:XPopupWindow:1.0.1'
+    //状态栏和导航栏
     implementation 'com.gyf.immersionbar:immersionbar:3.0.0'
+    //ViewBinding
+    implementation 'com.github.kirich1409:viewbindingpropertydelegate-noreflection:1.5.6'
 }

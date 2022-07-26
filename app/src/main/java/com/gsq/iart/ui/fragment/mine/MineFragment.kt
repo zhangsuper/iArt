@@ -12,7 +12,6 @@ import com.gsq.iart.databinding.FragmentMineBinding
 import com.gsq.mvvm.base.viewmodel.BaseViewModel
 import com.gsq.mvvm.ext.nav
 import com.gsq.mvvm.ext.navigateAction
-import com.gsq.mvvm.ext.util.copyToClipboard
 import kotlinx.android.synthetic.main.fragment_mine.*
 
 /**
@@ -72,6 +71,7 @@ class MineFragment: BaseFragment<BaseViewModel, FragmentMineBinding>() {
         join_vip_btn.setOnClickListener {
             //我的会员
             nav().navigateAction(R.id.action_mainFragment_to_memberFragment)
+
         }
     }
 

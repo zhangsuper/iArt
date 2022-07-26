@@ -3,9 +3,12 @@
     <color name="colorPrimary">#2196F3</color>
     <color name="colorPrimaryDark">#2196F3</color>
     <color name="colorAccent">#2196F3</color>
+
     <color name="textHint">#999999</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="transparent">#00000000</color>
+
     <color name="colorGray">#333</color>
     <color name="colorBlack666">#666</color>
     <color name="colorBlack333">#333</color>
@@ -31,4 +34,30 @@
     <color name="color_212A40">#212A40</color>
     <color name="color_4B5068">#4B5068</color>
     <color name="color_2C344B">#2C344B</color>
+
+    <!--白色不透明度 -->
+    <color name="color_00FFFFFF">#00FFFFFF</color> <!--0% -->
+    <color name="color_1aFFFFFF">#1aFFFFFF</color> <!--10% -->
+    <color name="color_33FFFFFF">#33FFFFFF</color> <!--20% -->
+    <color name="color_4dFFFFFF">#4dFFFFFF</color> <!--30% -->
+    <color name="color_66FFFFFF">#66FFFFFF</color> <!--40% -->
+    <color name="color_80FFFFFF">#80FFFFFF</color> <!--50% -->
+    <color name="color_99FFFFFF">#99FFFFFF</color> <!--60% -->
+    <color name="color_b3FFFFFF">#b3FFFFFF</color> <!--70% -->
+    <color name="color_ccFFFFFF">#ccFFFFFF</color> <!--80% -->
+    <color name="color_e6FFFFFF">#e6FFFFFF</color> <!--90% -->
+    <color name="color_FFFFFFFF">#FFFFFFFF</color> <!--100% -->
+
+    <!--黑色不透明度 -->
+    <color name="color_00000000">#00000000</color> <!--0% -->
+    <color name="color_0d000000">#0d000000</color> <!--5% -->
+    <color name="color_1a000000">#1a000000</color> <!--10% -->
+    <color name="color_33000000">#33000000</color> <!--20% -->
+    <color name="color_4d000000">#4d000000</color> <!--30% -->
+    <color name="color_66000000">#66000000</color> <!--40% -->
+    <color name="color_80000000">#80000000</color> <!--50% -->
+    <color name="color_99000000">#99000000</color> <!--60% -->
+    <color name="color_b3000000">#b3000000</color> <!--70% -->
+    <color name="color_cc000000">#cc000000</color> <!--80% -->
+    <color name="color_e6000000">#e6000000</color> <!--90% -->
 </resources>
