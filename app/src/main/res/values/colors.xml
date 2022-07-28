@@ -34,6 +34,11 @@
     <color name="color_212A40">#212A40</color>
     <color name="color_4B5068">#4B5068</color>
     <color name="color_2C344B">#2C344B</color>
+    <color name="color_957666">#957666</color>
+    <color name="color_DE824E">#DE824E</color>
+    <color name="color_FABA97">#FABA97</color>
+    <color name="color_454545">#454545</color>
+    <color name="color_EC8E58">#EC8E58</color>
 
     <!--白色不透明度 -->
     <color name="color_00FFFFFF">#00FFFFFF</color> <!--0% -->
