@@ -107,13 +107,23 @@
             android:layout_weight="1"
             android:padding="@dimen/dp_16"
             android:background="@color/color_454545">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/price_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="@dimen/dp_4"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
             
             <LinearLayout
                 android:id="@+id/pay_type_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginTop="@dimen/dp_30"
+                app:layout_constraintTop_toBottomOf="@+id/price_recycler_view"
                 android:background="@drawable/bg_white_conner_8">
 
                 <TextView
@@ -127,6 +137,7 @@
                     android:layout_marginTop="@dimen/dp_16"/>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/wechat_pay_view"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dp_56">
 
@@ -171,6 +182,7 @@
                     android:layout_marginRight="@dimen/dp_16"/>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/ali_pay_view"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dp_56"
                     android:orientation="horizontal">
