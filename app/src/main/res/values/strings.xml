@@ -63,5 +63,6 @@
     <string name="collect_personal_information">收集个人信息说明</string>
 
     <string name="my_member">我的会员</string>
+    <string name="vip_agreement">会员服务协议</string>
 
 </resources>

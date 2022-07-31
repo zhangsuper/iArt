@@ -18,6 +18,7 @@ class UserAgreementFragment: BaseFragment<BaseViewModel, FragmentUserAgreementBi
         const val INTENT_KEY_TYPE = "data"
         const val INTENT_VALUE_USER_AGREEMENT = "user_agreement"//用户协议
         const val INTENT_VALUE_SECRET_AGREEMENT = "secret_agreement"//隐私协议
+        const val INTENT_VALUE_VIP_AGREEMENT = "vip_agreement"//会员服务协议
     }
     private var agreementType: String? = null
 
@@ -27,6 +28,8 @@ class UserAgreementFragment: BaseFragment<BaseViewModel, FragmentUserAgreementBi
             title_layout.setTitle(getString(R.string.app_agreement))
         }else if(agreementType == INTENT_VALUE_SECRET_AGREEMENT){
             title_layout.setTitle(getString(R.string.app_privacy))
+        }else if(agreementType == INTENT_VALUE_VIP_AGREEMENT){
+            title_layout.setTitle(getString(R.string.vip_agreement))
         }
         title_layout.setBackListener {
             nav().navigateUp()
