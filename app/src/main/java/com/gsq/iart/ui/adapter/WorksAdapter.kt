@@ -17,10 +17,10 @@ class WorksAdapter: BaseQuickAdapter<WorksBean, BaseViewHolder>(R.layout.item_wo
     }
 
     override fun convert(holder: BaseViewHolder, item: WorksBean) {
-        holder.setText(R.id.item_works_name, item.title)
-        holder.setText(R.id.item_works_desc, item.author)
+        holder.setText(R.id.item_works_name, item.name)
+        holder.setText(R.id.item_works_desc, "${item.author}  ${item.age}")
         var imageView = holder.getView<ShapeableImageView>(R.id.item_works_cover)
-        GlideHelper.load(imageView, item.envelopePic)
+        GlideHelper.load(imageView, item.thumb)
         if (holder.layoutPosition == 1){
             imageView.layoutParams.height = SizeUtils.dp2px(318f)
         }else{

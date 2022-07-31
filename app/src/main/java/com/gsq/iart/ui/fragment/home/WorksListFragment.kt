@@ -20,9 +20,13 @@ import com.airbnb.mvrx.args
 import com.gsq.iart.R
 import com.gsq.iart.data.Constant.COMPLEX_TYPE_COLLECT
 import com.gsq.iart.data.Constant.COMPLEX_TYPE_SEARCH
+import com.gsq.iart.data.Constant.DATA_WORK
 import com.gsq.iart.data.Constant.WORKS_SUB_TYPE_HOT
 import com.gsq.iart.data.Constant.WORKS_SUB_TYPE_NEW
+import com.gsq.iart.data.bean.WorksBean
 import com.gsq.iart.ui.dialog.ConditionPopupWindow
+import com.gsq.mvvm.ext.nav
+import com.gsq.mvvm.ext.navigateAction
 import com.gsq.mvvm.ext.view.gone
 import com.gsq.mvvm.ext.view.visible
 import kotlinx.android.synthetic.main.fragment_works_list.*
@@ -37,7 +41,7 @@ class WorksListFragment: BaseFragment<WorksViewModel, FragmentWorksListBinding>(
     private val worksAdapter: WorksAdapter by lazy { WorksAdapter() }
     //界面状态管理者
     private lateinit var loadsir: LoadService<Any>
-    private var subType: Int = WORKS_SUB_TYPE_HOT//1：热门  2：新上
+    private var subType: Int = WORKS_SUB_TYPE_HOT//0：热门  1：新上
 
     override fun initView(savedInstanceState: Bundle?) {
         //状态页配置
@@ -67,6 +71,13 @@ class WorksListFragment: BaseFragment<WorksViewModel, FragmentWorksListBinding>(
         }
 
         initTypeConditionView()
+
+        worksAdapter.setOnItemClickListener { adapter, view, position ->
+
+            var args = Bundle()
+            args.putSerializable(DATA_WORK, (adapter.data as MutableList<WorksBean>)[position])
+            nav().navigateAction(R.id.action_mainFragment_to_workDetailFragment,args)
+        }
     }
 
     private fun initTypeConditionView(){
@@ -145,7 +156,7 @@ class WorksListFragment: BaseFragment<WorksViewModel, FragmentWorksListBinding>(
             }
             else -> {
                 args.classifyId?.let {
-                    mViewModel.getWorksListData(isRefresh, it)
+                    mViewModel.getWorksListData(isRefresh, it, subType)
                 }
             }
         }
@@ -156,7 +167,7 @@ class WorksListFragment: BaseFragment<WorksViewModel, FragmentWorksListBinding>(
      */
     fun searchData(key: String){
         args.classifyId?.let{
-            mViewModel?.getWorksListData(true, it)
+            mViewModel?.getWorksListData(true, it,searchKey = key)
         }
     }
 

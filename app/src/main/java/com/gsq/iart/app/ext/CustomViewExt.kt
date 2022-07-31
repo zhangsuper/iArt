@@ -310,7 +310,7 @@ fun <T> loadListData(
     swipeRefreshLayout: SwipeRefreshLayout?
 ) {
     swipeRefreshLayout?.isRefreshing = false
-    recyclerView.loadMoreFinish(data.isEmpty, data.hasMore)
+    recyclerView.loadMoreFinish(data.isEmpty, !data.isEmpty)
     if (data.isSuccess) {
         //成功
         when {

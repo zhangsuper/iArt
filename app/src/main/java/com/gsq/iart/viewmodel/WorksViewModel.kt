@@ -3,7 +3,9 @@ package com.gsq.iart.viewmodel
 import androidx.lifecycle.MutableLiveData
 import com.gsq.iart.app.network.apiService
 import com.gsq.iart.app.network.stateCallback.ListDataUiState
+import com.gsq.iart.data.Constant.DEFAULT_REQUEST_SIZE
 import com.gsq.iart.data.bean.WorksBean
+import com.gsq.iart.data.request.WorkPageRequestParam
 import com.gsq.mvvm.base.viewmodel.BaseViewModel
 import com.gsq.mvvm.ext.request
 
@@ -19,11 +21,26 @@ class WorksViewModel: BaseViewModel() {
     /**
      * 获取作品列表数据
      */
-    fun getWorksListData(isRefresh: Boolean,cid: Int) {
+    fun getWorksListData(isRefresh: Boolean,
+                         classifyId: Int,
+                         orderType: Int = 0,
+                         propSearchFiled: String = "",
+                         propSearchValue: String = "",
+                         searchKey: String = "") {
         if (isRefresh) {
-            pageNo =  1
+            pageNo =  0
         }
-        request({ apiService.getWorksDataByType(pageNo, cid) }, {
+        var workPageRequestParam = WorkPageRequestParam(
+            classifyId,
+            orderType,
+            pageNo,
+            DEFAULT_REQUEST_SIZE,
+            propSearchFiled,
+            propSearchValue,
+            searchKey)
+        request(
+            { apiService.getWorksDataByType(workPageRequestParam) },
+            {
             //请求成功
             pageNo++
             val listDataUiState =
@@ -31,12 +48,13 @@ class WorksViewModel: BaseViewModel() {
                     isSuccess = true,
                     isRefresh = isRefresh,
                     isEmpty = it.isEmpty(),
-                    hasMore = it.hasMore(),
+//                    hasMore = it.hasMore(),
                     isFirstEmpty = isRefresh && it.isEmpty(),
-                    listData = it.datas
+                    listData = it
                 )
             worksDataState.value = listDataUiState
-        }, {
+        },
+            {
             //请求失败
             val listDataUiState =
                 ListDataUiState(
