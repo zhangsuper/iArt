@@ -8,6 +8,7 @@ import com.gsq.iart.data.request.WorkPageRequestParam
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.Query
 
 /**
  * 描述　: 网络接口API
@@ -31,7 +32,7 @@ interface ApiService {
      */
     @POST("api/v1/art/work/detail")
     suspend fun getWorkDetail(
-        @Body workDetailRequestParam: WorkDetailRequestParam
+        @Query("id") id: Int
     ): ApiResponse<WorksBean>
 
     @GET("hotkey/json")
