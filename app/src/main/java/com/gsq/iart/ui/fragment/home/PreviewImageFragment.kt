@@ -1,6 +1,7 @@
 package com.gsq.iart.ui.fragment.home
 
 import android.os.Bundle
+import android.widget.ImageView
 import com.airbnb.mvrx.args
 import com.airbnb.mvrx.asMavericksArgs
 import com.gsq.iart.app.base.BaseFragment
@@ -25,5 +26,7 @@ class PreviewImageFragment :BaseFragment<BaseViewModel, FragmentPreviewImageBind
     override fun initView(savedInstanceState: Bundle?) {
         var hdPics = args.workHdPics
         GlideHelper.load(photo_view,hdPics.url)
+        photo_view.scaleType = ImageView.ScaleType.FIT_CENTER
+        photo_view.enable()
     }
 }

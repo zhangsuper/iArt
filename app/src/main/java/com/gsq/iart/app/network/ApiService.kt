@@ -1,6 +1,7 @@
 package com.gsq.iart.app.network
 
 import com.gsq.iart.data.bean.ApiResponse
+import com.gsq.iart.data.bean.ConditionClassifyBean
 import com.gsq.iart.data.bean.SearchResponse
 import com.gsq.iart.data.bean.WorksBean
 import com.gsq.iart.data.request.WorkDetailRequestParam
@@ -34,6 +35,24 @@ interface ApiService {
     suspend fun getWorkDetail(
         @Query("id") id: Int
     ): ApiResponse<WorksBean>
+
+    /**
+     * 过滤条件所有分类
+     */
+    @GET("api/v1/art/classify/prop/all")
+    suspend fun getConditionAllClassify(): ApiResponse<ArrayList<ConditionClassifyBean>>
+
+    /**
+     * 过滤条件一级分类
+     */
+    @GET("api/v1/art/classify/prop/root")
+    suspend fun getConditionRootClassify(): ApiResponse<ArrayList<ConditionClassifyBean>>
+
+    /**
+     * 过滤条件指定分类的子类
+     */
+    @GET("/api/v1/art/classify/prop/sub")
+    suspend fun getConditionSubClassify(): ApiResponse<ArrayList<ConditionClassifyBean>>
 
     @GET("hotkey/json")
     suspend fun getSearchHotKey(): ApiResponse<ArrayList<SearchResponse>>

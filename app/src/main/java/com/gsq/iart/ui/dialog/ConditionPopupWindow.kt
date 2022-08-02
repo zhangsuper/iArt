@@ -9,6 +9,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.gsq.iart.R
 import com.gsq.iart.data.bean.ConditionBean
+import com.gsq.iart.data.bean.ConditionClassifyBean
 import com.gsq.iart.ui.adapter.ConditionLeftAdapter
 import com.gsq.iart.ui.adapter.ConditionRightAdapter
 import com.gsq.mvvm.ext.view.visible
@@ -49,6 +50,10 @@ class ConditionPopupWindow: XPopupWindow {
         rightAdapter = ConditionRightAdapter()
         leftRecyclerView?.adapter = leftAdapter
         rightRecyclerView?.adapter = rightAdapter
+    }
+
+    fun setData(list: List<ConditionClassifyBean>){
+
     }
 
     override fun initData() {

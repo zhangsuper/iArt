@@ -23,6 +23,7 @@ import com.gsq.iart.data.Constant.COMPLEX_TYPE_SEARCH
 import com.gsq.iart.data.Constant.DATA_WORK
 import com.gsq.iart.data.Constant.WORKS_SUB_TYPE_HOT
 import com.gsq.iart.data.Constant.WORKS_SUB_TYPE_NEW
+import com.gsq.iart.data.bean.ConditionClassifyBean
 import com.gsq.iart.data.bean.WorksBean
 import com.gsq.iart.ui.dialog.ConditionPopupWindow
 import com.gsq.mvvm.ext.nav
@@ -42,6 +43,8 @@ class WorksListFragment: BaseFragment<WorksViewModel, FragmentWorksListBinding>(
     //界面状态管理者
     private lateinit var loadsir: LoadService<Any>
     private var subType: Int = WORKS_SUB_TYPE_HOT//0：热门  1：新上
+
+    private var classifyBean: List<ConditionClassifyBean>? = null
 
     override fun initView(savedInstanceState: Bundle?) {
         //状态页配置
@@ -114,24 +117,25 @@ class WorksListFragment: BaseFragment<WorksViewModel, FragmentWorksListBinding>(
         }
         condition_years_view.setOnClickListener {
             //年代
-            showConditionPopupWindow()
+            showConditionPopupWindow(classifyBean?.get(0)?.subs)
         }
         condition_theme_view.setOnClickListener {
             //题材
-            showConditionPopupWindow()
+            showConditionPopupWindow(classifyBean?.get(1)?.subs)
         }
         condition_size_view.setOnClickListener {
             //尺寸
-            showConditionPopupWindow()
+            showConditionPopupWindow(classifyBean?.get(2)?.subs)
         }
         condition_screen_view.setOnClickListener {
             //筛选
-            showConditionPopupWindow()
+            showConditionPopupWindow(classifyBean?.get(3)?.subs)
         }
     }
 
-    private fun showConditionPopupWindow(){
+    private fun showConditionPopupWindow(list: List<ConditionClassifyBean>?){
         var popupWindow = ConditionPopupWindow(requireContext(), ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+        list?.let { popupWindow.setData(it) }
         popupWindow.showAsDropDown(condition_detail_view)
     }
 
@@ -139,6 +143,7 @@ class WorksListFragment: BaseFragment<WorksViewModel, FragmentWorksListBinding>(
         super.lazyLoadData()
         loadsir.showLoading()
         requestData(true)
+        mViewModel.getConditionAllClassify()//获取过滤分类
     }
 
     override fun onLoadMore() {
@@ -146,6 +151,9 @@ class WorksListFragment: BaseFragment<WorksViewModel, FragmentWorksListBinding>(
         requestData()
     }
 
+    /**
+     * 获取列表数据
+     */
     private fun requestData(isRefresh: Boolean = false){
         when (args.complexType) {
             COMPLEX_TYPE_SEARCH -> {
@@ -162,6 +170,7 @@ class WorksListFragment: BaseFragment<WorksViewModel, FragmentWorksListBinding>(
         }
     }
 
+
     /**
      * 搜索作品
      */
@@ -176,6 +185,17 @@ class WorksListFragment: BaseFragment<WorksViewModel, FragmentWorksListBinding>(
         mViewModel.worksDataState.observe(viewLifecycleOwner, Observer {
             //设值 新写了个拓展函数
             loadListData(it, worksAdapter, loadsir, works_recycler_view, works_refresh_layout)
+        })
+        mViewModel.conditionRootClassifys.observe(viewLifecycleOwner, Observer {
+            if(it.isSuccess){
+                classifyBean = it.listData
+                tv_years.text = it.listData[0].name
+                tv_theme.text = it.listData[1].name
+                tv_size.text = it.listData[2].name
+                tv_screen.text = it.listData[3].name
+            }else{
+
+            }
         })
     }
 
