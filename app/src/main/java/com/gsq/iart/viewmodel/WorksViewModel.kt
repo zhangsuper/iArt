@@ -107,7 +107,7 @@ class WorksViewModel: BaseViewModel() {
      */
     fun getConditionAllClassify(){
         request(
-            { apiService.getConditionRootClassify()},
+            { apiService.getConditionAllClassify()},
             {
                 val listDataUiState =
                     ListDataUiState(

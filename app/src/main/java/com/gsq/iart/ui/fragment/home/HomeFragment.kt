@@ -58,7 +58,7 @@ class HomeFragment: BaseFragment<HomeViewModel, FragmentHomeBinding>() {
 
         var tablist = mutableListOf<HomeClassifyBean>()
         tablist.add(HomeClassifyBean(0,"国画"))
-        tablist.add(HomeClassifyBean(0,"壁画"))
+//        tablist.add(HomeClassifyBean(0,"壁画"))
 //        tablist.add(HomeClassifyBean(3,"年画"))
 //        tablist.add(HomeClassifyBean(4,"刺绣"))
 //        tablist.add(HomeClassifyBean(5,"陶瓷"))

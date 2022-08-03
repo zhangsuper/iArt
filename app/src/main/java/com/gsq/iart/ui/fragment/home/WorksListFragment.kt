@@ -134,7 +134,7 @@ class WorksListFragment: BaseFragment<WorksViewModel, FragmentWorksListBinding>(
     }
 
     private fun showConditionPopupWindow(list: List<ConditionClassifyBean>?){
-        var popupWindow = ConditionPopupWindow(requireContext(), ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+        var popupWindow = ConditionPopupWindow(requireContext(), ViewGroup.LayoutParams.MATCH_PARENT, SizeUtils.dp2px(300f))
         list?.let { popupWindow.setData(it) }
         popupWindow.showAsDropDown(condition_detail_view)
     }

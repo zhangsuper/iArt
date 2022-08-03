@@ -5,10 +5,11 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.gsq.iart.R
 import com.gsq.iart.data.bean.ConditionBean
+import com.gsq.iart.data.bean.ConditionClassifyBean
 
-class ConditionRightAdapter: BaseQuickAdapter<ConditionBean, BaseViewHolder>(R.layout.item_condition_right_layout) {
+class ConditionRightAdapter: BaseQuickAdapter<ConditionClassifyBean, BaseViewHolder>(R.layout.item_condition_right_layout) {
 
-    override fun convert(holder: BaseViewHolder, item: ConditionBean) {
-        holder.getView<TextView>(R.id.tv_content).text = item.content
+    override fun convert(holder: BaseViewHolder, item: ConditionClassifyBean) {
+        holder.getView<TextView>(R.id.tv_content).text = item.name
     }
 }

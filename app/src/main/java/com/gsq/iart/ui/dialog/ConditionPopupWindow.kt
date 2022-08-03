@@ -25,6 +25,8 @@ class ConditionPopupWindow: XPopupWindow {
     private var leftAdapter: ConditionLeftAdapter? = null
     private var rightAdapter: ConditionRightAdapter? = null
 
+    private lateinit var leftData: MutableList<ConditionClassifyBean>
+
     constructor(ctx: Context, w: Int, h: Int) : super(ctx, w, h)
 
     override fun getLayoutId(): Int {
@@ -47,36 +49,54 @@ class ConditionPopupWindow: XPopupWindow {
             dismiss()
         }
         leftAdapter = ConditionLeftAdapter()
+        leftData = mutableListOf()
+//        leftAdapter!!.data = leftData
         rightAdapter = ConditionRightAdapter()
         leftRecyclerView?.adapter = leftAdapter
         rightRecyclerView?.adapter = rightAdapter
+
+
+        leftAdapter?.setOnItemClickListener { adapter, view, position ->
+            if(leftData[position].subs != null){
+                rightAdapter?.data = (leftData[position].subs as MutableList<ConditionClassifyBean>)
+                rightAdapter?.notifyDataSetChanged()
+                rightRecyclerView?.visible()
+            }else{
+                //回调选中
+            }
+        }
+        rightAdapter?.setOnItemClickListener { adapter, view, position ->
+            //回调选中
+        }
     }
 
     fun setData(list: List<ConditionClassifyBean>){
-
+        leftData = (list as MutableList<ConditionClassifyBean>)
+//        leftAdapter?.notifyDataSetChanged()
+        leftAdapter?.data = leftData
     }
 
     override fun initData() {
-        var leftData = mutableListOf<ConditionBean>()
-        var bean1 = ConditionBean("人物",1)
-        var bean2 = ConditionBean("山水",2)
-        var bean3 = ConditionBean("花鸟",3)
-        leftData.add(bean1)
-        leftData.add(bean2)
-        leftData.add(bean3)
-        leftAdapter?.data = leftData
-
-        var rightData = mutableListOf<ConditionBean>()
-        var rightbean1 = ConditionBean("历史人物",1)
-        var rightbean2 = ConditionBean("道释画",2)
-        var rightbean3 = ConditionBean("高士",3)
-        var rightbean4 = ConditionBean("肖像",4)
-        rightData.add(rightbean1)
-        rightData.add(rightbean2)
-        rightData.add(rightbean3)
-        rightData.add(rightbean4)
-        rightAdapter?.data = rightData
-        rightRecyclerView?.visible()
+//        var leftData = mutableListOf<ConditionBean>()
+//        var bean1 = ConditionBean("人物",1)
+//        var bean2 = ConditionBean("山水",2)
+//        var bean3 = ConditionBean("花鸟",3)
+//        leftData.add(bean1)
+//        leftData.add(bean2)
+//        leftData.add(bean3)
+//        leftAdapter?.data = leftData
+//
+//        var rightData = mutableListOf<ConditionBean>()
+//        var rightbean1 = ConditionBean("历史人物",1)
+//        var rightbean2 = ConditionBean("道释画",2)
+//        var rightbean3 = ConditionBean("高士",3)
+//        var rightbean4 = ConditionBean("肖像",4)
+//        rightData.add(rightbean1)
+//        rightData.add(rightbean2)
+//        rightData.add(rightbean3)
+//        rightData.add(rightbean4)
+//        rightAdapter?.data = rightData
+//        rightRecyclerView?.visible()
     }
 
     override fun startAnim(view: View): Animator? {
