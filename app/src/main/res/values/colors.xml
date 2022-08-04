@@ -39,6 +39,7 @@
     <color name="color_FABA97">#FABA97</color>
     <color name="color_454545">#454545</color>
     <color name="color_EC8E58">#EC8E58</color>
+    <color name="color_EDF2F7">#EDF2F7</color>
 
     <!--白色不透明度 -->
     <color name="color_00FFFFFF">#00FFFFFF</color> <!--0% -->

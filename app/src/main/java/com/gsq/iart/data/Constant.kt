@@ -5,6 +5,10 @@ object Constant {
     //glide缓存目录和缓存池大小
     const val GLIDE_CACHE_DIR = "AppGlide"
     const val GLIDE_CACHE_SIZE = 500 * 1024 * 1024
+    // 是否允许图片加载失败重试一次
+    const val ENABLE_IMAGE_AUTO_RETRY = true
+    // 封面图加载失败重试等待时间(毫秒）
+    const val LOAD_PIC_DELAY = 200L
 
     const val DEFAULT_REQUEST_SIZE = 10//每页大小
 

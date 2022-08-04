@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
+import com.bumptech.glide.request.target.DrawableImageViewTarget
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.gsq.iart.R
 import com.gsq.iart.app.network.stateCallback.ListDataUiState
@@ -23,6 +24,8 @@ import com.gsq.iart.app.weight.loadCallBack.EmptyCallback
 import com.gsq.iart.app.weight.loadCallBack.ErrorCallback
 import com.gsq.iart.app.weight.loadCallBack.LoadingCallback
 import com.gsq.iart.app.weight.recyclerview.DefineLoadMoreView
+import com.gsq.iart.data.Constant.ENABLE_IMAGE_AUTO_RETRY
+import com.gsq.iart.data.Constant.LOAD_PIC_DELAY
 import com.gsq.iart.ui.fragment.home.HomeFragment
 import com.gsq.iart.ui.fragment.mine.MineFragment
 import com.gsq.mvvm.base.appContext
@@ -339,3 +342,19 @@ fun <T> loadListData(
         }
     }
 }
+fun DrawableImageViewTarget.retryLoad(
+    view: View,
+    retry: () -> Unit,
+    noRetry: () -> Unit = {}
+) {
+    if (ENABLE_IMAGE_AUTO_RETRY && view.getTag(com.gsq.lib_base.R.id.cover_retried_tag) == null
+    ) {
+        view.setTag(com.gsq.lib_base.R.id.cover_retried_tag, true)
+        view.postDelayed({
+            retry()
+        }, LOAD_PIC_DELAY)
+    } else {
+        noRetry()
+    }
+}
+
