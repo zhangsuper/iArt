@@ -54,7 +54,8 @@ interface ApiService {
     @GET("/api/v1/art/classify/prop/sub")
     suspend fun getConditionSubClassify(): ApiResponse<ArrayList<ConditionClassifyBean>>
 
-    @GET("hotkey/json")
+//    @GET("hotkey/json")
+    @GET("/api/v1/art/hotkey/json")
     suspend fun getSearchHotKey(): ApiResponse<ArrayList<SearchResponse>>
 
 

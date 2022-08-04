@@ -45,6 +45,7 @@ class WorksListFragment: BaseFragment<WorksViewModel, FragmentWorksListBinding>(
     private var subType: Int = WORKS_SUB_TYPE_HOT//0：热门  1：新上
 
     private var classifyBean: List<ConditionClassifyBean>? = null
+    private var selectType = 1
 
     override fun initView(savedInstanceState: Bundle?) {
         //状态页配置
@@ -117,18 +118,22 @@ class WorksListFragment: BaseFragment<WorksViewModel, FragmentWorksListBinding>(
         }
         condition_years_view.setOnClickListener {
             //年代
+            selectType =1
             showConditionPopupWindow(classifyBean?.get(0)?.subs)
         }
         condition_theme_view.setOnClickListener {
             //题材
+            selectType =2
             showConditionPopupWindow(classifyBean?.get(1)?.subs)
         }
         condition_size_view.setOnClickListener {
             //尺寸
+            selectType =3
             showConditionPopupWindow(classifyBean?.get(2)?.subs)
         }
         condition_screen_view.setOnClickListener {
             //筛选
+            selectType =4
             showConditionPopupWindow(classifyBean?.get(3)?.subs)
         }
     }
@@ -137,6 +142,38 @@ class WorksListFragment: BaseFragment<WorksViewModel, FragmentWorksListBinding>(
         var popupWindow = ConditionPopupWindow(requireContext(), ViewGroup.LayoutParams.MATCH_PARENT, SizeUtils.dp2px(300f))
         list?.let { popupWindow.setData(it) }
         popupWindow.showAsDropDown(condition_detail_view)
+        popupWindow.onBackListener { grade1Item, grade2Item ->
+            when(selectType){
+                1 ->{
+                    if(grade2Item != null){
+                        tv_years.text = grade2Item.name
+                    }else{
+                        tv_years.text = grade1Item.name
+                    }
+                }
+                2 ->{
+                    if(grade2Item != null){
+                        tv_theme.text = grade2Item.name
+                    }else{
+                        tv_theme.text = grade1Item.name
+                    }
+                }
+                3 ->{
+                    if(grade2Item != null){
+                        tv_size.text = grade2Item.name
+                    }else{
+                        tv_size.text = grade1Item.name
+                    }
+                }
+                4 ->{
+                    if(grade2Item != null){
+                        tv_screen.text = grade2Item.name
+                    }else{
+                        tv_screen.text = grade1Item.name
+                    }
+                }
+            }
+        }
     }
 
     override fun lazyLoadData() {
