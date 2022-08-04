@@ -37,5 +37,14 @@ buildPaths.navigation_args = 'androidx.navigation:navigation-safe-args-gradle-pl
 
 ext.buildPaths = buildPaths
 
+//内部使用的
+ext.iartSign = [:]
+def iartSign = [:]
+iartSign.keystorePath = rootDir.toString() + '\\app/keystore.jks'
+iartSign.keystorePassword = '123456'
+iartSign.alias = 'iart'
+iartSign.aliasPassword = '123456'
+ext.iartSign = iartSign
+
 
 

@@ -29,20 +29,38 @@ android {
     androidExtensions {
         experimental = true
     }
+    signingConfigs {
+        iart {
+            storeFile file(iartSign.keystorePath)
+            storePassword iartSign.keystorePassword
+            keyAlias iartSign.alias
+            keyPassword iartSign.aliasPassword
+        }
+    }
     buildTypes {
         debug {
             minifyEnabled false
             shrinkResources false
             zipAlignEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.iart
         }
 
         release {
-            minifyEnabled true//开启混淆
-            shrinkResources true
-            zipAlignEnabled true//去除无用资源
+            minifyEnabled false//开启混淆
+            shrinkResources false
+            zipAlignEnabled false//去除无用资源
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.iart
         }
+    }
+
+    // 自定义APK安装包名
+    applicationVariants.all { variant ->
+        variant.outputs.all {
+            outputFileName = "Android_v${variant.versionName}-${variant.buildType.name}.apk"
+        }
+
     }
 
     compileOptions {
