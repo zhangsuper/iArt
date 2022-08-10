@@ -13,6 +13,8 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import androidx.viewpager.widget.PagerAdapter
+import androidx.viewpager.widget.ViewPager
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.request.target.DrawableImageViewTarget
@@ -197,6 +199,33 @@ fun MagicIndicator.bindViewPager2(
             this@bindViewPager2.onPageScrollStateChanged(state)
         }
     })
+}
+
+fun ViewPager.init(
+    fragment: Fragment,
+    fragments: ArrayList<Fragment>,
+    isUserInputEnabled: Boolean = true
+): ViewPager {
+    //设置适配器
+    adapter = object : PagerAdapter() {
+
+        override fun getCount(): Int {
+            return fragments.size
+        }
+
+        override fun isViewFromObject(view: View, ob: Any): Boolean {
+            return view == ob
+        }
+
+        override fun instantiateItem(container: ViewGroup, position: Int): Any {
+            return fragments[position]
+        }
+
+        override fun destroyItem(container: ViewGroup, position: Int, ob: Any) {
+            container.removeView(ob as View?)
+        }
+    }
+    return this
 }
 
 fun ViewPager2.init(

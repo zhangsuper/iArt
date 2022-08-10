@@ -1,9 +1,14 @@
 package com.gsq.iart.ui.fragment.home
 
 import android.os.Bundle
+import android.util.Log
+import android.view.GestureDetector
+import android.view.MotionEvent
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.viewpager2.widget.ViewPager2
+import com.blankj.utilcode.util.LogUtils
 import com.blankj.utilcode.util.ToastUtils
 import com.gsq.iart.R
 import com.gsq.iart.app.base.BaseFragment
@@ -48,6 +53,31 @@ class WorkDetailFragment: BaseFragment<WorksViewModel, FragmentWorkDetailBinding
                 tv_index.text = "${position+1}/${fragmentList.size}"
             }
         })
+        var gestureDetector = GestureDetector(gesturelistener())
+        view_pager.setOnTouchListener { view, event ->
+            var flage = 0
+//            when (event.action) {
+//                MotionEvent.ACTION_DOWN -> {
+//                    // 记录点下去的点（起点）
+//                    flage =0
+//                }
+//                MotionEvent.ACTION_MOVE -> {
+//                    // 记录移动后的点（终点）
+//                    flage = 1
+//                }
+//                MotionEvent.ACTION_UP -> {
+//                    if(flage == 0){
+//                        if(view_pager.isVisible){
+//                            view_pager.gone()
+//                        }else{
+//                            view_pager.visible()
+//                        }
+//                    }
+//                }
+//            }
+            return@setOnTouchListener gestureDetector.onTouchEvent(event)
+        }
+
     }
 
     override fun onResume() {
@@ -79,9 +109,41 @@ class WorkDetailFragment: BaseFragment<WorksViewModel, FragmentWorkDetailBinding
                         tv_index.visible()
                     }
                 }
+                tv_index.text = "1/${fragmentList.size}"
             }else{
                 ToastUtils.showLong(it.errorMsg)
             }
         })
+    }
+
+    class gesturelistener : GestureDetector.OnGestureListener{
+        override fun onDown(p0: MotionEvent?): Boolean {
+            Log.d("tag","onDown")
+            return false
+        }
+
+        override fun onShowPress(p0: MotionEvent?) {
+            Log.d("tag","onShowPress")
+        }
+
+        override fun onSingleTapUp(p0: MotionEvent?): Boolean {
+            Log.d("tag","onSingleTapUp")
+            return false
+        }
+
+        override fun onScroll(p0: MotionEvent?, p1: MotionEvent?, p2: Float, p3: Float): Boolean {
+            Log.d("tag","onScroll")
+            return false
+        }
+
+        override fun onLongPress(p0: MotionEvent?) {
+            Log.d("tag","onLongPress")
+        }
+
+        override fun onFling(p0: MotionEvent?, p1: MotionEvent?, p2: Float, p3: Float): Boolean {
+            Log.d("tag","onFling")
+            return false
+        }
+
     }
 }

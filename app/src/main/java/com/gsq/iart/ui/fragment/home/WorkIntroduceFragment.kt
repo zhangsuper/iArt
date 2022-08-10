@@ -24,8 +24,19 @@ class WorkIntroduceFragment: BaseFragment<WorksViewModel, FragmentWorkIntroduceB
         close_btn.setOnClickListener {
             nav().navigateUp()
         }
-        tv_title.text = worksBean?.name
+
         StatusBarUtil.init(requireActivity(), statusBarColor = R.color.white)
+    }
+
+    override fun initData() {
+        tv_title.text = worksBean?.name
+        tv_author_dynasty.text = "${worksBean?.author} | ${worksBean?.age} | ${worksBean?.size}"
+        tv_scf.text = worksBean?.collector
+        tv_tc.text = worksBean?.subject
+        tv_xz.text = worksBean?.styleType
+        tv_jj.text = worksBean?.description
+        tv_cz.text = worksBean?.mediaType
+        tv_jsf.text = worksBean?.otherPostscriptInfo
     }
 
     override fun createObserver() {
