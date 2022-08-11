@@ -33,9 +33,15 @@ class ConditionPopupWindow: XPopupWindow {
 
     constructor(ctx: Context, w: Int, h: Int) : super(ctx, w, h)
 
-    private var onBackListener: ((grade1Item: ConditionClassifyBean,grade2Item: ConditionClassifyBean?) -> Unit)? = null
+    private var onBackListener: OnBackListener? = null
+    interface OnBackListener{
+        fun onItemClick(grade1Item: ConditionClassifyBean,grade2Item: ConditionClassifyBean?)
+        fun onDismiss()
+    }
 
-    fun onBackListener(listener: ((grade1Item: ConditionClassifyBean,grade2Item: ConditionClassifyBean?) -> Unit)?): ConditionPopupWindow {
+//    private var onBackListener: ((grade1Item: ConditionClassifyBean,grade2Item: ConditionClassifyBean?) -> Unit)? = null
+
+    fun onBackListener(listener: OnBackListener): ConditionPopupWindow {
         this.onBackListener = listener
         return this
     }
@@ -59,13 +65,13 @@ class ConditionPopupWindow: XPopupWindow {
         requireBtn?.setOnClickListener {
             currentSelectGrade1Item?.let { item1 ->
                 currentSelectGrade2Item?.let { itme2 ->
-                    onBackListener?.invoke(item1,itme2)
+                    onBackListener?.onItemClick(item1,itme2)
                     dismiss()
                 }?:let {
                     if(item1.subs!= null && item1.subs.isNotEmpty()){
                         ToastUtils.showLong("请选择类型")
                     }else{
-                        onBackListener?.invoke(item1,null)
+                        onBackListener?.onItemClick(item1,null)
                         dismiss()
                     }
                 }
@@ -140,6 +146,11 @@ class ConditionPopupWindow: XPopupWindow {
 
     override fun animStyle(): Int {
         return -1
+    }
+
+    override fun dismiss() {
+        super.dismiss()
+        onBackListener?.onDismiss()
     }
 
 }

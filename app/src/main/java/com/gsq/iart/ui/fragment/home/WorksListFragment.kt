@@ -1,7 +1,9 @@
 package com.gsq.iart.ui.fragment.home
 
+import android.animation.ObjectAnimator
 import android.graphics.Typeface
 import android.os.Bundle
+import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
@@ -119,21 +121,25 @@ class WorksListFragment: BaseFragment<WorksViewModel, FragmentWorksListBinding>(
         condition_years_view.setOnClickListener {
             //年代
             selectType =1
+            startAnimator(iv_years_frame,true)
             showConditionPopupWindow(classifyBean?.get(0)?.subs)
         }
         condition_theme_view.setOnClickListener {
             //题材
             selectType =2
+            startAnimator(iv_theme_frame,true)
             showConditionPopupWindow(classifyBean?.get(1)?.subs)
         }
         condition_size_view.setOnClickListener {
             //尺寸
             selectType =3
+            startAnimator(iv_size_frame,true)
             showConditionPopupWindow(classifyBean?.get(2)?.subs)
         }
         condition_screen_view.setOnClickListener {
             //筛选
             selectType =4
+            startAnimator(iv_screen_frame,true)
             showConditionPopupWindow(classifyBean?.get(3)?.subs)
         }
     }
@@ -142,38 +148,69 @@ class WorksListFragment: BaseFragment<WorksViewModel, FragmentWorksListBinding>(
         var popupWindow = ConditionPopupWindow(requireContext(), ViewGroup.LayoutParams.MATCH_PARENT, SizeUtils.dp2px(300f))
         list?.let { popupWindow.setData(it) }
         popupWindow.showAsDropDown(condition_detail_view)
-        popupWindow.onBackListener { grade1Item, grade2Item ->
-            when(selectType){
-                1 ->{
-                    if(grade2Item != null){
-                        tv_years.text = grade2Item.name
-                    }else{
-                        tv_years.text = grade1Item.name
+        popupWindow.onBackListener(object : ConditionPopupWindow.OnBackListener{
+            override fun onItemClick(
+                grade1Item: ConditionClassifyBean,
+                grade2Item: ConditionClassifyBean?
+            ) {
+                when(selectType){
+                    1 ->{
+                        if(grade2Item != null){
+                            tv_years.text = grade2Item.name
+                        }else{
+                            tv_years.text = grade1Item.name
+                        }
                     }
-                }
-                2 ->{
-                    if(grade2Item != null){
-                        tv_theme.text = grade2Item.name
-                    }else{
-                        tv_theme.text = grade1Item.name
+                    2 ->{
+                        if(grade2Item != null){
+                            tv_theme.text = grade2Item.name
+                        }else{
+                            tv_theme.text = grade1Item.name
+                        }
                     }
-                }
-                3 ->{
-                    if(grade2Item != null){
-                        tv_size.text = grade2Item.name
-                    }else{
-                        tv_size.text = grade1Item.name
+                    3 ->{
+                        if(grade2Item != null){
+                            tv_size.text = grade2Item.name
+                        }else{
+                            tv_size.text = grade1Item.name
+                        }
                     }
-                }
-                4 ->{
-                    if(grade2Item != null){
-                        tv_screen.text = grade2Item.name
-                    }else{
-                        tv_screen.text = grade1Item.name
+                    4 ->{
+                        if(grade2Item != null){
+                            tv_screen.text = grade2Item.name
+                        }else{
+                            tv_screen.text = grade1Item.name
+                        }
                     }
                 }
             }
+
+            override fun onDismiss() {
+                when(selectType){
+                    1 ->{
+                        startAnimator(iv_years_frame,false)
+                    }
+                    2 ->{
+                        startAnimator(iv_theme_frame,false)
+                    }
+                    3 ->{
+                        startAnimator(iv_size_frame,false)
+                    }
+                    4 ->{
+                        startAnimator(iv_screen_frame,false)
+                    }
+                }
+            }
+        })
+    }
+
+    private fun startAnimator(targetView: View,isOpen: Boolean){
+        if(isOpen){
+            ObjectAnimator.ofFloat(targetView,"rotationX",0f,180f).start()
+        }else{
+            ObjectAnimator.ofFloat(targetView,"rotationX",180f,0f).start()
         }
+
     }
 
     override fun lazyLoadData() {
