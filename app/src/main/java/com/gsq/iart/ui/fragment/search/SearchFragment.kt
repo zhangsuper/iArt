@@ -41,7 +41,7 @@ class SearchFragment: BaseFragment<SearchViewModel, FragmentSearchBinding>() {
             var inputKey = search_input_view.text.toString()
             if(i == EditorInfo.IME_ACTION_SEARCH && !TextUtils.isEmpty(inputKey)) {
                 searchInitFragment.updateKey(inputKey)
-                searchData(textView.toString())
+                searchData(inputKey)
                 true
             }
             false
@@ -54,8 +54,8 @@ class SearchFragment: BaseFragment<SearchViewModel, FragmentSearchBinding>() {
     }
 
     private fun searchData(key: String){
+        var searchResultFragment = WorksListFragment.start(ArgsType(COMPLEX_TYPE_SEARCH, searchKey = key))
         transactionFragment(searchResultFragment)
-//        searchResultFragment.searchData(key)
     }
 
 

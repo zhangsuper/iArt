@@ -48,8 +48,12 @@ class WorksListFragment: BaseFragment<WorksViewModel, FragmentWorksListBinding>(
 
     private var classifyBean: List<ConditionClassifyBean>? = null
     private var selectType = 1
+    private var searchKey: String? = null
 
     override fun initView(savedInstanceState: Bundle?) {
+        if(args.complexType == COMPLEX_TYPE_SEARCH){
+            searchKey = args.searchKey
+        }
         //状态页配置
         loadsir = loadServiceInit(works_refresh_layout) {
             //点击重试时触发的操作
@@ -231,7 +235,9 @@ class WorksListFragment: BaseFragment<WorksViewModel, FragmentWorksListBinding>(
     private fun requestData(isRefresh: Boolean = false){
         when (args.complexType) {
             COMPLEX_TYPE_SEARCH -> {
-                mViewModel.getWorksListData(isRefresh, 0)
+                searchKey?.let {
+                    mViewModel?.getWorksListData(isRefresh, -1,subType,searchKey = it)
+                }
             }
             COMPLEX_TYPE_COLLECT -> {
                 mViewModel.getWorksListData(isRefresh, 0)
@@ -241,16 +247,6 @@ class WorksListFragment: BaseFragment<WorksViewModel, FragmentWorksListBinding>(
                     mViewModel.getWorksListData(isRefresh, it, subType)
                 }
             }
-        }
-    }
-
-
-    /**
-     * 搜索作品
-     */
-    fun searchData(key: String){
-        args.classifyId?.let{
-            mViewModel?.getWorksListData(true, it,searchKey = key)
         }
     }
 
