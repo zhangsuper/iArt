@@ -1,6 +1,7 @@
 package com.gsq.iart.app
 
 import androidx.multidex.MultiDex
+import com.blankj.utilcode.util.LogUtils
 import com.gsq.iart.app.weight.loadCallBack.EmptyCallback
 import com.gsq.iart.app.weight.loadCallBack.ErrorCallback
 import com.gsq.iart.app.weight.loadCallBack.LoadingCallback
@@ -28,6 +29,7 @@ class App: BaseApp() {
             .setDefaultCallback(SuccessCallback::class.java)//设置默认加载状态页
             .commit()
         initBugly()
+        LogUtils.getConfig().globalTag = "my_tag"
     }
 
     private fun initBugly(){

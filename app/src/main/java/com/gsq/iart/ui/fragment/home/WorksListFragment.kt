@@ -49,6 +49,8 @@ class WorksListFragment: BaseFragment<WorksViewModel, FragmentWorksListBinding>(
     private var classifyBean: List<ConditionClassifyBean>? = null
     private var selectType = 1
     private var searchKey: String? = null
+    private var propSearchFiled = ""
+    private var propSearchValue = ""
 
     override fun initView(savedInstanceState: Bundle?) {
         if(args.complexType == COMPLEX_TYPE_SEARCH){
@@ -187,6 +189,14 @@ class WorksListFragment: BaseFragment<WorksViewModel, FragmentWorksListBinding>(
                         }
                     }
                 }
+                if(grade2Item != null){
+                    propSearchFiled = grade2Item.searchField
+                    propSearchValue = grade2Item.name
+                }else{
+                    propSearchFiled = grade1Item.searchField
+                    propSearchValue = grade1Item.name
+                }
+                requestData(true)
             }
 
             override fun onDismiss() {
@@ -236,7 +246,7 @@ class WorksListFragment: BaseFragment<WorksViewModel, FragmentWorksListBinding>(
         when (args.complexType) {
             COMPLEX_TYPE_SEARCH -> {
                 searchKey?.let {
-                    mViewModel?.getWorksListData(isRefresh, -1,subType,searchKey = it)
+                    mViewModel?.getWorksListData(isRefresh, -1,subType, propSearchFiled, propSearchValue, searchKey = it)
                 }
             }
             COMPLEX_TYPE_COLLECT -> {
@@ -244,7 +254,7 @@ class WorksListFragment: BaseFragment<WorksViewModel, FragmentWorksListBinding>(
             }
             else -> {
                 args.classifyId?.let {
-                    mViewModel.getWorksListData(isRefresh, it, subType)
+                    mViewModel.getWorksListData(isRefresh, it, subType, propSearchFiled, propSearchValue)
                 }
             }
         }

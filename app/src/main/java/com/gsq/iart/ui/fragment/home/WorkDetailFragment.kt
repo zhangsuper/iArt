@@ -97,19 +97,25 @@ class WorkDetailFragment: BaseFragment<WorksViewModel, FragmentWorkDetailBinding
         mViewModel.workDetailDataState.observe(viewLifecycleOwner, Observer {
             if (it.isSuccess) {
                 worksBean = it.data
-                var hdPics = it.data?.hdPics
-                if (hdPics != null) {
-                    for (picbean in hdPics){
-                        fragmentList.add(PreviewImageFragment.start(DetailArgsType(picbean)))
+                worksBean?.displayType//展示方式：1=直接展示；2=横向拼接
+                LogUtils.d("worksBean.displayType:${worksBean?.displayType}")
+                if(worksBean?.displayType == 2){
+                    ToastUtils.showLong("横向拼接")
+                }else{
+                    var hdPics = it.data?.hdPics
+                    if (hdPics != null) {
+                        for (picbean in hdPics){
+                            fragmentList.add(PreviewImageFragment.start(DetailArgsType(picbean)))
+                        }
+                        view_pager.adapter?.notifyDataSetChanged()
+                        if(fragmentList.size == 1){
+                            tv_index.gone()
+                        }else{
+                            tv_index.visible()
+                        }
                     }
-                    view_pager.adapter?.notifyDataSetChanged()
-                    if(fragmentList.size == 1){
-                        tv_index.gone()
-                    }else{
-                        tv_index.visible()
-                    }
+                    tv_index.text = "1/${fragmentList.size}"
                 }
-                tv_index.text = "1/${fragmentList.size}"
             }else{
                 ToastUtils.showLong(it.errorMsg)
             }
