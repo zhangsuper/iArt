@@ -215,7 +215,21 @@ class WorksListFragment: BaseFragment<WorksViewModel, FragmentWorksListBinding>(
                     }
                 }
             }
+
+            override fun onReset() {
+                propSearchFiled = ""
+                propSearchValue = ""
+                initConditionView()
+                requestData(true)
+            }
         })
+    }
+
+    private fun initConditionView(){
+        tv_years.text = classifyBean?.get(0)?.name
+        tv_theme.text = classifyBean?.get(1)?.name
+        tv_size.text = classifyBean?.get(2)?.name
+        tv_screen.text = classifyBean?.get(3)?.name
     }
 
     private fun startAnimator(targetView: View,isOpen: Boolean){
@@ -269,10 +283,7 @@ class WorksListFragment: BaseFragment<WorksViewModel, FragmentWorksListBinding>(
         mViewModel.conditionRootClassifys.observe(viewLifecycleOwner, Observer {
             if(it.isSuccess){
                 classifyBean = it.listData
-                tv_years.text = it.listData[0].name
-                tv_theme.text = it.listData[1].name
-                tv_size.text = it.listData[2].name
-                tv_screen.text = it.listData[3].name
+                initConditionView()
             }else{
 
             }

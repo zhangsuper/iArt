@@ -37,6 +37,7 @@ class ConditionPopupWindow: XPopupWindow {
     interface OnBackListener{
         fun onItemClick(grade1Item: ConditionClassifyBean,grade2Item: ConditionClassifyBean?)
         fun onDismiss()
+        fun onReset()
     }
 
 //    private var onBackListener: ((grade1Item: ConditionClassifyBean,grade2Item: ConditionClassifyBean?) -> Unit)? = null
@@ -60,6 +61,13 @@ class ConditionPopupWindow: XPopupWindow {
         resetBtn = findViewById(R.id.reset_btn)
         requireBtn = findViewById(R.id.require_btn)
         resetBtn?.setOnClickListener {
+            leftData.forEach {
+                it.isSelected = false
+            }
+            rightAdapter?.data?.forEach {
+                it.isSelected = false
+            }
+            onBackListener?.onReset()
             dismiss()
         }
         requireBtn?.setOnClickListener {
