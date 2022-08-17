@@ -18,6 +18,7 @@ interface ApiService {
 
     companion object {
         const val SERVER_URL = "http://114.55.126.52:8090/"
+        const val agreement_url = "${SERVER_URL}art/agreement/legal/index.html"
     }
 
     /**
