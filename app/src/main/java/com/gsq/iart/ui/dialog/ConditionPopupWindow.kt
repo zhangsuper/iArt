@@ -4,16 +4,13 @@ import android.animation.Animator
 import android.content.Context
 import android.view.View
 import android.widget.LinearLayout
-import android.widget.PopupWindow
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.blankj.utilcode.util.ToastUtils
 import com.gsq.iart.R
-import com.gsq.iart.data.bean.ConditionBean
 import com.gsq.iart.data.bean.ConditionClassifyBean
 import com.gsq.iart.ui.adapter.ConditionLeftAdapter
 import com.gsq.iart.ui.adapter.ConditionRightAdapter
-import com.gsq.iart.ui.fragment.search.SearchInitFragment
 import com.gsq.mvvm.ext.view.visible
 import com.xu.xpopupwindow.XPopupWindow
 
@@ -120,10 +117,31 @@ class ConditionPopupWindow: XPopupWindow {
         }
     }
 
-    fun setData(list: List<ConditionClassifyBean>){
+    fun setData(list: List<ConditionClassifyBean>, selectedItem: List<ConditionClassifyBean>?){
         leftData = (list as MutableList<ConditionClassifyBean>)
 //        leftAdapter?.notifyDataSetChanged()
         leftAdapter?.data = leftData
+
+        selectedItem?.let {
+            currentSelectGrade1Item = it[0]
+            if(it.size>1){
+                currentSelectGrade2Item = it[1]
+            }
+        }
+        if(currentSelectGrade1Item != null && currentSelectGrade2Item != null){
+            var position = -1
+            for (index in leftData.indices){
+                if(leftData[index].id == currentSelectGrade1Item!!.id){
+                    position = index
+                    break
+                }
+            }
+            if(leftData[position].subs != null) {
+                rightAdapter?.data = (leftData[position].subs as MutableList<ConditionClassifyBean>)
+                rightAdapter?.notifyDataSetChanged()
+                rightRecyclerView?.visible()
+            }
+        }
     }
 
     override fun initData() {

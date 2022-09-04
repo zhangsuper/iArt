@@ -14,13 +14,16 @@ class ConditionLeftAdapter: BaseQuickAdapter<ConditionClassifyBean, BaseViewHold
     override fun convert(holder: BaseViewHolder, item: ConditionClassifyBean) {
         var mName = holder.getView<TextView>(R.id.tv_content)
         var mSelectLine = holder.getView<View>(R.id.selected_line)
+        var mSelectIcon = holder.getView<View>(R.id.iv_selected)
         mName.text = item.name
         if(item.isSelected){
             mName.isSelected = true
             mSelectLine.visible()
+            mSelectIcon.visible()
         }else{
             mName.isSelected = false
             mSelectLine.gone()
+            mSelectIcon.gone()
         }
     }
 }

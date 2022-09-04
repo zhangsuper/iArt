@@ -6,6 +6,7 @@ import androidx.activity.OnBackPressedCallback
 import com.gsq.iart.R
 import com.gsq.iart.app.base.BaseFragment
 import com.gsq.iart.app.network.ApiService.Companion.agreement_url
+import com.gsq.iart.app.network.ApiService.Companion.privacy_url
 import com.gsq.iart.databinding.FragmentUserAgreementBinding
 import com.gsq.iart.viewmodel.WebViewModel
 import com.gsq.mvvm.base.viewmodel.BaseViewModel
@@ -38,7 +39,7 @@ class UserAgreementFragment: BaseFragment<WebViewModel, FragmentUserAgreementBin
             mViewModel.url = agreement_url
         }else if(agreementType == INTENT_VALUE_SECRET_AGREEMENT){
             mViewModel.showTitle = getString(R.string.app_privacy)
-            mViewModel.url = agreement_url
+            mViewModel.url = privacy_url
         }else if(agreementType == INTENT_VALUE_VIP_AGREEMENT){
             mViewModel.showTitle = getString(R.string.vip_agreement)
             mViewModel.url = agreement_url

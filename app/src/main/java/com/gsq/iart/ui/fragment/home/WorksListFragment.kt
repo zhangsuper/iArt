@@ -7,31 +7,31 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.airbnb.mvrx.args
 import com.airbnb.mvrx.asMavericksArgs
 import com.blankj.utilcode.util.SizeUtils
+import com.gsq.iart.R
 import com.gsq.iart.app.base.BaseFragment
 import com.gsq.iart.app.ext.*
 import com.gsq.iart.app.weight.recyclerview.GridItemDecoration
-import com.gsq.iart.data.bean.ArgsType
-import com.gsq.iart.data.bean.HomeClassifyBean
-import com.gsq.iart.databinding.FragmentWorksListBinding
-import com.gsq.iart.ui.adapter.WorksAdapter
-import com.gsq.iart.viewmodel.WorksViewModel
-import com.kingja.loadsir.core.LoadService
-import com.airbnb.mvrx.args
-import com.gsq.iart.R
 import com.gsq.iart.data.Constant.COMPLEX_TYPE_COLLECT
 import com.gsq.iart.data.Constant.COMPLEX_TYPE_SEARCH
 import com.gsq.iart.data.Constant.DATA_WORK
 import com.gsq.iart.data.Constant.WORKS_SUB_TYPE_HOT
 import com.gsq.iart.data.Constant.WORKS_SUB_TYPE_NEW
+import com.gsq.iart.data.bean.ArgsType
 import com.gsq.iart.data.bean.ConditionClassifyBean
 import com.gsq.iart.data.bean.WorksBean
+import com.gsq.iart.data.request.WorkPropSearchBean
+import com.gsq.iart.databinding.FragmentWorksListBinding
+import com.gsq.iart.ui.adapter.WorksAdapter
 import com.gsq.iart.ui.dialog.ConditionPopupWindow
+import com.gsq.iart.viewmodel.WorksViewModel
 import com.gsq.mvvm.ext.nav
 import com.gsq.mvvm.ext.navigateAction
 import com.gsq.mvvm.ext.view.gone
 import com.gsq.mvvm.ext.view.visible
+import com.kingja.loadsir.core.LoadService
 import kotlinx.android.synthetic.main.fragment_works_list.*
 
 /**
@@ -49,8 +49,7 @@ class WorksListFragment: BaseFragment<WorksViewModel, FragmentWorksListBinding>(
     private var classifyBean: List<ConditionClassifyBean>? = null
     private var selectType = 1
     private var searchKey: String? = null
-    private var propSearchFiled = ""
-    private var propSearchValue = ""
+    private var propSearchMap = hashMapOf<Int,MutableList<ConditionClassifyBean>>()
 
     override fun initView(savedInstanceState: Bundle?) {
         if(args.complexType == COMPLEX_TYPE_SEARCH){
@@ -151,8 +150,12 @@ class WorksListFragment: BaseFragment<WorksViewModel, FragmentWorksListBinding>(
     }
 
     private fun showConditionPopupWindow(list: List<ConditionClassifyBean>?){
+        var selectedItem: List<ConditionClassifyBean>? = null
+        if(propSearchMap.containsKey(selectType)){
+            selectedItem = propSearchMap[selectType]
+        }
         var popupWindow = ConditionPopupWindow(requireContext(), ViewGroup.LayoutParams.MATCH_PARENT, SizeUtils.dp2px(300f))
-        list?.let { popupWindow.setData(it) }
+        list?.let { popupWindow.setData(it, selectedItem) }
         popupWindow.showAsDropDown(condition_detail_view)
         popupWindow.onBackListener(object : ConditionPopupWindow.OnBackListener{
             override fun onItemClick(
@@ -189,13 +192,12 @@ class WorksListFragment: BaseFragment<WorksViewModel, FragmentWorksListBinding>(
                         }
                     }
                 }
+                var selectedItem = mutableListOf<ConditionClassifyBean>()
+                selectedItem.add(grade1Item)
                 if(grade2Item != null){
-                    propSearchFiled = grade2Item.searchField
-                    propSearchValue = grade2Item.name
-                }else{
-                    propSearchFiled = grade1Item.searchField
-                    propSearchValue = grade1Item.name
+                    selectedItem.add(grade2Item)
                 }
+                propSearchMap[selectType] = selectedItem
                 requestData(true)
             }
 
@@ -217,8 +219,10 @@ class WorksListFragment: BaseFragment<WorksViewModel, FragmentWorksListBinding>(
             }
 
             override fun onReset() {
-                propSearchFiled = ""
-                propSearchValue = ""
+                //重置
+                if(propSearchMap.containsKey(selectType)){
+                    propSearchMap.remove(selectType)
+                }
                 initConditionView()
                 requestData(true)
             }
@@ -257,18 +261,25 @@ class WorksListFragment: BaseFragment<WorksViewModel, FragmentWorksListBinding>(
      * 获取列表数据
      */
     private fun requestData(isRefresh: Boolean = false){
+        var propSearchs: MutableList<WorkPropSearchBean>? = null
+        if(propSearchMap.size>0){
+            propSearchs = mutableListOf()//多条件过滤
+            propSearchMap.forEach{ map ->
+                propSearchs.add(WorkPropSearchBean(map.value[map.value.size - 1].searchField, map.value[map.value.size - 1].name))
+            }
+        }
         when (args.complexType) {
             COMPLEX_TYPE_SEARCH -> {
                 searchKey?.let {
-                    mViewModel?.getWorksListData(isRefresh, -1,subType, propSearchFiled, propSearchValue, searchKey = it)
+                    mViewModel?.getWorksListData(isRefresh, -1,subType, propSearchs, searchKey = it)
                 }
             }
             COMPLEX_TYPE_COLLECT -> {
-                mViewModel.getWorksListData(isRefresh, 0)
+                mViewModel.getWorksListData(isRefresh, -1, propSearchs = propSearchs,searchKey = "1111111")
             }
             else -> {
                 args.classifyId?.let {
-                    mViewModel.getWorksListData(isRefresh, it, subType, propSearchFiled, propSearchValue)
+                    mViewModel.getWorksListData(isRefresh, it, subType, propSearchs)
                 }
             }
         }

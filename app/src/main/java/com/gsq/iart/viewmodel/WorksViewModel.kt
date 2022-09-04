@@ -9,6 +9,7 @@ import com.gsq.iart.data.bean.ConditionClassifyBean
 import com.gsq.iart.data.bean.WorksBean
 import com.gsq.iart.data.request.WorkDetailRequestParam
 import com.gsq.iart.data.request.WorkPageRequestParam
+import com.gsq.iart.data.request.WorkPropSearchBean
 import com.gsq.mvvm.base.viewmodel.BaseViewModel
 import com.gsq.mvvm.ext.request
 
@@ -34,8 +35,7 @@ class WorksViewModel: BaseViewModel() {
     fun getWorksListData(isRefresh: Boolean,
                          classifyId: Int,
                          orderType: Int = 0,
-                         propSearchFiled: String = "",
-                         propSearchValue: String = "",
+                         propSearchs: MutableList<WorkPropSearchBean>?,
                          searchKey: String = "") {
         if (isRefresh) {
             pageNo =  0
@@ -45,8 +45,7 @@ class WorksViewModel: BaseViewModel() {
             orderType,
             pageNo,
             DEFAULT_REQUEST_SIZE,
-            propSearchFiled,
-            propSearchValue,
+            propSearchs,
             searchKey)
         request(
             { apiService.getWorksDataByType(workPageRequestParam) },

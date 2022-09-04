@@ -46,35 +46,28 @@ class HomeFragment: BaseFragment<HomeViewModel, FragmentHomeBinding>() {
     override fun lazyLoadData() {
         super.lazyLoadData()
         //请求标题数据
-//        mViewModel.getProjectTitleData()
+        mViewModel.getClassifyList()
     }
 
 
     override fun createObserver() {
         super.createObserver()
-//        mViewModel.titleData.observe(viewLifecycleOwner, Observer { data ->
-//
-//        })
+        mViewModel.classifyList.observe(viewLifecycleOwner){
+            if(it != null){
+                fragments.clear()
+                mDataList.clear()
+                it.forEach { classify ->
+                    mDataList.add(classify.name)
+                    fragments.add(WorksListFragment.start(ArgsType(COMPLEX_TYPE_GROUP,classify.id)))
+                }
 
-        var tablist = mutableListOf<HomeClassifyBean>()
-        tablist.add(HomeClassifyBean(0,"国画"))
-//        tablist.add(HomeClassifyBean(0,"壁画"))
-//        tablist.add(HomeClassifyBean(3,"年画"))
-//        tablist.add(HomeClassifyBean(4,"刺绣"))
-//        tablist.add(HomeClassifyBean(5,"陶瓷"))
-//        tablist.add(HomeClassifyBean(6,"山水画"))
-//        tablist.add(HomeClassifyBean(7,"油画"))
-//        tablist.add(HomeClassifyBean(8,"素描"))
-        fragments.clear()
-        mDataList.clear()
-        tablist.forEach { classify ->
-            mDataList.add(classify.name)
-            fragments.add(WorksListFragment.start(ArgsType(COMPLEX_TYPE_GROUP,classify.id)))
+                home_magic_indicator.navigator.notifyDataSetChanged()
+                home_view_pager.adapter?.notifyDataSetChanged()
+                home_view_pager.offscreenPageLimit = fragments.size
+            }
         }
+//        var tablist = mutableListOf<HomeClassifyBean>()
+//        tablist.add(HomeClassifyBean(0,"国画"))
 
-        home_magic_indicator.navigator.notifyDataSetChanged()
-        home_view_pager.adapter?.notifyDataSetChanged()
-        home_view_pager.offscreenPageLimit = fragments.size
     }
-
 }
