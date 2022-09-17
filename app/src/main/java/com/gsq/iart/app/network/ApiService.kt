@@ -1,7 +1,6 @@
 package com.gsq.iart.app.network
 
 import com.gsq.iart.data.bean.*
-import com.gsq.iart.data.request.WorkDetailRequestParam
 import com.gsq.iart.data.request.WorkPageRequestParam
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -14,7 +13,7 @@ import retrofit2.http.Query
 interface ApiService {
 
     companion object {
-        const val SERVER_URL = "http://114.55.126.52:8090/"
+        const val SERVER_URL = "http://api-test.hxysg.com/"
         const val agreement_url = "${SERVER_URL}art/agreement/legal/index.html"
         const val privacy_url = "${SERVER_URL}art/agreement/legal/privacy.html"
     }

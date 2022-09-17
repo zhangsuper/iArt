@@ -49,7 +49,8 @@
         android:textColor="@color/white"
         android:background="@color/color_141414"
         android:layout_marginBottom="@dimen/dp_63"
-        android:visibility="gone"/>
+        android:visibility="gone"
+        tools:visibility="visible" />
 
 
     <LinearLayout

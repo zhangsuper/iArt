@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.util.Log
 import android.view.GestureDetector
 import android.view.MotionEvent
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.viewpager2.widget.ViewPager2
@@ -102,6 +101,11 @@ class WorkDetailFragment: BaseFragment<WorksViewModel, FragmentWorkDetailBinding
                 if(worksBean?.displayType == 2){
                     ToastUtils.showLong("横向拼接")
                 }else{
+//                    if(worksBean?.workType == "COLL"){
+//                        //合集
+//                    }else{
+//
+//                    }
                     var hdPics = it.data?.hdPics
                     if (hdPics != null) {
                         for (picbean in hdPics){
