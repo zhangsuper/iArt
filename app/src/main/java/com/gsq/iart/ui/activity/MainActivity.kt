@@ -2,26 +2,31 @@ package com.gsq.iart.ui.activity
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.navigation.Navigation
-import com.blankj.utilcode.util.BarUtils
 import com.blankj.utilcode.util.ToastUtils
+import com.gsq.iart.BuildConfig
 import com.gsq.iart.R
 import com.gsq.iart.app.base.BaseActivity
 import com.gsq.iart.app.util.CacheUtil
 import com.gsq.iart.app.util.StatusBarUtil
+import com.gsq.iart.app.util.WxLoginUtil
 import com.gsq.iart.databinding.ActivityMainBinding
 import com.gsq.iart.ui.dialog.SecretDialog
 import com.gsq.mvvm.base.viewmodel.BaseViewModel
 import com.gsq.mvvm.network.manager.NetState
+import com.tencent.mm.opensdk.openapi.IWXAPI
+import com.tencent.mm.opensdk.openapi.WXAPIFactory
+
 
 /**
  * 项目主页Activity
  */
-class MainActivity: BaseActivity<BaseViewModel, ActivityMainBinding>() {
+class MainActivity : BaseActivity<BaseViewModel, ActivityMainBinding>() {
 
     var exitTime = 0L
+    private lateinit var api: IWXAPI
+
     @SuppressLint("ResourceAsColor")
     override fun initView(savedInstanceState: Bundle?) {
         StatusBarUtil.init(this)
@@ -42,9 +47,10 @@ class MainActivity: BaseActivity<BaseViewModel, ActivityMainBinding>() {
                 }
             }
         })
-        if(!CacheUtil.isAgreePrivacy()) {
+        if (!CacheUtil.isAgreePrivacy()) {
             SecretDialog().show(supportFragmentManager)
         }
+        WxLoginUtil.initWx(this)
     }
 
     override fun createObserver() {
@@ -60,5 +66,12 @@ class MainActivity: BaseActivity<BaseViewModel, ActivityMainBinding>() {
         } else {
 
         }
+    }
+
+    private fun regToWeChat() {
+        // 通过 WXAPIFactory 工厂，获取 IWXAPI 的实例
+        api = WXAPIFactory.createWXAPI(this, BuildConfig.WEIXIN_KEY, true)
+        // 将应用的 appId 注册到微信
+        api.registerApp(BuildConfig.WEIXIN_KEY)
     }
 }

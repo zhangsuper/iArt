@@ -14,7 +14,7 @@ object CacheUtil {
         val kv = MMKV.mmkvWithID("app")
         val userStr = kv.decodeString("user")
         return if (TextUtils.isEmpty(userStr)) {
-           null
+            null
         } else {
             Gson().fromJson(userStr, UserInfo::class.java)
         }
@@ -58,12 +58,23 @@ object CacheUtil {
         val kv = MMKV.mmkvWithID("app")
         return kv.decodeBool("first", true)
     }
+
     /**
      * 是否是第一次登陆
      */
-    fun setFirst(first:Boolean): Boolean {
+    fun setFirst(first: Boolean): Boolean {
         val kv = MMKV.mmkvWithID("app")
         return kv.encode("first", first)
+    }
+
+    fun setWeChatLoginCode(code: String) {
+        val kv = MMKV.mmkvWithID("app")
+        kv.encode("wechat_code", code)
+    }
+
+    fun getWeChatLoginCode(): String? {
+        val kv = MMKV.mmkvWithID("app")
+        return kv.getString("wechat_code", "")
     }
 
     /**
@@ -87,16 +98,15 @@ object CacheUtil {
      */
     fun getSearchHistoryData(): ArrayList<String> {
         val kv = MMKV.mmkvWithID("cache")
-        val searchCacheStr =  kv.decodeString("history")
+        val searchCacheStr = kv.decodeString("history")
         if (!TextUtils.isEmpty(searchCacheStr)) {
-            return Gson().fromJson(searchCacheStr
-                , object : TypeToken<ArrayList<String>>() {}.type)
+            return Gson().fromJson(searchCacheStr, object : TypeToken<ArrayList<String>>() {}.type)
         }
         return arrayListOf()
     }
 
     fun setSearchHistoryData(searchResponseStr: String) {
         val kv = MMKV.mmkvWithID("cache")
-        kv.encode("history",searchResponseStr)
+        kv.encode("history", searchResponseStr)
     }
 }

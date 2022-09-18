@@ -77,3 +77,25 @@
 -keep public class com.google.android.material.bottomnavigation.BottomNavigationMenuView { *; }
 -keep public class com.google.android.material.bottomnavigation.BottomNavigationPresenter { *; }
 -keep public class com.google.android.material.bottomnavigation.BottomNavigationItemView { *; }
+
+#wechat
+-keep class com.tencent.mm.opensdk.** {
+    *;
+}
+-keep class com.tencent.wxop.** {
+    *;
+}
+-keep class com.tencent.mm.sdk.** {
+    *;
+}
+
+#EventBus
+-keepattributes *Annotation*
+-keepclassmembers class ** {
+    @org.greenrobot.eventbus.Subscribe <methods>;
+}
+-keep enum org.greenrobot.eventbus.ThreadMode { *; }
+# Only required if you use AsyncExecutor
+-keepclassmembers class * extends org.greenrobot.eventbus.util.ThrowableFailureEvent {
+    <init>(java.lang.Throwable);
+}

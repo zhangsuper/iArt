@@ -3,6 +3,7 @@ package com.gsq.iart.ui.fragment.mine
 import android.os.Bundle
 import com.blankj.utilcode.util.ClipboardUtils
 import com.blankj.utilcode.util.ToastUtils
+import com.gsq.iart.BuildConfig
 import com.gsq.iart.R
 import com.gsq.iart.app.base.BaseFragment
 import com.gsq.iart.app.image.GlideHelper
@@ -12,12 +13,14 @@ import com.gsq.iart.databinding.FragmentMineBinding
 import com.gsq.mvvm.base.viewmodel.BaseViewModel
 import com.gsq.mvvm.ext.nav
 import com.gsq.mvvm.ext.navigateAction
+import com.gsq.mvvm.ext.view.gone
+import com.gsq.mvvm.ext.view.visible
 import kotlinx.android.synthetic.main.fragment_mine.*
 
 /**
  * 我的页面
  */
-class MineFragment: BaseFragment<BaseViewModel, FragmentMineBinding>() {
+class MineFragment : BaseFragment<BaseViewModel, FragmentMineBinding>() {
 
     override fun onResume() {
         super.onResume()
@@ -46,22 +49,23 @@ class MineFragment: BaseFragment<BaseViewModel, FragmentMineBinding>() {
         }
         setListener()
         setLoginStatus()
+        setUserInfo()
     }
 
-    private fun setLoginStatus(){
-        if(CacheUtil.isLogin()){
+    private fun setLoginStatus() {
+        if (CacheUtil.isLogin()) {
             nike_name.text = CacheUtil.getUser()?.name
             user_id.text = CacheUtil.getUser()?.id
-            GlideHelper.load(iv_avatar,CacheUtil.getUser()?.avatarUrl)
+            GlideHelper.load(iv_avatar, CacheUtil.getUser()?.avatarUrl)
         } else {
             nike_name.text = getString(R.string.app_login_in)
             user_id.text = getString(R.string.app_login_get_vip)
         }
     }
 
-    private fun setListener(){
+    private fun setListener() {
         user_info_view.setOnClickListener {
-            if(CacheUtil.isLogin()){
+            if (CacheUtil.isLogin()) {
 
             } else {
                 //跳转登录界面
@@ -75,6 +79,7 @@ class MineFragment: BaseFragment<BaseViewModel, FragmentMineBinding>() {
         }
     }
 
+
     override fun createObserver() {
         super.createObserver()
     }
@@ -85,6 +90,19 @@ class MineFragment: BaseFragment<BaseViewModel, FragmentMineBinding>() {
             StatusBarUtil.init(requireActivity())
         } else {
             StatusBarUtil.init(requireActivity(), statusBarColor = R.color.color_EFF1F5)
+            setUserInfo()
+        }
+    }
+
+    private fun setUserInfo() {
+        CacheUtil.getWeChatLoginCode()?.let {
+            nike_name.text = it
+            if (BuildConfig.DEBUG) {
+                wechat_code.setText(it)
+                wechat_code.visible()
+            } else {
+                wechat_code.gone()
+            }
         }
     }
 

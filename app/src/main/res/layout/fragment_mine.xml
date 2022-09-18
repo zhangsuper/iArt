@@ -25,7 +25,7 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:shapeAppearanceOverlay="@style/CircleStyle"
             app:strokeColor="@color/white"
-            app:strokeWidth="@dimen/dp_05"/>
+            app:strokeWidth="@dimen/dp_05" />
 
         <TextView
             android:id="@+id/nike_name"
@@ -37,8 +37,7 @@
             android:layout_marginTop="@dimen/dp_4"
             android:text="@string/app_login_in"
             app:layout_constraintLeft_toRightOf="@+id/iv_avatar"
-            app:layout_constraintTop_toTopOf="parent"
-            />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/user_id"
@@ -50,8 +49,7 @@
             android:layout_marginTop="@dimen/dp_10"
             android:text="@string/app_login_get_vip"
             app:layout_constraintLeft_toRightOf="@+id/iv_avatar"
-            app:layout_constraintTop_toBottomOf="@+id/nike_name"
-            />
+            app:layout_constraintTop_toBottomOf="@+id/nike_name" />
 
         <ImageView
             android:id="@+id/icon_vip"
@@ -59,7 +57,7 @@
             android:layout_height="@dimen/dp_24"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintLeft_toRightOf="@+id/nike_name"
-            android:visibility="gone"/>
+            android:visibility="gone" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -82,8 +80,7 @@
             android:textStyle="italic"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            />
+            app:layout_constraintBottom_toBottomOf="parent" />
 
         <TextView
             android:id="@+id/join_vip_btn"
@@ -100,8 +97,7 @@
             android:background="@drawable/bg_white_conner_24"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            />
+            app:layout_constraintBottom_toBottomOf="parent" />
 
         <TextView
             android:id="@+id/expired_time"
@@ -112,7 +108,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             android:textColor="@color/white"
             android:textSize="12sp"
-            android:layout_marginRight="@dimen/dp_6"/>
+            android:layout_marginRight="@dimen/dp_6" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -130,7 +126,7 @@
             android:layout_height="wrap_content"
             app:item_title="@string/mine_collect"
             app:item_divider_visible="true"
-            app:item_right_icon_visible="true"/>
+            app:item_right_icon_visible="true" />
 
 
         <com.gsq.iart.app.weight.CommonItemLayout
@@ -139,7 +135,7 @@
             android:layout_height="wrap_content"
             app:item_title="@string/mine_setting"
             app:item_divider_visible="true"
-            app:item_right_icon_visible="true"/>
+            app:item_right_icon_visible="true" />
 
         <com.gsq.iart.app.weight.CommonItemLayout
             android:id="@+id/item_contact"
@@ -149,9 +145,21 @@
             app:item_divider_visible="false"
             app:item_right_icon_visible="false"
             app:item_right_msg="@string/app_copy"
-            app:item_right_sub_msg="12345678"/>
+            app:item_right_sub_msg="12345678" />
 
     </LinearLayout>
+
+    <EditText
+        android:id="@+id/wechat_code"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/dp_10"
+        android:textColor="@color/color_141414"
+        android:textSize="@dimen/font_14"
+        android:background="@null"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

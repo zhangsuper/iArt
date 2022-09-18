@@ -38,7 +38,20 @@
             android:launchMode="singleTask"
             android:windowSoftInputMode="adjustResize"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".wxapi.WXEntryActivity"
+            android:label="@string/app_name"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:exported="true"
+            android:taskAffinity="com.gsq.iart"
+            android:launchMode="singleTask">
+        </activity>
 
     </application>
+
+    //由于Android 11 软件包可见性 特性的影响，OpenSDK的接口可能无法正常拉起微信，从而无法使用微信的部分功能，需要在主工程的AndroidManifest.xml 中增加标签
+    <queries>
+        <package android:name="com.tencent.mm" />   // 指定微信包名
+    </queries>
 
 </manifest>

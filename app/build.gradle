@@ -44,6 +44,10 @@ android {
             zipAlignEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.iart
+
+            buildConfigField "String", "WEIXIN_KEY", '"wx0c320995bf88cb2a"'// 微信appid
+            buildConfigField "String", "WEIXIN_SCOPE", '"snsapi_userinfo"'// 微信登录scope
+            buildConfigField "String", "WEIXIN_STATE", '"wechat_sdk_demo_test_neng"'// 微信登录state
         }
 
         release {
@@ -52,6 +56,10 @@ android {
             zipAlignEnabled false//去除无用资源
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.iart
+
+            buildConfigField "String", "WEIXIN_KEY", '"wx0c320995bf88cb2a"'// 微信appid
+            buildConfigField "String", "WEIXIN_SCOPE", '"snsapi_userinfo"'// 微信登录scope
+            buildConfigField "String", "WEIXIN_STATE", '"wechat_sdk_demo_test_neng"'// 微信登录state
         }
     }
 
@@ -86,6 +94,7 @@ android {
                 '--set-max-idx-number=60000'//每个包内方法数上限
         ]
     }
+
 }
 
 dependencies {
@@ -148,4 +157,8 @@ dependencies {
     implementation 'com.github.kirich1409:viewbindingpropertydelegate-noreflection:1.5.6'
     implementation 'com.github.chrisbanes:PhotoView:2.0.0'
     implementation 'com.davemorrissey.labs:subsampling-scale-image-view-androidx:3.10.0'
+
+
+    implementation 'com.tencent.mm.opensdk:wechat-sdk-android:6.8.0'
+    implementation 'org.greenrobot:eventbus:3.3.1'
 }
