@@ -14,7 +14,7 @@ import com.gsq.iart.app.util.CacheUtil
 import com.gsq.iart.app.util.WxLoginUtil
 import com.gsq.iart.data.event.LoginEvent
 import com.gsq.iart.databinding.FragmentLoginBinding
-import com.gsq.mvvm.base.viewmodel.BaseViewModel
+import com.gsq.iart.viewmodel.LoginViewModel
 import com.gsq.mvvm.ext.nav
 import com.gsq.mvvm.ext.navigateAction
 import kotlinx.android.synthetic.main.fragment_login.*
@@ -26,7 +26,7 @@ import org.greenrobot.eventbus.ThreadMode
 /**
  * 登录
  */
-class LoginFragment : BaseFragment<BaseViewModel, FragmentLoginBinding>() {
+class LoginFragment : BaseFragment<LoginViewModel, FragmentLoginBinding>() {
 
     override fun initView(savedInstanceState: Bundle?) {
         iv_close.setOnClickListener {
@@ -94,13 +94,22 @@ class LoginFragment : BaseFragment<BaseViewModel, FragmentLoginBinding>() {
 
     override fun createObserver() {
         super.createObserver()
+        mViewModel.loginResultDataState.observe(viewLifecycleOwner) {
+            if (it.isSuccess) {
+                it.data?.let { userInfo ->
+                    CacheUtil.setUser(userInfo)
+                    nav().navigateUp()
+                }
+            } else {
+                ToastUtils.showLong(it.errorMsg)
+            }
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onMessageEvent(event: LoginEvent?) {
         event?.code?.let {
-            CacheUtil.setWeChatLoginCode(it)
-            nav().navigateUp()
+            mViewModel.loginByWeChat(it)
         }
     }
 

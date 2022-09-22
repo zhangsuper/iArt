@@ -2,7 +2,6 @@ package com.gsq.mvvm.ext
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.*
 import com.gsq.mvvm.base.activity.BaseVmActivity
 import com.gsq.mvvm.base.fragment.BaseVmFragment
 import com.gsq.mvvm.base.viewmodel.BaseViewModel
@@ -13,6 +12,7 @@ import com.gsq.mvvm.network.ExceptionHandle
 import com.gsq.mvvm.state.ResultState
 import com.gsq.mvvm.state.paresException
 import com.gsq.mvvm.state.paresResult
+import kotlinx.coroutines.*
 
 /**
  * 描述　:BaseViewModel请求协程封装
@@ -60,13 +60,13 @@ fun <T> BaseVmFragment<*>.parseState(
     resultState: ResultState<T>,
     onSuccess: (T) -> Unit,
     onError: ((AppException) -> Unit)? = null,
-    onLoading: ((message:String) -> Unit)? = null
+    onLoading: ((message: String) -> Unit)? = null
 ) {
     when (resultState) {
         is ResultState.Loading -> {
-            if(onLoading==null){
+            if (onLoading == null) {
                 showLoading(resultState.loadingMessage)
-            }else{
+            } else {
                 onLoading.invoke(resultState.loadingMessage)
             }
         }
@@ -166,7 +166,8 @@ fun <T> BaseViewModel.request(
             loadingChange.dismissDialog.postValue(false)
             runCatching {
                 //校验请求结果码是否正确，不正确会抛出异常走下面的onFailure
-                executeResponse(it) { t -> success(t)
+                executeResponse(it) { t ->
+                    success(t)
                 }
             }.onFailure { e ->
                 //打印错误消息
@@ -238,7 +239,9 @@ suspend fun <T> executeResponse(
     coroutineScope {
         when {
             response.isSucces() -> {
-                success(response.getResponseData())
+                response.getResponseData()?.let {
+                    success(response.getResponseData())
+                } ?: success("success" as T)
             }
             else -> {
                 throw AppException(

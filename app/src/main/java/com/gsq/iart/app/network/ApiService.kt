@@ -58,9 +58,29 @@ interface ApiService {
     @GET("art/classify/prop/all")
     suspend fun getConditionSubClassify(): ApiResponse<ArrayList<ConditionClassifyBean>>
 
-//    @GET("hotkey/json")
-    @GET("/api/v1/art/hotkey/json")
+    //    @GET("hotkey/json")
+    @POST("art/hotkey/json")
     suspend fun getSearchHotKey(): ApiResponse<ArrayList<SearchResponse>>
 
+
+    /**
+     * 微信登录
+     */
+    @POST("art/user/login/weixin")
+    suspend fun loginByWechat(
+        @Query("code") code: String
+    ): ApiResponse<UserInfo>
+
+    /**
+     * 获取用户信息
+     */
+    @POST("art/user/info")
+    suspend fun getUserInfo(): ApiResponse<UserInfo>
+
+    /**
+     * 推出登录
+     */
+    @POST("art/user/logout")
+    suspend fun logout(): ApiResponse<Any>
 
 }

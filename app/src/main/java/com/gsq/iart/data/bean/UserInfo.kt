@@ -4,5 +4,12 @@ import androidx.annotation.Keep
 import java.io.Serializable
 
 @Keep
-class UserInfo(var id: String,var name: String,var avatarUrl: String): Serializable {
-}
+data class UserInfo(
+    val headImgUrl: String,
+    val memberEndDate: String,
+    val memberStartDate: String,
+    val memberType: Int,
+    val nickname: String,
+    val openid: String,
+    val token: String
+) : Serializable
