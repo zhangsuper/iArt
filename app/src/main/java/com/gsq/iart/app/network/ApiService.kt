@@ -13,7 +13,7 @@ import retrofit2.http.Query
 interface ApiService {
 
     companion object {
-        const val SERVER_URL = "http://api-test.hxysg.com/"
+        const val SERVER_URL = "https://api-test.hxysg.com/"
         const val agreement_url = "${SERVER_URL}art/agreement/legal/index.html"
         const val privacy_url = "${SERVER_URL}art/agreement/legal/privacy.html"
     }
