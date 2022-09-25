@@ -3,7 +3,9 @@ package com.gsq.iart.app.util
 import android.content.Context
 import com.blankj.utilcode.util.ToastUtils
 import com.gsq.iart.BuildConfig
+import com.gsq.iart.data.bean.PayOrderBean
 import com.tencent.mm.opensdk.modelmsg.SendAuth
+import com.tencent.mm.opensdk.modelpay.PayReq
 import com.tencent.mm.opensdk.openapi.IWXAPI
 import com.tencent.mm.opensdk.openapi.WXAPIFactory
 
@@ -41,5 +43,25 @@ object WxLoginUtil {
         req.scope = BuildConfig.WEIXIN_SCOPE
         req.state = BuildConfig.WEIXIN_STATE
         api?.sendReq(req)
+    }
+
+    fun payWithWeChat(bean: PayOrderBean) {
+        if (mContext == null) {
+            ToastUtils.showLong("未初始化")
+            return
+        }
+        if (api?.isWXAppInstalled != true) {
+            ToastUtils.showLong("未安装微信客户端")
+            return
+        }
+        var request = PayReq()
+        request.appId = bean.appid
+        request.partnerId = bean.mchId//商户Id
+        request.prepayId = bean.prepayId
+        request.packageValue = "Sign=WXPay"
+        request.nonceStr = bean.nonceStr
+        request.timeStamp = System.currentTimeMillis().toString()
+        request.sign = bean.sign
+        api?.sendReq(request)
     }
 }

@@ -124,10 +124,10 @@ class WorkDetailFragment : BaseFragment<WorksViewModel, FragmentWorkDetailBindin
         })
         mViewModel.updateCollectDataState.observe(viewLifecycleOwner) {
             if (it.isSuccess) {
-                worksBean?.isCollect = worksBean?.isCollect != true
+                worksBean?.isCollect = if (worksBean?.isCollect == 0) 1 else 0
                 updateCollectState()
                 when (worksBean?.isCollect) {
-                    true -> {
+                    1 -> {
                         ToastUtils.showLong("收藏成功")
                     }
                     else -> {
@@ -156,7 +156,7 @@ class WorkDetailFragment : BaseFragment<WorksViewModel, FragmentWorkDetailBindin
             //收藏与取消收藏
             worksBean?.let {
                 when (it.isCollect) {
-                    true -> {
+                    1 -> {
                         mViewModel.collectRemoveWork(it.id)
                     }
                     else -> {
@@ -170,7 +170,7 @@ class WorkDetailFragment : BaseFragment<WorksViewModel, FragmentWorkDetailBindin
 
     private fun updateCollectState() {
         when (worksBean?.isCollect) {
-            true -> {
+            1 -> {
                 iv_collect.setImageResource(R.drawable.icon_shoucang_grey)
             }
             else -> {

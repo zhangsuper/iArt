@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:title_string="@string/my_member"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -45,7 +45,7 @@
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:shapeAppearanceOverlay="@style/CircleStyle"
                     app:strokeColor="@color/white"
-                    app:strokeWidth="@dimen/dp_05"/>
+                    app:strokeWidth="@dimen/dp_05" />
 
                 <TextView
                     android:id="@+id/nike_name"
@@ -58,8 +58,7 @@
                     android:text="昵称"
                     android:textStyle="bold"
                     app:layout_constraintLeft_toRightOf="@+id/iv_avatar"
-                    app:layout_constraintTop_toTopOf="parent"
-                    />
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/vip_status"
@@ -71,8 +70,7 @@
                     android:layout_marginTop="@dimen/dp_12"
                     android:text="您暂未开通国画通会员"
                     app:layout_constraintLeft_toRightOf="@+id/iv_avatar"
-                    app:layout_constraintTop_toBottomOf="@+id/nike_name"
-                    />
+                    app:layout_constraintTop_toBottomOf="@+id/nike_name" />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -93,8 +91,7 @@
                     android:textColor="@color/color_EC8E58"
                     android:textSize="@dimen/font_16"
                     android:textStyle="bold"
-                    android:layout_marginStart="@dimen/dp_16"
-                    />
+                    android:layout_marginStart="@dimen/dp_16" />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -115,8 +112,8 @@
                 android:orientation="horizontal"
                 android:layout_marginTop="@dimen/dp_4"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
-            
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
             <LinearLayout
                 android:id="@+id/pay_type_view"
                 android:layout_width="match_parent"
@@ -134,7 +131,7 @@
                     android:textColor="@color/black"
                     android:textStyle="bold"
                     android:layout_marginLeft="@dimen/dp_16"
-                    android:layout_marginTop="@dimen/dp_16"/>
+                    android:layout_marginTop="@dimen/dp_16" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/wechat_pay_view"
@@ -149,7 +146,7 @@
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
                         android:layout_marginLeft="@dimen/dp_16"
-                        android:src="@drawable/icon_wechat_pay"/>
+                        android:src="@drawable/icon_wechat_pay" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -160,7 +157,7 @@
                         android:text="微信支付"
                         app:layout_constraintLeft_toRightOf="@+id/iv_wechat_pay"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent"/>
+                        app:layout_constraintBottom_toBottomOf="parent" />
 
                     <ImageView
                         android:id="@+id/iv_wechat_pay_selected"
@@ -170,7 +167,7 @@
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
                         android:layout_marginRight="@dimen/dp_16"
-                        android:src="@drawable/check_box_selected"/>
+                        android:src="@drawable/check_box_selected" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -179,7 +176,7 @@
                     android:layout_height="@dimen/dp_1"
                     android:background="@color/black"
                     android:layout_marginLeft="@dimen/dp_16"
-                    android:layout_marginRight="@dimen/dp_16"/>
+                    android:layout_marginRight="@dimen/dp_16" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/ali_pay_view"
@@ -195,7 +192,7 @@
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
                         android:layout_marginLeft="@dimen/dp_16"
-                        android:src="@drawable/icon_ali_pay"/>
+                        android:src="@drawable/icon_ali_pay" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -206,7 +203,7 @@
                         android:text="支付宝支付"
                         app:layout_constraintLeft_toRightOf="@+id/iv_ali_pay"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent"/>
+                        app:layout_constraintBottom_toBottomOf="parent" />
 
                     <ImageView
                         android:id="@+id/iv_ali_pay_selected"
@@ -216,13 +213,14 @@
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
                         android:layout_marginRight="@dimen/dp_16"
-                        android:src="@drawable/check_box_unselected"/>
+                        android:src="@drawable/check_box_unselected" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
             </LinearLayout>
 
             <Button
+                android:id="@+id/pay_button"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp_48"
                 android:layout_marginBottom="@dimen/dp_10"
@@ -231,7 +229,7 @@
                 android:textColor="@color/white"
                 android:textStyle="bold"
                 android:background="@drawable/bg_de824e_faba97_conner_24"
-                app:layout_constraintBottom_toTopOf="@+id/agreement_view"/>
+                app:layout_constraintBottom_toTopOf="@+id/agreement_view" />
 
             <LinearLayout
                 android:id="@+id/agreement_view"
@@ -245,8 +243,7 @@
                 <androidx.appcompat.widget.AppCompatCheckBox
                     android:id="@+id/checkbox"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    />
+                    android:layout_height="wrap_content" />
 
 
                 <TextView
@@ -258,8 +255,7 @@
                     android:textColor="@color/white"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    />
+                    app:layout_constraintBottom_toBottomOf="parent" />
 
             </LinearLayout>
 

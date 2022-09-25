@@ -1,6 +1,7 @@
 package com.gsq.iart.app.network
 
 import com.gsq.iart.data.bean.*
+import com.gsq.iart.data.request.MemberPayRequestParam
 import com.gsq.iart.data.request.WorkPageRequestParam
 import retrofit2.http.*
 
@@ -105,5 +106,17 @@ interface ApiService {
      */
     @POST("art/member/pay/config/listPayTerms")
     suspend fun getPayConfig(): ApiResponse<ArrayList<PayConfigBean>>
+
+    /**
+     *创建预支付订单
+     */
+    @POST("art/member/wx/preparePay")
+    suspend fun createPreparePay(@Body memberPayRequestParam: MemberPayRequestParam): ApiResponse<PayOrderBean>
+
+    /**
+     * 支付结果回调
+     */
+    @POST("art/member/wx/payNotice")
+    suspend fun getPayResult(): ApiResponse<String>
 
 }

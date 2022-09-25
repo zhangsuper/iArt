@@ -5,6 +5,8 @@ import android.os.Bundle
 import com.blankj.utilcode.util.ToastUtils
 import com.gsq.iart.BuildConfig
 import com.gsq.iart.data.event.LoginEvent
+import com.gsq.iart.data.event.PayResultEvent
+import com.tencent.mm.opensdk.constants.ConstantsAPI
 import com.tencent.mm.opensdk.modelbase.BaseReq
 import com.tencent.mm.opensdk.modelbase.BaseResp
 import com.tencent.mm.opensdk.modelmsg.SendAuth
@@ -28,27 +30,44 @@ class WXEntryActivity : Activity(), IWXAPIEventHandler {
 
     override fun onResp(baseResp: BaseResp) {
         //发送到微信请求的响应结果将回调到这
-        var result = when (baseResp.errCode) {
-            BaseResp.ErrCode.ERR_OK -> {
-                "登录成功"
-                var code = (baseResp as? SendAuth.Resp)?.code
-                code?.let {
-                    EventBus.getDefault().post(LoginEvent(it))
+        if (baseResp.type == ConstantsAPI.COMMAND_PAY_BY_WX) {
+            //微信支付结果回调
+            when (baseResp.errCode) {
+                BaseResp.ErrCode.ERR_OK -> {
+                    EventBus.getDefault().post(PayResultEvent(""))
+                }
+                BaseResp.ErrCode.ERR_COMM -> {
+                    ToastUtils.showLong("支付失败")
+                }
+                BaseResp.ErrCode.ERR_USER_CANCEL -> {
+                    ToastUtils.showLong("用户取消支付")
                 }
             }
-            BaseResp.ErrCode.ERR_AUTH_DENIED -> {
-                "用户拒绝授权"
-                ToastUtils.showLong("授权失败")
-            }
-            BaseResp.ErrCode.ERR_USER_CANCEL -> {
-                "用户取消"
-                ToastUtils.showLong("取消登录")
-            }
-            else -> {
-                "失败"
-                ToastUtils.showLong("登录失败")
+
+        } else {
+            var result = when (baseResp.errCode) {
+                BaseResp.ErrCode.ERR_OK -> {
+                    "登录成功"
+                    var code = (baseResp as? SendAuth.Resp)?.code
+                    code?.let {
+                        EventBus.getDefault().post(LoginEvent(it))
+                    }
+                }
+                BaseResp.ErrCode.ERR_AUTH_DENIED -> {
+                    "用户拒绝授权"
+                    ToastUtils.showLong("授权失败")
+                }
+                BaseResp.ErrCode.ERR_USER_CANCEL -> {
+                    "用户取消"
+                    ToastUtils.showLong("取消登录")
+                }
+                else -> {
+                    "失败"
+                    ToastUtils.showLong("登录失败")
+                }
             }
         }
+
 //        ToastUtils.showLong(result)
     }
 

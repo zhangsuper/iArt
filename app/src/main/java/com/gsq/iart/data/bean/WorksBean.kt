@@ -38,7 +38,7 @@ class WorksBean(
     var viewCount: Int,//浏览次数
     var workId: String,
     var workType: String,//作品类型：PIC:单图；COLL:合集
-    var isCollect: Boolean,
+    var isCollect: Int,//0 ,1
     var createdTime: String
 ) : Serializable {
 }
