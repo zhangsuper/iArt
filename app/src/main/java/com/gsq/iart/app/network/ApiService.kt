@@ -2,10 +2,7 @@ package com.gsq.iart.app.network
 
 import com.gsq.iart.data.bean.*
 import com.gsq.iart.data.request.WorkPageRequestParam
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.Query
+import retrofit2.http.*
 
 /**
  * 描述　: 网络接口API
@@ -13,7 +10,7 @@ import retrofit2.http.Query
 interface ApiService {
 
     companion object {
-        const val SERVER_URL = "http://api-test.hxysg.com/"
+        const val SERVER_URL = "https://api-test.hxysg.com/"
         const val agreement_url = "${SERVER_URL}art/agreement/legal/index.html"
         const val privacy_url = "${SERVER_URL}art/agreement/legal/privacy.html"
     }
@@ -37,7 +34,7 @@ interface ApiService {
      */
     @POST("art/work/detail")
     suspend fun getWorkDetail(
-        @Query("id") id: Int
+        @Query("id") id: Long
     ): ApiResponse<WorksBean>
 
     /**
@@ -82,5 +79,31 @@ interface ApiService {
      */
     @POST("art/user/logout")
     suspend fun logout(): ApiResponse<Any>
+
+    /**
+     * 收藏作品
+     */
+    @POST("art/collect/add/{id}")
+    suspend fun collectAddWork(@Path("id") id: Long): ApiResponse<String>
+
+    /**
+     * 取消收藏
+     */
+    @POST("art/collect/remove/{id}")
+    suspend fun collectRemoveWork(@Path("id") id: Long): ApiResponse<String>
+
+    /**
+     * 收藏列表
+     */
+    @POST("art/collect/page")
+    suspend fun collectWorks(
+        @Body workPageRequestParam: WorkPageRequestParam
+    ): ApiResponse<ArrayList<WorksBean>>
+
+    /**
+     *支付套餐列表
+     */
+    @POST("art/member/pay/config/listPayTerms")
+    suspend fun getPayConfig(): ApiResponse<ArrayList<PayConfigBean>>
 
 }

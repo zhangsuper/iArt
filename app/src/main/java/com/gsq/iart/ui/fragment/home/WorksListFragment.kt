@@ -37,11 +37,13 @@ import kotlinx.android.synthetic.main.fragment_works_list.*
 /**
  * 作品列表
  */
-class WorksListFragment: BaseFragment<WorksViewModel, FragmentWorksListBinding>() {
+class WorksListFragment : BaseFragment<WorksViewModel, FragmentWorksListBinding>() {
 
     private val args: ArgsType by args()
+
     //适配器
     private val worksAdapter: WorksAdapter by lazy { WorksAdapter() }
+
     //界面状态管理者
     private lateinit var loadsir: LoadService<Any>
     private var subType: Int = WORKS_SUB_TYPE_HOT//0：热门  1：新上
@@ -49,10 +51,10 @@ class WorksListFragment: BaseFragment<WorksViewModel, FragmentWorksListBinding>(
     private var classifyBean: List<ConditionClassifyBean>? = null
     private var selectType = 1
     private var searchKey: String? = null
-    private var propSearchMap = hashMapOf<Int,MutableList<ConditionClassifyBean>>()
+    private var propSearchMap = hashMapOf<Int, MutableList<ConditionClassifyBean>>()
 
     override fun initView(savedInstanceState: Bundle?) {
-        if(args.complexType == COMPLEX_TYPE_SEARCH){
+        if (args.complexType == COMPLEX_TYPE_SEARCH) {
             searchKey = args.searchKey
         }
         //状态页配置
@@ -70,12 +72,12 @@ class WorksListFragment: BaseFragment<WorksViewModel, FragmentWorksListBinding>(
         val layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
         works_recycler_view.addItemDecoration(
             GridItemDecoration(
-            2,
-            SizeUtils.dp2px(12f),
-            includeEdge = true, hasTopBottomSpace = true
+                2,
+                SizeUtils.dp2px(12f),
+                includeEdge = true, hasTopBottomSpace = true
             )
         )
-        works_recycler_view.init(layoutManager,worksAdapter)
+        works_recycler_view.init(layoutManager, worksAdapter)
         works_recycler_view.initFooter {
             //加载更多
             requestData()
@@ -87,17 +89,17 @@ class WorksListFragment: BaseFragment<WorksViewModel, FragmentWorksListBinding>(
 
             var args = Bundle()
             args.putSerializable(DATA_WORK, (adapter.data as MutableList<WorksBean>)[position])
-            nav().navigateAction(R.id.action_mainFragment_to_workDetailFragment,args)
+            nav().navigateAction(R.id.action_mainFragment_to_workDetailFragment, args)
         }
     }
 
-    private fun initTypeConditionView(){
-        if(args.complexType == COMPLEX_TYPE_COLLECT){
+    private fun initTypeConditionView() {
+        if (args.complexType == COMPLEX_TYPE_COLLECT) {
             condition_view.gone()
         }
         hot_tab.setOnClickListener {
             //点击热门
-            if(subType == WORKS_SUB_TYPE_HOT){
+            if (subType == WORKS_SUB_TYPE_HOT) {
                 return@setOnClickListener
             }
             subType = WORKS_SUB_TYPE_HOT
@@ -111,7 +113,7 @@ class WorksListFragment: BaseFragment<WorksViewModel, FragmentWorksListBinding>(
         }
         new_tab.setOnClickListener {
             //点击最新
-            if(subType == WORKS_SUB_TYPE_NEW){
+            if (subType == WORKS_SUB_TYPE_NEW) {
                 return@setOnClickListener
             }
             subType = WORKS_SUB_TYPE_NEW
@@ -125,76 +127,80 @@ class WorksListFragment: BaseFragment<WorksViewModel, FragmentWorksListBinding>(
         }
         condition_years_view.setOnClickListener {
             //年代
-            selectType =1
-            startAnimator(iv_years_frame,true)
+            selectType = 1
+            startAnimator(iv_years_frame, true)
             showConditionPopupWindow(classifyBean?.get(0)?.subs)
         }
         condition_theme_view.setOnClickListener {
             //题材
-            selectType =2
-            startAnimator(iv_theme_frame,true)
+            selectType = 2
+            startAnimator(iv_theme_frame, true)
             showConditionPopupWindow(classifyBean?.get(1)?.subs)
         }
         condition_size_view.setOnClickListener {
             //尺寸
-            selectType =3
-            startAnimator(iv_size_frame,true)
+            selectType = 3
+            startAnimator(iv_size_frame, true)
             showConditionPopupWindow(classifyBean?.get(2)?.subs)
         }
         condition_screen_view.setOnClickListener {
             //筛选
-            selectType =4
-            startAnimator(iv_screen_frame,true)
+            selectType = 4
+            startAnimator(iv_screen_frame, true)
             showConditionPopupWindow(classifyBean?.get(3)?.subs)
         }
     }
 
-    private fun showConditionPopupWindow(list: List<ConditionClassifyBean>?){
+    private fun showConditionPopupWindow(list: List<ConditionClassifyBean>?) {
         var selectedItem: List<ConditionClassifyBean>? = null
-        if(propSearchMap.containsKey(selectType)){
+        if (propSearchMap.containsKey(selectType)) {
             selectedItem = propSearchMap[selectType]
         }
-        var popupWindow = ConditionPopupWindow(requireContext(), ViewGroup.LayoutParams.MATCH_PARENT, SizeUtils.dp2px(300f))
+        var popupWindow = ConditionPopupWindow(
+            requireContext(),
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            SizeUtils.dp2px(300f)
+        )
         list?.let { popupWindow.setData(it, selectedItem) }
         popupWindow.showAsDropDown(condition_detail_view)
-        popupWindow.onBackListener(object : ConditionPopupWindow.OnBackListener{
+        popupWindow.onBackListener(object : ConditionPopupWindow.OnBackListener {
             override fun onItemClick(
                 grade1Item: ConditionClassifyBean,
                 grade2Item: ConditionClassifyBean?
             ) {
-                when(selectType){
-                    1 ->{
-                        if(grade2Item != null){
+                when (selectType) {
+                    1 -> {
+                        if (grade2Item != null) {
                             tv_years.text = grade2Item.name
-                        }else{
+                        } else {
                             tv_years.text = grade1Item.name
                         }
                     }
-                    2 ->{
-                        if(grade2Item != null){
+                    2 -> {
+                        if (grade2Item != null) {
                             tv_theme.text = grade2Item.name
-                        }else{
+                        } else {
                             tv_theme.text = grade1Item.name
                         }
                     }
-                    3 ->{
-                        if(grade2Item != null){
+                    3 -> {
+                        if (grade2Item != null) {
                             tv_size.text = grade2Item.name
-                        }else{
+                        } else {
                             tv_size.text = grade1Item.name
                         }
                     }
-                    4 ->{
-                        if(grade2Item != null){
+                    4 -> {
+                        if (grade2Item != null) {
                             tv_screen.text = grade2Item.name
-                        }else{
+                        } else {
                             tv_screen.text = grade1Item.name
                         }
                     }
                 }
                 var selectedItem = mutableListOf<ConditionClassifyBean>()
                 selectedItem.add(grade1Item)
-                if(grade2Item != null){
+                if (grade2Item != null) {
                     selectedItem.add(grade2Item)
                 }
                 propSearchMap[selectType] = selectedItem
@@ -202,25 +208,25 @@ class WorksListFragment: BaseFragment<WorksViewModel, FragmentWorksListBinding>(
             }
 
             override fun onDismiss() {
-                when(selectType){
-                    1 ->{
-                        startAnimator(iv_years_frame,false)
+                when (selectType) {
+                    1 -> {
+                        startAnimator(iv_years_frame, false)
                     }
-                    2 ->{
-                        startAnimator(iv_theme_frame,false)
+                    2 -> {
+                        startAnimator(iv_theme_frame, false)
                     }
-                    3 ->{
-                        startAnimator(iv_size_frame,false)
+                    3 -> {
+                        startAnimator(iv_size_frame, false)
                     }
-                    4 ->{
-                        startAnimator(iv_screen_frame,false)
+                    4 -> {
+                        startAnimator(iv_screen_frame, false)
                     }
                 }
             }
 
             override fun onReset() {
                 //重置
-                if(propSearchMap.containsKey(selectType)){
+                if (propSearchMap.containsKey(selectType)) {
                     propSearchMap.remove(selectType)
                 }
                 initConditionView()
@@ -229,18 +235,18 @@ class WorksListFragment: BaseFragment<WorksViewModel, FragmentWorksListBinding>(
         })
     }
 
-    private fun initConditionView(){
+    private fun initConditionView() {
         tv_years.text = classifyBean?.get(0)?.name
         tv_theme.text = classifyBean?.get(1)?.name
         tv_size.text = classifyBean?.get(2)?.name
         tv_screen.text = classifyBean?.get(3)?.name
     }
 
-    private fun startAnimator(targetView: View,isOpen: Boolean){
-        if(isOpen){
-            ObjectAnimator.ofFloat(targetView,"rotationX",0f,180f).start()
-        }else{
-            ObjectAnimator.ofFloat(targetView,"rotationX",180f,0f).start()
+    private fun startAnimator(targetView: View, isOpen: Boolean) {
+        if (isOpen) {
+            ObjectAnimator.ofFloat(targetView, "rotationX", 0f, 180f).start()
+        } else {
+            ObjectAnimator.ofFloat(targetView, "rotationX", 180f, 0f).start()
         }
 
     }
@@ -249,7 +255,8 @@ class WorksListFragment: BaseFragment<WorksViewModel, FragmentWorksListBinding>(
         super.lazyLoadData()
         loadsir.showLoading()
         requestData(true)
-        mViewModel.getConditionAllClassify()//获取过滤分类
+        if (args.complexType != COMPLEX_TYPE_COLLECT)
+            mViewModel.getConditionAllClassify()//获取过滤分类
     }
 
     override fun onLoadMore() {
@@ -260,22 +267,39 @@ class WorksListFragment: BaseFragment<WorksViewModel, FragmentWorksListBinding>(
     /**
      * 获取列表数据
      */
-    private fun requestData(isRefresh: Boolean = false){
+    private fun requestData(isRefresh: Boolean = false) {
         var propSearchs: MutableList<WorkPropSearchBean>? = null
-        if(propSearchMap.size>0){
+        if (propSearchMap.size > 0) {
             propSearchs = mutableListOf()//多条件过滤
-            propSearchMap.forEach{ map ->
-                propSearchs.add(WorkPropSearchBean(map.value[map.value.size - 1].searchField, map.value[map.value.size - 1].name))
+            propSearchMap.forEach { map ->
+                propSearchs.add(
+                    WorkPropSearchBean(
+                        map.value[map.value.size - 1].searchField,
+                        map.value[map.value.size - 1].name
+                    )
+                )
             }
         }
         when (args.complexType) {
             COMPLEX_TYPE_SEARCH -> {
                 searchKey?.let {
-                    mViewModel?.getWorksListData(isRefresh, -1,subType, propSearchs, searchKey = it)
+                    mViewModel?.getWorksListData(
+                        isRefresh,
+                        -1,
+                        subType,
+                        propSearchs,
+                        searchKey = it
+                    )
                 }
             }
             COMPLEX_TYPE_COLLECT -> {
-                mViewModel.getWorksListData(isRefresh, -1, propSearchs = propSearchs,searchKey = "1111111")
+                mViewModel.collectWorks(isRefresh)
+//                mViewModel.getWorksListData(
+//                    isRefresh,
+//                    -1,
+//                    propSearchs = propSearchs,
+//                    searchKey = "1111111"
+//                )
             }
             else -> {
                 args.classifyId?.let {
@@ -292,10 +316,10 @@ class WorksListFragment: BaseFragment<WorksViewModel, FragmentWorksListBinding>(
             loadListData(it, worksAdapter, loadsir, works_recycler_view, works_refresh_layout)
         })
         mViewModel.conditionRootClassifys.observe(viewLifecycleOwner, Observer {
-            if(it.isSuccess){
+            if (it.isSuccess) {
                 classifyBean = it.listData
                 initConditionView()
-            }else{
+            } else {
 
             }
         })
