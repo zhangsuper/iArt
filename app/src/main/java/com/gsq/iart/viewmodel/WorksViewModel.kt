@@ -7,7 +7,6 @@ import com.gsq.iart.app.network.stateCallback.UpdateUiState
 import com.gsq.iart.data.Constant.DEFAULT_REQUEST_SIZE
 import com.gsq.iart.data.bean.ConditionClassifyBean
 import com.gsq.iart.data.bean.WorksBean
-import com.gsq.iart.data.request.WorkDetailRequestParam
 import com.gsq.iart.data.request.WorkPageRequestParam
 import com.gsq.iart.data.request.WorkPropSearchBean
 import com.gsq.mvvm.base.viewmodel.BaseViewModel
@@ -16,7 +15,7 @@ import com.gsq.mvvm.ext.request
 /**
  * 作品viewmodel
  */
-class WorksViewModel: BaseViewModel() {
+class WorksViewModel : BaseViewModel() {
     //页码
     var pageNo = 1
 
@@ -29,16 +28,20 @@ class WorksViewModel: BaseViewModel() {
     //一级分类
     var conditionRootClassifys = MutableLiveData<ListDataUiState<ConditionClassifyBean>>()
 
+    var updateCollectDataState = MutableLiveData<UpdateUiState<String>>()
+
     /**
      * 获取作品列表数据
      */
-    fun getWorksListData(isRefresh: Boolean,
-                         classifyId: Int,
-                         orderType: Int = 0,
-                         propSearchs: MutableList<WorkPropSearchBean>?,
-                         searchKey: String = "") {
+    fun getWorksListData(
+        isRefresh: Boolean,
+        classifyId: Int,
+        orderType: Int = 0,
+        propSearchs: MutableList<WorkPropSearchBean>?,
+        searchKey: String = ""
+    ) {
         if (isRefresh) {
-            pageNo =  0
+            pageNo = 0
         }
         var workPageRequestParam = WorkPageRequestParam(
             classifyId,
@@ -46,40 +49,41 @@ class WorksViewModel: BaseViewModel() {
             pageNo,
             DEFAULT_REQUEST_SIZE,
             propSearchs,
-            searchKey)
+            searchKey
+        )
         request(
             { apiService.getWorksDataByType(workPageRequestParam) },
             {
-            //请求成功
-            pageNo++
-            val listDataUiState =
-                ListDataUiState(
-                    isSuccess = true,
-                    isRefresh = isRefresh,
-                    isEmpty = it.isEmpty(),
+                //请求成功
+                pageNo++
+                val listDataUiState =
+                    ListDataUiState(
+                        isSuccess = true,
+                        isRefresh = isRefresh,
+                        isEmpty = it.isEmpty(),
 //                    hasMore = it.hasMore(),
-                    isFirstEmpty = isRefresh && it.isEmpty(),
-                    listData = it
-                )
-            worksDataState.value = listDataUiState
-        },
+                        isFirstEmpty = isRefresh && it.isEmpty(),
+                        listData = it
+                    )
+                worksDataState.value = listDataUiState
+            },
             {
-            //请求失败
-            val listDataUiState =
-                ListDataUiState(
-                    isSuccess = false,
-                    errMessage = it.errorMsg,
-                    isRefresh = isRefresh,
-                    listData = arrayListOf<WorksBean>()
-                )
-            worksDataState.value = listDataUiState
-        })
+                //请求失败
+                val listDataUiState =
+                    ListDataUiState(
+                        isSuccess = false,
+                        errMessage = it.errorMsg,
+                        isRefresh = isRefresh,
+                        listData = arrayListOf<WorksBean>()
+                    )
+                worksDataState.value = listDataUiState
+            })
     }
 
     /**
      * 获取作品详情
      */
-    fun getWorkDetail(id: Int){
+    fun getWorkDetail(id: Long) {
 //        var requestParam = WorkDetailRequestParam(id)
         request(
             { apiService.getWorkDetail(id) },
@@ -104,9 +108,9 @@ class WorksViewModel: BaseViewModel() {
     /**
      * 获取所有分类
      */
-    fun getConditionAllClassify(){
+    fun getConditionAllClassify() {
         request(
-            { apiService.getConditionAllClassify()},
+            { apiService.getConditionAllClassify() },
             {
                 val listDataUiState =
                     ListDataUiState(
@@ -132,9 +136,9 @@ class WorksViewModel: BaseViewModel() {
     /**
      * 获取一级分类
      */
-    fun getConditionRootClassify(){
+    fun getConditionRootClassify() {
         request(
-            { apiService.getConditionRootClassify()},
+            { apiService.getConditionRootClassify() },
             {
                 val listDataUiState =
                     ListDataUiState(
@@ -155,6 +159,78 @@ class WorksViewModel: BaseViewModel() {
                 conditionRootClassifys.value = listDataUiState
             }
         )
+    }
+
+    /**
+     * 作品收藏
+     */
+    fun collectAddWork(id: Long) {
+        request(
+            { apiService.collectAddWork(id) },
+            {
+                val updateDataUiState = UpdateUiState(isSuccess = true, data = "success")
+                updateCollectDataState.value = updateDataUiState
+            },
+            {
+                //请求失败
+                val updateDataUiState =
+                    UpdateUiState(isSuccess = false, errorMsg = it.errorMsg, data = "fail")
+                updateCollectDataState.value = updateDataUiState
+            }
+        )
+    }
+
+    /**
+     * 取消收藏
+     */
+    fun collectRemoveWork(id: Long) {
+        request(
+            { apiService.collectRemoveWork(id) },
+            {
+                val updateDataUiState = UpdateUiState(isSuccess = true, data = "success")
+                updateCollectDataState.value = updateDataUiState
+            },
+            {
+                //请求失败
+                val updateDataUiState =
+                    UpdateUiState(isSuccess = false, errorMsg = it.errorMsg, data = "fail")
+                updateCollectDataState.value = updateDataUiState
+            }
+        )
+    }
+
+    fun collectWorks(isRefresh: Boolean) {
+        var workPageRequestParam = WorkPageRequestParam(
+            pageNum = pageNo,
+            pageSize = DEFAULT_REQUEST_SIZE,
+        )
+        request(
+            { apiService.collectWorks(workPageRequestParam) },
+            {
+                //请求成功
+                pageNo++
+                val listDataUiState =
+                    ListDataUiState(
+                        isSuccess = true,
+                        isRefresh = isRefresh,
+                        isEmpty = it.isEmpty(),
+//                    hasMore = it.hasMore(),
+                        isFirstEmpty = isRefresh && it.isEmpty(),
+                        listData = it
+                    )
+                worksDataState.value = listDataUiState
+            },
+            {
+                //请求失败
+                val listDataUiState =
+                    ListDataUiState(
+                        isSuccess = false,
+                        errMessage = it.errorMsg,
+                        isRefresh = isRefresh,
+                        listData = arrayListOf<WorksBean>()
+                    )
+                worksDataState.value = listDataUiState
+            })
     }
 
 }

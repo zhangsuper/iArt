@@ -3,6 +3,7 @@ package com.gsq.iart.ui.activity
 import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.OnBackPressedCallback
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import com.blankj.utilcode.util.ToastUtils
 import com.gsq.iart.BuildConfig
@@ -13,6 +14,7 @@ import com.gsq.iart.app.util.StatusBarUtil
 import com.gsq.iart.app.util.WxLoginUtil
 import com.gsq.iart.databinding.ActivityMainBinding
 import com.gsq.iart.ui.dialog.SecretDialog
+import com.gsq.iart.viewmodel.LoginViewModel
 import com.gsq.mvvm.base.viewmodel.BaseViewModel
 import com.gsq.mvvm.network.manager.NetState
 import com.tencent.mm.opensdk.openapi.IWXAPI
@@ -26,6 +28,7 @@ class MainActivity : BaseActivity<BaseViewModel, ActivityMainBinding>() {
 
     var exitTime = 0L
     private lateinit var api: IWXAPI
+    private var mLoginViewModel: LoginViewModel? = null
 
     @SuppressLint("ResourceAsColor")
     override fun initView(savedInstanceState: Bundle?) {
@@ -51,9 +54,20 @@ class MainActivity : BaseActivity<BaseViewModel, ActivityMainBinding>() {
             SecretDialog().show(supportFragmentManager)
         }
         WxLoginUtil.initWx(this)
+        if (CacheUtil.isLogin()) {
+            mLoginViewModel = ViewModelProvider(this)[LoginViewModel::class.java]
+            mLoginViewModel?.getUserInfo()
+        }
     }
 
     override fun createObserver() {
+        mLoginViewModel?.loginResultDataState?.observe(this) {
+            if (it.isSuccess) {
+                it.data?.let { userInfo ->
+                    CacheUtil.setUser(userInfo)
+                }
+            }
+        }
     }
 
     /**

@@ -27,7 +27,7 @@ import kotlinx.android.synthetic.main.fragment_work_detail.*
 /**
  * 作品详情
  */
-class WorkDetailFragment: BaseFragment<WorksViewModel, FragmentWorkDetailBinding>() {
+class WorkDetailFragment : BaseFragment<WorksViewModel, FragmentWorkDetailBinding>() {
 
     private var worksBean: WorksBean? = null
 
@@ -36,20 +36,12 @@ class WorkDetailFragment: BaseFragment<WorksViewModel, FragmentWorkDetailBinding
     override fun initView(savedInstanceState: Bundle?) {
         worksBean = arguments?.getSerializable(DATA_WORK) as? WorksBean
         fragmentList = arrayListOf()
-        view_pager.init(this,fragmentList)
-        iv_back.setOnClickListener {
-            nav().navigateUp()
-        }
-        iv_introduce.setOnClickListener {
-            //简介
-            var args = Bundle()
-            args.putSerializable(DATA_WORK, worksBean)
-            nav().navigateAction(R.id.action_workDetailFragment_to_workIntroduceFragment,args)
-        }
-        view_pager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback(){
+        view_pager.init(this, fragmentList)
+        initListener()
+        view_pager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
 
             override fun onPageSelected(position: Int) {
-                tv_index.text = "${position+1}/${fragmentList.size}"
+                tv_index.text = "${position + 1}/${fragmentList.size}"
             }
         })
         var gestureDetector = GestureDetector(gesturelistener())
@@ -81,7 +73,12 @@ class WorkDetailFragment: BaseFragment<WorksViewModel, FragmentWorkDetailBinding
 
     override fun onResume() {
         super.onResume()
-        StatusBarUtil.init(requireActivity(), fitSystem = false,statusBarColor = R.color.transparent,isDarkFont =false)
+        StatusBarUtil.init(
+            requireActivity(),
+            fitSystem = false,
+            statusBarColor = R.color.transparent,
+            isDarkFont = false
+        )
     }
 
     override fun lazyLoadData() {
@@ -98,9 +95,10 @@ class WorkDetailFragment: BaseFragment<WorksViewModel, FragmentWorkDetailBinding
                 worksBean = it.data
                 worksBean?.displayType//展示方式：1=直接展示；2=横向拼接
                 LogUtils.d("worksBean.displayType:${worksBean?.displayType}")
-                if(worksBean?.displayType == 2){
+                updateCollectState()
+                if (worksBean?.displayType == 2) {
                     ToastUtils.showLong("横向拼接")
-                }else{
+                } else {
 //                    if(worksBean?.workType == "COLL"){
 //                        //合集
 //                    }else{
@@ -108,50 +106,105 @@ class WorkDetailFragment: BaseFragment<WorksViewModel, FragmentWorkDetailBinding
 //                    }
                     var hdPics = it.data?.hdPics
                     if (hdPics != null) {
-                        for (picbean in hdPics){
+                        for (picbean in hdPics) {
                             fragmentList.add(PreviewImageFragment.start(DetailArgsType(picbean)))
                         }
                         view_pager.adapter?.notifyDataSetChanged()
-                        if(fragmentList.size == 1){
+                        if (fragmentList.size == 1) {
                             tv_index.gone()
-                        }else{
+                        } else {
                             tv_index.visible()
                         }
                     }
                     tv_index.text = "1/${fragmentList.size}"
                 }
-            }else{
+            } else {
                 ToastUtils.showLong(it.errorMsg)
             }
         })
+        mViewModel.updateCollectDataState.observe(viewLifecycleOwner) {
+            if (it.isSuccess) {
+                worksBean?.isCollect = if (worksBean?.isCollect == 0) 1 else 0
+                updateCollectState()
+                when (worksBean?.isCollect) {
+                    1 -> {
+                        ToastUtils.showLong("收藏成功")
+                    }
+                    else -> {
+                        ToastUtils.showLong("已取消收藏")
+                    }
+                }
+            } else {
+                it.errorMsg?.let {
+                    ToastUtils.showLong(it)
+                }
+            }
+        }
     }
 
-    class gesturelistener : GestureDetector.OnGestureListener{
+    private fun initListener() {
+        iv_back.setOnClickListener {
+            nav().navigateUp()
+        }
+        iv_introduce.setOnClickListener {
+            //简介
+            var args = Bundle()
+            args.putSerializable(DATA_WORK, worksBean)
+            nav().navigateAction(R.id.action_workDetailFragment_to_workIntroduceFragment, args)
+        }
+        iv_collect.setOnClickListener {
+            //收藏与取消收藏
+            worksBean?.let {
+                when (it.isCollect) {
+                    1 -> {
+                        mViewModel.collectRemoveWork(it.id)
+                    }
+                    else -> {
+                        mViewModel.collectAddWork(it.id)
+                    }
+                }
+
+            }
+        }
+    }
+
+    private fun updateCollectState() {
+        when (worksBean?.isCollect) {
+            1 -> {
+                iv_collect.setImageResource(R.drawable.icon_shoucang_grey)
+            }
+            else -> {
+                iv_collect.setImageResource(R.drawable.icon_shoucang)
+            }
+        }
+    }
+
+    class gesturelistener : GestureDetector.OnGestureListener {
         override fun onDown(p0: MotionEvent?): Boolean {
-            Log.d("tag","onDown")
+            Log.d("tag", "onDown")
             return false
         }
 
         override fun onShowPress(p0: MotionEvent?) {
-            Log.d("tag","onShowPress")
+            Log.d("tag", "onShowPress")
         }
 
         override fun onSingleTapUp(p0: MotionEvent?): Boolean {
-            Log.d("tag","onSingleTapUp")
+            Log.d("tag", "onSingleTapUp")
             return false
         }
 
         override fun onScroll(p0: MotionEvent?, p1: MotionEvent?, p2: Float, p3: Float): Boolean {
-            Log.d("tag","onScroll")
+            Log.d("tag", "onScroll")
             return false
         }
 
         override fun onLongPress(p0: MotionEvent?) {
-            Log.d("tag","onLongPress")
+            Log.d("tag", "onLongPress")
         }
 
         override fun onFling(p0: MotionEvent?, p1: MotionEvent?, p2: Float, p3: Float): Boolean {
-            Log.d("tag","onFling")
+            Log.d("tag", "onFling")
             return false
         }
 

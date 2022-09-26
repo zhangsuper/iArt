@@ -19,9 +19,9 @@ class WorksBean(
     var downloadCount: Int,//下载次数
     var famousEvaluation: String,//名家评价
     var hdPics: List<WorkHdPics>,//高清图
-    var id: Int,
+    var id: Long,
     var materialType: String,//颜色
-    var mediaType:String,//材质
+    var mediaType: String,//材质
     var name: String,//作品名称
     var otherPostscriptInfo: String,//鉴赏跋
     var otherPostscriptInfoAuthor: String,//题跋作者
@@ -32,15 +32,18 @@ class WorksBean(
     var size: String,//尺寸
     var skilOfPainting: String,//表现技法
     var styleType: String,//形制
-    var subject:String,//题材
+    var subject: String,//题材
     var tags: String,//标签
     var thumb: String,//缩略图
     var viewCount: Int,//浏览次数
     var workId: String,
-    var workType: String//作品类型：PIC:单图；COLL:合集
- ): Serializable {
+    var workType: String,//作品类型：PIC:单图；COLL:合集
+    var isCollect: Int,//0 ,1
+    var createdTime: String
+) : Serializable {
 }
 
 class WorkHdPics(
     var fileSize: String,
-    var url: String): Serializable
+    var url: String
+) : Serializable
