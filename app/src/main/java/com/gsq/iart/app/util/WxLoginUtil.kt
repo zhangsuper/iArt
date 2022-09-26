@@ -55,12 +55,12 @@ object WxLoginUtil {
             return
         }
         var request = PayReq()
-        request.appId = bean.appid
-        request.partnerId = bean.mchId//商户Id
+        request.appId = bean.appId
+        request.partnerId = bean.partnerId//商户Id
         request.prepayId = bean.prepayId
         request.packageValue = "Sign=WXPay"
         request.nonceStr = bean.nonceStr
-        request.timeStamp = System.currentTimeMillis().toString()
+        request.timeStamp = bean.timeStamp
         request.sign = bean.sign
         api?.sendReq(request)
     }

@@ -1,10 +1,11 @@
 package com.gsq.iart.data.bean
 
 data class PayOrderBean(
-    val appid: String,
-    val mchId: String,
+    val appId: String,
+    val partnerId: String,
     val nonceStr: String,
     val prepayId: String,
     val sign: String,
-    val tradeType: String
+    val tradeType: String,
+    val timeStamp: String
 )
