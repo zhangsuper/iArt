@@ -12,6 +12,7 @@ import com.gsq.iart.databinding.FragmentMineBinding
 import com.gsq.mvvm.base.viewmodel.BaseViewModel
 import com.gsq.mvvm.ext.nav
 import com.gsq.mvvm.ext.navigateAction
+import com.gsq.mvvm.ext.view.gone
 import kotlinx.android.synthetic.main.fragment_mine.*
 
 /**
@@ -54,10 +55,19 @@ class MineFragment : BaseFragment<BaseViewModel, FragmentMineBinding>() {
             nike_name.text = CacheUtil.getUser()?.nickname
             user_id.text = CacheUtil.getUser()?.openid
             GlideHelper.load(iv_avatar, CacheUtil.getUser()?.headImgUrl)
+            if (CacheUtil.getUser()?.memberType == 1) {
+                expired_time.text = "国通画${CacheUtil.getUser()?.memberEndDate}到期"
+                join_vip_btn.text = "立即续费"
+            } else {
+                expired_time.gone()
+                join_vip_btn.text = "立即开通"
+            }
         } else {
             nike_name.text = getString(R.string.app_login_in)
             user_id.text = getString(R.string.app_login_get_vip)
             iv_avatar.setImageResource(R.drawable.icon_avatar_default)
+            expired_time.gone()
+            join_vip_btn.text = "立即开通"
         }
     }
 

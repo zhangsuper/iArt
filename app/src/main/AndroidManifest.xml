@@ -7,6 +7,7 @@
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
 
     <application
         android:name=".app.App"
@@ -44,14 +45,21 @@
             android:theme="@android:style/Theme.Translucent.NoTitleBar"
             android:exported="true"
             android:taskAffinity="com.gsq.iart"
-            android:launchMode="singleTask">
-        </activity>
+            android:launchMode="singleTask"></activity>
+
+        <activity
+            android:name=".wxapi.WXPayEntryActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:exported="true"
+            android:taskAffinity="com.gsq.iart"
+            android:launchMode="singleTop"></activity>
 
     </application>
 
     //由于Android 11 软件包可见性 特性的影响，OpenSDK的接口可能无法正常拉起微信，从而无法使用微信的部分功能，需要在主工程的AndroidManifest.xml 中增加标签
     <queries>
-        <package android:name="com.tencent.mm" />   // 指定微信包名
+        <package android:name="com.tencent.mm" />
+        // 指定微信包名
     </queries>
 
 </manifest>

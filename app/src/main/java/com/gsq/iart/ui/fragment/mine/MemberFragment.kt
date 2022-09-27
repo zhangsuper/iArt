@@ -83,6 +83,10 @@ class MemberFragment : BaseFragment<MemberViewModel, FragmentMemberBinding>() {
 
         pay_button.setOnClickListener {
             vipPriceAdapter.selectBean?.let {
+                if (!checkbox.isChecked) {
+                    ToastUtils.showShort("请勾选同意《会员服务协议》")
+                    return@setOnClickListener
+                }
                 mViewModel.createPreparePay(it.id)
             } ?: let {
                 ToastUtils.showLong("请选择开通时限")
@@ -136,9 +140,11 @@ class MemberFragment : BaseFragment<MemberViewModel, FragmentMemberBinding>() {
         nike_name.text = userInfo?.nickname
         GlideHelper.load(iv_avatar, userInfo?.headImgUrl)
         if (userInfo?.memberType == 1) {
-            vip_status.text = "国画通会员"
+            vip_status.text = "国画通会员有效期至${userInfo?.memberEndDate}"
+            pay_button.text = "立即续费"
         } else {
             vip_status.text = "您暂未开通国画通会员"
+            pay_button.text = "立即开通"
         }
     }
 
@@ -147,6 +153,7 @@ class MemberFragment : BaseFragment<MemberViewModel, FragmentMemberBinding>() {
         //服务器端的接收的支付通知
         mLoginViewModel?.getUserInfo()
     }
+
 
     override fun onDestroy() {
         super.onDestroy()
