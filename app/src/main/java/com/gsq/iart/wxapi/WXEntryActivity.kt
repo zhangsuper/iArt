@@ -34,7 +34,7 @@ class WXEntryActivity : Activity(), IWXAPIEventHandler {
             //微信支付结果回调
             when (baseResp.errCode) {
                 BaseResp.ErrCode.ERR_OK -> {
-                    EventBus.getDefault().post(PayResultEvent(""))
+                    EventBus.getDefault().post(PayResultEvent("success"))
                 }
                 BaseResp.ErrCode.ERR_COMM -> {
                     ToastUtils.showLong("支付失败")

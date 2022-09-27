@@ -6,6 +6,7 @@ import android.text.style.ClickableSpan
 import android.view.View
 import android.widget.TextView
 import androidx.core.os.bundleOf
+import androidx.lifecycle.ViewModelProvider
 import com.blankj.utilcode.util.SpanUtils
 import com.blankj.utilcode.util.ToastUtils
 import com.gsq.iart.R
@@ -18,6 +19,7 @@ import com.gsq.iart.data.bean.VipPriceBean
 import com.gsq.iart.data.event.PayResultEvent
 import com.gsq.iart.databinding.FragmentMemberBinding
 import com.gsq.iart.ui.adapter.VipPriceAdapter
+import com.gsq.iart.viewmodel.LoginViewModel
 import com.gsq.iart.viewmodel.MemberViewModel
 import com.gsq.mvvm.ext.nav
 import com.gsq.mvvm.ext.navigateAction
@@ -34,6 +36,7 @@ class MemberFragment : BaseFragment<MemberViewModel, FragmentMemberBinding>() {
     private val vipPriceAdapter: VipPriceAdapter by lazy { VipPriceAdapter() }
     private var priceList: MutableList<VipPriceBean> = mutableListOf()
     private var payType = 1 //1:微信支付  2：支付宝支付
+    private var mLoginViewModel: LoginViewModel? = null
 
     override fun initView(savedInstanceState: Bundle?) {
         title_layout.setBackListener {
@@ -85,12 +88,14 @@ class MemberFragment : BaseFragment<MemberViewModel, FragmentMemberBinding>() {
                 ToastUtils.showLong("请选择开通时限")
             }
         }
+        mLoginViewModel = ViewModelProvider(this)[LoginViewModel::class.java]
         EventBus.getDefault().register(this)
     }
 
     override fun lazyLoadData() {
         super.lazyLoadData()
         mViewModel.getPayConfig()
+        mLoginViewModel?.getUserInfo()
     }
 
     override fun createObserver() {
@@ -109,6 +114,15 @@ class MemberFragment : BaseFragment<MemberViewModel, FragmentMemberBinding>() {
                 }
             } else {
                 ToastUtils.showLong(it.errorMsg)
+            }
+        }
+
+        mLoginViewModel?.loginResultDataState?.observe(this) {
+            if (it.isSuccess) {
+                it.data?.let { userInfo ->
+                    CacheUtil.setUser(userInfo)
+                    updateUserInfo()
+                }
             }
         }
     }
@@ -131,7 +145,7 @@ class MemberFragment : BaseFragment<MemberViewModel, FragmentMemberBinding>() {
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onMessageEvent(event: PayResultEvent?) {
         //服务器端的接收的支付通知
-//        mViewModel.getPayConfig()
+        mLoginViewModel?.getUserInfo()
     }
 
     override fun onDestroy() {
