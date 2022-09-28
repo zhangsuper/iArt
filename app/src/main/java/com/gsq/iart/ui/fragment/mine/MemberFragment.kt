@@ -148,7 +148,7 @@ class MemberFragment : BaseFragment<MemberViewModel, FragmentMemberBinding>() {
         }
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
+    @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
     fun onMessageEvent(event: PayResultEvent?) {
         //服务器端的接收的支付通知
         mLoginViewModel?.getUserInfo()
