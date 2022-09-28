@@ -13,6 +13,7 @@ import com.gsq.mvvm.base.viewmodel.BaseViewModel
 import com.gsq.mvvm.ext.nav
 import com.gsq.mvvm.ext.navigateAction
 import com.gsq.mvvm.ext.view.gone
+import com.gsq.mvvm.ext.view.visible
 import kotlinx.android.synthetic.main.fragment_mine.*
 
 /**
@@ -56,6 +57,7 @@ class MineFragment : BaseFragment<BaseViewModel, FragmentMineBinding>() {
             user_id.text = CacheUtil.getUser()?.openid
             GlideHelper.load(iv_avatar, CacheUtil.getUser()?.headImgUrl)
             if (CacheUtil.getUser()?.memberType == 1) {
+                expired_time.visible()
                 expired_time.text = "国通画${CacheUtil.getUser()?.memberEndDate}到期"
                 join_vip_btn.text = "立即续费"
             } else {

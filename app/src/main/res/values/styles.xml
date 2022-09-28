@@ -70,4 +70,14 @@
         <item name="android:windowEnterAnimation">@anim/dialog_scale_in</item>
         <item name="android:windowExitAnimation">@anim/dialog_alpha_out</item>
     </style>
+
+    <style name="MyCheckBox" parent="Theme.AppCompat.Light">
+        <item name="colorControlNormal">@color/color_FFFFFFFF</item>
+        <item name="colorControlActivated">@color/color_EC8E58</item>
+    </style>
+
+    <style name="MyCheckBox2" parent="Theme.AppCompat.Light">
+        <item name="colorControlNormal">@color/color_888888</item>
+        <item name="colorControlActivated">@color/color_141414</item>
+    </style>
 </resources>
