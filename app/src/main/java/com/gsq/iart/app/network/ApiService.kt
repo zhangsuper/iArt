@@ -35,7 +35,7 @@ interface ApiService {
      */
     @POST("art/work/detail")
     suspend fun getWorkDetail(
-        @Query("id") id: Long
+        @Query("id") id: String
     ): ApiResponse<WorksBean>
 
     /**
@@ -85,13 +85,13 @@ interface ApiService {
      * 收藏作品
      */
     @POST("art/collect/add/{id}")
-    suspend fun collectAddWork(@Path("id") id: Long): ApiResponse<String>
+    suspend fun collectAddWork(@Path("id") id: String): ApiResponse<String>
 
     /**
      * 取消收藏
      */
     @POST("art/collect/remove/{id}")
-    suspend fun collectRemoveWork(@Path("id") id: Long): ApiResponse<String>
+    suspend fun collectRemoveWork(@Path("id") id: String): ApiResponse<String>
 
     /**
      * 收藏列表

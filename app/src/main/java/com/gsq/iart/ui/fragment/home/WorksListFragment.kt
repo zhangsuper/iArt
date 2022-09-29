@@ -17,6 +17,7 @@ import com.gsq.iart.app.weight.recyclerview.GridItemDecoration
 import com.gsq.iart.data.Constant.COMPLEX_TYPE_COLLECT
 import com.gsq.iart.data.Constant.COMPLEX_TYPE_SEARCH
 import com.gsq.iart.data.Constant.DATA_WORK
+import com.gsq.iart.data.Constant.INTENT_TYPE
 import com.gsq.iart.data.Constant.WORKS_SUB_TYPE_HOT
 import com.gsq.iart.data.Constant.WORKS_SUB_TYPE_NEW
 import com.gsq.iart.data.bean.ArgsType
@@ -87,9 +88,10 @@ class WorksListFragment : BaseFragment<WorksViewModel, FragmentWorksListBinding>
 
         worksAdapter.setOnItemClickListener { adapter, view, position ->
 
-            var args = Bundle()
-            args.putSerializable(DATA_WORK, (adapter.data as MutableList<WorksBean>)[position])
-            nav().navigateAction(R.id.action_mainFragment_to_workDetailFragment, args)
+            var bundle = Bundle()
+            bundle.putSerializable(DATA_WORK, (adapter.data as MutableList<WorksBean>)[position])
+            bundle.putString(INTENT_TYPE, args.complexType)
+            nav().navigateAction(R.id.action_mainFragment_to_workDetailFragment, bundle)
         }
     }
 

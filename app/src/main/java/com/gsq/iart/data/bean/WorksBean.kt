@@ -19,7 +19,7 @@ class WorksBean(
     var downloadCount: Int,//下载次数
     var famousEvaluation: String,//名家评价
     var hdPics: List<WorkHdPics>,//高清图
-    var id: Long,
+    var id: String,
     var materialType: String,//颜色
     var mediaType: String,//材质
     var name: String,//作品名称

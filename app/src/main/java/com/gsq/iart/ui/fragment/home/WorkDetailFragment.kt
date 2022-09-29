@@ -13,6 +13,9 @@ import com.gsq.iart.R
 import com.gsq.iart.app.base.BaseFragment
 import com.gsq.iart.app.ext.init
 import com.gsq.iart.app.util.StatusBarUtil
+import com.gsq.iart.data.Constant
+import com.gsq.iart.data.Constant.COMPLEX_TYPE_COLLECT
+import com.gsq.iart.data.Constant.COMPLEX_TYPE_GROUP
 import com.gsq.iart.data.Constant.DATA_WORK
 import com.gsq.iart.data.bean.DetailArgsType
 import com.gsq.iart.data.bean.WorksBean
@@ -22,6 +25,7 @@ import com.gsq.mvvm.ext.nav
 import com.gsq.mvvm.ext.navigateAction
 import com.gsq.mvvm.ext.view.gone
 import com.gsq.mvvm.ext.view.visible
+import com.gsq.mvvm.util.get
 import kotlinx.android.synthetic.main.fragment_work_detail.*
 
 /**
@@ -30,11 +34,13 @@ import kotlinx.android.synthetic.main.fragment_work_detail.*
 class WorkDetailFragment : BaseFragment<WorksViewModel, FragmentWorkDetailBinding>() {
 
     private var worksBean: WorksBean? = null
+    private var intentType: String? = null
 
     private lateinit var fragmentList: ArrayList<Fragment>
 
     override fun initView(savedInstanceState: Bundle?) {
         worksBean = arguments?.getSerializable(DATA_WORK) as? WorksBean
+        intentType = arguments?.getString(Constant.INTENT_TYPE, COMPLEX_TYPE_GROUP)
         fragmentList = arrayListOf()
         view_pager.init(this, fragmentList)
         initListener()
@@ -84,7 +90,12 @@ class WorkDetailFragment : BaseFragment<WorksViewModel, FragmentWorkDetailBindin
     override fun lazyLoadData() {
         super.lazyLoadData()
         worksBean?.let {
-            mViewModel.getWorkDetail(it.id)
+            if(intentType == COMPLEX_TYPE_COLLECT){
+                mViewModel.getWorkDetail(it.workId)
+            }else{
+                mViewModel.getWorkDetail(it.id)
+            }
+
         }
     }
 
