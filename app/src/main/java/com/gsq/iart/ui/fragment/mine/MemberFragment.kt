@@ -7,6 +7,7 @@ import android.view.View
 import android.widget.TextView
 import androidx.core.os.bundleOf
 import androidx.lifecycle.ViewModelProvider
+import com.blankj.utilcode.util.LogUtils
 import com.blankj.utilcode.util.SpanUtils
 import com.blankj.utilcode.util.ToastUtils
 import com.gsq.iart.R
@@ -96,10 +97,15 @@ class MemberFragment : BaseFragment<MemberViewModel, FragmentMemberBinding>() {
         EventBus.getDefault().register(this)
     }
 
+    override fun onResume() {
+        LogUtils.d("PayResultEvent：getUserInfo")
+        super.onResume()
+        mLoginViewModel?.getUserInfo()
+    }
+
     override fun lazyLoadData() {
         super.lazyLoadData()
         mViewModel.getPayConfig()
-        mLoginViewModel?.getUserInfo()
     }
 
     override fun createObserver() {
@@ -148,9 +154,10 @@ class MemberFragment : BaseFragment<MemberViewModel, FragmentMemberBinding>() {
         }
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
+    @Subscribe(threadMode = ThreadMode.MAIN)
     fun onMessageEvent(event: PayResultEvent?) {
         //服务器端的接收的支付通知
+        LogUtils.d("PayResultEvent：getUserInfo")
         mLoginViewModel?.getUserInfo()
     }
 

@@ -3,6 +3,7 @@ package com.gsq.iart.wxapi
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import com.blankj.utilcode.util.LogUtils
 import com.blankj.utilcode.util.ToastUtils
 import com.gsq.iart.BuildConfig
 import com.gsq.iart.data.event.PayResultEvent
@@ -48,12 +49,15 @@ class WXPayEntryActivity : Activity(), IWXAPIEventHandler {
             //微信支付结果回调
             when (baseResp.errCode) {
                 BaseResp.ErrCode.ERR_OK -> {
-                    EventBus.getDefault().postSticky(PayResultEvent(order_id))
+                    LogUtils.d("pay success")
+                    EventBus.getDefault().post(PayResultEvent("true"))
                 }
                 BaseResp.ErrCode.ERR_COMM -> {
+                    LogUtils.d("pay error:${baseResp.errStr}")
                     ToastUtils.showLong("支付失败")
                 }
                 BaseResp.ErrCode.ERR_USER_CANCEL -> {
+                    LogUtils.d("pay cancel")
                     ToastUtils.showLong("用户取消支付")
                 }
             }

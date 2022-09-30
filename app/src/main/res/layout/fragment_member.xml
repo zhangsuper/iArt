@@ -176,13 +176,15 @@
                     android:layout_height="@dimen/dp_1"
                     android:background="@color/color_1a000000"
                     android:layout_marginLeft="@dimen/dp_16"
-                    android:layout_marginRight="@dimen/dp_16" />
+                    android:layout_marginRight="@dimen/dp_16"
+                    android:visibility="gone" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/ali_pay_view"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dp_56"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:visibility="gone">
 
                     <ImageView
                         android:id="@+id/iv_ali_pay"
