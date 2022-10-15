@@ -97,14 +97,9 @@ class MemberFragment : BaseFragment<MemberViewModel, FragmentMemberBinding>() {
         EventBus.getDefault().register(this)
     }
 
-    override fun onResume() {
-        LogUtils.d("PayResultEvent：getUserInfo")
-        super.onResume()
-        mLoginViewModel?.getUserInfo()
-    }
-
     override fun lazyLoadData() {
         super.lazyLoadData()
+        mLoginViewModel?.getUserInfo()
         mViewModel.getPayConfig()
     }
 

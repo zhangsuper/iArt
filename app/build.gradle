@@ -18,6 +18,11 @@ android {
         multiDexEnabled true
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        ndk {
+            // 设置支持的SO库架构
+            abiFilters 'armeabi' //, 'x86', 'armeabi-v7a', 'x86_64', 'arm64-v8a'
+        }
     }
 
     buildFeatures {
@@ -161,4 +166,6 @@ dependencies {
 
     implementation 'com.tencent.mm.opensdk:wechat-sdk-android:6.8.0'
     implementation 'org.greenrobot:eventbus:3.3.1'
+
+    implementation 'com.tencent.bugly:crashreport:4.1.9'
 }

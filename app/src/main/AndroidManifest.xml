@@ -8,6 +8,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 
     <application
         android:name=".app.App"
@@ -61,5 +62,22 @@
         <package android:name="com.tencent.mm" />
         // 指定微信包名
     </queries>
+
+    <!-- 配置APP ID -->
+    <!--    <meta-data-->
+    <!--        android:name="BUGLY_APPID"-->
+    <!--        android:value="<APP_ID>" />-->
+    <!--    &lt;!&ndash; 配置APP版本号 &ndash;&gt;-->
+    <!--    <meta-data-->
+    <!--        android:name="BUGLY_APP_VERSION"-->
+    <!--        android:value="<APP_Version>" />-->
+    <!--    &lt;!&ndash; 配置APP渠道号 &ndash;&gt;-->
+    <!--    <meta-data-->
+    <!--        android:name="BUGLY_APP_CHANNEL"-->
+    <!--        android:value="dev" />-->
+    <!--    &lt;!&ndash; 配置Bugly调试模式（true或者false）&ndash;&gt;-->
+    <!--    <meta-data-->
+    <!--        android:name="BUGLY_ENABLE_DEBUG"-->
+    <!--        android:value="false" />-->
 
 </manifest>

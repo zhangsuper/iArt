@@ -12,16 +12,13 @@ import com.gsq.iart.databinding.FragmentSearchInitBinding
 import com.gsq.iart.ui.adapter.SearchHistoryAdapter
 import com.gsq.iart.ui.adapter.SearchHotAdapter
 import com.gsq.iart.viewmodel.SearchViewModel
-import com.gsq.mvvm.ext.nav
-import com.gsq.mvvm.ext.parseState
 import com.gsq.mvvm.ext.util.toJson
-import kotlinx.android.synthetic.main.fragment_search.*
 import kotlinx.android.synthetic.main.fragment_search_init.*
 
 /**
  * 搜索页
  */
-class SearchInitFragment: BaseFragment<SearchViewModel, FragmentSearchInitBinding>() {
+class SearchInitFragment : BaseFragment<SearchViewModel, FragmentSearchInitBinding>() {
 
 
     private val historyAdapter: SearchHistoryAdapter by lazy { SearchHistoryAdapter(arrayListOf()) }
@@ -58,7 +55,7 @@ class SearchInitFragment: BaseFragment<SearchViewModel, FragmentSearchInitBindin
 
         hotAdapter.run {
             setOnItemClickListener { adapter, view, position ->
-                val queryStr = hotAdapter.data[position].name
+                val queryStr = hotAdapter.data[position]
                 updateKey(queryStr)
                 searchData(queryStr)
             }
@@ -80,11 +77,14 @@ class SearchInitFragment: BaseFragment<SearchViewModel, FragmentSearchInitBindin
             CacheUtil.setSearchHistoryData(it.toJson())
         })
 
-        mViewModel.searchHotList.observe(viewLifecycleOwner, Observer { resultState ->
-            parseState(resultState, {
-                hotAdapter.setList(it)
-            })
-        })
+        mViewModel.hotSearchDataState.observe(viewLifecycleOwner) { resultState ->
+            hotAdapter.setList(resultState.listData)
+        }
+//        mViewModel.searchHotList.observe(viewLifecycleOwner, Observer { resultState ->
+//            parseState(resultState, {
+//                hotAdapter.setList(it)
+//            })
+//        })
     }
 
     /**
@@ -105,7 +105,7 @@ class SearchInitFragment: BaseFragment<SearchViewModel, FragmentSearchInitBindin
         }
     }
 
-    fun searchData(keyStr: String){
+    fun searchData(keyStr: String) {
         onClickItemListener?.invoke(keyStr)
     }
 

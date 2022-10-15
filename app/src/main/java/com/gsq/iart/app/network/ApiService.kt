@@ -119,4 +119,10 @@ interface ApiService {
     @POST("art/member/wx/payNotice")
     suspend fun getPayResult(): ApiResponse<String>
 
+    /**
+     * 搜索热词
+     */
+    @POST("art/search/helper/hotSearch")
+    suspend fun getHotSearch(): ApiResponse<ArrayList<String>>
+
 }

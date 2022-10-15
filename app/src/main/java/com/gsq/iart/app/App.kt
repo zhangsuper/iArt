@@ -8,9 +8,10 @@ import com.gsq.iart.app.weight.loadCallBack.LoadingCallback
 import com.gsq.mvvm.base.BaseApp
 import com.kingja.loadsir.callback.SuccessCallback
 import com.kingja.loadsir.core.LoadSir
+import com.tencent.bugly.crashreport.CrashReport
 import com.tencent.mmkv.MMKV
 
-class App: BaseApp() {
+class App : BaseApp() {
 
     companion object {
         lateinit var instance: App
@@ -32,19 +33,10 @@ class App: BaseApp() {
         LogUtils.getConfig().globalTag = "my_tag"
     }
 
-    private fun initBugly(){
-//        //初始化Bugly
-//        val context = applicationContext
-//        // 获取当前包名
-//        val packageName = context.packageName
-//        // 获取当前进程名
-//        val processName = getProcessName(android.os.Process.myPid())
-//        // 设置是否为上报进程
-//        val strategy = CrashReport.UserStrategy(context)
-//        strategy.isUploadProcess = processName == null || processName == packageName
-//        // 初始化Bugly
-//        Bugly.init(context, if (BuildConfig.DEBUG) "xxx" else "a52f2b5ebb", BuildConfig.DEBUG)
-//        "".logd()
-//        jetpackMvvmLog = BuildConfig.DEBUG
+    private fun initBugly() {
+        //初始化Bugly
+//        if (!BuildConfig.DEBUG) {
+        CrashReport.initCrashReport(applicationContext, "8bc600eefc", false)
+//        }
     }
 }
