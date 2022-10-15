@@ -83,7 +83,7 @@ class WorksViewModel : BaseViewModel() {
     /**
      * 获取作品详情
      */
-    fun getWorkDetail(id: Long) {
+    fun getWorkDetail(id: String) {
 //        var requestParam = WorkDetailRequestParam(id)
         request(
             { apiService.getWorkDetail(id) },
@@ -164,7 +164,7 @@ class WorksViewModel : BaseViewModel() {
     /**
      * 作品收藏
      */
-    fun collectAddWork(id: Long) {
+    fun collectAddWork(id: String) {
         request(
             { apiService.collectAddWork(id) },
             {
@@ -183,7 +183,7 @@ class WorksViewModel : BaseViewModel() {
     /**
      * 取消收藏
      */
-    fun collectRemoveWork(id: Long) {
+    fun collectRemoveWork(id: String) {
         request(
             { apiService.collectRemoveWork(id) },
             {

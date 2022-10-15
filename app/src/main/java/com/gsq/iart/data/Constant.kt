@@ -20,4 +20,5 @@ object Constant {
     const val WORKS_SUB_TYPE_NEW = 1//新上
 
     const val DATA_WORK = "data_work"
+    const val INTENT_TYPE = "intent_type"
 }
