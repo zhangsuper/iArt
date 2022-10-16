@@ -12,6 +12,7 @@ import com.blankj.utilcode.util.ToastUtils
 import com.gsq.iart.R
 import com.gsq.iart.app.base.BaseFragment
 import com.gsq.iart.app.ext.init
+import com.gsq.iart.app.util.CacheUtil
 import com.gsq.iart.app.util.StatusBarUtil
 import com.gsq.iart.data.Constant
 import com.gsq.iart.data.Constant.COMPLEX_TYPE_COLLECT
@@ -25,7 +26,6 @@ import com.gsq.mvvm.ext.nav
 import com.gsq.mvvm.ext.navigateAction
 import com.gsq.mvvm.ext.view.gone
 import com.gsq.mvvm.ext.view.visible
-import com.gsq.mvvm.util.get
 import kotlinx.android.synthetic.main.fragment_work_detail.*
 
 /**
@@ -90,9 +90,9 @@ class WorkDetailFragment : BaseFragment<WorksViewModel, FragmentWorkDetailBindin
     override fun lazyLoadData() {
         super.lazyLoadData()
         worksBean?.let {
-            if(intentType == COMPLEX_TYPE_COLLECT){
+            if (intentType == COMPLEX_TYPE_COLLECT) {
                 mViewModel.getWorkDetail(it.workId)
-            }else{
+            } else {
                 mViewModel.getWorkDetail(it.id)
             }
 
@@ -165,17 +165,23 @@ class WorkDetailFragment : BaseFragment<WorksViewModel, FragmentWorkDetailBindin
         }
         iv_collect.setOnClickListener {
             //收藏与取消收藏
-            worksBean?.let {
-                when (it.isCollect) {
-                    1 -> {
-                        mViewModel.collectRemoveWork(it.id)
+            if (CacheUtil.isLogin()) {
+                worksBean?.let {
+                    when (it.isCollect) {
+                        1 -> {
+                            mViewModel.collectRemoveWork(it.id)
+                        }
+                        else -> {
+                            mViewModel.collectAddWork(it.id)
+                        }
                     }
-                    else -> {
-                        mViewModel.collectAddWork(it.id)
-                    }
-                }
 
+                }
+            } else {
+                //跳转登录界面
+                nav().navigateAction(R.id.action_mainFragment_to_loginFragment)
             }
+
         }
     }
 

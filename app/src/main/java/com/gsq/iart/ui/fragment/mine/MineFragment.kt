@@ -34,7 +34,12 @@ class MineFragment : BaseFragment<BaseViewModel, FragmentMineBinding>() {
     override fun initView(savedInstanceState: Bundle?) {
         item_collect.setOnClickListener {
             //收藏
-            nav().navigateAction(R.id.action_mainFragment_to_myCollectFragment)
+            if (CacheUtil.isLogin()) {
+                nav().navigateAction(R.id.action_mainFragment_to_myCollectFragment)
+            } else {
+                //跳转登录界面
+                nav().navigateAction(R.id.action_mainFragment_to_loginFragment)
+            }
         }
         item_setting.setOnClickListener {
             //设置

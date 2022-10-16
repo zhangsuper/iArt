@@ -12,6 +12,8 @@ import com.gsq.iart.viewmodel.LoginViewModel
 import com.gsq.mvvm.base.viewmodel.BaseViewModel
 import com.gsq.mvvm.ext.nav
 import com.gsq.mvvm.ext.navigateAction
+import com.gsq.mvvm.ext.view.gone
+import com.gsq.mvvm.ext.view.visible
 import kotlinx.android.synthetic.main.fragment_setting.*
 
 /**
@@ -43,6 +45,12 @@ class SettingFragment : BaseFragment<BaseViewModel, FragmentSettingBinding>() {
         }
 
         mLoginViewModel = ViewModelProvider(this)[LoginViewModel::class.java]
+
+        if (CacheUtil.isLogin()) {
+            login_out_btn.visible()
+        } else {
+            login_out_btn.gone()
+        }
     }
 
     override fun createObserver() {

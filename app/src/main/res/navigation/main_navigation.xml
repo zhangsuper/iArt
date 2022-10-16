@@ -61,7 +61,7 @@
         android:id="@+id/searchFragment"
         android:name="com.gsq.iart.ui.fragment.search.SearchFragment">
         <action
-            android:id="@+id/action_searchFragment_to_workDetailFragment"
+            android:id="@+id/action_mainFragment_to_workDetailFragment"
             app:destination="@+id/workDetailFragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
@@ -134,6 +134,12 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
+
+        <action
+            android:id="@+id/action_mainFragment_to_loginFragment"
+            app:destination="@+id/loginFragment"
+            app:enterAnim="@anim/slide_in_bottom"
+            app:popExitAnim="@anim/slide_out_bottom" />
     </fragment>
 
     <fragment
