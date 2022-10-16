@@ -3,13 +3,15 @@ package com.gsq.iart.app.weight
 import android.content.Context
 import android.util.AttributeSet
 import android.view.View
-import android.widget.*
+import android.widget.ImageView
+import android.widget.RelativeLayout
+import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.gsq.iart.R
 import com.gsq.mvvm.ext.view.gone
 import com.gsq.mvvm.ext.view.visible
 
-class CommonItemLayout: RelativeLayout {
+class CommonItemLayout : RelativeLayout {
 
     private var item_root: ConstraintLayout
     private var item_title: TextView
@@ -38,7 +40,8 @@ class CommonItemLayout: RelativeLayout {
         val typedArray = context.obtainStyledAttributes(attrs, R.styleable.CommonItemLayout)
         val itemTitleString = typedArray.getString(R.styleable.CommonItemLayout_item_title)
         val itemRightMsgString = typedArray.getString(R.styleable.CommonItemLayout_item_right_msg)
-        val itemRightSubMsgString = typedArray.getString(R.styleable.CommonItemLayout_item_right_sub_msg)
+        val itemRightSubMsgString =
+            typedArray.getString(R.styleable.CommonItemLayout_item_right_sub_msg)
         val itemRightIconVisible =
             typedArray.getBoolean(R.styleable.CommonItemLayout_item_right_icon_visible, true)
         val itemDividerVisible =
@@ -53,16 +56,16 @@ class CommonItemLayout: RelativeLayout {
         }
 
         //右侧图标
-        if(itemRightIconVisible){
+        if (itemRightIconVisible) {
             item_right_icon.visible()
-        }else{
+        } else {
             item_right_icon.gone()
         }
 
         //底部分割线
-        if(itemDividerVisible){
+        if (itemDividerVisible) {
             item_divider.visible()
-        }else{
+        } else {
             item_divider.gone()
         }
 
@@ -84,5 +87,14 @@ class CommonItemLayout: RelativeLayout {
         common_item_operation.setOnClickListener {
             listener.invoke()
         }
+    }
+
+    fun setItemDividerVisible(isVisible: Boolean) {
+        if (isVisible) {
+            item_divider.visible()
+        } else {
+            item_divider.gone()
+        }
+
     }
 }

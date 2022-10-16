@@ -48,8 +48,12 @@ class SettingFragment : BaseFragment<BaseViewModel, FragmentSettingBinding>() {
 
         if (CacheUtil.isLogin()) {
             login_out_btn.visible()
+            cancellation_btn.visible()
+            personal_information_btn.setItemDividerVisible(true)
         } else {
             login_out_btn.gone()
+            cancellation_btn.gone()
+            personal_information_btn.setItemDividerVisible(false)
         }
     }
 

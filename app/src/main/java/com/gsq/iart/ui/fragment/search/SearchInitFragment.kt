@@ -13,6 +13,8 @@ import com.gsq.iart.ui.adapter.SearchHistoryAdapter
 import com.gsq.iart.ui.adapter.SearchHotAdapter
 import com.gsq.iart.viewmodel.SearchViewModel
 import com.gsq.mvvm.ext.util.toJson
+import com.gsq.mvvm.ext.view.gone
+import com.gsq.mvvm.ext.view.visible
 import kotlinx.android.synthetic.main.fragment_search_init.*
 
 /**
@@ -72,6 +74,13 @@ class SearchInitFragment : BaseFragment<SearchViewModel, FragmentSearchInitBindi
     override fun createObserver() {
         super.createObserver()
         mViewModel.searchHistoryList.observe(viewLifecycleOwner, Observer {
+            if (it.size > 0) {
+                search_history_text.visible()
+                search_clear.visible()
+            } else {
+                search_history_text.gone()
+                search_clear.gone()
+            }
             historyAdapter.data = it
             historyAdapter.notifyDataSetChanged()
             CacheUtil.setSearchHistoryData(it.toJson())
@@ -80,11 +89,6 @@ class SearchInitFragment : BaseFragment<SearchViewModel, FragmentSearchInitBindi
         mViewModel.hotSearchDataState.observe(viewLifecycleOwner) { resultState ->
             hotAdapter.setList(resultState.listData)
         }
-//        mViewModel.searchHotList.observe(viewLifecycleOwner, Observer { resultState ->
-//            parseState(resultState, {
-//                hotAdapter.setList(it)
-//            })
-//        })
     }
 
     /**

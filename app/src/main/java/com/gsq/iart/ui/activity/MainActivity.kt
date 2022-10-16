@@ -66,6 +66,8 @@ class MainActivity : BaseActivity<BaseViewModel, ActivityMainBinding>() {
                 it.data?.let { userInfo ->
                     CacheUtil.setUser(userInfo)
                 }
+            } else {
+                CacheUtil.setUser(null)
             }
         }
     }
