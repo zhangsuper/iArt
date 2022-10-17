@@ -1,5 +1,8 @@
 package com.gsq.iart.data
 
+import com.gsq.iart.app.App
+import java.io.File
+
 object Constant {
 
     //glide缓存目录和缓存池大小
@@ -21,4 +24,5 @@ object Constant {
 
     const val DATA_WORK = "data_work"
     const val INTENT_TYPE = "intent_type"
+    var DOWNLOAD_PARENT_PATH = App.instance.getExternalFilesDir(null)?.absolutePath + File.separator + "download"
 }

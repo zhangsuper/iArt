@@ -129,4 +129,22 @@
 
     </LinearLayout>
 
+    <com.github.yanjiabin.extendsringprogressbarlib.RingProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="@dimen/dp_60"
+        android:layout_height="@dimen/dp_60"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:max="100"
+        app:ringColor="@color/colorPrimary"
+        app:ringProgressColor="@color/colorPrimaryDark"
+        app:style="FILL"
+        app:ringWidth="3dp"
+        app:textColor="@color/colorPrimary"
+        app:textIsShow="true"
+        app:textSize="16sp"
+        android:visibility="gone"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

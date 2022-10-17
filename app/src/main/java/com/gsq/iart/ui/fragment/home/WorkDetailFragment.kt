@@ -26,7 +26,16 @@ import com.gsq.mvvm.ext.nav
 import com.gsq.mvvm.ext.navigateAction
 import com.gsq.mvvm.ext.view.gone
 import com.gsq.mvvm.ext.view.visible
+import com.gsq.mvvm.network.NetworkUtil.url
+import com.liulishuo.okdownload.DownloadListener
+import com.liulishuo.okdownload.DownloadTask
+import com.liulishuo.okdownload.core.breakpoint.BreakpointInfo
+import com.liulishuo.okdownload.core.cause.EndCause
+import com.liulishuo.okdownload.core.cause.ResumeFailedCause
 import kotlinx.android.synthetic.main.fragment_work_detail.*
+import java.io.File
+import java.lang.Exception
+
 
 /**
  * 作品详情
@@ -183,6 +192,107 @@ class WorkDetailFragment : BaseFragment<WorksViewModel, FragmentWorkDetailBindin
             }
 
         }
+        iv_download.setOnClickListener {
+            //下载
+            var url = worksBean?.hdPics?.get(view_pager.currentItem)?.url
+            url?.let {
+                createDownloadTask(it,System.currentTimeMillis().toString().plus(".jpg")).enqueue(object: DownloadListener{
+                    override fun taskStart(task: DownloadTask) {
+                    }
+
+                    override fun connectTrialStart(
+                        task: DownloadTask,
+                        requestHeaderFields: MutableMap<String, MutableList<String>>
+                    ) {
+                    }
+
+                    override fun connectTrialEnd(
+                        task: DownloadTask,
+                        responseCode: Int,
+                        responseHeaderFields: MutableMap<String, MutableList<String>>
+                    ) {
+                    }
+
+                    override fun downloadFromBeginning(
+                        task: DownloadTask,
+                        info: BreakpointInfo,
+                        cause: ResumeFailedCause
+                    ) {
+                        progress_bar.visible()
+                    }
+
+                    override fun downloadFromBreakpoint(task: DownloadTask, info: BreakpointInfo) {
+                    }
+
+                    override fun connectStart(
+                        task: DownloadTask,
+                        blockIndex: Int,
+                        requestHeaderFields: MutableMap<String, MutableList<String>>
+                    ) {
+                    }
+
+                    override fun connectEnd(
+                        task: DownloadTask,
+                        blockIndex: Int,
+                        responseCode: Int,
+                        responseHeaderFields: MutableMap<String, MutableList<String>>
+                    ) {
+                    }
+
+                    override fun fetchStart(
+                        task: DownloadTask,
+                        blockIndex: Int,
+                        contentLength: Long
+                    ) {
+                    }
+
+                    override fun fetchProgress(
+                        task: DownloadTask,
+                        blockIndex: Int,
+                        increaseBytes: Long
+                    ) {
+                        progress_bar.progress = blockIndex
+                    }
+
+                    override fun fetchEnd(
+                        task: DownloadTask,
+                        blockIndex: Int,
+                        contentLength: Long
+                    ) {
+
+                    }
+
+                    override fun taskEnd(
+                        task: DownloadTask,
+                        cause: EndCause,
+                        realCause: Exception?
+                    ) {
+                        progress_bar.gone()
+                    }
+                })
+            }
+
+        }
+    }
+
+    private fun createDownloadTask(url: String, fileName: String): DownloadTask {
+        return DownloadTask.Builder(url, File(Constant.DOWNLOAD_PARENT_PATH)) //设置下载地址和下载目录，这两个是必须的参数
+            .setFilename(fileName) //设置下载文件名，没提供的话先看 response header ，再看 url path(即启用下面那项配置)
+            .setFilenameFromResponse(false) //是否使用 response header or url path 作为文件名，此时会忽略指定的文件名，默认false
+            .setPassIfAlreadyCompleted(true) //如果文件已经下载完成，再次下载时，是否忽略下载，默认为true(忽略)，设为false会从头下载
+            .setConnectionCount(1) //需要用几个线程来下载文件，默认根据文件大小确定；如果文件已经 split block，则设置后无效
+            .setPreAllocateLength(false) //在获取资源长度后，设置是否需要为文件预分配长度，默认false
+            .setMinIntervalMillisCallbackProcess(100) //通知调用者的频率，避免anr，默认3000
+            .setWifiRequired(false) //是否只允许wifi下载，默认为false
+            .setAutoCallbackToUIThread(true) //是否在主线程通知调用者，默认为true
+            //.setHeaderMapFields(new HashMap<String, List<String>>())//设置请求头
+            //.addHeader(String key, String value)//追加请求头
+            .setPriority(0) //设置优先级，默认值是0，值越大下载优先级越高
+            .setReadBufferSize(4096) //设置读取缓存区大小，默认4096
+            .setFlushBufferSize(16384) //设置写入缓存区大小，默认16384
+            .setSyncBufferSize(65536) //写入到文件的缓冲区大小，默认65536
+            .setSyncBufferIntervalMillis(2000) //写入文件的最小时间间隔，默认2000
+            .build()
     }
 
     private fun updateCollectState() {

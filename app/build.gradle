@@ -169,7 +169,7 @@ dependencies {
 
     implementation 'com.tencent.bugly:crashreport:4.1.9'
 
-    // core
+    // okdownload
     implementation 'com.liulishuo.okdownload:okdownload:1.0.7'
     // provide sqlite to store breakpoints
     implementation 'com.liulishuo.okdownload:sqlite:1.0.7'
@@ -178,7 +178,7 @@ dependencies {
     implementation 'com.liulishuo.okdownload:okhttp:1.0.7'
     // provide interface to match filedownloader
     implementation 'com.liulishuo.okdownload:filedownloader:1.0.7'
-    // provide interface for kotlin extension
-    implementation 'com.liulishuo.okdownload:ktx1.0.7'
     implementation 'com.squareup.okhttp3:okhttp:3.10.0'
+
+    implementation 'com.github.yanjiabin:ExtendsRingPrigressBar:1.1.1'
 }
