@@ -1,5 +1,6 @@
 package com.gsq.iart.ui.fragment.home
 
+import android.Manifest
 import android.os.Bundle
 import android.util.Log
 import android.view.GestureDetector
@@ -26,15 +27,14 @@ import com.gsq.mvvm.ext.nav
 import com.gsq.mvvm.ext.navigateAction
 import com.gsq.mvvm.ext.view.gone
 import com.gsq.mvvm.ext.view.visible
-import com.gsq.mvvm.network.NetworkUtil.url
 import com.liulishuo.okdownload.DownloadListener
 import com.liulishuo.okdownload.DownloadTask
 import com.liulishuo.okdownload.core.breakpoint.BreakpointInfo
 import com.liulishuo.okdownload.core.cause.EndCause
 import com.liulishuo.okdownload.core.cause.ResumeFailedCause
+import com.tbruyelle.rxpermissions3.RxPermissions
 import kotlinx.android.synthetic.main.fragment_work_detail.*
 import java.io.File
-import java.lang.Exception
 
 
 /**
@@ -196,7 +196,7 @@ class WorkDetailFragment : BaseFragment<WorksViewModel, FragmentWorkDetailBindin
             //下载
             var url = worksBean?.hdPics?.get(view_pager.currentItem)?.url
             url?.let {
-                createDownloadTask(it,System.currentTimeMillis().toString().plus(".jpg")).enqueue(object: DownloadListener{
+                createDownloadTask(it,"art_${System.currentTimeMillis()}.jpg").enqueue(object: DownloadListener{
                     override fun taskStart(task: DownloadTask) {
                     }
 
@@ -275,8 +275,14 @@ class WorkDetailFragment : BaseFragment<WorksViewModel, FragmentWorkDetailBindin
         }
     }
 
+    private var permissions = arrayListOf(
+        Manifest.permission.READ_EXTERNAL_STORAGE,
+        Manifest.permission.WRITE_EXTERNAL_STORAGE)
+
+
+
     private fun createDownloadTask(url: String, fileName: String): DownloadTask {
-        return DownloadTask.Builder(url, File(Constant.DOWNLOAD_PARENT_PATH)) //设置下载地址和下载目录，这两个是必须的参数
+        return DownloadTask.Builder(url, File(Constant.download_path)) //设置下载地址和下载目录，这两个是必须的参数
             .setFilename(fileName) //设置下载文件名，没提供的话先看 response header ，再看 url path(即启用下面那项配置)
             .setFilenameFromResponse(false) //是否使用 response header or url path 作为文件名，此时会忽略指定的文件名，默认false
             .setPassIfAlreadyCompleted(true) //如果文件已经下载完成，再次下载时，是否忽略下载，默认为true(忽略)，设为false会从头下载

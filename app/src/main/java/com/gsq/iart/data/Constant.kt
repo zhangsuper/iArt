@@ -1,6 +1,7 @@
 package com.gsq.iart.data
 
-import com.gsq.iart.app.App
+import android.os.Environment
+import com.gsq.iart.app.util.FileUtil
 import java.io.File
 
 object Constant {
@@ -24,5 +25,13 @@ object Constant {
 
     const val DATA_WORK = "data_work"
     const val INTENT_TYPE = "intent_type"
-    var DOWNLOAD_PARENT_PATH = App.instance.getExternalFilesDir(null)?.absolutePath + File.separator + "download"
+//    var DOWNLOAD_PARENT_PATH = App.instance.getExternalFilesDir(null)?.absolutePath + File.separator + "download"
+    var DOWNLOAD_PARENT_PATH = Environment.getExternalStorageDirectory().absolutePath + File.separator + "yishuguan"
+
+    const val CLIENT_PATH = "yishuguan" //SD卡根目录存储位置
+    const val DOWNLOAD_PATH = "/download/"//下载目录
+
+    val download_path: String = FileUtil.getSavePath(CLIENT_PATH + DOWNLOAD_PATH)
+
+
 }
