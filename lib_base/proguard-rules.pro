@@ -56,10 +56,11 @@
 -keep class retrofit2.** { *; }
 -keepattributes Signature
 -keepattributes Exceptions
-################RxPermissions#################
--keep class com.tbruyelle.rxpermissions2.** { *; }
--keep interface com.tbruyelle.rxpermissions2.** { *; }
-
+################easypermissions#################
+-keep public class pub.devrel.easypermissions.**{*;}
+-keepclassmembers class * {
+@pub.devrel.easypermissions.AfterPermissionGranted ;
+}
 ################ ViewBinding & DataBinding ###############
 -keepclassmembers class * implements androidx.viewbinding.ViewBinding {
   public static * inflate(android.view.LayoutInflater);

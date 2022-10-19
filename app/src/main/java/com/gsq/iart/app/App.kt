@@ -2,6 +2,8 @@ package com.gsq.iart.app
 
 import androidx.multidex.MultiDex
 import com.blankj.utilcode.util.LogUtils
+import com.downloader.PRDownloader
+import com.downloader.PRDownloaderConfig
 import com.gsq.iart.app.weight.loadCallBack.EmptyCallback
 import com.gsq.iart.app.weight.loadCallBack.ErrorCallback
 import com.gsq.iart.app.weight.loadCallBack.LoadingCallback
@@ -10,6 +12,7 @@ import com.kingja.loadsir.callback.SuccessCallback
 import com.kingja.loadsir.core.LoadSir
 import com.tencent.bugly.crashreport.CrashReport
 import com.tencent.mmkv.MMKV
+
 
 class App : BaseApp() {
 
@@ -31,6 +34,13 @@ class App : BaseApp() {
             .commit()
         initBugly()
         LogUtils.getConfig().globalTag = "my_tag"
+
+        val config = PRDownloaderConfig.newBuilder()
+            .setDatabaseEnabled(true)
+            .setReadTimeout(30000)
+            .setConnectTimeout(30000)
+            .build()
+        PRDownloader.initialize(applicationContext, config)
     }
 
     private fun initBugly() {

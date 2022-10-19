@@ -1,6 +1,7 @@
 package com.gsq.iart.ui.fragment.home
 
 import android.Manifest
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.GestureDetector
@@ -8,8 +9,11 @@ import android.view.MotionEvent
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.viewpager2.widget.ViewPager2
+import com.blankj.utilcode.util.FileUtils
 import com.blankj.utilcode.util.LogUtils
 import com.blankj.utilcode.util.ToastUtils
+import com.downloader.OnDownloadListener
+import com.downloader.PRDownloader
 import com.gsq.iart.R
 import com.gsq.iart.app.base.BaseFragment
 import com.gsq.iart.app.ext.init
@@ -19,6 +23,7 @@ import com.gsq.iart.data.Constant
 import com.gsq.iart.data.Constant.COMPLEX_TYPE_COLLECT
 import com.gsq.iart.data.Constant.COMPLEX_TYPE_GROUP
 import com.gsq.iart.data.Constant.DATA_WORK
+import com.gsq.iart.data.Constant.DOWNLOAD_PARENT_PATH
 import com.gsq.iart.data.bean.DetailArgsType
 import com.gsq.iart.data.bean.WorksBean
 import com.gsq.iart.databinding.FragmentWorkDetailBinding
@@ -27,14 +32,9 @@ import com.gsq.mvvm.ext.nav
 import com.gsq.mvvm.ext.navigateAction
 import com.gsq.mvvm.ext.view.gone
 import com.gsq.mvvm.ext.view.visible
-import com.liulishuo.okdownload.DownloadListener
-import com.liulishuo.okdownload.DownloadTask
-import com.liulishuo.okdownload.core.breakpoint.BreakpointInfo
-import com.liulishuo.okdownload.core.cause.EndCause
-import com.liulishuo.okdownload.core.cause.ResumeFailedCause
-import com.tbruyelle.rxpermissions3.RxPermissions
 import kotlinx.android.synthetic.main.fragment_work_detail.*
-import java.io.File
+import pub.devrel.easypermissions.AfterPermissionGranted
+import pub.devrel.easypermissions.EasyPermissions
 
 
 /**
@@ -44,6 +44,7 @@ class WorkDetailFragment : BaseFragment<WorksViewModel, FragmentWorkDetailBindin
 
     private var worksBean: WorksBean? = null
     private var intentType: String? = null
+    private var RC_EXTERNAL_STORAGE_CODE: Int = 10
 
     private lateinit var fragmentList: ArrayList<Fragment>
 
@@ -193,112 +194,70 @@ class WorkDetailFragment : BaseFragment<WorksViewModel, FragmentWorkDetailBindin
 
         }
         iv_download.setOnClickListener {
-            //下载
-            var url = worksBean?.hdPics?.get(view_pager.currentItem)?.url
-            url?.let {
-                createDownloadTask(it,"art_${System.currentTimeMillis()}.jpg").enqueue(object: DownloadListener{
-                    override fun taskStart(task: DownloadTask) {
-                    }
-
-                    override fun connectTrialStart(
-                        task: DownloadTask,
-                        requestHeaderFields: MutableMap<String, MutableList<String>>
-                    ) {
-                    }
-
-                    override fun connectTrialEnd(
-                        task: DownloadTask,
-                        responseCode: Int,
-                        responseHeaderFields: MutableMap<String, MutableList<String>>
-                    ) {
-                    }
-
-                    override fun downloadFromBeginning(
-                        task: DownloadTask,
-                        info: BreakpointInfo,
-                        cause: ResumeFailedCause
-                    ) {
-                        progress_bar.visible()
-                    }
-
-                    override fun downloadFromBreakpoint(task: DownloadTask, info: BreakpointInfo) {
-                    }
-
-                    override fun connectStart(
-                        task: DownloadTask,
-                        blockIndex: Int,
-                        requestHeaderFields: MutableMap<String, MutableList<String>>
-                    ) {
-                    }
-
-                    override fun connectEnd(
-                        task: DownloadTask,
-                        blockIndex: Int,
-                        responseCode: Int,
-                        responseHeaderFields: MutableMap<String, MutableList<String>>
-                    ) {
-                    }
-
-                    override fun fetchStart(
-                        task: DownloadTask,
-                        blockIndex: Int,
-                        contentLength: Long
-                    ) {
-                    }
-
-                    override fun fetchProgress(
-                        task: DownloadTask,
-                        blockIndex: Int,
-                        increaseBytes: Long
-                    ) {
-                        progress_bar.progress = blockIndex
-                    }
-
-                    override fun fetchEnd(
-                        task: DownloadTask,
-                        blockIndex: Int,
-                        contentLength: Long
-                    ) {
-
-                    }
-
-                    override fun taskEnd(
-                        task: DownloadTask,
-                        cause: EndCause,
-                        realCause: Exception?
-                    ) {
-                        progress_bar.gone()
-                    }
-                })
+            if (CacheUtil.isLogin()) {
+                //下载
+                checkStoragePermission()
+            } else {
+                //跳转登录界面
+                nav().navigateAction(R.id.action_mainFragment_to_loginFragment)
             }
-
         }
     }
 
-    private var permissions = arrayListOf(
-        Manifest.permission.READ_EXTERNAL_STORAGE,
-        Manifest.permission.WRITE_EXTERNAL_STORAGE)
+    @AfterPermissionGranted(10)
+    private fun checkStoragePermission() {
+        if (EasyPermissions.hasPermissions(
+                requireContext(),
+                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Manifest.permission.READ_EXTERNAL_STORAGE
+            )
+        ) {
+            // Already have permission, do the thing
+            var url = worksBean?.hdPics?.get(view_pager.currentItem)?.url
+            url?.let {
+                FileUtils.createOrExistsDir(DOWNLOAD_PARENT_PATH)
+                startDownload(
+                    it,
+                    Constant.DOWNLOAD_PARENT_PATH,
+                    "art_${System.currentTimeMillis()}.jpg"
+                )
+            }
+        } else {
+            // Do not have permissions, request them now
+            EasyPermissions.requestPermissions(
+                requireActivity(),
+                "应用程序需要您的存储权限",
+                RC_EXTERNAL_STORAGE_CODE,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Manifest.permission.READ_EXTERNAL_STORAGE
+            )
+        }
+    }
 
-
-
-    private fun createDownloadTask(url: String, fileName: String): DownloadTask {
-        return DownloadTask.Builder(url, File(Constant.download_path)) //设置下载地址和下载目录，这两个是必须的参数
-            .setFilename(fileName) //设置下载文件名，没提供的话先看 response header ，再看 url path(即启用下面那项配置)
-            .setFilenameFromResponse(false) //是否使用 response header or url path 作为文件名，此时会忽略指定的文件名，默认false
-            .setPassIfAlreadyCompleted(true) //如果文件已经下载完成，再次下载时，是否忽略下载，默认为true(忽略)，设为false会从头下载
-            .setConnectionCount(1) //需要用几个线程来下载文件，默认根据文件大小确定；如果文件已经 split block，则设置后无效
-            .setPreAllocateLength(false) //在获取资源长度后，设置是否需要为文件预分配长度，默认false
-            .setMinIntervalMillisCallbackProcess(100) //通知调用者的频率，避免anr，默认3000
-            .setWifiRequired(false) //是否只允许wifi下载，默认为false
-            .setAutoCallbackToUIThread(true) //是否在主线程通知调用者，默认为true
-            //.setHeaderMapFields(new HashMap<String, List<String>>())//设置请求头
-            //.addHeader(String key, String value)//追加请求头
-            .setPriority(0) //设置优先级，默认值是0，值越大下载优先级越高
-            .setReadBufferSize(4096) //设置读取缓存区大小，默认4096
-            .setFlushBufferSize(16384) //设置写入缓存区大小，默认16384
-            .setSyncBufferSize(65536) //写入到文件的缓冲区大小，默认65536
-            .setSyncBufferIntervalMillis(2000) //写入文件的最小时间间隔，默认2000
+    private fun startDownload(url: String, dirPath: String, fileName: String) {
+        val downloadId = PRDownloader.download(url, dirPath, fileName)
             .build()
+            .setOnStartOrResumeListener {
+                progress_bar.visible()
+            }
+            .setOnPauseListener { }
+            .setOnCancelListener {
+                progress_bar.gone()
+            }
+            .setOnProgressListener {
+                progress_bar.progress = (it.currentBytes * 100 / it.totalBytes).toInt()
+            }
+            .start(object : OnDownloadListener {
+                override fun onDownloadComplete() {
+                    progress_bar.gone()
+                    ToastUtils.showLong("下载成功")
+                }
+
+                override fun onError(error: com.downloader.Error?) {
+                    progress_bar.gone()
+                    ToastUtils.showLong("下载失败！")
+                }
+            })
     }
 
     private fun updateCollectState() {
@@ -341,5 +300,22 @@ class WorkDetailFragment : BaseFragment<WorksViewModel, FragmentWorkDetailBindin
             return false
         }
 
+    }
+
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == RC_EXTERNAL_STORAGE_CODE) {
+            checkStoragePermission()
+        }
     }
 }

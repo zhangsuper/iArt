@@ -181,4 +181,5 @@ dependencies {
     implementation 'com.squareup.okhttp3:okhttp:3.10.0'
 
     implementation 'com.github.yanjiabin:ExtendsRingPrigressBar:1.1.1'
+    implementation 'com.mindorks.android:prdownloader:0.6.0'
 }

@@ -9,8 +9,10 @@ object Constant {
     //glide缓存目录和缓存池大小
     const val GLIDE_CACHE_DIR = "AppGlide"
     const val GLIDE_CACHE_SIZE = 500 * 1024 * 1024
+
     // 是否允许图片加载失败重试一次
     const val ENABLE_IMAGE_AUTO_RETRY = true
+
     // 封面图加载失败重试等待时间(毫秒）
     const val LOAD_PIC_DELAY = 200L
 
@@ -25,11 +27,15 @@ object Constant {
 
     const val DATA_WORK = "data_work"
     const val INTENT_TYPE = "intent_type"
-//    var DOWNLOAD_PARENT_PATH = App.instance.getExternalFilesDir(null)?.absolutePath + File.separator + "download"
-    var DOWNLOAD_PARENT_PATH = Environment.getExternalStorageDirectory().absolutePath + File.separator + "yishuguan"
+
+//        var DOWNLOAD_PARENT_PATH = App.instance.getExternalFilesDir(null)?.absolutePath + File.separator + "download"
+
 
     const val CLIENT_PATH = "yishuguan" //SD卡根目录存储位置
-    const val DOWNLOAD_PATH = "/download/"//下载目录
+    const val DOWNLOAD_PATH = "download"//下载目录
+
+    var DOWNLOAD_PARENT_PATH =
+        Environment.getExternalStorageDirectory().absolutePath + File.separator + "download"
 
     val download_path: String = FileUtil.getSavePath(CLIENT_PATH + DOWNLOAD_PATH)
 
