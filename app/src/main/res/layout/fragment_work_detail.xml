@@ -117,7 +117,8 @@
             android:layout_width="@dimen/dp_0"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:visibility="gone">
 
             <ImageView
                 android:id="@+id/iv_share"

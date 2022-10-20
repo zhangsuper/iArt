@@ -125,4 +125,10 @@ interface ApiService {
     @POST("art/search/helper/hotSearch")
     suspend fun getHotSearch(): ApiResponse<ArrayList<String>>
 
+    /**
+     * 下载次数加1
+     */
+    @POST("art/work/count/download/inc")
+    suspend fun downloadInc(@Query("id") id: String): ApiResponse<String>
+
 }

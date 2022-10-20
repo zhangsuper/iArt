@@ -233,4 +233,18 @@ class WorksViewModel : BaseViewModel() {
             })
     }
 
+    fun downloadInc(id: String){
+        request(
+            { apiService.downloadInc(id) },
+            {
+                val updateDataUiState = UpdateUiState(isSuccess = true, data = "success")
+            },
+            {
+                //请求失败
+                val updateDataUiState =
+                    UpdateUiState(isSuccess = false, errorMsg = it.errorMsg, data = "fail")
+            }
+        )
+    }
+
 }

@@ -110,7 +110,8 @@ class MemberFragment : BaseFragment<MemberViewModel, FragmentMemberBinding>() {
                 ToastUtils.showLong(it.errMessage)
             }
             vipPriceAdapter.data = it.listData
-            vipPriceAdapter.notifyDataSetChanged()
+//            vipPriceAdapter.notifyDataSetChanged()
+            vipPriceAdapter.selectItem(vipPriceAdapter.getItem(0) as PayConfigBean)
         }
         mViewModel.preparePayDataState.observe(viewLifecycleOwner) {
             if (it.isSuccess) {

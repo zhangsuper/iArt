@@ -145,7 +145,7 @@
             app:item_divider_visible="false"
             app:item_right_icon_visible="false"
             app:item_right_msg="@string/app_copy"
-            app:item_right_sub_msg="12345678" />
+            app:item_right_sub_msg="1923249099" />
 
     </LinearLayout>
 

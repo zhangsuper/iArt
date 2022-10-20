@@ -195,8 +195,13 @@ class WorkDetailFragment : BaseFragment<WorksViewModel, FragmentWorkDetailBindin
         }
         iv_download.setOnClickListener {
             if (CacheUtil.isLogin()) {
-                //下载
-                checkStoragePermission()
+                if(CacheUtil.getUser()?.memberType ==1){
+                    //下载
+                    checkStoragePermission()
+                }else{
+                    //跳转到会员页
+                    nav().navigateAction(R.id.action_workDetailFragment_to_memberFragment)
+                }
             } else {
                 //跳转登录界面
                 nav().navigateAction(R.id.action_mainFragment_to_loginFragment)
@@ -221,6 +226,9 @@ class WorkDetailFragment : BaseFragment<WorksViewModel, FragmentWorkDetailBindin
                     Constant.DOWNLOAD_PARENT_PATH,
                     "art_${System.currentTimeMillis()}.jpg"
                 )
+                worksBean?.id?.let {
+                    mViewModel.downloadInc(it)
+                }
             }
         } else {
             // Do not have permissions, request them now

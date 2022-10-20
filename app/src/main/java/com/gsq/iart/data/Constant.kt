@@ -1,6 +1,7 @@
 package com.gsq.iart.data
 
 import android.os.Environment
+import com.gsq.iart.app.App
 import com.gsq.iart.app.util.FileUtil
 import java.io.File
 
@@ -16,7 +17,7 @@ object Constant {
     // 封面图加载失败重试等待时间(毫秒）
     const val LOAD_PIC_DELAY = 200L
 
-    const val DEFAULT_REQUEST_SIZE = 10//每页大小
+    const val DEFAULT_REQUEST_SIZE = 20//每页大小
 
     const val COMPLEX_TYPE_GROUP = "type_group"//分组
     const val COMPLEX_TYPE_SEARCH = "type_search"//搜索
@@ -34,8 +35,7 @@ object Constant {
     const val CLIENT_PATH = "yishuguan" //SD卡根目录存储位置
     const val DOWNLOAD_PATH = "download"//下载目录
 
-    var DOWNLOAD_PARENT_PATH =
-        Environment.getExternalStorageDirectory().absolutePath + File.separator + "download"
+    var DOWNLOAD_PARENT_PATH = FileUtil.getSDPath(App.instance) + File.separator + "yishuguan"
 
     val download_path: String = FileUtil.getSavePath(CLIENT_PATH + DOWNLOAD_PATH)
 
