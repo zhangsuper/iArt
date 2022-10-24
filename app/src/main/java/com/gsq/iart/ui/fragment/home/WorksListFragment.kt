@@ -9,6 +9,7 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.airbnb.mvrx.args
 import com.airbnb.mvrx.asMavericksArgs
+import com.blankj.utilcode.util.ScreenUtils
 import com.blankj.utilcode.util.SizeUtils
 import com.gsq.iart.R
 import com.gsq.iart.app.base.BaseFragment
@@ -26,6 +27,7 @@ import com.gsq.iart.data.bean.WorksBean
 import com.gsq.iart.data.request.WorkPropSearchBean
 import com.gsq.iart.databinding.FragmentWorksListBinding
 import com.gsq.iart.ui.adapter.WorksAdapter
+import com.gsq.iart.ui.dialog.AllConditionPopupWindow
 import com.gsq.iart.ui.dialog.ConditionPopupWindow
 import com.gsq.iart.viewmodel.WorksViewModel
 import com.gsq.mvvm.ext.nav
@@ -148,8 +150,10 @@ class WorksListFragment : BaseFragment<WorksViewModel, FragmentWorksListBinding>
         condition_screen_view.setOnClickListener {
             //筛选
             selectType = 4
-            startAnimator(iv_screen_frame, true)
-            showConditionPopupWindow(classifyBean?.get(3)?.subs)
+//            startAnimator(iv_screen_frame, true)
+//            showConditionPopupWindow(classifyBean?.get(3)?.subs)
+            //全部筛选条件弹窗
+            showAllConditionPopupWindow(classifyBean?.get(3)?.subs)
         }
     }
 
@@ -237,11 +241,26 @@ class WorksListFragment : BaseFragment<WorksViewModel, FragmentWorksListBinding>
         })
     }
 
+    private fun showAllConditionPopupWindow(list: List<ConditionClassifyBean>?) {
+        var selectedItem: List<ConditionClassifyBean>? = null
+        if (propSearchMap.containsKey(selectType)) {
+            selectedItem = propSearchMap[selectType]
+        }
+        var popupWindow = AllConditionPopupWindow(
+            requireContext(),
+            ScreenUtils.getScreenWidth() * 3 / 4,
+            ViewGroup.LayoutParams.MATCH_PARENT
+        )
+        popupWindow.setShowingBackgroundAlpha(0.5f)
+        list?.let { popupWindow.setData(it, selectedItem) }
+        popupWindow.showPopupFromScreenRight(R.layout.fragment_works_list)
+    }
+
     private fun initConditionView() {
         tv_years.text = classifyBean?.get(0)?.name
         tv_theme.text = classifyBean?.get(1)?.name
         tv_size.text = classifyBean?.get(2)?.name
-        tv_screen.text = classifyBean?.get(3)?.name
+        tv_screen.text = "筛选"
     }
 
     private fun startAnimator(targetView: View, isOpen: Boolean) {
