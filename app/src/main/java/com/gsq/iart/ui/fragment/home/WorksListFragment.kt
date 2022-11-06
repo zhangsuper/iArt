@@ -153,7 +153,9 @@ class WorksListFragment : BaseFragment<WorksViewModel, FragmentWorksListBinding>
 //            startAnimator(iv_screen_frame, true)
 //            showConditionPopupWindow(classifyBean?.get(3)?.subs)
             //全部筛选条件弹窗
-            showAllConditionPopupWindow(classifyBean?.get(3)?.subs)
+            classifyBean?.let {
+                showAllConditionPopupWindow(it)
+            }
         }
     }
 
@@ -248,7 +250,7 @@ class WorksListFragment : BaseFragment<WorksViewModel, FragmentWorksListBinding>
         }
         var popupWindow = AllConditionPopupWindow(
             requireContext(),
-            ScreenUtils.getScreenWidth() * 3 / 4,
+            ScreenUtils.getScreenWidth() * 4 / 5,
             ViewGroup.LayoutParams.MATCH_PARENT
         )
         popupWindow.setShowingBackgroundAlpha(0.5f)
