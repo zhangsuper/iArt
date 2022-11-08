@@ -32,6 +32,14 @@ class AllConditionAdapter constructor(private var isFirst: Boolean) :
                 var mChildAdapter = ConditionChildAdapter()
                 mRecyclerView.adapter = mChildAdapter
                 mChildAdapter.data = item.subs as MutableList<ConditionClassifyBean>
+                mChildAdapter.setOnItemClickListener { adapter, view, position ->
+                    mChildAdapter.data.forEach {
+                        it.isSelected = false
+                    }
+                    //回调选中
+                    mChildAdapter.data[position].isSelected = true
+                    mChildAdapter?.notifyDataSetChanged()
+                }
             }
         }
     }

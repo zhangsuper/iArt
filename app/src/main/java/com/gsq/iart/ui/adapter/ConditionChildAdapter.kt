@@ -12,5 +12,12 @@ class ConditionChildAdapter :
     override fun convert(holder: BaseViewHolder, item: ConditionClassifyBean) {
         var mName = holder.getView<TextView>(R.id.tv_name)
         mName.text = item.name
+        if (item.isSelected) {
+            mName.setBackgroundResource(R.drawable.bg_141414_conner_24)
+            mName.setTextColor(mName.context.resources.getColor(R.color.white))
+        } else {
+            mName.setBackgroundResource(R.drawable.bg_eff1f5_conner_24)
+            mName.setTextColor(mName.context.resources.getColor(R.color.color_888888))
+        }
     }
 }
