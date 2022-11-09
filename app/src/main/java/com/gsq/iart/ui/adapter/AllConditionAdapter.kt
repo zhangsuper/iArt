@@ -27,12 +27,26 @@ class AllConditionAdapter constructor(private var isFirst: Boolean) :
                 var mChildAdapter = AllConditionAdapter(false)
                 mRecyclerView.adapter = mChildAdapter
                 mChildAdapter.data = item.subs as MutableList<ConditionClassifyBean>
+                mChildAdapter.onBackListener(object : OnBackListener {
+                    override fun onClick() {
+                        mChildAdapter.data.forEach {
+                            if (it.subs != null) {
+                                it.subs.forEach {
+                                    it.isSelected = false
+                                }
+                            }
+                        }
+                        mChildAdapter?.notifyDataSetChanged()
+                    }
+                })
+
             } else {
                 mRecyclerView.layoutManager = GridLayoutManager(mRecyclerView.context, 2)
                 var mChildAdapter = ConditionChildAdapter()
                 mRecyclerView.adapter = mChildAdapter
                 mChildAdapter.data = item.subs as MutableList<ConditionClassifyBean>
                 mChildAdapter.setOnItemClickListener { adapter, view, position ->
+                    onBackListener?.onClick()
                     mChildAdapter.data.forEach {
                         it.isSelected = false
                     }
@@ -42,5 +56,16 @@ class AllConditionAdapter constructor(private var isFirst: Boolean) :
                 }
             }
         }
+    }
+
+    private var onBackListener: OnBackListener? = null
+
+    interface OnBackListener {
+        fun onClick()
+    }
+
+    fun onBackListener(listener: OnBackListener): AllConditionAdapter {
+        this.onBackListener = listener
+        return this
     }
 }

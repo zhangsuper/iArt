@@ -6,6 +6,7 @@ import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.blankj.utilcode.util.ToastUtils
 import com.gsq.iart.R
 import com.gsq.iart.data.bean.ConditionClassifyBean
 import com.gsq.iart.ui.adapter.AllConditionAdapter
@@ -30,7 +31,7 @@ class AllConditionPopupWindow : XPopupWindow {
     private var onBackListener: OnBackListener? = null
 
     interface OnBackListener {
-        fun onItemClick(grade1Item: ConditionClassifyBean, grade2Item: ConditionClassifyBean?)
+        fun onItemClick(selectItems: HashMap<Int, MutableList<ConditionClassifyBean>>)
         fun onDismiss()
         fun onReset()
     }
@@ -55,14 +56,21 @@ class AllConditionPopupWindow : XPopupWindow {
         resetBtn = findViewById(R.id.reset_btn)
         requireBtn = findViewById(R.id.require_btn)
         resetBtn?.setOnClickListener {
-//            leftData.forEach {
-//                it.isSelected = false
-//            }
-//            rightAdapter?.data?.forEach {
-//                it.isSelected = false
-//            }
-//            onBackListener?.onReset()
-            dismiss()
+            dataList.forEach { bean ->
+                if (bean.subs != null) {
+                    bean.subs.forEach {
+                        it.isSelected = false
+                        if (it.subs != null) {
+                            it.subs.forEach {
+                                it.isSelected = false
+                            }
+                        }
+                    }
+                }
+            }
+            mAdapter?.notifyDataSetChanged()
+            onBackListener?.onReset()
+//            dismiss()
         }
         requireBtn?.setOnClickListener {
 //            currentSelectGrade1Item?.let { item1 ->
@@ -80,26 +88,38 @@ class AllConditionPopupWindow : XPopupWindow {
 //            } ?: let {
 //                ToastUtils.showLong("请选择类型")
 //            }
+            var propSearchMap = hashMapOf<Int, MutableList<ConditionClassifyBean>>()
+            mAdapter?.data?.forEach { parentBean ->
+                var selectedItem = mutableListOf<ConditionClassifyBean>()
+                if (parentBean.subs != null) {
+                    parentBean.subs.forEach { firstBean ->
+                        if (firstBean.isSelected) {
+                            selectedItem.add(firstBean)
+                            propSearchMap.put(parentBean.id, selectedItem)
+                        } else {
+                            if (firstBean.subs != null) {
+                                firstBean.subs.forEach { secondBean ->
+                                    if (secondBean.isSelected) {
+                                        selectedItem.add(firstBean)
+                                        selectedItem.add(secondBean)
+                                        propSearchMap.put(parentBean.id, selectedItem)
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            if (propSearchMap.size > 0) {
+                onBackListener?.onItemClick(propSearchMap)
+                dismiss()
+            } else {
+                ToastUtils.showLong("请选择标签")
+            }
         }
         mAdapter = AllConditionAdapter(true)
         dataList = mutableListOf()
         recyclerView?.adapter = mAdapter
-
-        mAdapter?.setOnItemClickListener { adapter, view, position ->
-//            if (dataList[position].subs != null) {
-//                rightAdapter?.data = (leftData[position].subs as MutableList<ConditionClassifyBean>)
-//                rightAdapter?.notifyDataSetChanged()
-//                rightRecyclerView?.visible()
-//            }
-//            leftData.forEach {
-//                it.isSelected = false
-//            }
-//            //回调选中
-//            currentSelectGrade1Item?.isSelected = false
-//            currentSelectGrade1Item = leftData[position]
-//            currentSelectGrade1Item?.isSelected = true
-//            leftAdapter?.notifyDataSetChanged()
-        }
     }
 
     fun setData(list: List<ConditionClassifyBean>, selectedItem: List<ConditionClassifyBean>?) {

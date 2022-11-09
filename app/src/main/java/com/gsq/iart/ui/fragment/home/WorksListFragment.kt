@@ -131,19 +131,19 @@ class WorksListFragment : BaseFragment<WorksViewModel, FragmentWorksListBinding>
         }
         condition_years_view.setOnClickListener {
             //年代
-            selectType = 1
+            selectType = classifyBean?.get(0)?.id ?: 0
             startAnimator(iv_years_frame, true)
             showConditionPopupWindow(classifyBean?.get(0)?.subs)
         }
         condition_theme_view.setOnClickListener {
             //题材
-            selectType = 2
+            selectType = classifyBean?.get(1)?.id ?: 0
             startAnimator(iv_theme_frame, true)
             showConditionPopupWindow(classifyBean?.get(1)?.subs)
         }
         condition_size_view.setOnClickListener {
             //尺寸
-            selectType = 3
+            selectType = classifyBean?.get(2)?.id ?: 0
             startAnimator(iv_size_frame, true)
             showConditionPopupWindow(classifyBean?.get(2)?.subs)
         }
@@ -177,32 +177,25 @@ class WorksListFragment : BaseFragment<WorksViewModel, FragmentWorksListBinding>
                 grade2Item: ConditionClassifyBean?
             ) {
                 when (selectType) {
-                    1 -> {
+                    classifyBean?.get(0)?.id ?: 0 -> {
                         if (grade2Item != null) {
                             tv_years.text = grade2Item.name
                         } else {
                             tv_years.text = grade1Item.name
                         }
                     }
-                    2 -> {
+                    classifyBean?.get(1)?.id ?: 0 -> {
                         if (grade2Item != null) {
                             tv_theme.text = grade2Item.name
                         } else {
                             tv_theme.text = grade1Item.name
                         }
                     }
-                    3 -> {
+                    classifyBean?.get(2)?.id ?: 0 -> {
                         if (grade2Item != null) {
                             tv_size.text = grade2Item.name
                         } else {
                             tv_size.text = grade1Item.name
-                        }
-                    }
-                    4 -> {
-                        if (grade2Item != null) {
-                            tv_screen.text = grade2Item.name
-                        } else {
-                            tv_screen.text = grade1Item.name
                         }
                     }
                 }
@@ -217,16 +210,16 @@ class WorksListFragment : BaseFragment<WorksViewModel, FragmentWorksListBinding>
 
             override fun onDismiss() {
                 when (selectType) {
-                    1 -> {
+                    classifyBean?.get(0)?.id ?: 0 -> {
                         startAnimator(iv_years_frame, false)
                     }
-                    2 -> {
+                    classifyBean?.get(1)?.id ?: 0 -> {
                         startAnimator(iv_theme_frame, false)
                     }
-                    3 -> {
+                    classifyBean?.get(2)?.id ?: 0 -> {
                         startAnimator(iv_size_frame, false)
                     }
-                    4 -> {
+                    9999 -> {
                         startAnimator(iv_screen_frame, false)
                     }
                 }
@@ -256,6 +249,49 @@ class WorksListFragment : BaseFragment<WorksViewModel, FragmentWorksListBinding>
         popupWindow.setShowingBackgroundAlpha(0.5f)
         list?.let { popupWindow.setData(it, selectedItem) }
         popupWindow.showPopupFromScreenRight(R.layout.fragment_works_list)
+        popupWindow.onBackListener(object : AllConditionPopupWindow.OnBackListener {
+            override fun onItemClick(
+                selectItems: HashMap<Int, MutableList<ConditionClassifyBean>>
+            ) {
+                propSearchMap.clear()
+                selectItems.forEach {
+                    propSearchMap.put(it.key, it.value)
+
+                    if (classifyBean?.get(0)?.id == it.key) {
+                        if (it.value.size == 2) {
+                            tv_years.text = it.value[1].name
+                        } else {
+                            tv_years.text = it.value[0].name
+                        }
+                    }
+                    if (classifyBean?.get(1)?.id == it.key) {
+                        if (it.value.size == 2) {
+                            tv_theme.text = it.value[1].name
+                        } else {
+                            tv_theme.text = it.value[0].name
+                        }
+                    }
+                    if (classifyBean?.get(2)?.id == it.key) {
+                        if (it.value.size == 2) {
+                            tv_size.text = it.value[1].name
+                        } else {
+                            tv_size.text = it.value[0].name
+                        }
+                    }
+                }
+//                initConditionView()
+                requestData(true)
+            }
+
+            override fun onDismiss() {
+            }
+
+            override fun onReset() {
+                propSearchMap.clear()
+                initConditionView()
+                requestData(true)
+            }
+        })
     }
 
     private fun initConditionView() {
