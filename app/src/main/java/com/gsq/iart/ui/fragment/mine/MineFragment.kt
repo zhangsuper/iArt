@@ -59,7 +59,7 @@ class MineFragment : BaseFragment<BaseViewModel, FragmentMineBinding>() {
     private fun setLoginStatus() {
         if (CacheUtil.isLogin()) {
             nike_name.text = CacheUtil.getUser()?.nickname
-            user_id.text = CacheUtil.getUser()?.openid
+            user_id.text = "ID:${CacheUtil.getUser()?.userId}"
             GlideHelper.load(iv_avatar, CacheUtil.getUser()?.headImgUrl)
             if (CacheUtil.getUser()?.memberType == 1) {
                 expired_time.visible()

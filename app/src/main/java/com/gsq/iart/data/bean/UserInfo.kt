@@ -11,5 +11,6 @@ data class UserInfo(
     val memberType: Int,//会员类型：0=普通会员，1=国画通
     val nickname: String,
     val openid: String,
-    val token: String
+    val token: String,
+    val userId: String
 ) : Serializable
