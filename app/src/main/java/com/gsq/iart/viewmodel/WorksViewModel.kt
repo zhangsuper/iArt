@@ -200,6 +200,9 @@ class WorksViewModel : BaseViewModel() {
     }
 
     fun collectWorks(isRefresh: Boolean) {
+        if (isRefresh) {
+            pageNo = 0
+        }
         var workPageRequestParam = WorkPageRequestParam(
             pageNum = pageNo,
             pageSize = DEFAULT_REQUEST_SIZE,
@@ -233,7 +236,7 @@ class WorksViewModel : BaseViewModel() {
             })
     }
 
-    fun downloadInc(id: String){
+    fun downloadInc(id: String) {
         request(
             { apiService.downloadInc(id) },
             {
