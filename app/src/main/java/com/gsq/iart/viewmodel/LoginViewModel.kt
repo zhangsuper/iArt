@@ -11,6 +11,7 @@ class LoginViewModel : BaseViewModel() {
 
     var loginResultDataState = MutableLiveData<UpdateUiState<UserInfo>>()
     var logoutResultDataState = MutableLiveData<UpdateUiState<Any>>()
+    var writeOffDataState = MutableLiveData<UpdateUiState<Any>>()
 
 
     fun loginByWeChat(code: String) {
@@ -53,6 +54,31 @@ class LoginViewModel : BaseViewModel() {
                     errorMsg = it.errorMsg
                 )
                 logoutResultDataState.value = updateDataUiState
+            }, isShowDialog = true
+        )
+    }
+
+    /**
+     * 注销
+     */
+    fun writeOff() {
+        request(
+            { apiService.writeOff() },
+            {
+                //请求成功
+                val updateDataUiState = UpdateUiState(
+                    isSuccess = true,
+                    data = it,
+                )
+                writeOffDataState.value = updateDataUiState
+            },
+            {
+                //请求失败
+                val updateDataUiState = UpdateUiState<Any>(
+                    isSuccess = false,
+                    errorMsg = it.errorMsg
+                )
+                writeOffDataState.value = updateDataUiState
             }, isShowDialog = true
         )
     }

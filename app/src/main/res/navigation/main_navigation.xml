@@ -93,6 +93,14 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
+
+        <action
+            android:id="@+id/action_settingFragment_to_writeOffFragment"
+            app:destination="@+id/writeOffFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
 
     <fragment
@@ -154,6 +162,12 @@
     <fragment
         android:id="@+id/workIntroduceFragment"
         android:name="com.gsq.iart.ui.fragment.home.WorkIntroduceFragment">
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/writeOffFragment"
+        android:name="com.gsq.iart.ui.fragment.mine.WriteOffFragment">
 
     </fragment>
 

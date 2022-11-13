@@ -31,7 +31,7 @@ class AllConditionPopupWindow : XPopupWindow {
     private var onBackListener: OnBackListener? = null
 
     interface OnBackListener {
-        fun onItemClick(selectItems: HashMap<Int, MutableList<ConditionClassifyBean>>)
+        fun onItemClick(selectItems: HashMap<String, MutableList<ConditionClassifyBean>>)
         fun onDismiss()
         fun onReset()
     }
@@ -88,21 +88,21 @@ class AllConditionPopupWindow : XPopupWindow {
 //            } ?: let {
 //                ToastUtils.showLong("请选择类型")
 //            }
-            var propSearchMap = hashMapOf<Int, MutableList<ConditionClassifyBean>>()
+            var propSearchMap = hashMapOf<String, MutableList<ConditionClassifyBean>>()
             mAdapter?.data?.forEach { parentBean ->
                 var selectedItem = mutableListOf<ConditionClassifyBean>()
                 if (parentBean.subs != null) {
                     parentBean.subs.forEach { firstBean ->
                         if (firstBean.isSelected) {
                             selectedItem.add(firstBean)
-                            propSearchMap.put(parentBean.id, selectedItem)
+                            propSearchMap[parentBean.name] = selectedItem
                         } else {
                             if (firstBean.subs != null) {
                                 firstBean.subs.forEach { secondBean ->
                                     if (secondBean.isSelected) {
                                         selectedItem.add(firstBean)
                                         selectedItem.add(secondBean)
-                                        propSearchMap.put(parentBean.id, selectedItem)
+                                        propSearchMap[parentBean.name] = selectedItem
                                     }
                                 }
                             }

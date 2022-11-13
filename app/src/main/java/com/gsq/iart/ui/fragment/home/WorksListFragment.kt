@@ -52,9 +52,9 @@ class WorksListFragment : BaseFragment<WorksViewModel, FragmentWorksListBinding>
     private var subType: Int = WORKS_SUB_TYPE_HOT//0：热门  1：新上
 
     private var classifyBean: List<ConditionClassifyBean>? = null
-    private var selectType = 1
+    private var selectType: String = "年代"
     private var searchKey: String? = null
-    private var propSearchMap = hashMapOf<Int, MutableList<ConditionClassifyBean>>()
+    private var propSearchMap = hashMapOf<String, MutableList<ConditionClassifyBean>>()
 
     override fun initView(savedInstanceState: Bundle?) {
         if (args.complexType == COMPLEX_TYPE_SEARCH) {
@@ -131,25 +131,25 @@ class WorksListFragment : BaseFragment<WorksViewModel, FragmentWorksListBinding>
         }
         condition_years_view.setOnClickListener {
             //年代
-            selectType = classifyBean?.get(0)?.id ?: 0
+            selectType = classifyBean?.get(0)?.name ?: ""
             startAnimator(iv_years_frame, true)
             showConditionPopupWindow(classifyBean?.get(0)?.subs)
         }
         condition_theme_view.setOnClickListener {
             //题材
-            selectType = classifyBean?.get(1)?.id ?: 0
+            selectType = classifyBean?.get(1)?.name ?: ""
             startAnimator(iv_theme_frame, true)
             showConditionPopupWindow(classifyBean?.get(1)?.subs)
         }
         condition_size_view.setOnClickListener {
             //尺寸
-            selectType = classifyBean?.get(2)?.id ?: 0
+            selectType = classifyBean?.get(2)?.name ?: ""
             startAnimator(iv_size_frame, true)
             showConditionPopupWindow(classifyBean?.get(2)?.subs)
         }
         condition_screen_view.setOnClickListener {
             //筛选
-            selectType = 4
+            selectType = "筛选"
 //            startAnimator(iv_screen_frame, true)
 //            showConditionPopupWindow(classifyBean?.get(3)?.subs)
             //全部筛选条件弹窗
@@ -177,21 +177,21 @@ class WorksListFragment : BaseFragment<WorksViewModel, FragmentWorksListBinding>
                 grade2Item: ConditionClassifyBean?
             ) {
                 when (selectType) {
-                    classifyBean?.get(0)?.id ?: 0 -> {
+                    classifyBean?.get(0)?.name -> {
                         if (grade2Item != null) {
                             tv_years.text = grade2Item.name
                         } else {
                             tv_years.text = grade1Item.name
                         }
                     }
-                    classifyBean?.get(1)?.id ?: 0 -> {
+                    classifyBean?.get(1)?.name -> {
                         if (grade2Item != null) {
                             tv_theme.text = grade2Item.name
                         } else {
                             tv_theme.text = grade1Item.name
                         }
                     }
-                    classifyBean?.get(2)?.id ?: 0 -> {
+                    classifyBean?.get(2)?.name -> {
                         if (grade2Item != null) {
                             tv_size.text = grade2Item.name
                         } else {
@@ -210,16 +210,16 @@ class WorksListFragment : BaseFragment<WorksViewModel, FragmentWorksListBinding>
 
             override fun onDismiss() {
                 when (selectType) {
-                    classifyBean?.get(0)?.id ?: 0 -> {
+                    classifyBean?.get(0)?.name -> {
                         startAnimator(iv_years_frame, false)
                     }
-                    classifyBean?.get(1)?.id ?: 0 -> {
+                    classifyBean?.get(1)?.name -> {
                         startAnimator(iv_theme_frame, false)
                     }
-                    classifyBean?.get(2)?.id ?: 0 -> {
+                    classifyBean?.get(2)?.name -> {
                         startAnimator(iv_size_frame, false)
                     }
-                    9999 -> {
+                    "筛选" -> {
                         startAnimator(iv_screen_frame, false)
                     }
                 }
@@ -251,27 +251,27 @@ class WorksListFragment : BaseFragment<WorksViewModel, FragmentWorksListBinding>
         popupWindow.showPopupFromScreenRight(R.layout.fragment_works_list)
         popupWindow.onBackListener(object : AllConditionPopupWindow.OnBackListener {
             override fun onItemClick(
-                selectItems: HashMap<Int, MutableList<ConditionClassifyBean>>
+                selectItems: HashMap<String, MutableList<ConditionClassifyBean>>
             ) {
                 propSearchMap.clear()
                 selectItems.forEach {
                     propSearchMap.put(it.key, it.value)
 
-                    if (classifyBean?.get(0)?.id == it.key) {
+                    if (classifyBean?.get(0)?.name == it.key) {
                         if (it.value.size == 2) {
                             tv_years.text = it.value[1].name
                         } else {
                             tv_years.text = it.value[0].name
                         }
                     }
-                    if (classifyBean?.get(1)?.id == it.key) {
+                    if (classifyBean?.get(1)?.name == it.key) {
                         if (it.value.size == 2) {
                             tv_theme.text = it.value[1].name
                         } else {
                             tv_theme.text = it.value[0].name
                         }
                     }
-                    if (classifyBean?.get(2)?.id == it.key) {
+                    if (classifyBean?.get(2)?.name == it.key) {
                         if (it.value.size == 2) {
                             tv_size.text = it.value[1].name
                         } else {

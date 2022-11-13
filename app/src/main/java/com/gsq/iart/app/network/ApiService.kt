@@ -14,6 +14,11 @@ interface ApiService {
         const val SERVER_URL = "https://api-test.hxysg.com/"
         const val agreement_url = "${SERVER_URL}art/agreement/legal/index.html"
         const val privacy_url = "${SERVER_URL}art/agreement/legal/privacy.html"
+        const val personal_url = "${SERVER_URL}art/agreement/legal/personal.html"
+        const val vip_agreement_url = "${SERVER_URL}art/agreement/legal/ght-agreement.html"
+        const val personal_info_url = "${SERVER_URL}art/agreement/legal/info.html"
+        const val sdk_info_url = "${SERVER_URL}art/agreement/legal/share.html"
+        const val write_off_remind_url = "${SERVER_URL}art/agreement/legal/remind.html"
     }
 
     /**
@@ -80,6 +85,12 @@ interface ApiService {
      */
     @POST("art/user/logout")
     suspend fun logout(): ApiResponse<Any>
+
+    /**
+     * 注销
+     */
+    @POST("art/user/removeUser")
+    suspend fun writeOff(): ApiResponse<Any>
 
     /**
      * 收藏作品

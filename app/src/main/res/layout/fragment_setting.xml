@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
-        app:title_string="@string/mine_setting"/>
+        app:title_string="@string/mine_setting" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -26,7 +26,7 @@
             android:layout_height="wrap_content"
             app:item_title="@string/app_agreement"
             app:item_divider_visible="true"
-            app:item_right_icon_visible="true"/>
+            app:item_right_icon_visible="true" />
 
         <com.gsq.iart.app.weight.CommonItemLayout
             android:id="@+id/privacy_btn"
@@ -34,7 +34,7 @@
             android:layout_height="wrap_content"
             app:item_title="@string/app_privacy"
             app:item_divider_visible="true"
-            app:item_right_icon_visible="true"/>
+            app:item_right_icon_visible="true" />
 
         <com.gsq.iart.app.weight.CommonItemLayout
             android:id="@+id/personal_information_btn"
@@ -42,7 +42,15 @@
             android:layout_height="wrap_content"
             app:item_title="@string/collect_personal_information"
             app:item_divider_visible="true"
-            app:item_right_icon_visible="true"/>
+            app:item_right_icon_visible="true" />
+
+        <com.gsq.iart.app.weight.CommonItemLayout
+            android:id="@+id/sdk_information_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:item_title="@string/sdk_information"
+            app:item_divider_visible="true"
+            app:item_right_icon_visible="true" />
 
         <com.gsq.iart.app.weight.CommonItemLayout
             android:id="@+id/cancellation_btn"
@@ -50,7 +58,7 @@
             android:layout_height="wrap_content"
             app:item_title="@string/account_cancellation"
             app:item_divider_visible="false"
-            app:item_right_icon_visible="true"/>
+            app:item_right_icon_visible="true" />
     </LinearLayout>
 
     <androidx.appcompat.widget.AppCompatButton
@@ -62,6 +70,6 @@
         android:textSize="@dimen/font_16"
         android:background="@drawable/bg_141414_conner_24"
         android:layout_margin="@dimen/dp_16"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintBottom_toBottomOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

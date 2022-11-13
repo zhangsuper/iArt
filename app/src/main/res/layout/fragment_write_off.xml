@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_EFF1F5"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.gsq.iart.app.weight.CommonTitleLayout
+        android:id="@+id/title_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:title_string="@string/account_cancellation" />
+
+    <LinearLayout
+        android:id="@+id/web_content"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_300"
+        android:layout_margin="@dimen/dp_16"
+        app:layout_constraintTop_toBottomOf="@+id/title_layout"
+        android:background="@drawable/bg_white_conner_4"
+        android:orientation="vertical" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/write_off_btn"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_48"
+        android:text="申请注销"
+        android:textColor="@color/white"
+        android:textSize="@dimen/font_16"
+        android:background="@drawable/bg_141414_conner_24"
+        android:layout_margin="@dimen/dp_16"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

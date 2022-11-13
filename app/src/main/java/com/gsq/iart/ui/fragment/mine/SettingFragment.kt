@@ -39,9 +39,27 @@ class SettingFragment : BaseFragment<BaseViewModel, FragmentSettingBinding>() {
                 bundleOf(UserAgreementFragment.INTENT_KEY_TYPE to UserAgreementFragment.INTENT_VALUE_SECRET_AGREEMENT)
             )
         }
+        personal_information_btn.setOnClickListener {
+            nav().navigateAction(
+                R.id.action_settingFragment_to_userAgreementFragment,
+                bundleOf(UserAgreementFragment.INTENT_KEY_TYPE to UserAgreementFragment.INTENT_VALUE_PERSONAL_INFO)
+            )
+        }
+        sdk_information_btn.setOnClickListener {
+            nav().navigateAction(
+                R.id.action_settingFragment_to_userAgreementFragment,
+                bundleOf(UserAgreementFragment.INTENT_KEY_TYPE to UserAgreementFragment.INTENT_VALUE_SDK_INFO)
+            )
+        }
         login_out_btn.setOnClickListener {
             //退出登录
             mLoginViewModel?.logout()
+        }
+        cancellation_btn.setOnClickListener {
+            //注销
+            nav().navigateAction(
+                R.id.action_settingFragment_to_writeOffFragment
+            )
         }
 
         mLoginViewModel = ViewModelProvider(this)[LoginViewModel::class.java]
@@ -62,6 +80,15 @@ class SettingFragment : BaseFragment<BaseViewModel, FragmentSettingBinding>() {
         mLoginViewModel?.logoutResultDataState?.observe(viewLifecycleOwner) {
             if (it.isSuccess) {
                 ToastUtils.showLong("已退出登录")
+                CacheUtil.setUser(null)
+                nav().navigateUp()
+            } else {
+                ToastUtils.showLong(it.errorMsg)
+            }
+        }
+        mLoginViewModel?.writeOffDataState?.observe(viewLifecycleOwner) {
+            if (it.isSuccess) {
+                ToastUtils.showLong("账号已注销")
                 CacheUtil.setUser(null)
                 nav().navigateUp()
             } else {
