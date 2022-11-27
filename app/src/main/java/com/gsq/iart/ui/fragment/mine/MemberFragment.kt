@@ -111,7 +111,9 @@ class MemberFragment : BaseFragment<MemberViewModel, FragmentMemberBinding>() {
             }
             vipPriceAdapter.data = it.listData
 //            vipPriceAdapter.notifyDataSetChanged()
-            vipPriceAdapter.selectItem(vipPriceAdapter.getItem(0) as PayConfigBean)
+            if (vipPriceAdapter.data.size > 0) {
+                vipPriceAdapter.selectItem(vipPriceAdapter.getItem(0) as PayConfigBean)
+            }
         }
         mViewModel.preparePayDataState.observe(viewLifecycleOwner) {
             if (it.isSuccess) {

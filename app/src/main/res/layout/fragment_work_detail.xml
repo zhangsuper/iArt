@@ -12,123 +12,130 @@
         android:layout_height="match_parent"
         android:background="@color/black" />
 
-    <ImageView
-        android:id="@+id/iv_back"
-        android:layout_width="@dimen/dp_30"
-        android:layout_height="@dimen/dp_30"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginLeft="@dimen/dp_16"
-        android:src="@drawable/icon_detail_back"
-        android:layout_marginTop="@dimen/dp_50" />
-
-    <ImageView
-        android:id="@+id/iv_introduce"
-        android:layout_width="@dimen/dp_30"
-        android:layout_height="@dimen/dp_30"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginRight="@dimen/dp_16"
-        android:src="@drawable/icon_introduce"
-        android:layout_marginTop="@dimen/dp_50" />
-
-    <TextView
-        android:id="@+id/tv_index"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        tools:text="1/5"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginLeft="@dimen/dp_14"
-        android:paddingLeft="@dimen/dp_7"
-        android:paddingRight="@dimen/dp_7"
-        android:paddingTop="@dimen/dp_4"
-        android:paddingBottom="@dimen/dp_4"
-        android:textSize="@dimen/font_14"
-        android:textColor="@color/white"
-        android:background="@color/color_141414"
-        android:layout_marginBottom="@dimen/dp_63"
-        android:visibility="gone"
-        tools:visibility="visible" />
-
-
-    <LinearLayout
-        android:id="@+id/bottom_view"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/content_view"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_60"
-        android:background="@drawable/bg_ccffffff_conner_12"
-        app:layout_constraintBottom_toBottomOf="parent">
+        android:layout_height="match_parent">
 
-        <RelativeLayout
-            android:layout_width="@dimen/dp_0"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:layout_weight="1">
+        <ImageView
+            android:id="@+id/iv_back"
+            android:layout_width="@dimen/dp_30"
+            android:layout_height="@dimen/dp_30"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginLeft="@dimen/dp_16"
+            android:src="@drawable/icon_detail_back"
+            android:layout_marginTop="@dimen/dp_50" />
 
-            <ImageView
-                android:id="@+id/iv_collect"
-                android:layout_width="@dimen/dp_24"
-                android:layout_height="@dimen/dp_24"
-                android:src="@drawable/icon_shoucang" />
+        <ImageView
+            android:id="@+id/iv_introduce"
+            android:layout_width="@dimen/dp_30"
+            android:layout_height="@dimen/dp_30"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginRight="@dimen/dp_16"
+            android:src="@drawable/icon_introduce"
+            android:layout_marginTop="@dimen/dp_50" />
 
-        </RelativeLayout>
+        <TextView
+            android:id="@+id/tv_index"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="1/5"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginLeft="@dimen/dp_14"
+            android:paddingLeft="@dimen/dp_7"
+            android:paddingRight="@dimen/dp_7"
+            android:paddingTop="@dimen/dp_4"
+            android:paddingBottom="@dimen/dp_4"
+            android:textSize="@dimen/font_14"
+            android:textColor="@color/white"
+            android:background="@color/color_141414"
+            android:layout_marginBottom="@dimen/dp_63"
+            android:visibility="gone"
+            tools:visibility="visible" />
 
-        <RelativeLayout
-            android:layout_width="@dimen/dp_0"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:layout_weight="1">
 
-            <ImageView
-                android:id="@+id/iv_download"
-                android:layout_width="@dimen/dp_24"
-                android:layout_height="@dimen/dp_24"
-                android:src="@drawable/icon_xiazai" />
+        <LinearLayout
+            android:id="@+id/bottom_view"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_60"
+            android:background="@drawable/bg_ccffffff_conner_12"
+            app:layout_constraintBottom_toBottomOf="parent">
 
-        </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="@dimen/dp_0"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:layout_weight="1">
 
-        <RelativeLayout
-            android:layout_width="@dimen/dp_0"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:layout_weight="1">
+                <ImageView
+                    android:id="@+id/iv_collect"
+                    android:layout_width="@dimen/dp_24"
+                    android:layout_height="@dimen/dp_24"
+                    android:src="@drawable/icon_shoucang" />
 
-            <ImageView
-                android:layout_width="@dimen/dp_24"
-                android:layout_height="@dimen/dp_24"
-                android:src="@drawable/icon_yuanda" />
+            </RelativeLayout>
 
-        </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="@dimen/dp_0"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:layout_weight="1">
 
-        <RelativeLayout
-            android:layout_width="@dimen/dp_0"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:layout_weight="1">
+                <ImageView
+                    android:id="@+id/iv_download"
+                    android:layout_width="@dimen/dp_24"
+                    android:layout_height="@dimen/dp_24"
+                    android:src="@drawable/icon_xiazai" />
 
-            <ImageView
-                android:layout_width="@dimen/dp_24"
-                android:layout_height="@dimen/dp_24"
-                android:src="@drawable/icon_xuanzhuan" />
+            </RelativeLayout>
 
-        </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="@dimen/dp_0"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:layout_weight="1">
 
-        <RelativeLayout
-            android:layout_width="@dimen/dp_0"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:layout_weight="1"
-            android:visibility="gone">
+                <ImageView
+                    android:layout_width="@dimen/dp_24"
+                    android:layout_height="@dimen/dp_24"
+                    android:src="@drawable/icon_yuanda" />
 
-            <ImageView
-                android:id="@+id/iv_share"
-                android:layout_width="@dimen/dp_24"
-                android:layout_height="@dimen/dp_24"
-                android:src="@drawable/icon_fenxiang" />
+            </RelativeLayout>
 
-        </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="@dimen/dp_0"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:layout_weight="1">
 
-    </LinearLayout>
+                <ImageView
+                    android:layout_width="@dimen/dp_24"
+                    android:layout_height="@dimen/dp_24"
+                    android:src="@drawable/icon_xuanzhuan" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="@dimen/dp_0"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:layout_weight="1"
+                android:visibility="gone">
+
+                <ImageView
+                    android:id="@+id/iv_share"
+                    android:layout_width="@dimen/dp_24"
+                    android:layout_height="@dimen/dp_24"
+                    android:src="@drawable/icon_fenxiang" />
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.github.yanjiabin.extendsringprogressbarlib.RingProgressBar
         android:id="@+id/progress_bar"
@@ -146,6 +153,6 @@
         app:textColor="@color/colorPrimary"
         app:textIsShow="true"
         app:textSize="16sp"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

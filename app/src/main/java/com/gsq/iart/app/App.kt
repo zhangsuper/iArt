@@ -4,6 +4,7 @@ import androidx.multidex.MultiDex
 import com.blankj.utilcode.util.LogUtils
 import com.downloader.PRDownloader
 import com.downloader.PRDownloaderConfig
+import com.gsq.iart.app.util.CacheUtil
 import com.gsq.iart.app.weight.loadCallBack.EmptyCallback
 import com.gsq.iart.app.weight.loadCallBack.ErrorCallback
 import com.gsq.iart.app.weight.loadCallBack.LoadingCallback
@@ -12,6 +13,7 @@ import com.kingja.loadsir.callback.SuccessCallback
 import com.kingja.loadsir.core.LoadSir
 import com.tencent.bugly.crashreport.CrashReport
 import com.tencent.mmkv.MMKV
+import com.umeng.commonsdk.UMConfigure
 
 
 class App : BaseApp() {
@@ -41,6 +43,8 @@ class App : BaseApp() {
             .setConnectTimeout(30000)
             .build()
         PRDownloader.initialize(applicationContext, config)
+
+        initUmeng()
     }
 
     private fun initBugly() {
@@ -48,5 +52,21 @@ class App : BaseApp() {
 //        if (!BuildConfig.DEBUG) {
         CrashReport.initCrashReport(applicationContext, "8bc600eefc", false)
 //        }
+    }
+
+    private fun initUmeng() {
+        UMConfigure.preInit(this, "63833c5488ccdf4b7e716bb1", "yishuguan")
+        if (CacheUtil.isAgreePrivacy()) {
+            UMConfigure.init(
+                this,
+                "63833c5488ccdf4b7e716bb1",
+                "yishuguan",
+                UMConfigure.DEVICE_TYPE_PHONE,
+                ""
+            )
+        }
+        //友盟正式初始化
+//        var umInitConfig = UmInitConfig()
+//        umInitConfig.UMinit(getApplicationContext());
     }
 }

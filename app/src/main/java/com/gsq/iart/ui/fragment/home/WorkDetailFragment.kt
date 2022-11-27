@@ -3,9 +3,7 @@ package com.gsq.iart.ui.fragment.home
 import android.Manifest
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
-import android.view.GestureDetector
-import android.view.MotionEvent
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.viewpager2.widget.ViewPager2
@@ -26,6 +24,7 @@ import com.gsq.iart.data.Constant.DATA_WORK
 import com.gsq.iart.data.Constant.DOWNLOAD_PARENT_PATH
 import com.gsq.iart.data.bean.DetailArgsType
 import com.gsq.iart.data.bean.WorksBean
+import com.gsq.iart.data.event.BigImageClickEvent
 import com.gsq.iart.databinding.FragmentWorkDetailBinding
 import com.gsq.iart.viewmodel.WorksViewModel
 import com.gsq.mvvm.ext.nav
@@ -33,6 +32,9 @@ import com.gsq.mvvm.ext.navigateAction
 import com.gsq.mvvm.ext.view.gone
 import com.gsq.mvvm.ext.view.visible
 import kotlinx.android.synthetic.main.fragment_work_detail.*
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 import pub.devrel.easypermissions.AfterPermissionGranted
 import pub.devrel.easypermissions.EasyPermissions
 
@@ -48,6 +50,7 @@ class WorkDetailFragment : BaseFragment<WorksViewModel, FragmentWorkDetailBindin
 
     private lateinit var fragmentList: ArrayList<Fragment>
 
+
     override fun initView(savedInstanceState: Bundle?) {
         worksBean = arguments?.getSerializable(DATA_WORK) as? WorksBean
         intentType = arguments?.getString(Constant.INTENT_TYPE, COMPLEX_TYPE_GROUP)
@@ -60,31 +63,7 @@ class WorkDetailFragment : BaseFragment<WorksViewModel, FragmentWorkDetailBindin
                 tv_index.text = "${position + 1}/${fragmentList.size}"
             }
         })
-        var gestureDetector = GestureDetector(gesturelistener())
-        view_pager.setOnTouchListener { view, event ->
-            var flage = 0
-//            when (event.action) {
-//                MotionEvent.ACTION_DOWN -> {
-//                    // 记录点下去的点（起点）
-//                    flage =0
-//                }
-//                MotionEvent.ACTION_MOVE -> {
-//                    // 记录移动后的点（终点）
-//                    flage = 1
-//                }
-//                MotionEvent.ACTION_UP -> {
-//                    if(flage == 0){
-//                        if(view_pager.isVisible){
-//                            view_pager.gone()
-//                        }else{
-//                            view_pager.visible()
-//                        }
-//                    }
-//                }
-//            }
-            return@setOnTouchListener gestureDetector.onTouchEvent(event)
-        }
-
+        EventBus.getDefault().register(this)
     }
 
     override fun onResume() {
@@ -195,10 +174,10 @@ class WorkDetailFragment : BaseFragment<WorksViewModel, FragmentWorkDetailBindin
         }
         iv_download.setOnClickListener {
             if (CacheUtil.isLogin()) {
-                if(CacheUtil.getUser()?.memberType ==1){
+                if (CacheUtil.getUser()?.memberType == 1) {
                     //下载
                     checkStoragePermission()
-                }else{
+                } else {
                     //跳转到会员页
                     nav().navigateAction(R.id.action_workDetailFragment_to_memberFragment)
                 }
@@ -279,37 +258,6 @@ class WorkDetailFragment : BaseFragment<WorksViewModel, FragmentWorkDetailBindin
         }
     }
 
-    class gesturelistener : GestureDetector.OnGestureListener {
-        override fun onDown(p0: MotionEvent?): Boolean {
-            Log.d("tag", "onDown")
-            return false
-        }
-
-        override fun onShowPress(p0: MotionEvent?) {
-            Log.d("tag", "onShowPress")
-        }
-
-        override fun onSingleTapUp(p0: MotionEvent?): Boolean {
-            Log.d("tag", "onSingleTapUp")
-            return false
-        }
-
-        override fun onScroll(p0: MotionEvent?, p1: MotionEvent?, p2: Float, p3: Float): Boolean {
-            Log.d("tag", "onScroll")
-            return false
-        }
-
-        override fun onLongPress(p0: MotionEvent?) {
-            Log.d("tag", "onLongPress")
-        }
-
-        override fun onFling(p0: MotionEvent?, p1: MotionEvent?, p2: Float, p3: Float): Boolean {
-            Log.d("tag", "onFling")
-            return false
-        }
-
-    }
-
 
     override fun onRequestPermissionsResult(
         requestCode: Int,
@@ -325,5 +273,21 @@ class WorkDetailFragment : BaseFragment<WorksViewModel, FragmentWorkDetailBindin
         if (requestCode == RC_EXTERNAL_STORAGE_CODE) {
             checkStoragePermission()
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onMessageEvent(event: BigImageClickEvent?) {
+        event?.let {
+            if (content_view.isVisible) {
+                content_view.gone()
+            } else {
+                content_view.visible()
+            }
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        EventBus.getDefault().unregister(this)
     }
 }

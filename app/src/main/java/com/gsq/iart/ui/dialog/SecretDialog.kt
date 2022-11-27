@@ -10,6 +10,7 @@ import com.gsq.iart.app.network.ApiService.Companion.personal_url
 import com.gsq.iart.app.util.CacheUtil
 import com.gsq.iart.databinding.DialogSecretBinding
 import com.just.agentweb.AgentWeb
+import com.umeng.commonsdk.UMConfigure
 import kotlinx.android.synthetic.main.fragment_user_agreement.*
 
 /**
@@ -32,6 +33,10 @@ class SecretDialog : BaseDialog(R.layout.dialog_secret) {
         binding.agreeBtn.setOnClickListener {
             CacheUtil.setAgreePrivacyStatus(true)
             dismiss()
+            UMConfigure.init(
+                binding.agreeBtn.context, "63833c5488ccdf4b7e716bb1", "yishuguan",
+                UMConfigure.DEVICE_TYPE_PHONE, ""
+            )
         }
         binding.disagreeBtn.setOnClickListener {
             CacheUtil.setAgreePrivacyStatus(false)
