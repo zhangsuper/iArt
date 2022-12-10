@@ -49,6 +49,7 @@ class WorkDetailFragment : BaseFragment<WorksViewModel, FragmentWorkDetailBindin
     private var RC_EXTERNAL_STORAGE_CODE: Int = 10
 
     private lateinit var fragmentList: ArrayList<Fragment>
+    private var currentSelectedIndex = 0
 
 
     override fun initView(savedInstanceState: Bundle?) {
@@ -56,10 +57,12 @@ class WorkDetailFragment : BaseFragment<WorksViewModel, FragmentWorkDetailBindin
         intentType = arguments?.getString(Constant.INTENT_TYPE, COMPLEX_TYPE_GROUP)
         fragmentList = arrayListOf()
         view_pager.init(this, fragmentList)
+        view_pager.offscreenPageLimit = 6
         initListener()
         view_pager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
 
             override fun onPageSelected(position: Int) {
+                currentSelectedIndex = position
                 tv_index.text = "${position + 1}/${fragmentList.size}"
             }
         })
@@ -98,6 +101,19 @@ class WorkDetailFragment : BaseFragment<WorksViewModel, FragmentWorkDetailBindin
                 updateCollectState()
                 if (worksBean?.displayType == 2) {
                     ToastUtils.showLong("横向拼接")
+                    var hdPics = it.data?.hdPics
+                    if (hdPics != null) {
+                        for (picbean in hdPics) {
+                            fragmentList.add(PreviewImageFragment.start(DetailArgsType(picbean)))
+                        }
+                        view_pager.adapter?.notifyDataSetChanged()
+                        if (fragmentList.size == 1) {
+                            tv_index.gone()
+                        } else {
+                            tv_index.visible()
+                        }
+                    }
+                    tv_index.text = "1/${fragmentList.size}"
                 } else {
 //                    if(worksBean?.workType == "COLL"){
 //                        //合集
@@ -185,6 +201,13 @@ class WorkDetailFragment : BaseFragment<WorksViewModel, FragmentWorkDetailBindin
                 //跳转登录界面
                 nav().navigateAction(R.id.action_mainFragment_to_loginFragment)
             }
+        }
+        iv_scale.setOnClickListener {
+//            (fragmentList[currentSelectedIndex] as PreviewImageFragment).getPhotoView().maximumScale
+//                .setScale(100f, true)
+        }
+        iv_rota.setOnClickListener {
+            (fragmentList[currentSelectedIndex] as PreviewImageFragment).getPhotoView().rotation -= 90
         }
     }
 

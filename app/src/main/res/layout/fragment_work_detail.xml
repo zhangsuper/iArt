@@ -99,6 +99,7 @@
                 android:layout_weight="1">
 
                 <ImageView
+                    android:id="@+id/iv_scale"
                     android:layout_width="@dimen/dp_24"
                     android:layout_height="@dimen/dp_24"
                     android:src="@drawable/icon_yuanda" />
@@ -112,6 +113,7 @@
                 android:layout_weight="1">
 
                 <ImageView
+                    android:id="@+id/iv_rota"
                     android:layout_width="@dimen/dp_24"
                     android:layout_height="@dimen/dp_24"
                     android:src="@drawable/icon_xuanzhuan" />

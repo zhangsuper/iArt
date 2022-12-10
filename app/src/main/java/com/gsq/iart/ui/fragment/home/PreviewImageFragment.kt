@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.widget.ImageView
 import com.airbnb.mvrx.args
 import com.airbnb.mvrx.asMavericksArgs
+import com.github.chrisbanes.photoview.PhotoView
 import com.gsq.iart.app.base.BaseFragment
 import com.gsq.iart.app.ext.loadServiceInit
 import com.gsq.iart.app.ext.showLoading
@@ -43,7 +44,6 @@ class PreviewImageFragment : BaseFragment<BaseViewModel, FragmentPreviewImageBin
         photo_view.setOnPhotoTapListener { view, x, y ->
             EventBus.getDefault().post(BigImageClickEvent(true))
         }
-
     }
 
     override fun lazyLoadData() {
@@ -74,6 +74,10 @@ class PreviewImageFragment : BaseFragment<BaseViewModel, FragmentPreviewImageBin
 //
 //            })
 
+    }
+
+    fun getPhotoView(): PhotoView {
+        return photo_view
     }
 
 }
