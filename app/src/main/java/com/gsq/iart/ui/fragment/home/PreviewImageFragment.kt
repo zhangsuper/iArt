@@ -54,8 +54,7 @@ class PreviewImageFragment : BaseFragment<BaseViewModel, FragmentPreviewImageBin
 
     private fun loadPic() {
 //        imageView.setImage(ImageSource.uri(args.workHdPics.url))
-        GlideHelper.loadWithLoading(photo_view, loadsir, args.workHdPics.url)
-
+        GlideHelper.load(photo_view, args.workHdPics.url, loadService = loadsir)
 //        Glide.with(App.instance)
 //            .download(args.workHdPics.url)
 //            .into(object : SimpleTarget<File>() {

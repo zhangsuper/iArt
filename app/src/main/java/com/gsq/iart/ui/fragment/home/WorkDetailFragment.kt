@@ -225,7 +225,7 @@ class WorkDetailFragment : BaseFragment<WorksViewModel, FragmentWorkDetailBindin
                 FileUtils.createOrExistsDir(DOWNLOAD_PARENT_PATH)
                 startDownload(
                     it,
-                    Constant.DOWNLOAD_PARENT_PATH,
+                    DOWNLOAD_PARENT_PATH,
                     "art_${System.currentTimeMillis()}.jpg"
                 )
                 worksBean?.id?.let {

@@ -1,15 +1,18 @@
 package com.gsq.iart.app.image
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.graphics.drawable.Drawable
 import android.widget.ImageView
+import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.DecodeFormat
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.load.resource.bitmap.BitmapTransformation
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
+import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.DrawableImageViewTarget
+import com.bumptech.glide.request.target.Target
 import com.bumptech.glide.request.transition.DrawableCrossFadeFactory
 import com.bumptech.glide.request.transition.Transition
 import com.gsq.iart.R
@@ -33,7 +36,8 @@ object GlideHelper {
         defaultRes: Int? = null,
         needBlur: Boolean = false,
         needCache: Boolean = true,
-        showPlaceHolder: Boolean? = true
+        showPlaceHolder: Boolean? = true,
+        loadService: LoadService<*>? = null,
     ) {
         if (imageView == null) {
             return
@@ -73,6 +77,28 @@ object GlideHelper {
 
         GlideApp.with(context)
             .load(realUrl)
+            .listener(object : RequestListener<Drawable> {
+                override fun onLoadFailed(
+                    e: GlideException?,
+                    model: Any?,
+                    target: Target<Drawable>?,
+                    isFirstResource: Boolean
+                ): Boolean {
+                    loadService?.showError("加载失败")
+                    return false
+                }
+
+                override fun onResourceReady(
+                    resource: Drawable?,
+                    model: Any?,
+                    target: Target<Drawable>?,
+                    dataSource: DataSource?,
+                    isFirstResource: Boolean
+                ): Boolean {
+                    loadService?.showSuccess()
+                    return false
+                }
+            })
             .apply(options)
             .into(imageView)
     }
@@ -96,10 +122,10 @@ object GlideHelper {
                 .format(DecodeFormat.PREFER_RGB_565)
                 .error(R.color.color_A7A7A7)
                 // .dontAnimate()
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .diskCacheStrategy(DiskCacheStrategy.DATA)
 //        if (isFullScreen) {
-            // 全屏时不显示动画
-            requestOptions.dontAnimate()
+        // 全屏时不显示动画
+        requestOptions.dontAnimate()
 //        } else {
 //            requestOptions.centerCrop()
 //        }
@@ -131,9 +157,17 @@ object GlideHelper {
 
                 override fun onLoadFailed(errorDrawable: Drawable?) {
                     super.onLoadFailed(errorDrawable)
-                    retryLoad(imageView,{
-                        loadWithLoading(imageView,loadService,realUrl,isFullScreen,onFailed,onStart,onReady)
-                    },{
+                    retryLoad(imageView, {
+                        loadWithLoading(
+                            imageView,
+                            loadService,
+                            realUrl,
+                            isFullScreen,
+                            onFailed,
+                            onStart,
+                            onReady
+                        )
+                    }, {
 //                        mLoadingView?.showFailUi()
 //                        mLoadingView?.visible()
                         loadService?.showError("加载失败")

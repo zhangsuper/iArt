@@ -4,11 +4,9 @@ import android.content.Context;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.os.Build;
 import android.os.Environment;
 import android.text.TextUtils;
 import android.util.Log;
-
 
 import com.gsq.iart.app.App;
 
@@ -474,10 +472,6 @@ public class FileUtil {
     }
 
 
-
-
-
-
     /**
      * 获取文件扩展名
      *
@@ -769,11 +763,11 @@ public class FileUtil {
             File tempFile = new File(folderPath + "/" + ze.getName());
             /*
              * if(ze.isDirectory()){ Log.d("upZipFile",
-			 * "ze.getName() = "+ze.getName()); String dirstr = folderPath +
-			 * ze.getName(); //dirstr.trim(); // dirstr = new
-			 * String(dirstr.getBytes("8859_1"), "GB2312"); Log.d("upZipFile",
-			 * "str = "+dirstr); File f=new File(dirstr); f.mkdir(); continue; }
-			 */
+             * "ze.getName() = "+ze.getName()); String dirstr = folderPath +
+             * ze.getName(); //dirstr.trim(); // dirstr = new
+             * String(dirstr.getBytes("8859_1"), "GB2312"); Log.d("upZipFile",
+             * "str = "+dirstr); File f=new File(dirstr); f.mkdir(); continue; }
+             */
             if (ze.isDirectory()) {
                 tempFile.mkdirs();
                 continue;
@@ -993,12 +987,13 @@ public class FileUtil {
         boolean sdCardExist = Environment.getExternalStorageState().equals(
                 Environment.MEDIA_MOUNTED);// 判断sd卡是否存在
         if (sdCardExist) {
-            if (Build.VERSION.SDK_INT>=29){
-                //Android10之后
-                sdDir = context.getExternalFilesDir(null);
-            }else {
-                sdDir = Environment.getExternalStorageDirectory();// 获取SD卡根目录
-            }
+//            if (Build.VERSION.SDK_INT >= 29) {
+//                //Android10之后
+//                sdDir = context.getExternalFilesDir(null);
+//            } else {
+//                sdDir = Environment.getExternalStorageDirectory();// 获取SD卡根目录
+//            }
+            sdDir = Environment.getExternalStorageDirectory();
         } else {
             sdDir = Environment.getRootDirectory();// 获取跟目录
         }
