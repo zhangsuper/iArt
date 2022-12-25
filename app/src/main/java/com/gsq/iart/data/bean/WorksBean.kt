@@ -39,7 +39,8 @@ class WorksBean(
     var workId: String,
     var workType: String,//作品类型：PIC:单图；COLL:合集
     var isCollect: Int,//0 ,1
-    var createdTime: String
+    var createdTime: String,
+    var pay: Int //1:代表付费
 ) : Serializable {
 }
 

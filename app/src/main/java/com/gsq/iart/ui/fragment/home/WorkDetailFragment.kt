@@ -100,7 +100,7 @@ class WorkDetailFragment : BaseFragment<WorksViewModel, FragmentWorkDetailBindin
                 LogUtils.d("worksBean.displayType:${worksBean?.displayType}")
                 updateCollectState()
                 if (worksBean?.displayType == 2) {
-                    ToastUtils.showLong("横向拼接")
+//                    ToastUtils.showLong("横向拼接")
                     var hdPics = it.data?.hdPics
                     if (hdPics != null) {
                         for (picbean in hdPics) {

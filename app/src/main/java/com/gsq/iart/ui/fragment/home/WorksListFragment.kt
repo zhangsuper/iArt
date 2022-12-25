@@ -14,6 +14,7 @@ import com.blankj.utilcode.util.SizeUtils
 import com.gsq.iart.R
 import com.gsq.iart.app.base.BaseFragment
 import com.gsq.iart.app.ext.*
+import com.gsq.iart.app.util.CacheUtil
 import com.gsq.iart.app.weight.recyclerview.GridItemDecoration
 import com.gsq.iart.data.Constant.COMPLEX_TYPE_COLLECT
 import com.gsq.iart.data.Constant.COMPLEX_TYPE_SEARCH
@@ -89,11 +90,34 @@ class WorksListFragment : BaseFragment<WorksViewModel, FragmentWorksListBinding>
         initTypeConditionView()
 
         worksAdapter.setOnItemClickListener { adapter, view, position ->
-
-            var bundle = Bundle()
-            bundle.putSerializable(DATA_WORK, (adapter.data as MutableList<WorksBean>)[position])
-            bundle.putString(INTENT_TYPE, args.complexType)
-            nav().navigateAction(R.id.action_mainFragment_to_workDetailFragment, bundle)
+            val worksBean = adapter.data[position] as WorksBean
+            if (worksBean.pay == 1 && CacheUtil.getUser()?.memberType != 1) {
+//                if (CacheUtil.isLogin()) {
+//                    if (CacheUtil.getUser()?.memberType != 1) {
+//                        nav().navigateAction(R.id.action_mainFragment_to_memberFragment)
+//                    } else {
+//                        var bundle = Bundle()
+//                        bundle.putSerializable(
+//                            DATA_WORK,
+//                            (adapter.data as MutableList<WorksBean>)[position]
+//                        )
+//                        bundle.putString(INTENT_TYPE, args.complexType)
+//                        nav().navigateAction(R.id.action_mainFragment_to_workDetailFragment, bundle)
+//                    }
+//                } else {
+//                    nav().navigateAction(R.id.action_mainFragment_to_loginFragment)
+//                }
+                //需要付费且没有开通了会员
+                nav().navigateAction(R.id.action_mainFragment_to_memberFragment)
+            } else {
+                var bundle = Bundle()
+                bundle.putSerializable(
+                    DATA_WORK,
+                    (adapter.data as MutableList<WorksBean>)[position]
+                )
+                bundle.putString(INTENT_TYPE, args.complexType)
+                nav().navigateAction(R.id.action_mainFragment_to_workDetailFragment, bundle)
+            }
         }
     }
 

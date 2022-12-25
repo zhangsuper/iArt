@@ -45,7 +45,6 @@ class MemberFragment : BaseFragment<MemberViewModel, FragmentMemberBinding>() {
 
         }
         price_recycler_view.adapter = vipPriceAdapter
-        initDate()
         vipPriceAdapter.setOnItemClickListener { adapter, view, position ->
             vipPriceAdapter.selectItem(adapter.getItem(position) as PayConfigBean)
         }
@@ -88,9 +87,13 @@ class MemberFragment : BaseFragment<MemberViewModel, FragmentMemberBinding>() {
                     ToastUtils.showShort("请勾选同意《会员服务协议》")
                     return@setOnClickListener
                 }
+                if (!CacheUtil.isLogin()) {
+                    nav().navigateAction(R.id.action_memberFragment_to_loginFragment)
+                    return@setOnClickListener
+                }
                 mViewModel.createPreparePay(it.id)
             } ?: let {
-                ToastUtils.showLong("请选择开通时限")
+                ToastUtils.showLong("请选择开通套餐")
             }
         }
         mLoginViewModel = ViewModelProvider(this)[LoginViewModel::class.java]
@@ -99,7 +102,9 @@ class MemberFragment : BaseFragment<MemberViewModel, FragmentMemberBinding>() {
 
     override fun lazyLoadData() {
         super.lazyLoadData()
-        mLoginViewModel?.getUserInfo()
+        if (CacheUtil.isLogin()) {
+            mLoginViewModel?.getUserInfo()
+        }
         mViewModel.getPayConfig()
     }
 
@@ -133,6 +138,11 @@ class MemberFragment : BaseFragment<MemberViewModel, FragmentMemberBinding>() {
                 }
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        initDate()
     }
 
     private fun initDate() {

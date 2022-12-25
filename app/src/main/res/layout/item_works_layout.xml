@@ -12,8 +12,17 @@
         android:layout_height="@dimen/dp_208"
         android:scaleType="centerCrop"
         app:layout_constraintTop_toTopOf="parent"
-        app:shapeAppearanceOverlay="@style/WorksCoverStyle"
-        />
+        app:shapeAppearanceOverlay="@style/WorksCoverStyle" />
+
+    <ImageView
+        android:id="@+id/icon_vip"
+        android:layout_width="@dimen/dp_20"
+        android:layout_height="@dimen/dp_20"
+        android:layout_margin="@dimen/dp_2"
+        android:src="@drawable/icon_svip"
+        android:visibility="gone"
+        app:layout_constraintRight_toRightOf="@+id/item_works_cover"
+        app:layout_constraintBottom_toBottomOf="@+id/item_works_cover" />
 
     <TextView
         android:id="@+id/item_works_name"
@@ -29,7 +38,7 @@
         android:textSize="@dimen/font_14"
         android:textColor="@color/black"
         android:maxLines="1"
-        android:ellipsize="end"/>
+        android:ellipsize="end" />
 
     <TextView
         android:id="@+id/item_works_desc"
@@ -44,6 +53,6 @@
         android:textSize="@dimen/font_14"
         android:textColor="@color/color_888888"
         android:maxLines="1"
-        android:ellipsize="end"/>
+        android:ellipsize="end" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

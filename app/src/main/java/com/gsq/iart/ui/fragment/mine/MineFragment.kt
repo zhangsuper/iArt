@@ -89,12 +89,13 @@ class MineFragment : BaseFragment<BaseViewModel, FragmentMineBinding>() {
         }
         join_vip_btn.setOnClickListener {
             //我的会员
-            if (CacheUtil.isLogin()) {
-                nav().navigateAction(R.id.action_mainFragment_to_memberFragment)
-            } else {
-                //跳转登录界面
-                nav().navigateAction(R.id.action_mainFragment_to_loginFragment)
-            }
+            nav().navigateAction(R.id.action_mainFragment_to_memberFragment)
+//            if (CacheUtil.isLogin()) {
+//                nav().navigateAction(R.id.action_mainFragment_to_memberFragment)
+//            } else {
+//                //跳转登录界面
+//                nav().navigateAction(R.id.action_mainFragment_to_loginFragment)
+//            }
         }
     }
 
