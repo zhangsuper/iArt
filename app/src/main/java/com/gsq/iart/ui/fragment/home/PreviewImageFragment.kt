@@ -44,6 +44,7 @@ class PreviewImageFragment : BaseFragment<BaseViewModel, FragmentPreviewImageBin
         photo_view.setOnPhotoTapListener { view, x, y ->
             EventBus.getDefault().post(BigImageClickEvent(true))
         }
+        photo_view.setScaleLevels(1.0f, 2.0f, 10.0f)
     }
 
     override fun lazyLoadData() {
