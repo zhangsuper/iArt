@@ -1,6 +1,7 @@
 package com.gsq.iart.viewmodel
 
 import androidx.lifecycle.MutableLiveData
+import com.blankj.utilcode.util.LogUtils
 import com.gsq.iart.app.network.apiService
 import com.gsq.iart.app.network.stateCallback.ListDataUiState
 import com.gsq.iart.app.network.stateCallback.UpdateUiState
@@ -16,6 +17,10 @@ import com.gsq.mvvm.ext.request
  * 作品viewmodel
  */
 class WorksViewModel : BaseViewModel() {
+    companion object {
+        const val TAG = "WorksViewModel"
+    }
+
     //页码
     var pageNo = 1
 
@@ -41,8 +46,9 @@ class WorksViewModel : BaseViewModel() {
         searchKey: String = ""
     ) {
         if (isRefresh) {
-            pageNo = 0
+            pageNo = 1
         }
+        LogUtils.dTag(TAG, "getWorksListData pageNo:${pageNo}")
         var workPageRequestParam = WorkPageRequestParam(
             classifyId,
             orderType,

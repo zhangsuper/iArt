@@ -9,15 +9,16 @@ import com.gsq.iart.app.ext.init
 import com.gsq.iart.app.util.StatusBarUtil
 import com.gsq.iart.data.Constant.COMPLEX_TYPE_GROUP
 import com.gsq.iart.data.bean.ArgsType
-import com.gsq.iart.data.bean.HomeClassifyBean
 import com.gsq.iart.databinding.FragmentHomeBinding
 import com.gsq.iart.viewmodel.HomeViewModel
 import com.gsq.mvvm.ext.nav
 import com.gsq.mvvm.ext.navigateAction
+import com.gsq.mvvm.ext.view.gone
+import com.gsq.mvvm.ext.view.visible
 import kotlinx.android.synthetic.main.fragment_home.*
 
 
-class HomeFragment: BaseFragment<HomeViewModel, FragmentHomeBinding>() {
+class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
 
     //fragment集合
     var fragments: ArrayList<Fragment> = arrayListOf()
@@ -52,18 +53,30 @@ class HomeFragment: BaseFragment<HomeViewModel, FragmentHomeBinding>() {
 
     override fun createObserver() {
         super.createObserver()
-        mViewModel.classifyList.observe(viewLifecycleOwner){
-            if(it != null){
+        mViewModel.classifyList.observe(viewLifecycleOwner) {
+            if (it != null) {
                 fragments.clear()
                 mDataList.clear()
                 it.forEach { classify ->
                     mDataList.add(classify.name)
-                    fragments.add(WorksListFragment.start(ArgsType(COMPLEX_TYPE_GROUP,classify.id)))
+                    fragments.add(
+                        WorksListFragment.start(
+                            ArgsType(
+                                COMPLEX_TYPE_GROUP,
+                                classify.id
+                            )
+                        )
+                    )
                 }
 
                 home_magic_indicator.navigator.notifyDataSetChanged()
                 home_view_pager.adapter?.notifyDataSetChanged()
                 home_view_pager.offscreenPageLimit = fragments.size
+                if (fragments.size > 1) {
+                    home_magic_indicator.visible()
+                } else {
+                    home_magic_indicator.gone()
+                }
             }
         }
 //        var tablist = mutableListOf<HomeClassifyBean>()
