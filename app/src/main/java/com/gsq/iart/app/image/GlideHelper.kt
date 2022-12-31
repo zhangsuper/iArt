@@ -1,6 +1,7 @@
 package com.gsq.iart.app.image
 
 import android.annotation.SuppressLint
+import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.widget.ImageView
 import com.bumptech.glide.load.DataSource
@@ -11,6 +12,7 @@ import com.bumptech.glide.load.resource.bitmap.BitmapTransformation
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.RequestOptions
+import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.target.DrawableImageViewTarget
 import com.bumptech.glide.request.target.Target
 import com.bumptech.glide.request.transition.DrawableCrossFadeFactory
@@ -58,22 +60,23 @@ object GlideHelper {
                 if (showPlaceHolder == true) {
                     options.placeholder(R.color.color_A7A7A7)
                         .error(R.color.color_A7A7A7)
-                        .format(DecodeFormat.PREFER_RGB_565)
+//                        .format(DecodeFormat.PREFER_RGB_565)
                 } else {
                     options.error(R.color.color_A7A7A7)
-                        .format(DecodeFormat.PREFER_RGB_565)
+//                        .format(DecodeFormat.PREFER_RGB_565)
                 }
             }
         } else {
             options.placeholder(defaultRes)
                 .error(defaultRes)
         }
+//        options.override(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
         if (needCache) {
-            options.diskCacheStrategy(DiskCacheStrategy.DATA)
+            options.diskCacheStrategy(DiskCacheStrategy.ALL)
         } else {
             options.diskCacheStrategy(DiskCacheStrategy.NONE)
         }
-        options.dontAnimate()
+//        options.dontAnimate()
 
         GlideApp.with(context)
             .load(realUrl)
@@ -101,6 +104,53 @@ object GlideHelper {
             })
             .apply(options)
             .into(imageView)
+    }
+
+    @SuppressLint("CheckResult")
+    fun load(
+        imageView: ImageView?,
+        url: String?,
+        defaultRes: Int? = null,
+        needCache: Boolean = true,
+        loadService: LoadService<*>? = null,
+    ) {
+        if (imageView == null) {
+            return
+        }
+        val context = imageView.context
+        val realUrl = url
+        val options = RequestOptions()
+        if (defaultRes == null) {
+            options.placeholder(R.color.color_A7A7A7)
+                .error(R.color.color_A7A7A7)
+        } else {
+            options.placeholder(defaultRes)
+                .error(defaultRes)
+        }
+        options.override(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
+        if (needCache) {
+            options.diskCacheStrategy(DiskCacheStrategy.ALL)
+        } else {
+            options.diskCacheStrategy(DiskCacheStrategy.NONE)
+        }
+        GlideApp.with(context)
+            .asBitmap()
+            .load(realUrl)
+            .apply(options)
+            .into(object : CustomTarget<Bitmap>() {
+                override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
+                    imageView.setImageBitmap(resource)
+                    loadService?.showSuccess()
+                }
+
+                override fun onLoadCleared(placeholder: Drawable?) {
+                }
+
+                override fun onLoadFailed(errorDrawable: Drawable?) {
+                    super.onLoadFailed(errorDrawable)
+                    loadService?.showError("加载失败")
+                }
+            })
     }
 
     /**

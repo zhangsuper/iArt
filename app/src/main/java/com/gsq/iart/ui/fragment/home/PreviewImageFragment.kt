@@ -1,14 +1,19 @@
 package com.gsq.iart.ui.fragment.home
 
+import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.widget.ImageView
 import com.airbnb.mvrx.args
 import com.airbnb.mvrx.asMavericksArgs
-import com.github.chrisbanes.photoview.PhotoView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.target.SimpleTarget
+import com.bumptech.glide.request.transition.Transition
+import com.davemorrissey.labs.subscaleview.ImageSource
+import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView
+import com.gsq.iart.app.App
 import com.gsq.iart.app.base.BaseFragment
 import com.gsq.iart.app.ext.loadServiceInit
+import com.gsq.iart.app.ext.showError
 import com.gsq.iart.app.ext.showLoading
-import com.gsq.iart.app.image.GlideHelper
 import com.gsq.iart.data.bean.DetailArgsType
 import com.gsq.iart.data.event.BigImageClickEvent
 import com.gsq.iart.databinding.FragmentPreviewImageBinding
@@ -16,6 +21,7 @@ import com.gsq.mvvm.base.viewmodel.BaseViewModel
 import com.kingja.loadsir.core.LoadService
 import kotlinx.android.synthetic.main.fragment_preview_image.*
 import org.greenrobot.eventbus.EventBus
+import java.io.File
 
 class PreviewImageFragment : BaseFragment<BaseViewModel, FragmentPreviewImageBinding>() {
 
@@ -40,11 +46,18 @@ class PreviewImageFragment : BaseFragment<BaseViewModel, FragmentPreviewImageBin
             loadsir.showLoading()
             loadPic()
         }
-        photo_view.scaleType = ImageView.ScaleType.FIT_CENTER
-        photo_view.setOnPhotoTapListener { view, x, y ->
+//        photo_view.scaleType = ImageView.ScaleType.FIT_CENTER
+//        photo_view.setOnPhotoTapListener { view, x, y ->
+//            EventBus.getDefault().post(BigImageClickEvent(true))
+//        }
+//        photo_view.setScaleLevels(1.0f, 4.0f, 20.0f)
+        photo_view.setOnClickListener {
             EventBus.getDefault().post(BigImageClickEvent(true))
         }
-        photo_view.setScaleLevels(1.0f, 4.0f, 20.0f)
+        photo_view.isQuickScaleEnabled = true
+        photo_view.isPanEnabled = true
+        photo_view.maxScale = 20f
+        photo_view.minScale = 0.5f
     }
 
     override fun lazyLoadData() {
@@ -54,19 +67,19 @@ class PreviewImageFragment : BaseFragment<BaseViewModel, FragmentPreviewImageBin
     }
 
     private fun loadPic() {
-//        imageView.setImage(ImageSource.uri(args.workHdPics.url))
-        GlideHelper.load(photo_view, args.workHdPics.url, loadService = loadsir)
+//        GlideHelper.load(photo_view, args.workHdPics.url, loadService = loadsir)
 //        Glide.with(App.instance)
 //            .download(args.workHdPics.url)
 //            .into(object : SimpleTarget<File>() {
 //                override fun onResourceReady(resource: File, transition: Transition<in File>?) {
+//                    loadsir.showSuccess()
 //                    ThreadUtils.runOnUiThread {
-//                        imageView?.let {
+//                        photo_view?.let {
 //                            if (resource?.absolutePath != null) {
 //                                it.setImage(ImageSource.uri(resource.absolutePath))
 //                            }
 //                            // 最大显示比例
-//                            it.maxScale = 10f
+//                            it.maxScale = 20f
 //                            it.minScale = 0.5f
 //                        }
 //                    }
@@ -74,9 +87,51 @@ class PreviewImageFragment : BaseFragment<BaseViewModel, FragmentPreviewImageBin
 //
 //            })
 
+        Glide.with(App.instance).load(args.workHdPics.url)
+            .downloadOnly(object : SimpleTarget<File?>() {
+                override fun onResourceReady(
+                    resource: File,
+                    glideAnimation: Transition<in File?>?
+                ) {
+                    loadsir.showSuccess()
+//                    val sWidth = BitmapFactory.decodeFile(resource.absolutePath).width
+//                    val sHeight = BitmapFactory.decodeFile(resource.absolutePath).height
+//                    val wm = ContextCompat.getSystemService(App.instance, WindowManager::class.java)
+//                    val width = wm?.defaultDisplay?.width ?: 0
+//                    val height = wm?.defaultDisplay?.height ?: 0
+//                    if (sHeight >= height
+//                        && sHeight / sWidth >= 3
+//                    ) {
+//                        photo_view.setMinimumScaleType(SubsamplingScaleImageView.SCALE_TYPE_CENTER_CROP)
+//                        photo_view.setImage(
+//                            ImageSource.uri(Uri.fromFile(resource)),
+//                            ImageViewState(0.5f, PointF(0f, 0f), 0)
+//                        )
+//                    } else {
+//                        photo_view.setMinimumScaleType(SubsamplingScaleImageView.SCALE_TYPE_CUSTOM)
+//                        photo_view.setImage(ImageSource.uri(Uri.fromFile(resource)))
+//                        photo_view.setDoubleTapZoomStyle(SubsamplingScaleImageView.ZOOM_FOCUS_CENTER_IMMEDIATE)
+//                    }
+                    loadsir.showSuccess()
+                    photo_view?.let {
+                        if (resource?.absolutePath != null) {
+                            it.setImage(ImageSource.uri(resource.absolutePath))
+                        }
+                        // 最大显示比例
+                        it.maxScale = 20f
+                        it.minScale = 0.5f
+                    }
+                }
+
+                override fun onLoadFailed(errorDrawable: Drawable?) {
+                    super.onLoadFailed(errorDrawable)
+                    loadsir.showError("加载失败")
+                }
+            })
+
     }
 
-    fun getPhotoView(): PhotoView {
+    fun getPhotoView(): SubsamplingScaleImageView {
         return photo_view
     }
 

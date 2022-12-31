@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.Window
 import com.blankj.utilcode.util.ThreadUtils
 import com.gsq.iart.app.base.BaseActivity
+import com.gsq.iart.app.util.MobAgentUtil
 import com.gsq.iart.databinding.ActivitySplashBinding
 import com.gsq.mvvm.base.viewmodel.BaseViewModel
 
@@ -16,6 +17,7 @@ class SplashActivity : BaseActivity<BaseViewModel, ActivitySplashBinding>() {
     override fun onCreate(savedInstanceState: Bundle?) {
         requestWindowFeature(Window.FEATURE_NO_TITLE)
         super.onCreate(savedInstanceState)
+        MobAgentUtil.onEvent("start")
     }
 
     override fun initView(savedInstanceState: Bundle?) {

@@ -11,12 +11,14 @@ import com.blankj.utilcode.util.ToastUtils
 import com.gsq.iart.R
 import com.gsq.iart.app.base.BaseFragment
 import com.gsq.iart.app.util.CacheUtil
+import com.gsq.iart.app.util.MobAgentUtil
 import com.gsq.iart.app.util.WxLoginUtil
 import com.gsq.iart.data.event.LoginEvent
 import com.gsq.iart.databinding.FragmentLoginBinding
 import com.gsq.iart.viewmodel.LoginViewModel
 import com.gsq.mvvm.ext.nav
 import com.gsq.mvvm.ext.navigateAction
+import com.umeng.analytics.MobclickAgent
 import kotlinx.android.synthetic.main.fragment_login.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -40,6 +42,10 @@ class LoginFragment : BaseFragment<LoginViewModel, FragmentLoginBinding>() {
             }
             //微信登录
             WxLoginUtil.loginWeChat()
+
+            var eventMap = mutableMapOf<String, Any?>()
+            eventMap["type"] = "wechat"
+            MobAgentUtil.onEvent("signin_channel", eventMap)
 //            ToastUtils.showShort("微信登录")
         }
         qq_btn.setOnClickListener {
@@ -97,11 +103,22 @@ class LoginFragment : BaseFragment<LoginViewModel, FragmentLoginBinding>() {
         mViewModel.loginResultDataState.observe(viewLifecycleOwner) {
             if (it.isSuccess) {
                 it.data?.let { userInfo ->
+                    MobclickAgent.onProfileSignIn("WeChat", userInfo.userId)
+
+                    var eventMap = mutableMapOf<String, Any?>()
+                    eventMap["type"] = "WeChat"
+                    MobAgentUtil.onEvent("singin_suc", eventMap)
+
                     CacheUtil.setUser(userInfo)
                     nav().navigateUp()
                 }
             } else {
                 ToastUtils.showLong(it.errorMsg)
+
+                var eventMap = mutableMapOf<String, Any?>()
+                eventMap["type"] = "WeChat"
+                eventMap["reason"] = it.errorMsg
+                MobAgentUtil.onEvent("singin_fail", eventMap)
             }
         }
     }
@@ -109,7 +126,13 @@ class LoginFragment : BaseFragment<LoginViewModel, FragmentLoginBinding>() {
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onMessageEvent(event: LoginEvent?) {
         event?.code?.let {
-            mViewModel.loginByWeChat(it)
+            if (it == "-9999") {
+                var eventMap = mutableMapOf<String, Any?>()
+                eventMap["reason"] = event?.msg
+                MobAgentUtil.onEvent("singin_fail", eventMap)
+            } else {
+                mViewModel.loginByWeChat(it)
+            }
         }
     }
 

@@ -7,6 +7,7 @@ import com.gsq.iart.R
 import com.gsq.iart.app.base.BaseFragment
 import com.gsq.iart.app.image.GlideHelper
 import com.gsq.iart.app.util.CacheUtil
+import com.gsq.iart.app.util.MobAgentUtil
 import com.gsq.iart.app.util.StatusBarUtil
 import com.gsq.iart.databinding.FragmentMineBinding
 import com.gsq.mvvm.base.viewmodel.BaseViewModel
@@ -26,6 +27,10 @@ class MineFragment : BaseFragment<BaseViewModel, FragmentMineBinding>() {
         StatusBarUtil.init(requireActivity(), statusBarColor = R.color.color_EFF1F5)
     }
 
+    override fun getUserVisibleHint(): Boolean {
+        return super.getUserVisibleHint()
+    }
+
     override fun onPause() {
         super.onPause()
         StatusBarUtil.init(requireActivity(), statusBarColor = R.color.white)
@@ -34,11 +39,15 @@ class MineFragment : BaseFragment<BaseViewModel, FragmentMineBinding>() {
     override fun initView(savedInstanceState: Bundle?) {
         item_collect.setOnClickListener {
             //收藏
+            MobAgentUtil.onEvent("mycollect")
             if (CacheUtil.isLogin()) {
                 nav().navigateAction(R.id.action_mainFragment_to_myCollectFragment)
             } else {
                 //跳转登录界面
                 nav().navigateAction(R.id.action_mainFragment_to_loginFragment)
+                var eventMap = mutableMapOf<String, Any?>()
+                eventMap["type"] = "signin"
+                MobAgentUtil.onEvent("signin", eventMap)
             }
         }
         item_setting.setOnClickListener {
@@ -50,10 +59,12 @@ class MineFragment : BaseFragment<BaseViewModel, FragmentMineBinding>() {
             ClipboardUtils.copyText(item_contact.getRightSubDescTv().text.toString())
 //            item_contact.context.copyToClipboard(item_contact.getRightSubDescTv().text.toString())
             ToastUtils.showShort("已复制到粘贴板")
+            MobAgentUtil.onEvent("customer_qq")
         }
         setListener()
         setLoginStatus()
 //        setUserInfo()
+        MobAgentUtil.onEvent("tab_my")
     }
 
     private fun setLoginStatus() {
@@ -85,6 +96,9 @@ class MineFragment : BaseFragment<BaseViewModel, FragmentMineBinding>() {
             } else {
                 //跳转登录界面
                 nav().navigateAction(R.id.action_mainFragment_to_loginFragment)
+                var eventMap = mutableMapOf<String, Any?>()
+                eventMap["type"] = "signin"
+                MobAgentUtil.onEvent("signin", eventMap)
             }
         }
         join_vip_btn.setOnClickListener {
@@ -96,6 +110,11 @@ class MineFragment : BaseFragment<BaseViewModel, FragmentMineBinding>() {
 //                //跳转登录界面
 //                nav().navigateAction(R.id.action_mainFragment_to_loginFragment)
 //            }
+            if (CacheUtil.getUser()?.memberType == 1) {
+                MobAgentUtil.onEvent("renew")
+            } else {
+                MobAgentUtil.onEvent("recharge")
+            }
         }
     }
 

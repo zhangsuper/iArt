@@ -13,6 +13,7 @@ import com.kingja.loadsir.callback.SuccessCallback
 import com.kingja.loadsir.core.LoadSir
 import com.tencent.bugly.crashreport.CrashReport
 import com.tencent.mmkv.MMKV
+import com.umeng.analytics.MobclickAgent
 import com.umeng.commonsdk.UMConfigure
 
 
@@ -64,6 +65,8 @@ class App : BaseApp() {
                 UMConfigure.DEVICE_TYPE_PHONE,
                 ""
             )
+            // 选用手动页面采集模式
+            MobclickAgent.setPageCollectionMode(MobclickAgent.PageMode.MANUAL)
         }
         //友盟正式初始化
 //        var umInitConfig = UmInitConfig()

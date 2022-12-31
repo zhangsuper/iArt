@@ -6,6 +6,7 @@ import com.gsq.iart.R
 import com.gsq.iart.app.base.BaseFragment
 import com.gsq.iart.app.ext.bindViewPager2
 import com.gsq.iart.app.ext.init
+import com.gsq.iart.app.util.MobAgentUtil
 import com.gsq.iart.app.util.StatusBarUtil
 import com.gsq.iart.data.Constant.COMPLEX_TYPE_GROUP
 import com.gsq.iart.data.bean.ArgsType
@@ -28,7 +29,12 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
 
     override fun onResume() {
         super.onResume()
-        StatusBarUtil.init(requireActivity(), statusBarColor = R.color.white)
+        StatusBarUtil.init(
+            requireActivity(),
+            fitSystem = true,
+            statusBarColor = R.color.white,
+            isDarkFont = true
+        )
     }
 
     override fun initView(savedInstanceState: Bundle?) {
@@ -40,8 +46,9 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
         home_search_view.setOnClickListener {
             //跳转搜索节面
             nav().navigateAction(R.id.action_mainFragment_to_searchFragment)
+            MobAgentUtil.onEvent("search_guohua")
         }
-
+        MobAgentUtil.onEvent("tab_home")
     }
 
     override fun lazyLoadData() {

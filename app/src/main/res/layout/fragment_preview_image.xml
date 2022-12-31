@@ -4,15 +4,15 @@
     android:layout_height="match_parent"
     android:background="@color/black">
 
-    <com.github.chrisbanes.photoview.PhotoView
+    <!--    <com.github.chrisbanes.photoview.PhotoView-->
+    <!--        android:id="@+id/photo_view"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="match_parent"-->
+    <!--        android:scaleType="fitXY" />-->
+
+    <com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView
         android:id="@+id/photo_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scaleType="fitXY" />
-
-    <!--    <com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView-->
-    <!--        android:id="@+id/imageView"-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="match_parent"/>-->
+        android:layout_height="match_parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

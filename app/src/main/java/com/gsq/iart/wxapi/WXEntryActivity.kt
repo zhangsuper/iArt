@@ -39,14 +39,17 @@ class WXEntryActivity : Activity(), IWXAPIEventHandler {
             BaseResp.ErrCode.ERR_AUTH_DENIED -> {
                 "用户拒绝授权"
                 ToastUtils.showLong("授权失败")
+                EventBus.getDefault().post(LoginEvent("-9999", "授权失败"))
             }
             BaseResp.ErrCode.ERR_USER_CANCEL -> {
                 "用户取消"
                 ToastUtils.showLong("取消登录")
+                EventBus.getDefault().post(LoginEvent("-9999", "取消登录"))
             }
             else -> {
                 "失败"
                 ToastUtils.showLong("登录失败")
+                EventBus.getDefault().post(LoginEvent("-9999", "登录失败"))
             }
         }
 

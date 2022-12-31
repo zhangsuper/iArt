@@ -15,6 +15,7 @@ import com.gsq.iart.R
 import com.gsq.iart.app.base.BaseFragment
 import com.gsq.iart.app.ext.*
 import com.gsq.iart.app.util.CacheUtil
+import com.gsq.iart.app.util.MobAgentUtil
 import com.gsq.iart.app.weight.recyclerview.GridItemDecoration
 import com.gsq.iart.data.Constant.COMPLEX_TYPE_COLLECT
 import com.gsq.iart.data.Constant.COMPLEX_TYPE_SEARCH
@@ -109,6 +110,9 @@ class WorksListFragment : BaseFragment<WorksViewModel, FragmentWorksListBinding>
 //                }
                 //需要付费且没有开通了会员
                 nav().navigateAction(R.id.action_mainFragment_to_memberFragment)
+                var eventMap = mutableMapOf<String, Any?>()
+                eventMap["works"] = worksBean?.id
+                MobAgentUtil.onEvent("vip", eventMap)
             } else {
                 var bundle = Bundle()
                 bundle.putSerializable(
@@ -118,7 +122,21 @@ class WorksListFragment : BaseFragment<WorksViewModel, FragmentWorksListBinding>
                 bundle.putString(INTENT_TYPE, args.complexType)
                 nav().navigateAction(R.id.action_mainFragment_to_workDetailFragment, bundle)
             }
+            var eventMap = mutableMapOf<String, Any?>()
+            eventMap["id"] = worksBean.id
+            when (args.complexType) {
+                COMPLEX_TYPE_SEARCH -> {
+                    MobAgentUtil.onEvent("click_s", eventMap)
+                }
+                COMPLEX_TYPE_COLLECT -> {
+
+                }
+                else -> {
+                    MobAgentUtil.onEvent("click", eventMap)
+                }
+            }
         }
+        MobAgentUtil.onEvent("channel_guohua")
     }
 
     private fun initTypeConditionView() {
@@ -138,6 +156,17 @@ class WorksListFragment : BaseFragment<WorksViewModel, FragmentWorksListBinding>
             hot_tab_indicator.visible()
             new_tab_indicator.gone()
             requestData(true)
+            when (args.complexType) {
+                COMPLEX_TYPE_SEARCH -> {
+                    MobAgentUtil.onEvent("hot_guohua_hot")
+                }
+                COMPLEX_TYPE_COLLECT -> {
+
+                }
+                else -> {
+                    MobAgentUtil.onEvent("hot_guohua")
+                }
+            }
         }
         new_tab.setOnClickListener {
             //点击最新
@@ -152,24 +181,68 @@ class WorksListFragment : BaseFragment<WorksViewModel, FragmentWorksListBinding>
             hot_tab_indicator.gone()
             new_tab_indicator.visible()
             requestData(true)
+            when (args.complexType) {
+                COMPLEX_TYPE_SEARCH -> {
+                    MobAgentUtil.onEvent("new_guohua_new")
+                }
+                COMPLEX_TYPE_COLLECT -> {
+
+                }
+                else -> {
+                    MobAgentUtil.onEvent("new_guohua")
+                }
+            }
         }
         condition_years_view.setOnClickListener {
             //年代
             selectType = classifyBean?.get(0)?.name ?: ""
             startAnimator(iv_years_frame, true)
             showConditionPopupWindow(classifyBean?.get(0)?.subs)
+            when (args.complexType) {
+                COMPLEX_TYPE_SEARCH -> {
+                    MobAgentUtil.onEvent("filter_1_guohua_s")
+                }
+                COMPLEX_TYPE_COLLECT -> {
+
+                }
+                else -> {
+                    MobAgentUtil.onEvent("filter_1_guohua")
+                }
+            }
         }
         condition_theme_view.setOnClickListener {
             //题材
             selectType = classifyBean?.get(1)?.name ?: ""
             startAnimator(iv_theme_frame, true)
             showConditionPopupWindow(classifyBean?.get(1)?.subs)
+            when (args.complexType) {
+                COMPLEX_TYPE_SEARCH -> {
+                    MobAgentUtil.onEvent("filter_2_guohua_s")
+                }
+                COMPLEX_TYPE_COLLECT -> {
+
+                }
+                else -> {
+                    MobAgentUtil.onEvent("filter_2_guohua")
+                }
+            }
         }
         condition_size_view.setOnClickListener {
             //尺寸
             selectType = classifyBean?.get(2)?.name ?: ""
             startAnimator(iv_size_frame, true)
             showConditionPopupWindow(classifyBean?.get(2)?.subs)
+            when (args.complexType) {
+                COMPLEX_TYPE_SEARCH -> {
+                    MobAgentUtil.onEvent("filter_3_guohua_s")
+                }
+                COMPLEX_TYPE_COLLECT -> {
+
+                }
+                else -> {
+                    MobAgentUtil.onEvent("filter_3_guohua")
+                }
+            }
         }
         condition_screen_view.setOnClickListener {
             //筛选
@@ -179,7 +252,19 @@ class WorksListFragment : BaseFragment<WorksViewModel, FragmentWorksListBinding>
             //全部筛选条件弹窗
             classifyBean?.let {
                 showAllConditionPopupWindow(it)
+                when (args.complexType) {
+                    COMPLEX_TYPE_SEARCH -> {
+                        MobAgentUtil.onEvent("filter_more_guohua_s")
+                    }
+                    COMPLEX_TYPE_COLLECT -> {
+
+                    }
+                    else -> {
+                        MobAgentUtil.onEvent("filter_more_guohua")
+                    }
+                }
             }
+
         }
     }
 
@@ -207,6 +292,17 @@ class WorksListFragment : BaseFragment<WorksViewModel, FragmentWorksListBinding>
                         } else {
                             tv_years.text = grade1Item.name
                         }
+                        when (args.complexType) {
+                            COMPLEX_TYPE_SEARCH -> {
+                                MobAgentUtil.onEvent("filter_1_guohua_s_ok")
+                            }
+                            COMPLEX_TYPE_COLLECT -> {
+
+                            }
+                            else -> {
+                                MobAgentUtil.onEvent("filter_1_guohua_ok")
+                            }
+                        }
                     }
                     classifyBean?.get(1)?.name -> {
                         if (grade2Item != null) {
@@ -214,12 +310,34 @@ class WorksListFragment : BaseFragment<WorksViewModel, FragmentWorksListBinding>
                         } else {
                             tv_theme.text = grade1Item.name
                         }
+                        when (args.complexType) {
+                            COMPLEX_TYPE_SEARCH -> {
+                                MobAgentUtil.onEvent("filter_2_guohua_s_ok")
+                            }
+                            COMPLEX_TYPE_COLLECT -> {
+
+                            }
+                            else -> {
+                                MobAgentUtil.onEvent("filter_2_guohua_ok")
+                            }
+                        }
                     }
                     classifyBean?.get(2)?.name -> {
                         if (grade2Item != null) {
                             tv_size.text = grade2Item.name
                         } else {
                             tv_size.text = grade1Item.name
+                        }
+                        when (args.complexType) {
+                            COMPLEX_TYPE_SEARCH -> {
+                                MobAgentUtil.onEvent("filter_3_guohua_s_ok")
+                            }
+                            COMPLEX_TYPE_COLLECT -> {
+
+                            }
+                            else -> {
+                                MobAgentUtil.onEvent("filter_3_guohua_ok")
+                            }
                         }
                     }
                 }
@@ -305,6 +423,17 @@ class WorksListFragment : BaseFragment<WorksViewModel, FragmentWorksListBinding>
                 }
 //                initConditionView()
                 requestData(true)
+                when (args.complexType) {
+                    COMPLEX_TYPE_SEARCH -> {
+                        MobAgentUtil.onEvent("filter_more_guohua_s_ok")
+                    }
+                    COMPLEX_TYPE_COLLECT -> {
+
+                    }
+                    else -> {
+                        MobAgentUtil.onEvent("filter_more_guohua_ok")
+                    }
+                }
             }
 
             override fun onDismiss() {

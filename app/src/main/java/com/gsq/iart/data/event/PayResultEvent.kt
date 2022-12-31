@@ -1,5 +1,6 @@
 package com.gsq.iart.data.event
 
 class PayResultEvent(
-    val code: String
+    val code: String,
+    val msg: String = ""
 )

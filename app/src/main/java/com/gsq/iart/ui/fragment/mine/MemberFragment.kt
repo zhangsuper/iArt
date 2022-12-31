@@ -14,6 +14,7 @@ import com.gsq.iart.R
 import com.gsq.iart.app.base.BaseFragment
 import com.gsq.iart.app.image.GlideHelper
 import com.gsq.iart.app.util.CacheUtil
+import com.gsq.iart.app.util.MobAgentUtil
 import com.gsq.iart.app.util.WxLoginUtil
 import com.gsq.iart.data.bean.PayConfigBean
 import com.gsq.iart.data.bean.VipPriceBean
@@ -89,9 +90,15 @@ class MemberFragment : BaseFragment<MemberViewModel, FragmentMemberBinding>() {
                 }
                 if (!CacheUtil.isLogin()) {
                     nav().navigateAction(R.id.action_memberFragment_to_loginFragment)
+                    var eventMap = mutableMapOf<String, Any?>()
+                    eventMap["type"] = "vip"
+                    MobAgentUtil.onEvent("signin", eventMap)
                     return@setOnClickListener
                 }
                 mViewModel.createPreparePay(it.id)
+                var eventMap = mutableMapOf<String, Any?>()
+                eventMap["payType"] = "wechat"
+                MobAgentUtil.onEvent("vip_buy")
             } ?: let {
                 ToastUtils.showLong("请选择开通套餐")
             }
@@ -167,6 +174,14 @@ class MemberFragment : BaseFragment<MemberViewModel, FragmentMemberBinding>() {
         //服务器端的接收的支付通知
         LogUtils.d("PayResultEvent：getUserInfo")
         mLoginViewModel?.getUserInfo()
+        var eventMap = mutableMapOf<String, Any?>()
+        eventMap["payType"] = "wechat"
+        if (event?.code == "true") {
+            MobAgentUtil.onEvent("paid_suc", eventMap)
+        } else if (event?.code == "false") {
+            eventMap["reason"] = event.msg
+            MobAgentUtil.onEvent("paid_fail", eventMap)
+        }
     }
 
 

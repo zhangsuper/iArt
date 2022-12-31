@@ -8,6 +8,7 @@ import com.gsq.iart.R
 import com.gsq.iart.app.base.BaseDialog
 import com.gsq.iart.app.network.ApiService.Companion.personal_url
 import com.gsq.iart.app.util.CacheUtil
+import com.gsq.iart.app.util.MobAgentUtil
 import com.gsq.iart.databinding.DialogSecretBinding
 import com.just.agentweb.AgentWeb
 import com.umeng.commonsdk.UMConfigure
@@ -37,6 +38,7 @@ class SecretDialog : BaseDialog(R.layout.dialog_secret) {
                 binding.agreeBtn.context, "63833c5488ccdf4b7e716bb1", "yishuguan",
                 UMConfigure.DEVICE_TYPE_PHONE, ""
             )
+            MobAgentUtil.onEvent("policy")
         }
         binding.disagreeBtn.setOnClickListener {
             CacheUtil.setAgreePrivacyStatus(false)

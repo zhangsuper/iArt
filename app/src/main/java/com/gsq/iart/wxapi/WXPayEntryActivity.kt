@@ -55,10 +55,12 @@ class WXPayEntryActivity : Activity(), IWXAPIEventHandler {
                 BaseResp.ErrCode.ERR_COMM -> {
                     LogUtils.d("pay error:${baseResp.errStr}")
                     ToastUtils.showLong("支付失败")
+                    EventBus.getDefault().post(PayResultEvent("false", baseResp.errStr))
                 }
                 BaseResp.ErrCode.ERR_USER_CANCEL -> {
                     LogUtils.d("pay cancel")
                     ToastUtils.showLong("用户取消支付")
+                    EventBus.getDefault().post(PayResultEvent("false", "pay cancel"))
                 }
             }
             finish()

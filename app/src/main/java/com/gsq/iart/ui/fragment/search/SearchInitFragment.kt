@@ -8,6 +8,7 @@ import com.google.android.flexbox.JustifyContent
 import com.gsq.iart.app.base.BaseFragment
 import com.gsq.iart.app.ext.init
 import com.gsq.iart.app.util.CacheUtil
+import com.gsq.iart.app.util.MobAgentUtil
 import com.gsq.iart.databinding.FragmentSearchInitBinding
 import com.gsq.iart.ui.adapter.SearchHistoryAdapter
 import com.gsq.iart.ui.adapter.SearchHotAdapter
@@ -52,6 +53,10 @@ class SearchInitFragment : BaseFragment<SearchViewModel, FragmentSearchInitBindi
                 val queryStr = historyAdapter.data[position]
                 updateKey(queryStr)
                 searchData(queryStr)
+
+                var eventMap = mutableMapOf<String, Any>()
+                eventMap["query"] = queryStr
+                MobAgentUtil.onEvent("search_guohua_history", eventMap)
             }
         }
 
@@ -60,6 +65,10 @@ class SearchInitFragment : BaseFragment<SearchViewModel, FragmentSearchInitBindi
                 val queryStr = hotAdapter.data[position]
                 updateKey(queryStr)
                 searchData(queryStr)
+
+                var eventMap = mutableMapOf<String, Any>()
+                eventMap["query"] = queryStr
+                MobAgentUtil.onEvent("search_guohua_hot", eventMap)
             }
         }
     }

@@ -10,12 +10,14 @@ import androidx.viewpager2.widget.ViewPager2
 import com.blankj.utilcode.util.FileUtils
 import com.blankj.utilcode.util.LogUtils
 import com.blankj.utilcode.util.ToastUtils
+import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView.*
 import com.downloader.OnDownloadListener
 import com.downloader.PRDownloader
 import com.gsq.iart.R
 import com.gsq.iart.app.base.BaseFragment
 import com.gsq.iart.app.ext.init
 import com.gsq.iart.app.util.CacheUtil
+import com.gsq.iart.app.util.MobAgentUtil
 import com.gsq.iart.app.util.StatusBarUtil
 import com.gsq.iart.data.Constant
 import com.gsq.iart.data.Constant.COMPLEX_TYPE_COLLECT
@@ -55,6 +57,11 @@ class WorkDetailFragment : BaseFragment<WorksViewModel, FragmentWorkDetailBindin
     override fun initView(savedInstanceState: Bundle?) {
         worksBean = arguments?.getSerializable(DATA_WORK) as? WorksBean
         intentType = arguments?.getString(Constant.INTENT_TYPE, COMPLEX_TYPE_GROUP)
+
+        var eventMap = mutableMapOf<String, Any?>()
+        eventMap["id"] = worksBean?.id
+        MobAgentUtil.onEvent("preview_jump", eventMap)
+
         fragmentList = arrayListOf()
         view_pager.init(this, fragmentList)
         view_pager.offscreenPageLimit = 6
@@ -134,6 +141,10 @@ class WorkDetailFragment : BaseFragment<WorksViewModel, FragmentWorkDetailBindin
                     }
                     tv_index.text = "1/${fragmentList.size}"
                 }
+
+                var eventMap = mutableMapOf<String, Any?>()
+                eventMap["id"] = worksBean?.id
+                MobAgentUtil.onEvent("preview_show", eventMap)
             } else {
                 ToastUtils.showLong(it.errorMsg)
             }
@@ -167,6 +178,10 @@ class WorkDetailFragment : BaseFragment<WorksViewModel, FragmentWorkDetailBindin
             var args = Bundle()
             args.putSerializable(DATA_WORK, worksBean)
             nav().navigateAction(R.id.action_workDetailFragment_to_workIntroduceFragment, args)
+
+            var eventMap = mutableMapOf<String, Any?>()
+            eventMap["id"] = worksBean?.id
+            MobAgentUtil.onEvent("introduce", eventMap)
         }
         iv_collect.setOnClickListener {
             //收藏与取消收藏
@@ -181,10 +196,18 @@ class WorkDetailFragment : BaseFragment<WorksViewModel, FragmentWorkDetailBindin
                         }
                     }
 
+                    var eventMap = mutableMapOf<String, Any?>()
+                    eventMap["id"] = worksBean?.id
+                    MobAgentUtil.onEvent("collect", eventMap)
                 }
             } else {
                 //跳转登录界面
                 nav().navigateAction(R.id.action_mainFragment_to_loginFragment)
+
+                var eventMap = mutableMapOf<String, Any?>()
+                eventMap["type"] = "collect"
+                eventMap["id"] = worksBean?.id
+                MobAgentUtil.onEvent("signin", eventMap)
             }
 
         }
@@ -193,9 +216,16 @@ class WorkDetailFragment : BaseFragment<WorksViewModel, FragmentWorkDetailBindin
                 if (CacheUtil.getUser()?.memberType == 1) {
                     //下载
                     checkStoragePermission()
+
+                    var eventMap = mutableMapOf<String, Any?>()
+                    eventMap["id"] = worksBean?.id
+                    MobAgentUtil.onEvent("download", eventMap)
                 } else {
                     //跳转到会员页
                     nav().navigateAction(R.id.action_workDetailFragment_to_memberFragment)
+                    var eventMap = mutableMapOf<String, Any?>()
+                    eventMap["download"] = worksBean?.id
+                    MobAgentUtil.onEvent("vip", eventMap)
                 }
             } else {
                 //跳转登录界面
@@ -203,11 +233,37 @@ class WorkDetailFragment : BaseFragment<WorksViewModel, FragmentWorkDetailBindin
             }
         }
         iv_scale.setOnClickListener {
+            (fragmentList[currentSelectedIndex] as PreviewImageFragment).getPhotoView()
+                .setScaleAndCenter(100f, null)
 //            (fragmentList[currentSelectedIndex] as PreviewImageFragment).getPhotoView().maximumScale
 //                .setScale(100f, true)
         }
         iv_rota.setOnClickListener {
-            (fragmentList[currentSelectedIndex] as PreviewImageFragment).getPhotoView().rotation -= 90
+//            (fragmentList[currentSelectedIndex] as PreviewImageFragment).getPhotoView().rotation -= 90
+            var orientation =
+                (fragmentList[currentSelectedIndex] as PreviewImageFragment).getPhotoView().orientation
+            when (orientation) {
+                ORIENTATION_0 -> {
+                    (fragmentList[currentSelectedIndex] as PreviewImageFragment).getPhotoView().orientation =
+                        ORIENTATION_270
+                }
+                ORIENTATION_90 -> {
+                    (fragmentList[currentSelectedIndex] as PreviewImageFragment).getPhotoView().orientation =
+                        ORIENTATION_0
+                }
+                ORIENTATION_180 -> {
+                    (fragmentList[currentSelectedIndex] as PreviewImageFragment).getPhotoView().orientation =
+                        ORIENTATION_90
+                }
+                ORIENTATION_270 -> {
+                    (fragmentList[currentSelectedIndex] as PreviewImageFragment).getPhotoView().orientation =
+                        ORIENTATION_180
+                }
+            }
+
+            var eventMap = mutableMapOf<String, Any?>()
+            eventMap["id"] = worksBean?.id
+            MobAgentUtil.onEvent("rotate", eventMap)
         }
     }
 

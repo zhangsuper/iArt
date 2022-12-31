@@ -137,13 +137,15 @@ fun BaseQuickAdapter<*, *>.setAdapterAnimation(mode: Int) {
 fun MagicIndicator.bindViewPager2(
     viewPager: ViewPager2,
     mStringList: List<String> = arrayListOf(),
-    action: (index: Int) -> Unit = {}) {
+    action: (index: Int) -> Unit = {}
+) {
     val commonNavigator = CommonNavigator(appContext)
     commonNavigator.adapter = object : CommonNavigatorAdapter() {
 
         override fun getCount(): Int {
-            return  mStringList.size
+            return mStringList.size
         }
+
         override fun getTitleView(context: Context, index: Int): IPagerTitleView {
             return ScaleTransitionPagerTitleView(appContext).apply {
                 //设置文本
@@ -161,6 +163,7 @@ fun MagicIndicator.bindViewPager2(
                 }
             }
         }
+
         override fun getIndicator(context: Context): IPagerIndicator {
             return LinePagerIndicator(context).apply {
                 mode = LinePagerIndicator.MODE_EXACTLY
@@ -262,6 +265,7 @@ fun ViewPager2.initMain(fragment: Fragment): ViewPager2 {
                 }
             }
         }
+
         override fun getItemCount() = 2
     }
     return this
@@ -286,7 +290,7 @@ fun BottomNavigationViewEx.init(navigationItemSelectedAction: (Int) -> Unit): Bo
 //    itemTextColor = SettingUtil.getColorStateList(appContext)
     setTextSize(12F)
     setIconSize(30F)
-    setMenuListener(object: IMenuListener{
+    setMenuListener(object : IMenuListener {
         override fun onNavigationItemSelected(
             position: Int,
             menu: MenuItem,
@@ -305,12 +309,13 @@ fun BottomNavigationViewEx.init(navigationItemSelectedAction: (Int) -> Unit): Bo
  * @receiver BottomNavigationViewEx
  * @param ids IntArray
  */
-fun BottomNavigationViewEx.interceptLongClick(vararg ids:Int) {
+fun BottomNavigationViewEx.interceptLongClick(vararg ids: Int) {
     val bottomNavigationMenuView: ViewGroup = this.mainBottom.getBNMenuView()
-    for (index in ids.indices){
-        bottomNavigationMenuView.getChildAt(index).findViewById<View>(ids[index]).setOnLongClickListener {
-            true
-        }
+    for (index in ids.indices) {
+        bottomNavigationMenuView.getChildAt(index).findViewById<View>(ids[index])
+            .setOnLongClickListener {
+                true
+            }
     }
 }
 
@@ -353,6 +358,7 @@ fun <T> loadListData(
             //是第一页
             data.isRefresh -> {
                 baseQuickAdapter.setList(data.listData)
+                baseQuickAdapter.recyclerView.scrollToPosition(0)
                 loadService.showSuccess()
             }
             //不是第一页
@@ -371,6 +377,7 @@ fun <T> loadListData(
         }
     }
 }
+
 fun DrawableImageViewTarget.retryLoad(
     view: View,
     retry: () -> Unit,

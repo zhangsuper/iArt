@@ -7,6 +7,7 @@ import com.blankj.utilcode.util.ToastUtils
 import com.gsq.iart.R
 import com.gsq.iart.app.base.BaseFragment
 import com.gsq.iart.app.util.CacheUtil
+import com.gsq.iart.app.util.MobAgentUtil
 import com.gsq.iart.databinding.FragmentSettingBinding
 import com.gsq.iart.viewmodel.LoginViewModel
 import com.gsq.mvvm.base.viewmodel.BaseViewModel
@@ -14,6 +15,7 @@ import com.gsq.mvvm.ext.nav
 import com.gsq.mvvm.ext.navigateAction
 import com.gsq.mvvm.ext.view.gone
 import com.gsq.mvvm.ext.view.visible
+import com.umeng.analytics.MobclickAgent
 import kotlinx.android.synthetic.main.fragment_setting.*
 
 /**
@@ -81,6 +83,7 @@ class SettingFragment : BaseFragment<BaseViewModel, FragmentSettingBinding>() {
             if (it.isSuccess) {
                 ToastUtils.showLong("已退出登录")
                 CacheUtil.setUser(null)
+                MobclickAgent.onProfileSignOff()
                 nav().navigateUp()
             } else {
                 ToastUtils.showLong(it.errorMsg)
@@ -88,6 +91,7 @@ class SettingFragment : BaseFragment<BaseViewModel, FragmentSettingBinding>() {
         }
         mLoginViewModel?.writeOffDataState?.observe(viewLifecycleOwner) {
             if (it.isSuccess) {
+                MobAgentUtil.onEvent("writeoff")
                 ToastUtils.showLong("账号已注销")
                 CacheUtil.setUser(null)
                 nav().navigateUp()

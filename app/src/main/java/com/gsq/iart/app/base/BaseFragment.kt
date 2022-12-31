@@ -13,6 +13,7 @@ import com.gsq.iart.app.ext.showLoadingExt
 import com.gsq.iart.app.weight.CustomLoadMoreView
 import com.gsq.mvvm.base.fragment.BaseVmVbFragment
 import com.gsq.mvvm.base.viewmodel.BaseViewModel
+import com.umeng.analytics.MobclickAgent
 
 /**
  * 描述　: 你项目中的Fragment基类，在这里实现显示弹窗，吐司，还有自己的需求操作 ，如果不想用Databind，请继承
@@ -54,9 +55,15 @@ abstract class BaseFragment<VM : BaseViewModel, VB : ViewBinding> : BaseVmVbFrag
         dismissLoadingExt()
     }
 
+    override fun onResume() {
+        super.onResume()
+        MobclickAgent.onPageStart(this.javaClass.toString())
+    }
+
     override fun onPause() {
         super.onPause()
         hideSoftKeyboard(activity)
+        MobclickAgent.onPageEnd(this.javaClass.toString())
     }
 
     /**
