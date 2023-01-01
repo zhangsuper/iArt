@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.activity.OnBackPressedCallback
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
+import com.blankj.utilcode.util.LogUtils
 import com.blankj.utilcode.util.ToastUtils
 import com.gsq.iart.BuildConfig
 import com.gsq.iart.R
@@ -14,8 +15,8 @@ import com.gsq.iart.app.util.StatusBarUtil
 import com.gsq.iart.app.util.WxLoginUtil
 import com.gsq.iart.databinding.ActivityMainBinding
 import com.gsq.iart.ui.dialog.SecretDialog
+import com.gsq.iart.viewmodel.AppViewModel
 import com.gsq.iart.viewmodel.LoginViewModel
-import com.gsq.mvvm.base.viewmodel.BaseViewModel
 import com.gsq.mvvm.network.manager.NetState
 import com.tencent.mm.opensdk.openapi.IWXAPI
 import com.tencent.mm.opensdk.openapi.WXAPIFactory
@@ -24,7 +25,10 @@ import com.tencent.mm.opensdk.openapi.WXAPIFactory
 /**
  * 项目主页Activity
  */
-class MainActivity : BaseActivity<BaseViewModel, ActivityMainBinding>() {
+class MainActivity : BaseActivity<AppViewModel, ActivityMainBinding>() {
+    companion object {
+        const val TAG = "MainActivity"
+    }
 
     var exitTime = 0L
     private lateinit var api: IWXAPI
@@ -58,6 +62,7 @@ class MainActivity : BaseActivity<BaseViewModel, ActivityMainBinding>() {
             mLoginViewModel = ViewModelProvider(this)[LoginViewModel::class.java]
             mLoginViewModel?.getUserInfo()
         }
+        mViewModel.checkAppVersion(BuildConfig.VERSION_CODE.toString())
     }
 
     override fun createObserver() {
@@ -68,6 +73,19 @@ class MainActivity : BaseActivity<BaseViewModel, ActivityMainBinding>() {
                 }
             } else {
                 CacheUtil.setUser(null)
+            }
+        }
+        mViewModel.appVersionDataState.observe(this) {
+            if (it.isSuccess) {
+                it.data?.let { appVersion ->
+                    if (appVersion.forceUpdate == 1) {
+                        //强更
+                        LogUtils.dTag(TAG, "appVersion.forceUpdate == 1")
+                    } else {
+                        //更新
+                        LogUtils.dTag(TAG, "appVersion.forceUpdate != 1")
+                    }
+                }
             }
         }
     }

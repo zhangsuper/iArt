@@ -44,11 +44,15 @@ class SecretDialog : BaseDialog(R.layout.dialog_secret) {
             CacheUtil.setAgreePrivacyStatus(false)
             AppUtils.exitApp()
         }
+        binding.ivBack.setOnClickListener {
+            mAgentWeb?.back()
+        }
         preWeb = AgentWeb.with(this)
             .setAgentWebParent(web_content, LinearLayout.LayoutParams(-1, -1))
             .useDefaultIndicator()
             .createAgentWeb()
             .ready()
         mAgentWeb = preWeb?.go(personal_url)
+
     }
 }

@@ -142,4 +142,10 @@ interface ApiService {
     @POST("art/work/count/download/inc")
     suspend fun downloadInc(@Query("id") id: String): ApiResponse<String>
 
+    /**
+     * 检查版本
+     */
+    @POST("art/app/queryAppUpdate")
+    suspend fun checkAppVersion(@Query("appVersion") version: String): ApiResponse<AppVersion>
+
 }

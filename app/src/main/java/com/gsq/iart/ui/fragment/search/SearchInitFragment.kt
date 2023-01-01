@@ -54,7 +54,7 @@ class SearchInitFragment : BaseFragment<SearchViewModel, FragmentSearchInitBindi
                 updateKey(queryStr)
                 searchData(queryStr)
 
-                var eventMap = mutableMapOf<String, Any>()
+                var eventMap = mutableMapOf<String, Any?>()
                 eventMap["query"] = queryStr
                 MobAgentUtil.onEvent("search_guohua_history", eventMap)
             }
@@ -66,7 +66,7 @@ class SearchInitFragment : BaseFragment<SearchViewModel, FragmentSearchInitBindi
                 updateKey(queryStr)
                 searchData(queryStr)
 
-                var eventMap = mutableMapOf<String, Any>()
+                var eventMap = mutableMapOf<String, Any?>()
                 eventMap["query"] = queryStr
                 MobAgentUtil.onEvent("search_guohua_hot", eventMap)
             }
