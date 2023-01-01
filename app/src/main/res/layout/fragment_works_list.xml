@@ -25,6 +25,7 @@
                 android:orientation="vertical"
                 android:gravity="center_horizontal"
                 android:layout_marginLeft="@dimen/dp_16">
+
                 <TextView
                     android:id="@+id/hot_tab"
                     android:layout_width="wrap_content"
@@ -33,14 +34,14 @@
                     android:textSize="@dimen/sp_14"
                     android:textColor="@color/color_141414"
                     android:textStyle="bold"
-                    android:paddingTop="@dimen/dp_14"/>
+                    android:paddingTop="@dimen/dp_14" />
 
                 <View
                     android:id="@+id/hot_tab_indicator"
                     android:layout_width="@dimen/dp_26"
                     android:layout_height="@dimen/dp_2"
                     android:layout_marginTop="@dimen/dp_2"
-                    android:background="@color/color_141414"/>
+                    android:background="@color/color_141414" />
             </LinearLayout>
 
 
@@ -58,7 +59,7 @@
                     android:text="@string/works_type_new"
                     android:textSize="@dimen/sp_14"
                     android:textColor="@color/color_888888"
-                    android:paddingTop="@dimen/dp_14"/>
+                    android:paddingTop="@dimen/dp_14" />
 
                 <View
                     android:id="@+id/new_tab_indicator"
@@ -66,7 +67,7 @@
                     android:layout_height="@dimen/dp_2"
                     android:layout_marginTop="@dimen/dp_2"
                     android:background="@color/color_141414"
-                    android:visibility="gone"/>
+                    android:visibility="gone" />
             </LinearLayout>
 
         </LinearLayout>
@@ -97,14 +98,13 @@
                     android:textColor="@color/color_888888"
                     android:textSize="@dimen/sp_14"
                     android:text="@string/condition_year"
-                    android:layout_marginRight="@dimen/dp_6"/>
+                    android:layout_marginRight="@dimen/dp_6" />
 
                 <ImageView
                     android:id="@+id/iv_years_frame"
                     android:layout_width="@dimen/dp_10"
                     android:layout_height="@dimen/dp_10"
-                    android:src="@drawable/icon_frame"
-                    />
+                    android:src="@drawable/icon_frame" />
 
             </LinearLayout>
 
@@ -150,14 +150,13 @@
                     android:textColor="@color/color_888888"
                     android:textSize="@dimen/sp_14"
                     android:text="@string/condition_size"
-                    android:layout_marginRight="@dimen/dp_6"/>
+                    android:layout_marginRight="@dimen/dp_6" />
 
                 <ImageView
                     android:id="@+id/iv_size_frame"
                     android:layout_width="@dimen/dp_10"
                     android:layout_height="@dimen/dp_10"
-                    android:src="@drawable/icon_frame"
-                    />
+                    android:src="@drawable/icon_frame" />
 
             </LinearLayout>
 
@@ -177,14 +176,13 @@
                     android:textColor="@color/color_888888"
                     android:textSize="@dimen/sp_14"
                     android:text="@string/condition_screen"
-                    android:layout_marginRight="@dimen/dp_6"/>
+                    android:layout_marginRight="@dimen/dp_6" />
 
                 <ImageView
                     android:id="@+id/iv_screen_frame"
                     android:layout_width="@dimen/dp_10"
                     android:layout_height="@dimen/dp_10"
-                    android:src="@drawable/icon_frame"
-                    />
+                    android:src="@drawable/icon_frame" />
 
             </LinearLayout>
 
@@ -196,6 +194,7 @@
         android:id="@+id/works_refresh_layout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginTop="@dimen/dp_10"
         app:layout_constraintTop_toBottomOf="@+id/condition_view"
         app:layout_constraintBottom_toBottomOf="parent">
 

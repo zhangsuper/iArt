@@ -24,12 +24,12 @@
 
     <ImageView
         android:id="@+id/common_item_allow"
-        android:layout_width="@dimen/dp_7"
-        android:layout_height="match_parent"
+        android:layout_width="@dimen/dp_12"
+        android:layout_height="@dimen/dp_20"
         android:src="@drawable/icon_arrow"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintBottom_toBottomOf="parent" />
 
     <TextView
         android:id="@+id/common_item_operation"
@@ -40,7 +40,7 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        tools:text="@string/app_copy"/>
+        tools:text="@string/app_copy" />
 
     <TextView
         android:id="@+id/common_item_sub_desc"
@@ -52,7 +52,7 @@
         app:layout_constraintRight_toLeftOf="@+id/common_item_operation"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        tools:text="@string/app_copy"/>
+        tools:text="@string/app_copy" />
 
 
     <View
@@ -65,6 +65,6 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/common_item_title"
-        tools:visibility="visible"/>
+        tools:visibility="visible" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

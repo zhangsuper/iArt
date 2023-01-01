@@ -6,6 +6,7 @@ import com.downloader.PRDownloader
 import com.downloader.PRDownloaderConfig
 import com.gsq.iart.app.util.CacheUtil
 import com.gsq.iart.app.weight.loadCallBack.EmptyCallback
+import com.gsq.iart.app.weight.loadCallBack.EmptyWorksCallback
 import com.gsq.iart.app.weight.loadCallBack.ErrorCallback
 import com.gsq.iart.app.weight.loadCallBack.LoadingCallback
 import com.gsq.mvvm.base.BaseApp
@@ -33,6 +34,7 @@ class App : BaseApp() {
             .addCallback(LoadingCallback())//加载
             .addCallback(ErrorCallback())//错误
             .addCallback(EmptyCallback())//空
+            .addCallback(EmptyWorksCallback())//作品空页面
             .setDefaultCallback(SuccessCallback::class.java)//设置默认加载状态页
             .commit()
         initBugly()

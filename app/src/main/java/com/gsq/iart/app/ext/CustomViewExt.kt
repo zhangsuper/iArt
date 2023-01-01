@@ -23,6 +23,7 @@ import com.gsq.iart.R
 import com.gsq.iart.app.network.stateCallback.ListDataUiState
 import com.gsq.iart.app.util.SettingUtil
 import com.gsq.iart.app.weight.loadCallBack.EmptyCallback
+import com.gsq.iart.app.weight.loadCallBack.EmptyWorksCallback
 import com.gsq.iart.app.weight.loadCallBack.ErrorCallback
 import com.gsq.iart.app.weight.loadCallBack.LoadingCallback
 import com.gsq.iart.app.weight.recyclerview.DefineLoadMoreView
@@ -70,6 +71,14 @@ fun LoadService<*>.showError(message: String = "") {
 fun LoadService<*>.showEmpty() {
     this.showCallback(EmptyCallback::class.java)
 }
+
+/**
+ * 设置空布局
+ */
+fun LoadService<*>.showWorksEmpty() {
+    this.showCallback(EmptyWorksCallback::class.java)
+}
+
 
 /**
  * 设置加载中
@@ -353,7 +362,7 @@ fun <T> loadListData(
         when {
             //第一页并没有数据 显示空布局界面
             data.isFirstEmpty -> {
-                loadService.showEmpty()
+                loadService.showWorksEmpty()
             }
             //是第一页
             data.isRefresh -> {

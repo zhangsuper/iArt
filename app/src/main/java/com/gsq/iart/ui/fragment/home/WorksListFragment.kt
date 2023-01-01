@@ -9,6 +9,7 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.airbnb.mvrx.args
 import com.airbnb.mvrx.asMavericksArgs
+import com.blankj.utilcode.util.ColorUtils
 import com.blankj.utilcode.util.ScreenUtils
 import com.blankj.utilcode.util.SizeUtils
 import com.gsq.iart.R
@@ -79,7 +80,7 @@ class WorksListFragment : BaseFragment<WorksViewModel, FragmentWorksListBinding>
             GridItemDecoration(
                 2,
                 SizeUtils.dp2px(12f),
-                includeEdge = true, hasTopBottomSpace = true
+                includeEdge = true, hasTopBottomSpace = false
             )
         )
         works_recycler_view.init(layoutManager, worksAdapter)
@@ -292,6 +293,7 @@ class WorksListFragment : BaseFragment<WorksViewModel, FragmentWorksListBinding>
                         } else {
                             tv_years.text = grade1Item.name
                         }
+                        tv_years.setTextColor(ColorUtils.getColor(R.color.color_141414))
                         when (args.complexType) {
                             COMPLEX_TYPE_SEARCH -> {
                                 MobAgentUtil.onEvent("filter_1_guohua_s_ok")
@@ -310,6 +312,7 @@ class WorksListFragment : BaseFragment<WorksViewModel, FragmentWorksListBinding>
                         } else {
                             tv_theme.text = grade1Item.name
                         }
+                        tv_theme.setTextColor(ColorUtils.getColor(R.color.color_141414))
                         when (args.complexType) {
                             COMPLEX_TYPE_SEARCH -> {
                                 MobAgentUtil.onEvent("filter_2_guohua_s_ok")
@@ -328,6 +331,7 @@ class WorksListFragment : BaseFragment<WorksViewModel, FragmentWorksListBinding>
                         } else {
                             tv_size.text = grade1Item.name
                         }
+                        tv_size.setTextColor(ColorUtils.getColor(R.color.color_141414))
                         when (args.complexType) {
                             COMPLEX_TYPE_SEARCH -> {
                                 MobAgentUtil.onEvent("filter_3_guohua_s_ok")
@@ -452,6 +456,9 @@ class WorksListFragment : BaseFragment<WorksViewModel, FragmentWorksListBinding>
         tv_theme.text = classifyBean?.get(1)?.name
         tv_size.text = classifyBean?.get(2)?.name
         tv_screen.text = "筛选"
+        tv_years.setTextColor(ColorUtils.getColor(R.color.color_888888))
+        tv_theme.setTextColor(ColorUtils.getColor(R.color.color_888888))
+        tv_size.setTextColor(ColorUtils.getColor(R.color.color_888888))
     }
 
     private fun startAnimator(targetView: View, isOpen: Boolean) {

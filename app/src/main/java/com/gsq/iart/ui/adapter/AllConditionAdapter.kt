@@ -1,9 +1,11 @@
 package com.gsq.iart.ui.adapter
 
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.blankj.utilcode.util.SizeUtils
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.gsq.iart.R
@@ -15,10 +17,16 @@ class AllConditionAdapter constructor(private var isFirst: Boolean) :
     override fun convert(holder: BaseViewHolder, item: ConditionClassifyBean) {
         var mName = holder.getView<TextView>(R.id.tv_name)
         var mRecyclerView = holder.getView<RecyclerView>(R.id.recycler_view)
+        var nameParams = mName.layoutParams as ConstraintLayout.LayoutParams
+        var recyclerViewParams = mRecyclerView.layoutParams as ConstraintLayout.LayoutParams
         if (isFirst) {
             mName.setTextColor(mName.context.resources.getColor(R.color.color_141414))
+            nameParams.leftMargin = SizeUtils.dp2px(24f)
+            recyclerViewParams.leftMargin = SizeUtils.dp2px(24f)
         } else {
             mName.setTextColor(mName.context.resources.getColor(R.color.color_888888))
+            nameParams.leftMargin = SizeUtils.dp2px(0f)
+            recyclerViewParams.leftMargin = SizeUtils.dp2px(0f)
         }
         mName.text = item.name
         if (item.subs != null) {
