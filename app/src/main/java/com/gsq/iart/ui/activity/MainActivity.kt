@@ -1,25 +1,37 @@
 package com.gsq.iart.ui.activity
 
 import android.annotation.SuppressLint
+import android.content.Intent
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.OnBackPressedCallback
+import androidx.core.content.FileProvider
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import com.blankj.utilcode.util.LogUtils
+import com.blankj.utilcode.util.NetworkUtils
+import com.blankj.utilcode.util.ThreadUtils
 import com.blankj.utilcode.util.ToastUtils
+import com.downloader.OnDownloadListener
+import com.downloader.PRDownloader
 import com.gsq.iart.BuildConfig
 import com.gsq.iart.R
+import com.gsq.iart.app.App
 import com.gsq.iart.app.base.BaseActivity
 import com.gsq.iart.app.util.CacheUtil
+import com.gsq.iart.app.util.FileUtil
 import com.gsq.iart.app.util.StatusBarUtil
 import com.gsq.iart.app.util.WxLoginUtil
 import com.gsq.iart.databinding.ActivityMainBinding
+import com.gsq.iart.ui.dialog.DialogUtils
 import com.gsq.iart.ui.dialog.SecretDialog
 import com.gsq.iart.viewmodel.AppViewModel
 import com.gsq.iart.viewmodel.LoginViewModel
 import com.gsq.mvvm.network.manager.NetState
 import com.tencent.mm.opensdk.openapi.IWXAPI
 import com.tencent.mm.opensdk.openapi.WXAPIFactory
+import java.io.File
 
 
 /**
@@ -62,7 +74,11 @@ class MainActivity : BaseActivity<AppViewModel, ActivityMainBinding>() {
             mLoginViewModel = ViewModelProvider(this)[LoginViewModel::class.java]
             mLoginViewModel?.getUserInfo()
         }
-        mViewModel.checkAppVersion(BuildConfig.VERSION_CODE.toString())
+        if (CacheUtil.isAgreePrivacy()) {
+            ThreadUtils.getMainHandler().postDelayed({
+                mViewModel.checkAppVersion(BuildConfig.VERSION_CODE.toString())
+            }, 3000)
+        }
     }
 
     override fun createObserver() {
@@ -81,13 +97,109 @@ class MainActivity : BaseActivity<AppViewModel, ActivityMainBinding>() {
                     if (appVersion.forceUpdate == 1) {
                         //强更
                         LogUtils.dTag(TAG, "appVersion.forceUpdate == 1")
+                        DialogUtils.showNormalDoubleButtonDialog(
+                            this,
+                            "提示",
+                            appVersion.desc,
+                            "立即更新",
+                            "",
+                            false
+                        ) { dialog, isLeft ->
+                            if (!isLeft) {
+                                //立即更新
+                                if (NetworkUtils.isConnected()) {
+                                    downloadApk(appVersion.url, appVersion.version)
+                                    DialogUtils.showProgressDialog(this, "提示", "正在更新中...", false)
+                                } else {
+                                    ToastUtils.showShort(getString(R.string.http_error_net_disable))
+                                }
+                            }
+                        }
                     } else {
                         //更新
                         LogUtils.dTag(TAG, "appVersion.forceUpdate != 1")
+                        DialogUtils.showNormalDoubleButtonDialog(
+                            this,
+                            "提示",
+                            appVersion.desc,
+                            "立即更新",
+                            "稍后更新",
+                            true
+                        ) { dialog, isLeft ->
+                            if (!isLeft) {
+                                //立即更新
+                                if (NetworkUtils.isConnected()) {
+                                    downloadApk(appVersion.url, appVersion.version)
+                                    DialogUtils.showProgressDialog(this, "提示", "正在更新中...", false)
+                                } else {
+                                    ToastUtils.showShort(getString(R.string.http_error_net_disable))
+                                }
+                            }
+                        }
                     }
                 }
             }
         }
+    }
+
+    private fun downloadApk(url: String, version: String) {
+//        FileUtils.createOrExistsDir(Constant.DOWNLOAD_PARENT_PATH)
+        val downloadId =
+            PRDownloader.download(
+                url,
+                FileUtil.getPrivateSavePath("download"),
+                "art_${version}.apk"
+            )
+                .build()
+                .setOnStartOrResumeListener {
+//                progress_bar.visible()
+                }
+                .setOnPauseListener { }
+                .setOnCancelListener {
+//                progress_bar.gone()
+                }
+                .setOnProgressListener {
+                    var progress = (it.currentBytes * 100 / it.totalBytes).toInt()
+                    LogUtils.dTag(TAG, "downloadApk progress:${progress}")
+                    runOnUiThread {
+                        DialogUtils.updateProgress(progress)
+                    }
+                }
+                .start(object : OnDownloadListener {
+                    override fun onDownloadComplete() {
+                        //安装
+                        installApk("${FileUtil.getPrivateSavePath("download")}art_${version}.apk")
+                        DialogUtils.dismissProgressDialog()
+                    }
+
+                    override fun onError(error: com.downloader.Error?) {
+                        ToastUtils.showLong("下载失败！")
+                        DialogUtils.dismissProgressDialog()
+                    }
+                })
+    }
+
+    /**
+     * 安装apk
+     */
+    private fun installApk(path: String) {
+        val apkfile = File(path)
+        if (!apkfile.exists()) {
+            return
+        }
+        val intent = Intent(Intent.ACTION_VIEW)
+        intent.addCategory(Intent.CATEGORY_DEFAULT)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        //兼容android7.0以上版本
+        var uri: Uri? = Uri.fromFile(apkfile)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            //通过FileProvider创建一个content类型的Uri
+            uri = FileProvider.getUriForFile(App.instance, "$packageName.provider", apkfile)
+            // 给目标应用一个临时授权
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
+        }
+        intent.setDataAndType(uri, "application/vnd.android.package-archive")
+        App.instance.startActivity(intent)
     }
 
     /**

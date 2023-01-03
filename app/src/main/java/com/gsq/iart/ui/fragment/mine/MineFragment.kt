@@ -3,6 +3,7 @@ package com.gsq.iart.ui.fragment.mine
 import android.os.Bundle
 import com.blankj.utilcode.util.ClipboardUtils
 import com.blankj.utilcode.util.ToastUtils
+import com.gsq.iart.BuildConfig
 import com.gsq.iart.R
 import com.gsq.iart.app.base.BaseFragment
 import com.gsq.iart.app.image.GlideHelper
@@ -65,6 +66,7 @@ class MineFragment : BaseFragment<BaseViewModel, FragmentMineBinding>() {
         setLoginStatus()
 //        setUserInfo()
         MobAgentUtil.onEvent("tab_my")
+        tv_version.text = "V${BuildConfig.VERSION_NAME}"
     }
 
     private fun setLoginStatus() {

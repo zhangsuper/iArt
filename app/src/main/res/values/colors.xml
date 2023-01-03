@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <color name="colorPrimary">#2196F3</color>
     <color name="colorPrimaryDark">#2196F3</color>
     <color name="colorAccent">#2196F3</color>
@@ -40,6 +40,10 @@
     <color name="color_454545">#454545</color>
     <color name="color_EC8E58">#EC8E58</color>
     <color name="color_EDF2F7">#EDF2F7</color>
+    <color name="color_357eff">#357eff</color>
+    <color name="color_dddddd">#dddddd</color>
+    <color name="color_f2f3f7">#f2f3f7</color>
+    <color name="color_3c87fe">#3c87fe</color>
 
     <!--白色不透明度 -->
     <color name="color_00FFFFFF">#00FFFFFF</color> <!--0% -->

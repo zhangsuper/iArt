@@ -66,6 +66,16 @@
             android:taskAffinity="com.gsq.iart"
             android:launchMode="singleTop"></activity>
 
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+
     </application>
 
     //由于Android 11 软件包可见性 特性的影响，OpenSDK的接口可能无法正常拉起微信，从而无法使用微信的部分功能，需要在主工程的AndroidManifest.xml 中增加标签
@@ -90,5 +100,6 @@
     <!--    <meta-data-->
     <!--        android:name="BUGLY_ENABLE_DEBUG"-->
     <!--        android:value="false" />-->
+
 
 </manifest>

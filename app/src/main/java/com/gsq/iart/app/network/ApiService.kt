@@ -145,7 +145,7 @@ interface ApiService {
     /**
      * 检查版本
      */
-    @POST("art/app/queryAppUpdate")
+    @GET("art/app/queryAppUpdate")
     suspend fun checkAppVersion(@Query("appVersion") version: String): ApiResponse<AppVersion>
 
 }
