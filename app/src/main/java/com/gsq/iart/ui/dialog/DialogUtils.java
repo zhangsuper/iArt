@@ -81,6 +81,7 @@ public class DialogUtils {
     }
 
     private static AlertDialog progressDialog = null;
+    public static AlertDialog normalDialog = null;
 
     public static void showProgressDialog(Activity activity, CharSequence title, CharSequence content, boolean isCancelable) {
         showProgressDialog(activity, title, content, SizeUtils.dp2px(270f),
@@ -176,11 +177,11 @@ public class DialogUtils {
 
         AlertDialog.Builder alterDialog = new AlertDialog.Builder(activity, R.style.Translucent_NoTitle);
         alterDialog.setView(R.layout.dialog_custom);//加载进去
-        final AlertDialog dialog = alterDialog.create();
-        dialog.setCancelable(isCanCancel);
+        normalDialog = alterDialog.create();
+        normalDialog.setCancelable(isCanCancel);
         //显示
-        if (!activity.isFinishing() && !dialog.isShowing()) {
-            dialog.show();
+        if (!activity.isFinishing() && !normalDialog.isShowing()) {
+            normalDialog.show();
         }
         if (0 == width) {
             width = ViewGroup.LayoutParams.WRAP_CONTENT;
@@ -188,39 +189,40 @@ public class DialogUtils {
         if (0 == height) {
             height = ViewGroup.LayoutParams.WRAP_CONTENT;
         }
-        dialog.getWindow().setLayout(width, height);
+        normalDialog.getWindow().setLayout(width, height);
         if (backgroundResId > 0) {
-            dialog.getWindow().setBackgroundDrawableResource(backgroundResId);
+            normalDialog.getWindow().setBackgroundDrawableResource(backgroundResId);
         }
         //自定义的东西
-        dialog.findViewById(R.id.left).setOnClickListener(new View.OnClickListener() {
+        normalDialog.findViewById(R.id.left).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dialog.dismiss();
+                normalDialog.dismiss();
                 if (callBack != null) {
-                    callBack.dialogDidCallBack(dialog, true);
+                    callBack.dialogDidCallBack(normalDialog, true);
                 }
-
+                normalDialog = null;
             }
         });
-        dialog.findViewById(R.id.right).setOnClickListener(new View.OnClickListener() {
+        normalDialog.findViewById(R.id.right).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dialog.dismiss();
+                normalDialog.dismiss();
                 if (callBack != null) {
-                    callBack.dialogDidCallBack(dialog, false);
+                    callBack.dialogDidCallBack(normalDialog, false);
 
                 }
+                normalDialog = null;
             }
         });
 
-        TextView titleView = dialog.findViewById(R.id.title);
-        TextView detailView = dialog.findViewById(R.id.detail);
-        TextView contentView = dialog.findViewById(R.id.content);
-        TextView leftView = dialog.findViewById(R.id.left);
-        TextView rightView = dialog.findViewById(R.id.right);
-        View dividerHorizontal = dialog.findViewById(R.id.divider_horizontal);
-        View divider = dialog.findViewById(R.id.divider);
+        TextView titleView = normalDialog.findViewById(R.id.title);
+        TextView detailView = normalDialog.findViewById(R.id.detail);
+        TextView contentView = normalDialog.findViewById(R.id.content);
+        TextView leftView = normalDialog.findViewById(R.id.left);
+        TextView rightView = normalDialog.findViewById(R.id.right);
+        View dividerHorizontal = normalDialog.findViewById(R.id.divider_horizontal);
+        View divider = normalDialog.findViewById(R.id.divider);
 
         leftView.setText(left);
         rightView.setText(right);
@@ -249,7 +251,7 @@ public class DialogUtils {
         } else {
             rightView.setVisibility(View.VISIBLE);
         }
-        return dialog;
+        return normalDialog;
     }
 
 

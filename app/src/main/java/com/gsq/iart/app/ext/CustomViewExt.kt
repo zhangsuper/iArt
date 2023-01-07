@@ -22,11 +22,9 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.gsq.iart.R
 import com.gsq.iart.app.network.stateCallback.ListDataUiState
 import com.gsq.iart.app.util.SettingUtil
-import com.gsq.iart.app.weight.loadCallBack.EmptyCallback
-import com.gsq.iart.app.weight.loadCallBack.EmptyWorksCallback
-import com.gsq.iart.app.weight.loadCallBack.ErrorCallback
-import com.gsq.iart.app.weight.loadCallBack.LoadingCallback
+import com.gsq.iart.app.weight.loadCallBack.*
 import com.gsq.iart.app.weight.recyclerview.DefineLoadMoreView
+import com.gsq.iart.data.Constant
 import com.gsq.iart.data.Constant.ENABLE_IMAGE_AUTO_RETRY
 import com.gsq.iart.data.Constant.LOAD_PIC_DELAY
 import com.gsq.iart.ui.fragment.home.HomeFragment
@@ -75,8 +73,15 @@ fun LoadService<*>.showEmpty() {
 /**
  * 设置空布局
  */
-fun LoadService<*>.showWorksEmpty() {
-    this.showCallback(EmptyWorksCallback::class.java)
+fun LoadService<*>.showWorksSearchEmpty() {
+    this.showCallback(EmptyWorksSearchCallback::class.java)
+}
+
+/**
+ * 设置空布局
+ */
+fun LoadService<*>.showWorksCollectEmpty() {
+    this.showCallback(EmptyWorksCollectCallback::class.java)
 }
 
 
@@ -353,7 +358,8 @@ fun <T> loadListData(
     baseQuickAdapter: BaseQuickAdapter<T, *>,
     loadService: LoadService<*>,
     recyclerView: SwipeRecyclerView,
-    swipeRefreshLayout: SwipeRefreshLayout?
+    swipeRefreshLayout: SwipeRefreshLayout?,
+    complexType: String
 ) {
     swipeRefreshLayout?.isRefreshing = false
     recyclerView.loadMoreFinish(data.isEmpty, !data.isEmpty)
@@ -362,7 +368,17 @@ fun <T> loadListData(
         when {
             //第一页并没有数据 显示空布局界面
             data.isFirstEmpty -> {
-                loadService.showWorksEmpty()
+                when (complexType) {
+                    Constant.COMPLEX_TYPE_SEARCH -> {
+                        loadService.showWorksSearchEmpty()
+                    }
+                    Constant.COMPLEX_TYPE_COLLECT -> {
+                        loadService.showWorksCollectEmpty()
+                    }
+                    else -> {
+                        loadService.showEmpty()
+                    }
+                }
             }
             //是第一页
             data.isRefresh -> {

@@ -95,7 +95,7 @@
                     android:id="@+id/tv_years"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/color_888888"
+                    android:textColor="@color/color_999999"
                     android:textSize="@dimen/sp_14"
                     android:text="@string/condition_year"
                     android:layout_marginRight="@dimen/dp_6" />
@@ -123,7 +123,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginRight="@dimen/dp_6"
                     android:text="@string/condition_theme"
-                    android:textColor="@color/color_888888"
+                    android:textColor="@color/color_999999"
                     android:textSize="@dimen/sp_14" />
 
                 <ImageView
@@ -147,7 +147,7 @@
                     android:id="@+id/tv_size"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/color_888888"
+                    android:textColor="@color/color_999999"
                     android:textSize="@dimen/sp_14"
                     android:text="@string/condition_size"
                     android:layout_marginRight="@dimen/dp_6" />
@@ -173,7 +173,7 @@
                     android:id="@+id/tv_screen"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/color_888888"
+                    android:textColor="@color/color_999999"
                     android:textSize="@dimen/sp_14"
                     android:text="@string/condition_screen"
                     android:layout_marginRight="@dimen/dp_6" />

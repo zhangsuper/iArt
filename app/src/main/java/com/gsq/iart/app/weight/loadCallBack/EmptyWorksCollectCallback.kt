@@ -4,10 +4,10 @@ import com.gsq.iart.R
 import com.kingja.loadsir.callback.Callback
 
 
-class EmptyWorksCallback : Callback() {
+class EmptyWorksCollectCallback : Callback() {
 
     override fun onCreateView(): Int {
-        return R.layout.layout_works_empty
+        return R.layout.layout_works_collect_empty
     }
 
 }

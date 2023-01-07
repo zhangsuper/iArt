@@ -141,6 +141,19 @@ object GlideHelper {
                 override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
                     imageView.setImageBitmap(resource)
                     loadService?.showSuccess()
+
+//                    val destFile = createSaveFile(
+//                        context,
+//                        false,
+//                        "${System.currentTimeMillis()}.jpg",
+//                        "your_picture_save_path"
+//                    )
+//                    saveBitmap2SelfDirectroy(
+//                        context,
+//                        resource,
+//                        destFile
+//                    )
+
                 }
 
                 override fun onLoadCleared(placeholder: Drawable?) {

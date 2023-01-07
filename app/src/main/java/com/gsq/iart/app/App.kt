@@ -5,10 +5,7 @@ import com.blankj.utilcode.util.LogUtils
 import com.downloader.PRDownloader
 import com.downloader.PRDownloaderConfig
 import com.gsq.iart.app.util.CacheUtil
-import com.gsq.iart.app.weight.loadCallBack.EmptyCallback
-import com.gsq.iart.app.weight.loadCallBack.EmptyWorksCallback
-import com.gsq.iart.app.weight.loadCallBack.ErrorCallback
-import com.gsq.iart.app.weight.loadCallBack.LoadingCallback
+import com.gsq.iart.app.weight.loadCallBack.*
 import com.gsq.mvvm.base.BaseApp
 import com.kingja.loadsir.callback.SuccessCallback
 import com.kingja.loadsir.core.LoadSir
@@ -34,7 +31,8 @@ class App : BaseApp() {
             .addCallback(LoadingCallback())//加载
             .addCallback(ErrorCallback())//错误
             .addCallback(EmptyCallback())//空
-            .addCallback(EmptyWorksCallback())//作品空页面
+            .addCallback(EmptyWorksSearchCallback())//作品搜索空页面
+            .addCallback(EmptyWorksCollectCallback())//作品收藏空页面
             .setDefaultCallback(SuccessCallback::class.java)//设置默认加载状态页
             .commit()
         initBugly()

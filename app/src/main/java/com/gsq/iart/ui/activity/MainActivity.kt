@@ -74,10 +74,21 @@ class MainActivity : BaseActivity<AppViewModel, ActivityMainBinding>() {
             mLoginViewModel = ViewModelProvider(this)[LoginViewModel::class.java]
             mLoginViewModel?.getUserInfo()
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
         if (CacheUtil.isAgreePrivacy()) {
             ThreadUtils.getMainHandler().postDelayed({
-                mViewModel.checkAppVersion(BuildConfig.VERSION_CODE.toString())
-            }, 3000)
+                if (DialogUtils.normalDialog == null) {
+                    mViewModel.checkAppVersion(BuildConfig.VERSION_CODE.toString())
+                } else {
+                    if (!DialogUtils.normalDialog.isShowing) {
+                        mViewModel.checkAppVersion(BuildConfig.VERSION_CODE.toString())
+                    }
+                }
+
+            }, 1000)
         }
     }
 

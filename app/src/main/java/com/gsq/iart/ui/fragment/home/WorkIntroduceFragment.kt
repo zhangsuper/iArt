@@ -31,7 +31,8 @@ class WorkIntroduceFragment : BaseFragment<WorksViewModel, FragmentWorkIntroduce
 
     override fun initData() {
         tv_title.text = worksBean?.name
-        tv_author_dynasty.text = "${worksBean?.author} | ${worksBean?.age} | ${worksBean?.size}cm"
+        tv_author_dynasty.text =
+            "${worksBean?.author}  |  ${worksBean?.age}  |  ${worksBean?.size}cm"
         if (worksBean?.owner.isNullOrEmpty()) {
             layout_scf.gone()
         } else {

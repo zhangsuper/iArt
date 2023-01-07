@@ -58,7 +58,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/font_16"
                 android:textColor="@color/black"
-                android:text="现存: " />
+                android:text="现        存: " />
 
             <TextView
                 android:id="@+id/tv_scf"
@@ -81,7 +81,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/font_16"
                 android:textColor="@color/black"
-                android:text="题材: " />
+                android:text="题        材: " />
 
             <TextView
                 android:id="@+id/tv_tc"
@@ -104,7 +104,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/font_16"
                 android:textColor="@color/black"
-                android:text="颜色: " />
+                android:text="颜        色: " />
 
             <TextView
                 android:id="@+id/tv_ys"
@@ -150,7 +150,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/font_16"
                 android:textColor="@color/black"
-                android:text="材质: " />
+                android:text="材        质: " />
 
             <TextView
                 android:id="@+id/tv_cz"
@@ -173,7 +173,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/font_16"
                 android:textColor="@color/black"
-                android:text="形制: " />
+                android:text="形        制: " />
 
             <TextView
                 android:id="@+id/tv_xz"
@@ -196,7 +196,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/font_16"
                 android:textColor="@color/black"
-                android:text="标签: " />
+                android:text="标        签: " />
 
             <TextView
                 android:id="@+id/tv_bq"

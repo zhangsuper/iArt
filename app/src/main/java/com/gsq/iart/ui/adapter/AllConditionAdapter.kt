@@ -1,5 +1,6 @@
 package com.gsq.iart.ui.adapter
 
+import android.graphics.Typeface
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.GridLayoutManager
@@ -21,10 +22,12 @@ class AllConditionAdapter constructor(private var isFirst: Boolean) :
         var recyclerViewParams = mRecyclerView.layoutParams as ConstraintLayout.LayoutParams
         if (isFirst) {
             mName.setTextColor(mName.context.resources.getColor(R.color.color_141414))
+            mName.setTypeface(null, Typeface.BOLD)
             nameParams.leftMargin = SizeUtils.dp2px(24f)
             recyclerViewParams.leftMargin = SizeUtils.dp2px(24f)
         } else {
             mName.setTextColor(mName.context.resources.getColor(R.color.color_888888))
+            mName.setTypeface(null, Typeface.NORMAL)
             nameParams.leftMargin = SizeUtils.dp2px(0f)
             recyclerViewParams.leftMargin = SizeUtils.dp2px(0f)
         }

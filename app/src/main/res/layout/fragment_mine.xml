@@ -72,7 +72,7 @@
 
         <ImageView
             android:layout_width="@dimen/dp_80"
-            android:layout_height="@dimen/dp_16"
+            android:layout_height="@dimen/dp_28"
             android:src="@drawable/icon_text_vip"
             android:layout_marginLeft="@dimen/dp_16"
             app:layout_constraintLeft_toLeftOf="parent"

@@ -152,7 +152,7 @@ class WorksListFragment : BaseFragment<WorksViewModel, FragmentWorksListBinding>
             subType = WORKS_SUB_TYPE_HOT
             hot_tab.setTextColor(resources.getColor(R.color.color_141414))
             hot_tab.typeface = Typeface.DEFAULT_BOLD
-            new_tab.setTextColor(resources.getColor(R.color.color_888888))
+            new_tab.setTextColor(resources.getColor(R.color.color_999999))
             new_tab.typeface = Typeface.DEFAULT
             hot_tab_indicator.visible()
             new_tab_indicator.gone()
@@ -175,7 +175,7 @@ class WorksListFragment : BaseFragment<WorksViewModel, FragmentWorksListBinding>
                 return@setOnClickListener
             }
             subType = WORKS_SUB_TYPE_NEW
-            hot_tab.setTextColor(resources.getColor(R.color.color_888888))
+            hot_tab.setTextColor(resources.getColor(R.color.color_999999))
             hot_tab.typeface = Typeface.DEFAULT
             new_tab.setTextColor(resources.getColor(R.color.color_141414))
             new_tab.typeface = Typeface.DEFAULT_BOLD
@@ -456,9 +456,9 @@ class WorksListFragment : BaseFragment<WorksViewModel, FragmentWorksListBinding>
         tv_theme.text = classifyBean?.get(1)?.name
         tv_size.text = classifyBean?.get(2)?.name
         tv_screen.text = "筛选"
-        tv_years.setTextColor(ColorUtils.getColor(R.color.color_888888))
-        tv_theme.setTextColor(ColorUtils.getColor(R.color.color_888888))
-        tv_size.setTextColor(ColorUtils.getColor(R.color.color_888888))
+        tv_years.setTextColor(ColorUtils.getColor(R.color.color_999999))
+        tv_theme.setTextColor(ColorUtils.getColor(R.color.color_999999))
+        tv_size.setTextColor(ColorUtils.getColor(R.color.color_999999))
     }
 
     private fun startAnimator(targetView: View, isOpen: Boolean) {
@@ -532,7 +532,14 @@ class WorksListFragment : BaseFragment<WorksViewModel, FragmentWorksListBinding>
         super.createObserver()
         mViewModel.worksDataState.observe(viewLifecycleOwner, Observer {
             //设值 新写了个拓展函数
-            loadListData(it, worksAdapter, loadsir, works_recycler_view, works_refresh_layout)
+            loadListData(
+                it,
+                worksAdapter,
+                loadsir,
+                works_recycler_view,
+                works_refresh_layout,
+                args.complexType
+            )
         })
         mViewModel.conditionRootClassifys.observe(viewLifecycleOwner, Observer {
             if (it.isSuccess) {
