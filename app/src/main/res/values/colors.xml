@@ -44,6 +44,10 @@
     <color name="color_dddddd">#dddddd</color>
     <color name="color_f2f3f7">#f2f3f7</color>
     <color name="color_3c87fe">#3c87fe</color>
+    <color name="color_D4D4D4">#D4D4D4</color>
+    <color name="color_FFE5D7">#FFE5D7</color>
+    <color name="color_F3F3F3">#F3F3F3</color>
+    <color name="color_FFF5F0">#FFF5F0</color>
 
     <!--白色不透明度 -->
     <color name="color_00FFFFFF">#00FFFFFF</color> <!--0% -->
