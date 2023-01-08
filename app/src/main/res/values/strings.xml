@@ -63,6 +63,8 @@
     <string name="account_cancellation">账号注销</string>
     <string name="collect_personal_information">收集个人信息说明</string>
     <string name="sdk_information">第三方服务列表</string>
+    <string name="write_off_tips">重要提醒</string>
+    <string name="write_off">您提交的注销申请生效前，我们将进行以下验证，以保障您的账号、财产安全：\n\n 1、账号处于安全状态\n 账号没有被盗，被封等风险 。\n\n 2、会员权益 \n未开通会员或会员已到期。</string>
 
     <string name="my_member">我的会员</string>
     <string name="vip_agreement">会员服务协议</string>

@@ -66,6 +66,10 @@ class SettingFragment : BaseFragment<BaseViewModel, FragmentSettingBinding>() {
 
         mLoginViewModel = ViewModelProvider(this)[LoginViewModel::class.java]
 
+    }
+
+    override fun onResume() {
+        super.onResume()
         if (CacheUtil.isLogin()) {
             login_out_btn.visible()
             cancellation_btn.visible()

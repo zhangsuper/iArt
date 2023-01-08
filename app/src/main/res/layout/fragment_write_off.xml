@@ -12,14 +12,36 @@
         app:layout_constraintTop_toTopOf="parent"
         app:title_string="@string/account_cancellation" />
 
-    <LinearLayout
-        android:id="@+id/web_content"
+    <!--    <LinearLayout-->
+    <!--        android:id="@+id/web_content"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="@dimen/dp_400"-->
+    <!--        android:layout_margin="@dimen/dp_16"-->
+    <!--        app:layout_constraintTop_toBottomOf="@+id/title_layout"-->
+    <!--        android:background="@drawable/bg_white_conner_4"-->
+    <!--        android:orientation="vertical" />-->
+
+    <TextView
+        android:id="@+id/write_off_tips"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_400"
-        android:layout_margin="@dimen/dp_16"
-        app:layout_constraintTop_toBottomOf="@+id/title_layout"
+        android:layout_height="wrap_content"
         android:background="@drawable/bg_white_conner_4"
-        android:orientation="vertical" />
+        android:layout_margin="@dimen/dp_16"
+        android:padding="@dimen/dp_16"
+        android:text="@string/write_off"
+        android:textSize="@dimen/font_16"
+        android:textColor="@color/color_141414"
+        app:layout_constraintTop_toBottomOf="@+id/title_layout" />
+
+    <TextView
+        android:id="@+id/write_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dp_16"
+        android:layout_marginEnd="@dimen/dp_16"
+        android:textSize="@dimen/font_16"
+        android:layout_marginBottom="@dimen/dp_20"
+        app:layout_constraintBottom_toTopOf="@+id/write_off_btn" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/write_off_btn"
