@@ -17,6 +17,7 @@ import com.gsq.iart.R
 import com.gsq.iart.app.base.BaseFragment
 import com.gsq.iart.app.ext.init
 import com.gsq.iart.app.util.CacheUtil
+import com.gsq.iart.app.util.FileUtil
 import com.gsq.iart.app.util.MobAgentUtil
 import com.gsq.iart.app.util.StatusBarUtil
 import com.gsq.iart.data.Constant
@@ -39,12 +40,16 @@ import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import pub.devrel.easypermissions.AfterPermissionGranted
 import pub.devrel.easypermissions.EasyPermissions
+import java.io.File
 
 
 /**
  * 作品详情
  */
 class WorkDetailFragment : BaseFragment<WorksViewModel, FragmentWorkDetailBinding>() {
+    companion object {
+        var TAG = "WorkDetailFragment"
+    }
 
     private var worksBean: WorksBean? = null
     private var intentType: String? = null
@@ -278,15 +283,34 @@ class WorkDetailFragment : BaseFragment<WorksViewModel, FragmentWorkDetailBindin
             // Already have permission, do the thing
             var url = worksBean?.hdPics?.get(view_pager.currentItem)?.url
             url?.let {
-                FileUtils.createOrExistsDir(DOWNLOAD_PARENT_PATH)
-                startDownload(
-                    it,
-                    DOWNLOAD_PARENT_PATH,
-                    "art_${System.currentTimeMillis()}.jpg"
-                )
                 worksBean?.id?.let {
                     mViewModel.downloadInc(it)
                 }
+                var fileName = it.substring(
+                    it.lastIndexOf('/') + 1,
+                    it.indexOf('?')
+                )
+                LogUtils.dTag(TAG, "testname:${fileName}")
+                var imageResource = FileUtil.getPrivateSavePath("download") + fileName
+                FileUtils.createOrExistsDir(DOWNLOAD_PARENT_PATH)
+                var destPath = DOWNLOAD_PARENT_PATH + File.separator + fileName
+                if (FileUtils.isFileExists(destPath)) {
+                    LogUtils.dTag(TAG, "图片已存在")
+                    ToastUtils.showLong("文件已保存在：${destPath}")
+                    return@let
+                }
+                if (FileUtils.isFileExists(imageResource)) {
+                    LogUtils.dTag(TAG, "File copy to destPath")
+                    FileUtils.copy(imageResource, destPath)
+                    ToastUtils.showLong("文件已保存在：${destPath}")
+                    return@let
+                }
+                LogUtils.dTag(TAG, "startDownload")
+                startDownload(
+                    it,
+                    DOWNLOAD_PARENT_PATH,
+                    fileName
+                )
             }
         } else {
             // Do not have permissions, request them now
@@ -316,7 +340,7 @@ class WorkDetailFragment : BaseFragment<WorksViewModel, FragmentWorkDetailBindin
             .start(object : OnDownloadListener {
                 override fun onDownloadComplete() {
                     progress_bar.gone()
-                    ToastUtils.showLong("下载成功")
+                    ToastUtils.showLong("文件已保存在：${dirPath}${File.separator}${fileName}")
                 }
 
                 override fun onError(error: com.downloader.Error?) {

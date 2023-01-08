@@ -7,7 +7,7 @@ import com.gsq.iart.app.ext.setAdapterAnimation
 import com.gsq.iart.app.util.SettingUtil
 
 class TagAdapter(data: MutableList<String>) :
-    BaseQuickAdapter<String, BaseViewHolder>(R.layout.item_search_hot, data) {
+    BaseQuickAdapter<String, BaseViewHolder>(R.layout.item_tag, data) {
 
     init {
         setAdapterAnimation(SettingUtil.getListMode())

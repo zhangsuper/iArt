@@ -4,6 +4,8 @@ import android.graphics.drawable.Drawable
 import android.os.Bundle
 import com.airbnb.mvrx.args
 import com.airbnb.mvrx.asMavericksArgs
+import com.blankj.utilcode.util.FileUtils
+import com.blankj.utilcode.util.LogUtils
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.SimpleTarget
 import com.bumptech.glide.request.transition.Transition
@@ -14,6 +16,7 @@ import com.gsq.iart.app.base.BaseFragment
 import com.gsq.iart.app.ext.loadServiceInit
 import com.gsq.iart.app.ext.showError
 import com.gsq.iart.app.ext.showLoading
+import com.gsq.iart.app.util.FileUtil
 import com.gsq.iart.data.bean.DetailArgsType
 import com.gsq.iart.data.event.BigImageClickEvent
 import com.gsq.iart.databinding.FragmentPreviewImageBinding
@@ -25,12 +28,14 @@ import java.io.File
 
 class PreviewImageFragment : BaseFragment<BaseViewModel, FragmentPreviewImageBinding>() {
 
+
     private val args: DetailArgsType by args()
 
     //界面状态管理者
     private lateinit var loadsir: LoadService<Any>
 
     companion object {
+        var TAG = "PreviewImageFragment"
         fun start(args: DetailArgsType): PreviewImageFragment {
             val fragment = PreviewImageFragment()
             fragment.arguments = args.asMavericksArgs()
@@ -86,14 +91,30 @@ class PreviewImageFragment : BaseFragment<BaseViewModel, FragmentPreviewImageBin
 //                }
 //
 //            })
-
+        LogUtils.dTag(TAG, "workHdPics.url:${args.workHdPics.url}")
+        var fileName = args.workHdPics.url.substring(
+            args.workHdPics.url.lastIndexOf('/') + 1,
+            args.workHdPics.url.indexOf('?')
+        )
+        LogUtils.dTag(TAG, "testname:${fileName}")
+        var imageResource = FileUtil.getPrivateSavePath("download") + fileName
+        if (FileUtils.isFileExists(imageResource)) {
+            LogUtils.dTag(TAG, "local imageResource File isExists:${imageResource}")
+            photo_view.setImage(ImageSource.uri(imageResource))
+            // 最大显示比例
+            photo_view.maxScale = 20f
+            photo_view.minScale = 0.5f
+            loadsir.showSuccess()
+            return
+        }
         Glide.with(App.instance).load(args.workHdPics.url)
             .downloadOnly(object : SimpleTarget<File?>() {
                 override fun onResourceReady(
                     resource: File,
                     glideAnimation: Transition<in File?>?
                 ) {
-                    loadsir.showSuccess()
+                    LogUtils.dTag(TAG, "resource:${resource.absolutePath}")
+//                    loadsir.showSuccess()
 //                    val sWidth = BitmapFactory.decodeFile(resource.absolutePath).width
 //                    val sHeight = BitmapFactory.decodeFile(resource.absolutePath).height
 //                    val wm = ContextCompat.getSystemService(App.instance, WindowManager::class.java)
@@ -120,6 +141,19 @@ class PreviewImageFragment : BaseFragment<BaseViewModel, FragmentPreviewImageBin
                         // 最大显示比例
                         it.maxScale = 20f
                         it.minScale = 0.5f
+                    }
+
+                    val tmpFile = File(imageResource)
+                    FileUtils.copy(
+                        resource, tmpFile
+                    ) { srcFile, destFile ->
+                        if (FileUtils.isFileExists(srcFile)) {
+                            LogUtils.dTag(TAG, "srcFile FileExists")
+                        }
+                        if (FileUtils.isFileExists(tmpFile)) {
+                            LogUtils.dTag(TAG, "destFile FileExists")
+                        }
+                        true
                     }
                 }
 
