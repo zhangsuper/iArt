@@ -123,12 +123,13 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <LinearLayout
+        android:id="@+id/item_view_1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_marginTop="@dimen/dp_20"
         app:layout_constraintTop_toBottomOf="@+id/vip_status_view"
-        android:background="@drawable/bg_white_conner_4">
+        android:background="@drawable/bg_white_conner_8">
 
         <com.gsq.iart.app.weight.CommonItemLayout
             android:id="@+id/item_collect"
@@ -147,16 +148,36 @@
             app:item_divider_visible="true"
             app:item_right_icon_visible="true" />
 
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/item_view_2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="@dimen/dp_10"
+        app:layout_constraintTop_toBottomOf="@+id/item_view_1"
+        android:background="@drawable/bg_white_conner_8">
+
         <com.gsq.iart.app.weight.CommonItemLayout
-            android:id="@+id/item_contact"
+            android:id="@+id/item_contact_QQ"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:item_title="@string/mine_contact"
+            app:item_title="客服QQ"
             app:item_divider_visible="false"
             app:item_right_icon_visible="false"
             app:item_right_msg="@string/app_copy"
             app:item_right_sub_msg="1923249099" />
 
+        <com.gsq.iart.app.weight.CommonItemLayout
+            android:id="@+id/item_contact_wechat"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:item_title="客服微信"
+            app:item_divider_visible="false"
+            app:item_right_icon_visible="false"
+            app:item_right_msg="@string/app_copy"
+            app:item_right_sub_msg="ZhongHuaYiShuGuan" />
     </LinearLayout>
 
     <TextView

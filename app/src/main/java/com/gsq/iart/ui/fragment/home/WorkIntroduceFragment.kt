@@ -1,12 +1,17 @@
 package com.gsq.iart.ui.fragment.home
 
 import android.os.Bundle
+import com.google.android.flexbox.FlexDirection
+import com.google.android.flexbox.FlexboxLayoutManager
+import com.google.android.flexbox.JustifyContent
 import com.gsq.iart.R
 import com.gsq.iart.app.base.BaseFragment
+import com.gsq.iart.app.ext.init
 import com.gsq.iart.app.util.StatusBarUtil
 import com.gsq.iart.data.Constant
 import com.gsq.iart.data.bean.WorksBean
 import com.gsq.iart.databinding.FragmentWorkIntroduceBinding
+import com.gsq.iart.ui.adapter.TagAdapter
 import com.gsq.iart.viewmodel.WorksViewModel
 import com.gsq.mvvm.ext.nav
 import com.gsq.mvvm.ext.view.gone
@@ -18,6 +23,7 @@ import kotlinx.android.synthetic.main.fragment_work_introduce.*
 class WorkIntroduceFragment : BaseFragment<WorksViewModel, FragmentWorkIntroduceBinding>() {
 
     private var worksBean: WorksBean? = null
+    private val tagAdapter: TagAdapter by lazy { TagAdapter(arrayListOf()) }
 
     override fun initView(savedInstanceState: Bundle?) {
         worksBean = arguments?.getSerializable(Constant.DATA_WORK) as? WorksBean
@@ -27,6 +33,13 @@ class WorkIntroduceFragment : BaseFragment<WorksViewModel, FragmentWorkIntroduce
         }
 
         StatusBarUtil.init(requireActivity(), statusBarColor = R.color.white)
+
+        val layoutManager = FlexboxLayoutManager(context)
+        //方向 主轴为水平方向，起点在左端
+        layoutManager.flexDirection = FlexDirection.ROW
+        //左对齐
+        layoutManager.justifyContent = JustifyContent.FLEX_START
+        tag_recycler_view.init(layoutManager, tagAdapter, false)
     }
 
     override fun initData() {
@@ -70,7 +83,9 @@ class WorkIntroduceFragment : BaseFragment<WorksViewModel, FragmentWorkIntroduce
         if (worksBean?.tags.isNullOrEmpty()) {
             layout_bq.gone()
         } else {
-            tv_bq.text = worksBean?.tags
+//            tv_bq.text = worksBean?.tags
+            var tagList = worksBean?.tags?.split(",")
+            tagAdapter.setList(tagList)
         }
         if (worksBean?.description.isNullOrEmpty()) {
             layout_jj.gone()

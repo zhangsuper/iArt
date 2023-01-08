@@ -14,7 +14,7 @@ import com.gsq.iart.ui.adapter.ConditionRightAdapter
 import com.gsq.mvvm.ext.view.visible
 import com.xu.xpopupwindow.XPopupWindow
 
-class ConditionPopupWindow: XPopupWindow {
+class ConditionPopupWindow : XPopupWindow {
 
     private var leftRecyclerView: RecyclerView? = null
     private var rightRecyclerView: RecyclerView? = null
@@ -31,8 +31,9 @@ class ConditionPopupWindow: XPopupWindow {
     constructor(ctx: Context, w: Int, h: Int) : super(ctx, w, h)
 
     private var onBackListener: OnBackListener? = null
-    interface OnBackListener{
-        fun onItemClick(grade1Item: ConditionClassifyBean,grade2Item: ConditionClassifyBean?)
+
+    interface OnBackListener {
+        fun onItemClick(grade1Item: ConditionClassifyBean, grade2Item: ConditionClassifyBean?)
         fun onDismiss()
         fun onReset()
     }
@@ -70,17 +71,17 @@ class ConditionPopupWindow: XPopupWindow {
         requireBtn?.setOnClickListener {
             currentSelectGrade1Item?.let { item1 ->
                 currentSelectGrade2Item?.let { itme2 ->
-                    onBackListener?.onItemClick(item1,itme2)
+                    onBackListener?.onItemClick(item1, itme2)
                     dismiss()
-                }?:let {
-                    if(item1.subs!= null && item1.subs.isNotEmpty()){
+                } ?: let {
+                    if (item1.subs != null && item1.subs.isNotEmpty()) {
                         ToastUtils.showLong("请选择类型")
-                    }else{
-                        onBackListener?.onItemClick(item1,null)
+                    } else {
+                        onBackListener?.onItemClick(item1, null)
                         dismiss()
                     }
                 }
-            }?:let {
+            } ?: let {
                 ToastUtils.showLong("请选择类型")
             }
         }
@@ -91,7 +92,7 @@ class ConditionPopupWindow: XPopupWindow {
         rightRecyclerView?.adapter = rightAdapter
 
         leftAdapter?.setOnItemClickListener { adapter, view, position ->
-            if(leftData[position].subs != null){
+            if (leftData[position].subs != null) {
                 rightAdapter?.data = (leftData[position].subs as MutableList<ConditionClassifyBean>)
                 rightAdapter?.notifyDataSetChanged()
                 rightRecyclerView?.visible()
@@ -117,27 +118,35 @@ class ConditionPopupWindow: XPopupWindow {
         }
     }
 
-    fun setData(list: List<ConditionClassifyBean>, selectedItem: List<ConditionClassifyBean>?){
+    fun setData(list: List<ConditionClassifyBean>, selectedItem: List<ConditionClassifyBean>?) {
         leftData = (list as MutableList<ConditionClassifyBean>)
 //        leftAdapter?.notifyDataSetChanged()
         leftAdapter?.data = leftData
 
         selectedItem?.let {
             currentSelectGrade1Item = it[0]
-            if(it.size>1){
+            if (it.size > 1) {
                 currentSelectGrade2Item = it[1]
             }
         }
-        if(currentSelectGrade1Item != null && currentSelectGrade2Item != null){
-            var position = -1
-            for (index in leftData.indices){
-                if(leftData[index].id == currentSelectGrade1Item!!.id){
-                    position = index
+        if (currentSelectGrade1Item != null && currentSelectGrade2Item != null) {
+            var leftPosition = -1
+            for (index in leftData.indices) {
+                if (leftData[index].name == currentSelectGrade1Item!!.name) {
+                    leftPosition = index
                     break
                 }
             }
-            if(leftData[position].subs != null) {
-                rightAdapter?.data = (leftData[position].subs as MutableList<ConditionClassifyBean>)
+            var rightPosition = -1
+            if (leftData[leftPosition].subs != null) {
+                for (index in leftData[leftPosition].subs.indices) {
+                    if (leftData[leftPosition].subs[index].name == currentSelectGrade2Item!!.name) {
+                        rightPosition = index
+                        break
+                    }
+                }
+                rightAdapter?.data =
+                    (leftData[leftPosition].subs as MutableList<ConditionClassifyBean>)
                 rightAdapter?.notifyDataSetChanged()
                 rightRecyclerView?.visible()
             }

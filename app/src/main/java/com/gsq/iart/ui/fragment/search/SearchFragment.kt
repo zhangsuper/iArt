@@ -63,17 +63,29 @@ class SearchFragment : BaseFragment<SearchViewModel, FragmentSearchBinding>() {
             }
             false
         }
-        transactionFragment(searchInitFragment)
+        search_input_view.setOnClickListener {
+            if (!isInitFragment) {
+                transactionInitFragment()
+            }
+        }
+        transactionInitFragment()
         searchInitFragment.setOnClickItemListener {
             search_input_view.setText(it)
             searchData(it)
         }
     }
 
+    private fun transactionInitFragment() {
+        transactionFragment(searchInitFragment)
+        isInitFragment = true
+    }
+
+    private var isInitFragment = true
     private fun searchData(key: String) {
         var searchResultFragment =
             WorksListFragment.start(ArgsType(COMPLEX_TYPE_SEARCH, searchKey = key))
         transactionFragment(searchResultFragment)
+        isInitFragment = false
     }
 
 

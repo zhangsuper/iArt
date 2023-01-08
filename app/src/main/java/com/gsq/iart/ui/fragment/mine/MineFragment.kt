@@ -55,12 +55,19 @@ class MineFragment : BaseFragment<BaseViewModel, FragmentMineBinding>() {
             //设置
             nav().navigateAction(R.id.action_mainFragment_to_settingFragment)
         }
-        item_contact.setRightMsgListener {
+        item_contact_QQ.setRightMsgListener {
             //复制客服QQ
-            ClipboardUtils.copyText(item_contact.getRightSubDescTv().text.toString())
+            ClipboardUtils.copyText(item_contact_QQ.getRightSubDescTv().text.toString())
 //            item_contact.context.copyToClipboard(item_contact.getRightSubDescTv().text.toString())
             ToastUtils.showShort("已复制到粘贴板")
             MobAgentUtil.onEvent("customer_qq")
+        }
+        item_contact_wechat.setRightMsgListener {
+            //复制客服微信
+            ClipboardUtils.copyText(item_contact_wechat.getRightSubDescTv().text.toString())
+//            item_contact.context.copyToClipboard(item_contact.getRightSubDescTv().text.toString())
+            ToastUtils.showShort("已复制到粘贴板")
+            MobAgentUtil.onEvent("customer_wechat")
         }
         setListener()
         setLoginStatus()
