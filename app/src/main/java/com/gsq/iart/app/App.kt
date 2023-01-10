@@ -67,6 +67,7 @@ class App : BaseApp() {
             )
             // 选用手动页面采集模式
             MobclickAgent.setPageCollectionMode(MobclickAgent.PageMode.MANUAL)
+            UMConfigure.setLogEnabled(true)
         }
         //友盟正式初始化
 //        var umInitConfig = UmInitConfig()

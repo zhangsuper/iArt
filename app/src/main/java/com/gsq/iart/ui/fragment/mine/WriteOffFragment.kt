@@ -13,6 +13,7 @@ import com.gsq.iart.viewmodel.LoginViewModel
 import com.gsq.mvvm.ext.nav
 import com.gsq.mvvm.ext.navigateAction
 import com.gsq.mvvm.ext.view.gone
+import com.gsq.mvvm.ext.view.visible
 import kotlinx.android.synthetic.main.fragment_setting.title_layout
 import kotlinx.android.synthetic.main.fragment_write_off.*
 
@@ -30,7 +31,11 @@ class WriteOffFragment : BaseFragment<LoginViewModel, FragmentWriteOffBinding>()
         }
         write_off_btn.setOnClickListener {
             //注销
-            mViewModel?.writeOff()
+            if (CacheUtil.getUser()?.memberType == 1) {
+                ToastUtils.showLong("注销失败，请联系客服")
+            } else {
+                mViewModel?.writeOff()
+            }
         }
 
 //        preWeb = AgentWeb.with(this)
@@ -60,7 +65,7 @@ class WriteOffFragment : BaseFragment<LoginViewModel, FragmentWriteOffBinding>()
                 write_off_tips.gone()
                 write_text.gone()
                 write_off_btn.gone()
-                ToastUtils.showLong("账号已注销")
+                write_success_tips.visible()
                 CacheUtil.setUser(null)
                 CacheUtil.setIsLogin(false)
 //                nav().navigateUp()

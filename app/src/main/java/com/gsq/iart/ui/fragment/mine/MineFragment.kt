@@ -92,7 +92,7 @@ class MineFragment : BaseFragment<BaseViewModel, FragmentMineBinding>() {
         } else {
             nike_name.text = getString(R.string.app_login_in)
             user_id.text = getString(R.string.app_login_get_vip)
-            iv_avatar.setImageResource(R.drawable.icon_avatar_default)
+            iv_avatar.setImageResource(R.drawable.icon_user_default)
             expired_time.gone()
             join_vip_btn.text = "立即开通"
         }

@@ -54,4 +54,32 @@
         android:layout_margin="@dimen/dp_16"
         app:layout_constraintBottom_toBottomOf="parent" />
 
+    <LinearLayout
+        android:id="@+id/write_success_tips"
+        android:layout_width="@dimen/dp_132"
+        android:layout_height="@dimen/dp_54"
+        android:orientation="horizontal"
+        android:gravity="center"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:background="@color/color_66000000"
+        android:visibility="gone">
+
+        <ImageView
+            android:layout_width="@dimen/dp_20"
+            android:layout_height="@dimen/dp_20"
+            android:src="@drawable/icon_circle_fill" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="注销成功"
+            android:layout_marginStart="@dimen/dp_8"
+            android:textColor="@color/color_e6FFFFFF" />
+
+
+    </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

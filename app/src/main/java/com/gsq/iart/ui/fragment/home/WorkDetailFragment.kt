@@ -292,6 +292,7 @@ class WorkDetailFragment : BaseFragment<WorksViewModel, FragmentWorkDetailBindin
                 )
                 LogUtils.dTag(TAG, "testname:${fileName}")
                 var imageResource = FileUtil.getPrivateSavePath("download") + fileName
+                
                 FileUtils.createOrExistsDir(DOWNLOAD_PARENT_PATH)
                 var destPath = DOWNLOAD_PARENT_PATH + File.separator + fileName
                 if (FileUtils.isFileExists(destPath)) {

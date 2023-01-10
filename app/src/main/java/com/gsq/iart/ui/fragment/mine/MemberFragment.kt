@@ -159,7 +159,7 @@ class MemberFragment : BaseFragment<MemberViewModel, FragmentMemberBinding>() {
     private fun updateUserInfo() {
         var userInfo = CacheUtil.getUser()
         nike_name.text = userInfo?.nickname
-        GlideHelper.load(iv_avatar, userInfo?.headImgUrl)
+        GlideHelper.load(iv_avatar, userInfo?.headImgUrl, R.drawable.icon_user_default)
         if (userInfo?.memberType == 1) {
             vip_status.text = "国画通会员有效期至${userInfo?.memberEndDate}"
             pay_button.text = "立即续费"

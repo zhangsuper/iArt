@@ -40,7 +40,7 @@
                     android:layout_height="@dimen/dp_60"
                     android:scaleType="centerCrop"
                     android:padding="@dimen/dp_1"
-                    android:src="@drawable/icon_avatar_default"
+                    android:src="@drawable/icon_user_default"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:shapeAppearanceOverlay="@style/CircleStyle"
@@ -180,7 +180,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="@dimen/dp_52"
                                 android:gravity="center"
-                                android:text="高清版下载(2次/天)"
+                                android:text="高清版下载"
                                 android:textColor="@color/color_141414"
                                 android:background="@drawable/bg_ffe5d7_conner_8" />
 
@@ -196,7 +196,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="@dimen/dp_52"
                                 android:gravity="center"
-                                android:text="普通会员"
+                                android:text="普通用户"
                                 android:textStyle="bold"
                                 android:textSize="@dimen/font_16"
                                 android:textColor="@color/color_141414"
