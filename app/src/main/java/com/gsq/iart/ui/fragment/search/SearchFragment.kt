@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import com.blankj.utilcode.util.ToastUtils
 import com.gsq.iart.R
 import com.gsq.iart.app.base.BaseFragment
+import com.gsq.iart.app.util.MobAgentUtil
 import com.gsq.iart.app.util.StatusBarUtil
 import com.gsq.iart.data.Constant.COMPLEX_TYPE_SEARCH
 import com.gsq.iart.data.bean.ArgsType
@@ -50,6 +51,10 @@ class SearchFragment : BaseFragment<SearchViewModel, FragmentSearchBinding>() {
             if (!TextUtils.isEmpty(inputKey)) {
                 searchInitFragment.updateKey(inputKey)
                 searchData(inputKey)
+
+                var eventMap = mutableMapOf<String, Any?>()
+                eventMap["query"] = inputKey
+                MobAgentUtil.onEvent("search_guohua", eventMap)
             } else {
                 ToastUtils.showShort("请输入关键字")
             }
@@ -59,6 +64,9 @@ class SearchFragment : BaseFragment<SearchViewModel, FragmentSearchBinding>() {
             if (i == EditorInfo.IME_ACTION_SEARCH && !TextUtils.isEmpty(inputKey)) {
                 searchInitFragment.updateKey(inputKey)
                 searchData(inputKey)
+                var eventMap = mutableMapOf<String, Any?>()
+                eventMap["query"] = inputKey
+                MobAgentUtil.onEvent("search_guohua", eventMap)
                 true
             }
             false

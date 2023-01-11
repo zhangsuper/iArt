@@ -98,7 +98,7 @@ class MemberFragment : BaseFragment<MemberViewModel, FragmentMemberBinding>() {
                 mViewModel.createPreparePay(it.id)
                 var eventMap = mutableMapOf<String, Any?>()
                 eventMap["payType"] = "wechat"
-                MobAgentUtil.onEvent("vip_buy")
+                MobAgentUtil.onEvent("vip_buy", eventMap)
             } ?: let {
                 ToastUtils.showLong("请选择开通套餐")
             }

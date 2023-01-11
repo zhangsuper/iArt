@@ -8,7 +8,11 @@ import com.umeng.analytics.MobclickAgent
 object MobAgentUtil {
 
     fun onEvent(eventId: String, valueMap: MutableMap<String, Any?>? = null) {
-        MobclickAgent.onEventObject(App.instance, eventId, valueMap)
         LogUtils.dTag("MobAgentUtil", "eventId: ${eventId},valueMap:${valueMap?.values}")
+        if (valueMap == null) {
+            MobclickAgent.onEvent(App.instance, eventId)
+        } else {
+            MobclickAgent.onEventObject(App.instance, eventId, valueMap)
+        }
     }
 }

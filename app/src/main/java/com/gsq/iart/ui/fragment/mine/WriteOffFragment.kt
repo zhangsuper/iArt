@@ -8,6 +8,7 @@ import com.blankj.utilcode.util.ToastUtils
 import com.gsq.iart.R
 import com.gsq.iart.app.base.BaseFragment
 import com.gsq.iart.app.util.CacheUtil
+import com.gsq.iart.app.util.MobAgentUtil
 import com.gsq.iart.databinding.FragmentWriteOffBinding
 import com.gsq.iart.viewmodel.LoginViewModel
 import com.gsq.mvvm.ext.nav
@@ -31,6 +32,7 @@ class WriteOffFragment : BaseFragment<LoginViewModel, FragmentWriteOffBinding>()
         }
         write_off_btn.setOnClickListener {
             //注销
+            MobAgentUtil.onEvent("writeoff")
             if (CacheUtil.getUser()?.memberType == 1) {
                 ToastUtils.showLong("注销失败，请联系客服")
             } else {
