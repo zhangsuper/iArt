@@ -5,6 +5,7 @@ import android.graphics.Typeface
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.airbnb.mvrx.args
@@ -32,6 +33,7 @@ import com.gsq.iart.databinding.FragmentWorksListBinding
 import com.gsq.iart.ui.adapter.WorksAdapter
 import com.gsq.iart.ui.dialog.AllConditionPopupWindow
 import com.gsq.iart.ui.dialog.ConditionPopupWindow
+import com.gsq.iart.ui.fragment.mine.MemberFragment
 import com.gsq.iart.viewmodel.WorksViewModel
 import com.gsq.mvvm.ext.nav
 import com.gsq.mvvm.ext.navigateAction
@@ -93,6 +95,19 @@ class WorksListFragment : BaseFragment<WorksViewModel, FragmentWorksListBinding>
 
         worksAdapter.setOnItemClickListener { adapter, view, position ->
             val worksBean = adapter.data[position] as WorksBean
+            var eventMap = mutableMapOf<String, Any?>()
+            eventMap["id"] = worksBean.id
+            when (args.complexType) {
+                COMPLEX_TYPE_SEARCH -> {
+                    MobAgentUtil.onEvent("click_s", eventMap)
+                }
+                COMPLEX_TYPE_COLLECT -> {
+                    MobAgentUtil.onEvent("click", eventMap)
+                }
+                else -> {
+                    MobAgentUtil.onEvent("click", eventMap)
+                }
+            }
             if (worksBean.pay == 1 && CacheUtil.getUser()?.memberType != 1) {
 //                if (CacheUtil.isLogin()) {
 //                    if (CacheUtil.getUser()?.memberType != 1) {
@@ -110,10 +125,10 @@ class WorksListFragment : BaseFragment<WorksViewModel, FragmentWorksListBinding>
 //                    nav().navigateAction(R.id.action_mainFragment_to_loginFragment)
 //                }
                 //需要付费且没有开通了会员
-                nav().navigateAction(R.id.action_mainFragment_to_memberFragment)
-                var eventMap = mutableMapOf<String, Any?>()
-                eventMap["works"] = worksBean?.id
-                MobAgentUtil.onEvent("vip", eventMap)
+                nav().navigateAction(
+                    R.id.action_mainFragment_to_memberFragment,
+                    bundleOf(MemberFragment.INTENT_KEY_TYPE to MemberFragment.INTENT_VALUE_WORKS)
+                )
             } else {
                 var bundle = Bundle()
                 bundle.putSerializable(
@@ -123,21 +138,7 @@ class WorksListFragment : BaseFragment<WorksViewModel, FragmentWorksListBinding>
                 bundle.putString(INTENT_TYPE, args.complexType)
                 nav().navigateAction(R.id.action_mainFragment_to_workDetailFragment, bundle)
             }
-            var eventMap = mutableMapOf<String, Any?>()
-            eventMap["id"] = worksBean.id
-            when (args.complexType) {
-                COMPLEX_TYPE_SEARCH -> {
-                    MobAgentUtil.onEvent("click_s", eventMap)
-                }
-                COMPLEX_TYPE_COLLECT -> {
-
-                }
-                else -> {
-                    MobAgentUtil.onEvent("click", eventMap)
-                }
-            }
         }
-        MobAgentUtil.onEvent("channel_guohua")
     }
 
     private fun initTypeConditionView() {
@@ -376,7 +377,25 @@ class WorksListFragment : BaseFragment<WorksViewModel, FragmentWorksListBinding>
                 if (propSearchMap.containsKey(selectType)) {
                     propSearchMap.remove(selectType)
                 }
-                initConditionView()
+                when (selectType) {
+                    classifyBean?.get(0)?.name -> {
+                        tv_years.text = classifyBean?.get(0)?.name
+                        tv_years.setTextColor(ColorUtils.getColor(R.color.color_999999))
+                    }
+                    classifyBean?.get(1)?.name -> {
+                        tv_theme.text = classifyBean?.get(1)?.name
+                        tv_theme.setTextColor(ColorUtils.getColor(R.color.color_999999))
+                    }
+                    classifyBean?.get(2)?.name -> {
+                        tv_size.text = classifyBean?.get(2)?.name
+                        tv_size.setTextColor(ColorUtils.getColor(R.color.color_999999))
+                    }
+                    "筛选" -> {
+                        tv_screen.text = "筛选"
+                        tv_screen.setTextColor(ColorUtils.getColor(R.color.color_999999))
+                    }
+                }
+//                initConditionView()
                 requestData(true)
             }
         })

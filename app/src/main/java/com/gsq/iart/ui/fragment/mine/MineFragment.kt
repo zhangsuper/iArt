@@ -1,6 +1,7 @@
 package com.gsq.iart.ui.fragment.mine
 
 import android.os.Bundle
+import androidx.core.os.bundleOf
 import com.blankj.utilcode.util.ClipboardUtils
 import com.blankj.utilcode.util.ToastUtils
 import com.gsq.iart.BuildConfig
@@ -72,7 +73,6 @@ class MineFragment : BaseFragment<BaseViewModel, FragmentMineBinding>() {
         setListener()
         setLoginStatus()
 //        setUserInfo()
-        MobAgentUtil.onEvent("tab_my")
         tv_version.text = "V${BuildConfig.VERSION_NAME}"
     }
 
@@ -112,7 +112,6 @@ class MineFragment : BaseFragment<BaseViewModel, FragmentMineBinding>() {
         }
         join_vip_btn.setOnClickListener {
             //我的会员
-            nav().navigateAction(R.id.action_mainFragment_to_memberFragment)
 //            if (CacheUtil.isLogin()) {
 //                nav().navigateAction(R.id.action_mainFragment_to_memberFragment)
 //            } else {
@@ -120,9 +119,15 @@ class MineFragment : BaseFragment<BaseViewModel, FragmentMineBinding>() {
 //                nav().navigateAction(R.id.action_mainFragment_to_loginFragment)
 //            }
             if (CacheUtil.getUser()?.memberType == 1) {
-                MobAgentUtil.onEvent("renew")
+                nav().navigateAction(
+                    R.id.action_mainFragment_to_memberFragment,
+                    bundleOf(MemberFragment.INTENT_KEY_TYPE to MemberFragment.INTENT_VALUE_RENEW)
+                )
             } else {
-                MobAgentUtil.onEvent("recharge")
+                nav().navigateAction(
+                    R.id.action_mainFragment_to_memberFragment,
+                    bundleOf(MemberFragment.INTENT_KEY_TYPE to MemberFragment.INTENT_VALUE_RECHARGE)
+                )
             }
         }
     }

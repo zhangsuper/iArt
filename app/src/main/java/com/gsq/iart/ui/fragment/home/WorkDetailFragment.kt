@@ -3,6 +3,7 @@ package com.gsq.iart.ui.fragment.home
 import android.Manifest
 import android.content.Intent
 import android.os.Bundle
+import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -29,6 +30,7 @@ import com.gsq.iart.data.bean.DetailArgsType
 import com.gsq.iart.data.bean.WorksBean
 import com.gsq.iart.data.event.BigImageClickEvent
 import com.gsq.iart.databinding.FragmentWorkDetailBinding
+import com.gsq.iart.ui.fragment.mine.MemberFragment
 import com.gsq.iart.viewmodel.WorksViewModel
 import com.gsq.mvvm.ext.nav
 import com.gsq.mvvm.ext.navigateAction
@@ -180,13 +182,13 @@ class WorkDetailFragment : BaseFragment<WorksViewModel, FragmentWorkDetailBindin
         }
         iv_introduce.setOnClickListener {
             //简介
-            var args = Bundle()
-            args.putSerializable(DATA_WORK, worksBean)
-            nav().navigateAction(R.id.action_workDetailFragment_to_workIntroduceFragment, args)
-
             var eventMap = mutableMapOf<String, Any?>()
             eventMap["id"] = worksBean?.id
             MobAgentUtil.onEvent("introduce", eventMap)
+
+            var args = Bundle()
+            args.putSerializable(DATA_WORK, worksBean)
+            nav().navigateAction(R.id.action_workDetailFragment_to_workIntroduceFragment, args)
         }
         iv_collect.setOnClickListener {
             //收藏与取消收藏
@@ -207,12 +209,11 @@ class WorkDetailFragment : BaseFragment<WorksViewModel, FragmentWorkDetailBindin
                 }
             } else {
                 //跳转登录界面
-                nav().navigateAction(R.id.action_mainFragment_to_loginFragment)
-
                 var eventMap = mutableMapOf<String, Any?>()
                 eventMap["type"] = "collect"
                 eventMap["id"] = worksBean?.id
                 MobAgentUtil.onEvent("signin", eventMap)
+                nav().navigateAction(R.id.action_mainFragment_to_loginFragment)
             }
 
         }
@@ -220,17 +221,16 @@ class WorkDetailFragment : BaseFragment<WorksViewModel, FragmentWorkDetailBindin
             if (CacheUtil.isLogin()) {
                 if (CacheUtil.getUser()?.memberType == 1) {
                     //下载
-                    checkStoragePermission()
-
                     var eventMap = mutableMapOf<String, Any?>()
                     eventMap["id"] = worksBean?.id
                     MobAgentUtil.onEvent("download", eventMap)
+                    checkStoragePermission()
                 } else {
                     //跳转到会员页
-                    nav().navigateAction(R.id.action_workDetailFragment_to_memberFragment)
-                    var eventMap = mutableMapOf<String, Any?>()
-                    eventMap["download"] = worksBean?.id
-                    MobAgentUtil.onEvent("vip", eventMap)
+                    nav().navigateAction(
+                        R.id.action_workDetailFragment_to_memberFragment,
+                        bundleOf(MemberFragment.INTENT_KEY_TYPE to MemberFragment.INTENT_VALUE_DOWNLOAD)
+                    )
                 }
             } else {
                 //跳转登录界面
@@ -292,14 +292,14 @@ class WorkDetailFragment : BaseFragment<WorksViewModel, FragmentWorkDetailBindin
                 )
                 LogUtils.dTag(TAG, "testname:${fileName}")
                 var imageResource = FileUtil.getPrivateSavePath("download") + fileName
-                
+
                 FileUtils.createOrExistsDir(DOWNLOAD_PARENT_PATH)
                 var destPath = DOWNLOAD_PARENT_PATH + File.separator + fileName
-                if (FileUtils.isFileExists(destPath)) {
-                    LogUtils.dTag(TAG, "图片已存在")
-                    ToastUtils.showLong("文件已保存在：${destPath}")
-                    return@let
-                }
+//                if (FileUtils.isFileExists(destPath)) {
+//                    LogUtils.dTag(TAG, "图片已存在")
+//                    ToastUtils.showLong("文件已保存在：${destPath}")
+//                    return@let
+//                }
                 if (FileUtils.isFileExists(imageResource)) {
                     LogUtils.dTag(TAG, "File copy to destPath")
                     FileUtils.copy(imageResource, destPath)

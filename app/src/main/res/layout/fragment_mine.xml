@@ -145,7 +145,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:item_title="@string/mine_setting"
-            app:item_divider_visible="true"
+            app:item_divider_visible="false"
             app:item_right_icon_visible="true" />
 
     </LinearLayout>
@@ -164,7 +164,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:item_title="客服QQ"
-            app:item_divider_visible="false"
+            app:item_divider_visible="true"
             app:item_right_icon_visible="false"
             app:item_right_msg="@string/app_copy"
             app:item_right_sub_msg="1923249099" />

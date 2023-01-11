@@ -35,15 +35,31 @@ import org.greenrobot.eventbus.ThreadMode
  */
 class MemberFragment : BaseFragment<MemberViewModel, FragmentMemberBinding>() {
 
+    companion object {
+        const val INTENT_KEY_TYPE = "data"
+        const val INTENT_VALUE_WORKS = "works"
+        const val INTENT_VALUE_SEARCH = "search"
+        const val INTENT_VALUE_DOWNLOAD = "download"
+        const val INTENT_VALUE_RECHARGE = "recharge"
+        const val INTENT_VALUE_RENEW = "renew"
+    }
+
     private val vipPriceAdapter: VipPriceAdapter by lazy { VipPriceAdapter() }
     private var priceList: MutableList<VipPriceBean> = mutableListOf()
     private var payType = 1 //1:微信支付  2：支付宝支付
     private var mLoginViewModel: LoginViewModel? = null
+    private var agreementType: String? = null
 
     override fun initView(savedInstanceState: Bundle?) {
         title_layout.setBackListener {
             nav().navigateUp()
 
+        }
+        agreementType = arguments?.getString(UserAgreementFragment.INTENT_KEY_TYPE)
+        agreementType?.let {
+            var eventMap = mutableMapOf<String, Any?>()
+            eventMap["id"] = it
+            MobAgentUtil.onEvent("vip", eventMap)
         }
         price_recycler_view.adapter = vipPriceAdapter
         vipPriceAdapter.setOnItemClickListener { adapter, view, position ->
@@ -186,6 +202,13 @@ class MemberFragment : BaseFragment<MemberViewModel, FragmentMemberBinding>() {
 
 
     override fun onDestroy() {
+        agreementType?.let {
+            if (CacheUtil.isLogin() && CacheUtil.getUser()?.memberType == 1) {
+                var eventMap = mutableMapOf<String, Any?>()
+                eventMap["id"] = it
+                MobAgentUtil.onEvent("vip_cancel", eventMap)
+            }
+        }
         super.onDestroy()
         EventBus.getDefault().unregister(this)
     }
