@@ -289,7 +289,7 @@ class WorksListFragment : BaseFragment<WorksViewModel, FragmentWorksListBinding>
             ) {
                 when (selectType) {
                     classifyBean?.get(0)?.name -> {
-                        if (grade2Item != null) {
+                        if (grade2Item != null && grade2Item.id != -1) {
                             tv_years.text = grade2Item.name
                         } else {
                             tv_years.text = grade1Item.name
@@ -308,7 +308,7 @@ class WorksListFragment : BaseFragment<WorksViewModel, FragmentWorksListBinding>
                         }
                     }
                     classifyBean?.get(1)?.name -> {
-                        if (grade2Item != null) {
+                        if (grade2Item != null && grade2Item.id != -1) {
                             tv_theme.text = grade2Item.name
                         } else {
                             tv_theme.text = grade1Item.name
@@ -327,7 +327,7 @@ class WorksListFragment : BaseFragment<WorksViewModel, FragmentWorksListBinding>
                         }
                     }
                     classifyBean?.get(2)?.name -> {
-                        if (grade2Item != null) {
+                        if (grade2Item != null && grade2Item.id != -1) {
                             tv_size.text = grade2Item.name
                         } else {
                             tv_size.text = grade1Item.name
@@ -510,12 +510,14 @@ class WorksListFragment : BaseFragment<WorksViewModel, FragmentWorksListBinding>
         if (propSearchMap.size > 0) {
             propSearchs = mutableListOf()//多条件过滤
             propSearchMap.forEach { map ->
-                propSearchs.add(
-                    WorkPropSearchBean(
-                        map.value[map.value.size - 1].searchField,
-                        map.value[map.value.size - 1].name
+                if (map.value[map.value.size - 1].id != -1) {
+                    propSearchs.add(
+                        WorkPropSearchBean(
+                            map.value[map.value.size - 1].searchField,
+                            map.value[map.value.size - 1].name
+                        )
                     )
-                )
+                }
             }
         }
         when (args.complexType) {

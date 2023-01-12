@@ -24,7 +24,7 @@ class WorksAdapter : BaseQuickAdapter<WorksBean, BaseViewHolder>(R.layout.item_w
         holder.setText(R.id.item_works_desc, "${item.author}  ${item.age}")
         var vipIcon = holder.getView<ImageView>(R.id.icon_vip)
         var imageView = holder.getView<ShapeableImageView>(R.id.item_works_cover)
-        GlideHelper.load(imageView, item.thumb)
+        GlideHelper.load(imageView, item.thumb, R.color.color_DDDDDD)
         if (holder.layoutPosition == 1) {
             imageView.layoutParams.height = SizeUtils.dp2px(318f)
         } else {

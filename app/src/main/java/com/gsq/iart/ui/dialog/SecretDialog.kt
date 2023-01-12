@@ -26,7 +26,7 @@ class SecretDialog : BaseDialog(R.layout.dialog_secret) {
     override fun changeDialogStyle() {
         isCancelable = false
         dialogWidth = (ScreenUtils.getScreenWidth() * 0.9).toInt()
-        dialogHeight = (ScreenUtils.getScreenHeight() * 0.9).toInt()
+        dialogHeight = (ScreenUtils.getScreenHeight() * 0.6).toInt()
         super.changeDialogStyle()
     }
 
@@ -53,6 +53,5 @@ class SecretDialog : BaseDialog(R.layout.dialog_secret) {
             .createAgentWeb()
             .ready()
         mAgentWeb = preWeb?.go(personal_url)
-
     }
 }

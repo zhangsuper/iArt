@@ -2,6 +2,7 @@ package com.gsq.iart.ui.fragment.home
 
 import android.Manifest
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
@@ -15,6 +16,7 @@ import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView.*
 import com.downloader.OnDownloadListener
 import com.downloader.PRDownloader
 import com.gsq.iart.R
+import com.gsq.iart.app.App
 import com.gsq.iart.app.base.BaseFragment
 import com.gsq.iart.app.ext.init
 import com.gsq.iart.app.util.CacheUtil
@@ -302,7 +304,13 @@ class WorkDetailFragment : BaseFragment<WorksViewModel, FragmentWorkDetailBindin
                 if (FileUtils.isFileExists(imageResource)) {
                     LogUtils.dTag(TAG, "File copy to destPath")
                     FileUtils.copy(imageResource, destPath)
-                    ToastUtils.showLong("文件已保存在：${destPath}")
+
+                    //把图片保存后声明这个广播事件通知系统相册有新图片到来
+                    val intent = Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE)
+                    val uri: Uri = Uri.fromFile(File(destPath))
+                    intent.data = uri
+                    App.instance.sendBroadcast(intent)
+                    ToastUtils.showLong("文件已保存在相册")
                     return@let
                 }
                 LogUtils.dTag(TAG, "startDownload")
@@ -340,7 +348,13 @@ class WorkDetailFragment : BaseFragment<WorksViewModel, FragmentWorkDetailBindin
             .start(object : OnDownloadListener {
                 override fun onDownloadComplete() {
                     progress_bar.gone()
-                    ToastUtils.showLong("文件已保存在：${dirPath}${File.separator}${fileName}")
+                    var destPath = dirPath + File.separator + fileName
+                    //把图片保存后声明这个广播事件通知系统相册有新图片到来
+                    val intent = Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE)
+                    val uri: Uri = Uri.fromFile(File(destPath))
+                    intent.data = uri
+                    App.instance.sendBroadcast(intent)
+                    ToastUtils.showLong("文件已保存在相册")
                 }
 
                 override fun onError(error: com.downloader.Error?) {
