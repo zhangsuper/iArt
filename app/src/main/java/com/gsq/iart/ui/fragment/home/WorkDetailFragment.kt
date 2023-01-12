@@ -66,7 +66,7 @@ class WorkDetailFragment : BaseFragment<WorksViewModel, FragmentWorkDetailBindin
         intentType = arguments?.getString(Constant.INTENT_TYPE, COMPLEX_TYPE_GROUP)
 
         var eventMap = mutableMapOf<String, Any?>()
-        eventMap["id"] = worksBean?.id
+        eventMap["work_id"] = worksBean?.id
         MobAgentUtil.onEvent("preview_jump", eventMap)
 
         fragmentList = arrayListOf()
@@ -150,7 +150,7 @@ class WorkDetailFragment : BaseFragment<WorksViewModel, FragmentWorkDetailBindin
                 }
 
                 var eventMap = mutableMapOf<String, Any?>()
-                eventMap["id"] = worksBean?.id
+                eventMap["work_id"] = worksBean?.id
                 MobAgentUtil.onEvent("preview_show", eventMap)
             } else {
                 ToastUtils.showLong(it.errorMsg)
@@ -183,7 +183,7 @@ class WorkDetailFragment : BaseFragment<WorksViewModel, FragmentWorkDetailBindin
         iv_introduce.setOnClickListener {
             //简介
             var eventMap = mutableMapOf<String, Any?>()
-            eventMap["id"] = worksBean?.id
+            eventMap["work_id"] = worksBean?.id
             MobAgentUtil.onEvent("introduce", eventMap)
 
             var args = Bundle()
@@ -204,14 +204,14 @@ class WorkDetailFragment : BaseFragment<WorksViewModel, FragmentWorkDetailBindin
                     }
 
                     var eventMap = mutableMapOf<String, Any?>()
-                    eventMap["id"] = worksBean?.id
+                    eventMap["work_id"] = worksBean?.id
                     MobAgentUtil.onEvent("collect", eventMap)
                 }
             } else {
                 //跳转登录界面
                 var eventMap = mutableMapOf<String, Any?>()
                 eventMap["type"] = "collect"
-                eventMap["id"] = worksBean?.id
+                eventMap["work_id"] = worksBean?.id
                 MobAgentUtil.onEvent("signin", eventMap)
                 nav().navigateAction(R.id.action_mainFragment_to_loginFragment)
             }
@@ -222,7 +222,7 @@ class WorkDetailFragment : BaseFragment<WorksViewModel, FragmentWorkDetailBindin
                 if (CacheUtil.getUser()?.memberType == 1) {
                     //下载
                     var eventMap = mutableMapOf<String, Any?>()
-                    eventMap["id"] = worksBean?.id
+                    eventMap["work_id"] = worksBean?.id
                     MobAgentUtil.onEvent("download", eventMap)
                     checkStoragePermission()
                 } else {
@@ -245,6 +245,9 @@ class WorkDetailFragment : BaseFragment<WorksViewModel, FragmentWorkDetailBindin
         }
         iv_rota.setOnClickListener {
 //            (fragmentList[currentSelectedIndex] as PreviewImageFragment).getPhotoView().rotation -= 90
+            var eventMap = mutableMapOf<String, Any?>()
+            eventMap["work_id"] = worksBean?.id
+            MobAgentUtil.onEvent("rotate", eventMap)
             var orientation =
                 (fragmentList[currentSelectedIndex] as PreviewImageFragment).getPhotoView().orientation
             when (orientation) {
@@ -265,10 +268,6 @@ class WorkDetailFragment : BaseFragment<WorksViewModel, FragmentWorkDetailBindin
                         ORIENTATION_180
                 }
             }
-
-            var eventMap = mutableMapOf<String, Any?>()
-            eventMap["id"] = worksBean?.id
-            MobAgentUtil.onEvent("rotate", eventMap)
         }
     }
 

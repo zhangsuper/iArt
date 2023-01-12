@@ -1,6 +1,10 @@
 package com.gsq.iart.viewmodel
 
 import androidx.lifecycle.MutableLiveData
+import com.blankj.utilcode.util.NetworkUtils
+import com.blankj.utilcode.util.StringUtils
+import com.blankj.utilcode.util.ToastUtils
+import com.gsq.iart.R
 import com.gsq.iart.app.network.apiService
 import com.gsq.iart.app.network.stateCallback.UpdateUiState
 import com.gsq.iart.data.bean.UserInfo
@@ -15,6 +19,10 @@ class LoginViewModel : BaseViewModel() {
 
 
     fun loginByWeChat(code: String) {
+        if (!NetworkUtils.isConnected()) {
+            ToastUtils.showShort(StringUtils.getString(R.string.http_error_net_disable))
+            return
+        }
         request(
             { apiService.loginByWechat(code) },
             {
@@ -62,6 +70,10 @@ class LoginViewModel : BaseViewModel() {
      * 注销
      */
     fun writeOff() {
+        if (!NetworkUtils.isConnected()) {
+            ToastUtils.showShort(StringUtils.getString(R.string.http_error_net_disable))
+            return
+        }
         request(
             { apiService.writeOff() },
             {
@@ -84,6 +96,10 @@ class LoginViewModel : BaseViewModel() {
     }
 
     fun getUserInfo() {
+        if (!NetworkUtils.isConnected()) {
+            ToastUtils.showShort(StringUtils.getString(R.string.http_error_net_disable))
+            return
+        }
         request(
             { apiService.getUserInfo() },
             {

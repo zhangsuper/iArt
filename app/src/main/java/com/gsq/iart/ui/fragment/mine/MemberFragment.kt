@@ -58,7 +58,7 @@ class MemberFragment : BaseFragment<MemberViewModel, FragmentMemberBinding>() {
         agreementType = arguments?.getString(UserAgreementFragment.INTENT_KEY_TYPE)
         agreementType?.let {
             var eventMap = mutableMapOf<String, Any?>()
-            eventMap["id"] = it
+            eventMap["type"] = it
             MobAgentUtil.onEvent("vip", eventMap)
         }
         price_recycler_view.adapter = vipPriceAdapter
@@ -205,7 +205,7 @@ class MemberFragment : BaseFragment<MemberViewModel, FragmentMemberBinding>() {
         agreementType?.let {
             if (CacheUtil.isLogin() && CacheUtil.getUser()?.memberType == 1) {
                 var eventMap = mutableMapOf<String, Any?>()
-                eventMap["id"] = it
+                eventMap["type"] = it
                 MobAgentUtil.onEvent("vip_cancel", eventMap)
             }
         }

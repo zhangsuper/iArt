@@ -96,7 +96,7 @@ class WorksListFragment : BaseFragment<WorksViewModel, FragmentWorksListBinding>
         worksAdapter.setOnItemClickListener { adapter, view, position ->
             val worksBean = adapter.data[position] as WorksBean
             var eventMap = mutableMapOf<String, Any?>()
-            eventMap["id"] = worksBean.id
+            eventMap["work_id"] = worksBean.id
             when (args.complexType) {
                 COMPLEX_TYPE_SEARCH -> {
                     MobAgentUtil.onEvent("click_s", eventMap)
