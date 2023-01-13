@@ -56,7 +56,7 @@ class WorksListFragment : BaseFragment<WorksViewModel, FragmentWorksListBinding>
     private lateinit var loadsir: LoadService<Any>
     private var subType: Int = WORKS_SUB_TYPE_HOT//0：热门  1：新上
 
-    private var classifyBean: List<ConditionClassifyBean>? = null
+    private var classifyBean: MutableList<ConditionClassifyBean>? = null
     private var selectType: String = "年代"
     private var searchKey: String? = null
     private var propSearchMap = hashMapOf<String, MutableList<ConditionClassifyBean>>()
@@ -423,21 +423,21 @@ class WorksListFragment : BaseFragment<WorksViewModel, FragmentWorksListBinding>
                     propSearchMap.put(it.key, it.value)
 
                     if (classifyBean?.get(0)?.name == it.key) {
-                        if (it.value.size == 2) {
+                        if (it.value.size == 2 && it.value[1].id != -1) {
                             tv_years.text = it.value[1].name
                         } else {
                             tv_years.text = it.value[0].name
                         }
                     }
                     if (classifyBean?.get(1)?.name == it.key) {
-                        if (it.value.size == 2) {
+                        if (it.value.size == 2 && it.value[1].id != -1) {
                             tv_theme.text = it.value[1].name
                         } else {
                             tv_theme.text = it.value[0].name
                         }
                     }
                     if (classifyBean?.get(2)?.name == it.key) {
-                        if (it.value.size == 2) {
+                        if (it.value.size == 2 && it.value[1].id != -1) {
                             tv_size.text = it.value[1].name
                         } else {
                             tv_size.text = it.value[0].name
@@ -565,6 +565,36 @@ class WorksListFragment : BaseFragment<WorksViewModel, FragmentWorksListBinding>
         mViewModel.conditionRootClassifys.observe(viewLifecycleOwner, Observer {
             if (it.isSuccess) {
                 classifyBean = it.listData
+                classifyBean?.let {
+                    it.forEach { bean ->
+                        bean.subs.forEach { subBean ->
+                            if (subBean.subs != null && subBean.subs.isNotEmpty() && subBean.subs[0].id != -1) {
+                                var bean = ConditionClassifyBean(
+                                    id = -1,
+                                    name = "全部",
+                                    subs = mutableListOf(),
+                                    dataSource = "",
+                                    isSelected = false,
+                                    searchField = ""
+                                )
+                                subBean.subs.add(0, bean)
+                            }
+                        }
+//                        for (index in bean.subs.indices) {
+//                            if (it[index].subs != null && it[index].subs.isNotEmpty() && it[index].subs[0].id != -1) {
+//                                var bean = ConditionClassifyBean(
+//                                    id = -1,
+//                                    name = "全部",
+//                                    subs = mutableListOf(),
+//                                    dataSource = "",
+//                                    isSelected = false,
+//                                    searchField = ""
+//                                )
+//                                classifyBean?.get(index)?.subs?.add(0, bean)
+//                            }
+//                        }
+                    }
+                }
                 initConditionView()
             } else {
 

@@ -32,8 +32,8 @@ class AllConditionAdapter constructor(private var isFirst: Boolean) :
             recyclerViewParams.leftMargin = SizeUtils.dp2px(0f)
         }
         mName.text = item.name
-        if (item.subs != null) {
-            if (item.subs[0].subs != null) {
+        if (item.subs != null && item.subs.isNotEmpty()) {
+            if (item.subs[0].subs != null && item.subs[0].subs.isNotEmpty()) {
                 mRecyclerView.layoutManager = LinearLayoutManager(mRecyclerView.context)
                 var mChildAdapter = AllConditionAdapter(false)
                 mRecyclerView.adapter = mChildAdapter

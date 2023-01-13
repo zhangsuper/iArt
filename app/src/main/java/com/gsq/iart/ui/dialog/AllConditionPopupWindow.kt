@@ -93,7 +93,7 @@ class AllConditionPopupWindow : XPopupWindow {
                 var selectedItem = mutableListOf<ConditionClassifyBean>()
                 if (parentBean.subs != null) {
                     parentBean.subs.forEach { firstBean ->
-                        if (firstBean.isSelected) {
+                        if (firstBean.isSelected && firstBean.subs == null) {
                             selectedItem.add(firstBean)
                             propSearchMap[parentBean.name] = selectedItem
                         } else {

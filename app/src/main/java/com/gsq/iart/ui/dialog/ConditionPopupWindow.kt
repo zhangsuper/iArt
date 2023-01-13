@@ -94,17 +94,17 @@ class ConditionPopupWindow : XPopupWindow {
         leftAdapter?.setOnItemClickListener { adapter, view, position ->
             if (leftData[position].subs != null) {
                 rightAdapter?.data = (leftData[position].subs as MutableList<ConditionClassifyBean>)
-                if (rightAdapter?.data?.get(0)?.id != -1) {
-                    var bean = ConditionClassifyBean(
-                        id = -1,
-                        name = "全部",
-                        subs = mutableListOf(),
-                        dataSource = "",
-                        isSelected = false,
-                        searchField = ""
-                    )
-                    rightAdapter?.data?.add(0, bean)
-                }
+//                if (rightAdapter?.data?.get(0)?.id != -1) {
+//                    var bean = ConditionClassifyBean(
+//                        id = -1,
+//                        name = "全部",
+//                        subs = mutableListOf(),
+//                        dataSource = "",
+//                        isSelected = false,
+//                        searchField = ""
+//                    )
+//                    rightAdapter?.data?.add(0, bean)
+//                }
                 rightAdapter?.notifyDataSetChanged()
                 rightRecyclerView?.visible()
             }
@@ -131,6 +131,7 @@ class ConditionPopupWindow : XPopupWindow {
 
     fun setData(list: List<ConditionClassifyBean>, selectedItem: List<ConditionClassifyBean>?) {
         leftData = (list as MutableList<ConditionClassifyBean>)
+
 //        leftAdapter?.notifyDataSetChanged()
         leftAdapter?.data = leftData
 
@@ -138,6 +139,9 @@ class ConditionPopupWindow : XPopupWindow {
             currentSelectGrade1Item = it[0]
             if (it.size > 1) {
                 currentSelectGrade2Item = it[1]
+            }
+            leftData.forEach {
+                it.isSelected = it.name == currentSelectGrade1Item!!.name
             }
         }
         if (currentSelectGrade1Item != null && currentSelectGrade2Item != null) {
@@ -158,17 +162,6 @@ class ConditionPopupWindow : XPopupWindow {
                 }
                 rightAdapter?.data =
                     (leftData[leftPosition].subs as MutableList<ConditionClassifyBean>)
-                if (rightAdapter?.data?.get(0)?.id != -1) {
-                    var bean = ConditionClassifyBean(
-                        id = -1,
-                        name = "全部",
-                        subs = mutableListOf(),
-                        dataSource = "",
-                        isSelected = false,
-                        searchField = ""
-                    )
-                    rightAdapter?.data?.add(0, bean)
-                }
                 rightAdapter?.notifyDataSetChanged()
                 rightRecyclerView?.visible()
             }
