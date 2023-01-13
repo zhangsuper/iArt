@@ -87,6 +87,7 @@ class UserAgreementFragment : BaseFragment<WebViewModel, FragmentUserAgreementBi
                     }
                 }
             })
+        mAgentWeb?.agentWebSettings?.webSettings?.textZoom = 110
     }
 
     override fun createObserver() {

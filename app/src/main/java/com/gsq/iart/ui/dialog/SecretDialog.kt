@@ -53,5 +53,6 @@ class SecretDialog : BaseDialog(R.layout.dialog_secret) {
             .createAgentWeb()
             .ready()
         mAgentWeb = preWeb?.go(personal_url)
+        mAgentWeb?.agentWebSettings?.webSettings?.textZoom = 110
     }
 }
