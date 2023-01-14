@@ -510,13 +510,25 @@ class WorksListFragment : BaseFragment<WorksViewModel, FragmentWorksListBinding>
         if (propSearchMap.size > 0) {
             propSearchs = mutableListOf()//多条件过滤
             propSearchMap.forEach { map ->
-                if (map.value[map.value.size - 1].id != -1) {
+                if (map.value[map.value.size - 1].id == -1) {
+                    if(map.value.size > 1){
+                        propSearchs.add(
+                            WorkPropSearchBean(
+                                map.value[map.value.size - 2].searchField,
+                                map.value[map.value.size - 2].name
+                            )
+                        )
+                    }
+                }else{
                     propSearchs.add(
                         WorkPropSearchBean(
                             map.value[map.value.size - 1].searchField,
                             map.value[map.value.size - 1].name
                         )
                     )
+                }
+                if (map.value[map.value.size - 1].id != -1) {
+
                 }
             }
         }
