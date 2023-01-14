@@ -71,7 +71,7 @@ android {
     // 自定义APK安装包名
     applicationVariants.all { variant ->
         variant.outputs.all {
-            outputFileName = "Android_v${variant.versionName}-${variant.buildType.name}.apk"
+            outputFileName = "Android_v${variant.versionName}_${variant.flavorName}-${variant.buildType.name}.apk"
         }
 
     }
@@ -98,6 +98,69 @@ android {
                 '--multi-dex',//多分包
                 '--set-max-idx-number=60000'//每个包内方法数上限
         ]
+    }
+    flavorDimensions "version"
+    productFlavors {
+        yishuguan {
+            signingConfig signingConfigs.iart
+            dimension "version"
+            buildConfigField "String", "CHANNEL", "\"yishuguan\""
+        }
+        oppo {
+            signingConfig signingConfigs.iart
+            dimension "version"
+            buildConfigField "String", "CHANNEL", "\"oppo\""
+        }
+        vivo {
+            signingConfig signingConfigs.iart
+            dimension "version"
+            buildConfigField "String", "CHANNEL", "\"vivo\""
+        }
+        honor {
+            signingConfig signingConfigs.iart
+            dimension "version"
+            buildConfigField "String", "CHANNEL", "\"honor\""
+        }
+        huawei {
+            signingConfig signingConfigs.iart
+            dimension "version"
+            buildConfigField "String", "CHANNEL", "\"huawei\""
+        }
+        xiaomi {
+            signingConfig signingConfigs.iart
+            dimension "version"
+            buildConfigField "String", "CHANNEL", "\"xiaomi\""
+        }
+        tencent {
+            signingConfig signingConfigs.iart
+            dimension "version"
+            buildConfigField "String", "CHANNEL", "\"tencent\""
+        }
+        qihu_360 {
+            signingConfig signingConfigs.iart
+            dimension "version"
+            buildConfigField "String", "CHANNEL", "\"360\""
+        }
+        baidu {
+            signingConfig signingConfigs.iart
+            dimension "version"
+            buildConfigField "String", "CHANNEL", "\"baidu\""
+        }
+        samsung {
+            signingConfig signingConfigs.iart
+            dimension "version"
+            buildConfigField "String", "CHANNEL", "\"samsung\""
+        }
+        meizu {
+            signingConfig signingConfigs.iart
+            dimension "version"
+            buildConfigField "String", "CHANNEL", "\"meizu\""
+        }
+        lenovo {
+            signingConfig signingConfigs.iart
+            dimension "version"
+            buildConfigField "String", "CHANNEL", "\"lenovo\""
+        }
     }
 
 }

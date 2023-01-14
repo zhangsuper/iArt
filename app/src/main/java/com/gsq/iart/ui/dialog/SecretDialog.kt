@@ -4,6 +4,7 @@ import android.widget.LinearLayout
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.blankj.utilcode.util.AppUtils
 import com.blankj.utilcode.util.ScreenUtils
+import com.gsq.iart.BuildConfig
 import com.gsq.iart.R
 import com.gsq.iart.app.base.BaseDialog
 import com.gsq.iart.app.network.ApiService.Companion.personal_url
@@ -35,7 +36,7 @@ class SecretDialog : BaseDialog(R.layout.dialog_secret) {
             CacheUtil.setAgreePrivacyStatus(true)
             dismiss()
             UMConfigure.init(
-                binding.agreeBtn.context, "63833c5488ccdf4b7e716bb1", "yishuguan",
+                binding.agreeBtn.context, "63833c5488ccdf4b7e716bb1", BuildConfig.CHANNEL,
                 UMConfigure.DEVICE_TYPE_PHONE, ""
             )
             MobAgentUtil.onEvent("policy")

@@ -4,6 +4,7 @@ import androidx.multidex.MultiDex
 import com.blankj.utilcode.util.LogUtils
 import com.downloader.PRDownloader
 import com.downloader.PRDownloaderConfig
+import com.gsq.iart.BuildConfig
 import com.gsq.iart.app.util.CacheUtil
 import com.gsq.iart.app.weight.loadCallBack.*
 import com.gsq.mvvm.base.BaseApp
@@ -56,18 +57,18 @@ class App : BaseApp() {
     }
 
     private fun initUmeng() {
-        UMConfigure.preInit(this, "63833c5488ccdf4b7e716bb1", "yishuguan")
+        UMConfigure.preInit(this, "63833c5488ccdf4b7e716bb1", BuildConfig.CHANNEL)
         if (CacheUtil.isAgreePrivacy()) {
             UMConfigure.init(
                 this,
                 "63833c5488ccdf4b7e716bb1",
-                "yishuguan",
+                BuildConfig.CHANNEL,
                 UMConfigure.DEVICE_TYPE_PHONE,
                 ""
             )
             // 选用手动页面采集模式
             MobclickAgent.setPageCollectionMode(MobclickAgent.PageMode.MANUAL)
-            UMConfigure.setLogEnabled(true)
+//            UMConfigure.setLogEnabled(true)
         }
         //友盟正式初始化
 //        var umInitConfig = UmInitConfig()
