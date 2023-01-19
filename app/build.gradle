@@ -161,6 +161,26 @@ android {
             dimension "version"
             buildConfigField "String", "CHANNEL", "\"lenovo\""
         }
+        harmony {
+            signingConfig signingConfigs.iart
+            dimension "version"
+            buildConfigField "String", "CHANNEL", "\"harmony\""
+        }
+        smartisan {
+            signingConfig signingConfigs.iart
+            dimension "version"
+            buildConfigField "String", "CHANNEL", "\"smartisan\""
+        }
+        kupai {
+            signingConfig signingConfigs.iart
+            dimension "version"
+            buildConfigField "String", "CHANNEL", "\"kupai\""
+        }
+        ali {
+            signingConfig signingConfigs.iart
+            dimension "version"
+            buildConfigField "String", "CHANNEL", "\"ali\""
+        }
     }
 
 }
