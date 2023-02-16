@@ -35,6 +35,8 @@ class WorksBean(
     var subject: String,//题材
     var tags: String,//标签
     var thumb: String,//缩略图
+    var thumbWidth: Int,//缩略图宽度
+    var thumbHeight: Int,//缩略图高度
     var viewCount: Int,//浏览次数
     var workId: String,
     var workType: String,//作品类型：PIC:单图；COLL:合集

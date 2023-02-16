@@ -7,6 +7,7 @@ import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.google.android.material.imageview.ShapeableImageView
 import com.gsq.iart.R
 import com.gsq.iart.app.ext.setAdapterAnimation
+import com.gsq.iart.app.ext.setImageViewRatio
 import com.gsq.iart.app.image.GlideHelper
 import com.gsq.iart.app.util.SettingUtil
 import com.gsq.iart.data.bean.WorksBean
@@ -24,12 +25,13 @@ class WorksAdapter : BaseQuickAdapter<WorksBean, BaseViewHolder>(R.layout.item_w
         holder.setText(R.id.item_works_desc, "${item.author}  ${item.age}")
         var vipIcon = holder.getView<ImageView>(R.id.icon_vip)
         var imageView = holder.getView<ShapeableImageView>(R.id.item_works_cover)
+        imageView.setImageViewRatio(item.thumbWidth, item.thumbHeight)
         GlideHelper.load(imageView, item.thumb, R.color.color_DDDDDD)
-        if (holder.layoutPosition == 1) {
-            imageView.layoutParams.height = SizeUtils.dp2px(318f)
-        } else {
-            imageView.layoutParams.height = SizeUtils.dp2px(208f)
-        }
+//        if (holder.layoutPosition == 1) {
+//            imageView.layoutParams.height = SizeUtils.dp2px(318f)
+//        } else {
+//            imageView.layoutParams.height = SizeUtils.dp2px(208f)
+//        }
         if (item.pay == 1) {
             vipIcon.visible()
         } else {
