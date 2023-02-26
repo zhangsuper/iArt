@@ -17,6 +17,7 @@ import androidx.viewpager.widget.PagerAdapter
 import androidx.viewpager.widget.ViewPager
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
+import com.blankj.utilcode.util.LogUtils
 import com.blankj.utilcode.util.ScreenUtils
 import com.blankj.utilcode.util.SizeUtils
 import com.bumptech.glide.request.target.DrawableImageViewTarget
@@ -425,12 +426,14 @@ fun View.setImageViewRatio(width: Int = 0, height: Int = 0) {
     // 手动设置高度
     var layoutParams = this.layoutParams
     if (width > 0 && height > 0) {
-        layoutParams.width = (ScreenUtils.getScreenWidth() - SizeUtils.dp2px(44f))/2
-        if((width / height < 4) && (width / height> 1/3)){
+        var biliary = width.toFloat() / height.toFloat()
+        LogUtils.dTag("test", "biliary:$biliary")
+        layoutParams.width = (ScreenUtils.getScreenWidth() - SizeUtils.dp2px(44f)) / 2
+        if ((biliary < 4) && (biliary > 1 / 3)) {
             layoutParams.height = layoutParams.width * height / width
-        }else if(width / height >= 4){
+        } else if (biliary >= 4) {
             layoutParams.height = layoutParams.width * 1 / 4
-        }else if(width / height <= 1/3){
+        } else if (biliary <= 1 / 3) {
             layoutParams.height = layoutParams.width * 3
         }
 //        if (width / height > 4 / 5) {
@@ -439,8 +442,7 @@ fun View.setImageViewRatio(width: Int = 0, height: Int = 0) {
 //            layoutParams.height = layoutParams.width * 5 / 4
 //        }
     } else {
-//        layoutParams.height = layoutParams.width / 5 * 4
-        this.layoutParams = layoutParams
+        layoutParams.height = layoutParams.width * 2
     }
 }
 

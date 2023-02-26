@@ -10,8 +10,17 @@ object MobAgentUtil {
     fun onEvent(eventId: String, valueMap: MutableMap<String, Any?>? = null) {
         LogUtils.dTag("MobAgentUtil", "eventId: ${eventId},valueMap:${valueMap?.values}")
         if (valueMap == null) {
-            MobclickAgent.onEvent(App.instance, eventId)
+            var tempValue = mutableMapOf<String, Any?>()
+            CacheUtil.getUser()?.userId?.let {
+                tempValue["userid"] = CacheUtil.getUser()?.userId
+                MobclickAgent.onEventObject(App.instance, eventId, tempValue)
+            } ?: let {
+                MobclickAgent.onEvent(App.instance, eventId)
+            }
         } else {
+            CacheUtil.getUser()?.userId?.let {
+                valueMap["userid"] = CacheUtil.getUser()?.userId
+            }
             MobclickAgent.onEventObject(App.instance, eventId, valueMap)
         }
     }

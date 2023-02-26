@@ -1,7 +1,7 @@
 package com.gsq.iart.ui.adapter
 
 import android.widget.ImageView
-import com.blankj.utilcode.util.SizeUtils
+import com.blankj.utilcode.util.LogUtils
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.google.android.material.imageview.ShapeableImageView
@@ -25,6 +25,10 @@ class WorksAdapter : BaseQuickAdapter<WorksBean, BaseViewHolder>(R.layout.item_w
         holder.setText(R.id.item_works_desc, "${item.author}  ${item.age}")
         var vipIcon = holder.getView<ImageView>(R.id.icon_vip)
         var imageView = holder.getView<ShapeableImageView>(R.id.item_works_cover)
+        if (item.thumbWidth > 0 && item.thumbHeight > 0) {
+            var biliary = item.thumbWidth.toFloat() / item.thumbHeight.toFloat()
+            LogUtils.dTag("WorksAdapter", "name:${item.name},biliary:$biliary")
+        }
         imageView.setImageViewRatio(item.thumbWidth, item.thumbHeight)
         GlideHelper.load(imageView, item.thumb, R.color.color_DDDDDD)
 //        if (holder.layoutPosition == 1) {

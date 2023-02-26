@@ -12,13 +12,16 @@ interface ApiService {
 
     companion object {
         const val SERVER_URL = "https://api-test.hxysg.com/"
-        const val agreement_url = "${SERVER_URL}art/agreement/legal/index.html"
-        const val privacy_url = "${SERVER_URL}art/agreement/legal/privacy.html"
-        const val personal_url = "${SERVER_URL}art/agreement/legal/personal.html"
-        const val vip_agreement_url = "${SERVER_URL}art/agreement/legal/ght-agreement.html"
-        const val personal_info_url = "${SERVER_URL}art/agreement/legal/info.html"
-        const val sdk_info_url = "${SERVER_URL}art/agreement/legal/share.html"
-        const val write_off_remind_url = "${SERVER_URL}art/agreement/legal/remind.html"
+
+        const val H5_SERVER_URL = "https://www.hxysg.com/"
+        const val agreement_url = "${H5_SERVER_URL}agreement/legal/index.html"//服务协议
+        const val privacy_url = "${H5_SERVER_URL}agreement/legal/privacy.html"//隐私政策
+        const val personal_url = "${H5_SERVER_URL}agreement/legal/personal.html"//用户信息保护指引
+        const val vip_agreement_url =
+            "${H5_SERVER_URL}agreement/legal/ght-agreement.html"//国画通会员服务协议
+        const val personal_info_url = "${H5_SERVER_URL}agreement/legal/info.html"//个人信息收集清单
+        const val sdk_info_url = "${H5_SERVER_URL}agreement/legal/share.html"//信息共享清单
+        const val write_off_remind_url = "${H5_SERVER_URL}agreement/legal/remind.html"//重要提醒
     }
 
     /**

@@ -203,11 +203,9 @@ class MemberFragment : BaseFragment<MemberViewModel, FragmentMemberBinding>() {
 
     override fun onDestroy() {
         agreementType?.let {
-            if (CacheUtil.isLogin() && CacheUtil.getUser()?.memberType == 1) {
-                var eventMap = mutableMapOf<String, Any?>()
-                eventMap["type"] = it
-                MobAgentUtil.onEvent("vip_cancel", eventMap)
-            }
+            var eventMap = mutableMapOf<String, Any?>()
+            eventMap["type"] = it
+            MobAgentUtil.onEvent("vip_cancel", eventMap)
         }
         super.onDestroy()
         EventBus.getDefault().unregister(this)

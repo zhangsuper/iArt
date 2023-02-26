@@ -15,6 +15,7 @@ import com.gsq.iart.ui.adapter.TagAdapter
 import com.gsq.iart.viewmodel.WorksViewModel
 import com.gsq.mvvm.ext.nav
 import com.gsq.mvvm.ext.view.gone
+import com.gsq.mvvm.ext.view.visible
 import kotlinx.android.synthetic.main.fragment_work_introduce.*
 
 /**
@@ -45,10 +46,15 @@ class WorkIntroduceFragment : BaseFragment<WorksViewModel, FragmentWorkIntroduce
     override fun initData() {
         tv_title.text = worksBean?.name
         tv_author_dynasty.text =
-            "${worksBean?.author}  |  ${worksBean?.age}  |  ${worksBean?.size}cm"
+            "${worksBean?.author}  |  ${worksBean?.age}"
+        if (worksBean?.size?.isNotEmpty() == true) {
+            tv_author_dynasty.text =
+                "${worksBean?.author}  |  ${worksBean?.age}".plus("  |  ${worksBean?.size}cm")
+        }
         if (worksBean?.owner.isNullOrEmpty()) {
             layout_scf.gone()
         } else {
+            layout_scf.visible()
             tv_scf.text = worksBean?.owner
         }
         if (worksBean?.detailedSubject.isNullOrEmpty()) {
@@ -63,38 +69,45 @@ class WorkIntroduceFragment : BaseFragment<WorksViewModel, FragmentWorkIntroduce
         if (worksBean?.materialType.isNullOrEmpty()) {
             layout_ys.gone()
         } else {
+            layout_ys.visible()
             tv_ys.text = worksBean?.materialType
         }
         if (worksBean?.skilOfPainting.isNullOrEmpty()) {
             layout_bxjf.gone()
         } else {
+            layout_bxjf.visible()
             tv_bxjf.text = worksBean?.skilOfPainting
         }
         if (worksBean?.mediaType.isNullOrEmpty()) {
             layout_cz.gone()
         } else {
+            layout_cz.visible()
             tv_cz.text = worksBean?.mediaType
         }
         if (worksBean?.styleType.isNullOrEmpty()) {
             layout_xz.gone()
         } else {
+            layout_xz.visible()
             tv_xz.text = worksBean?.styleType
         }
         if (worksBean?.tags.isNullOrEmpty()) {
             layout_bq.gone()
         } else {
 //            tv_bq.text = worksBean?.tags
+            layout_bq.visible()
             var tagList = worksBean?.tags?.split(",")
             tagAdapter.setList(tagList)
         }
         if (worksBean?.description.isNullOrEmpty()) {
             layout_jj.gone()
         } else {
+            layout_jj.visible()
             tv_jj.text = worksBean?.description
         }
         if (worksBean?.referenceBook.isNullOrEmpty()) {
             layout_zlsj.gone()
         } else {
+            layout_zlsj.visible()
             tv_zlsj.text = worksBean?.referenceBook
         }
     }
