@@ -194,7 +194,6 @@
         android:id="@+id/works_refresh_layout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="@dimen/dp_10"
         app:layout_constraintTop_toBottomOf="@+id/condition_view"
         app:layout_constraintBottom_toBottomOf="parent">
 
@@ -202,8 +201,8 @@
             android:id="@+id/works_recycler_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="@dimen/dp_4"
-            android:paddingRight="@dimen/dp_4"
+            android:paddingEnd="@dimen/dp_16"
+            android:paddingStart="@dimen/dp_4"
             android:scrollbars="none"
             app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 

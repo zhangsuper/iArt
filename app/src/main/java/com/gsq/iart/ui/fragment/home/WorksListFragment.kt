@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.airbnb.mvrx.args
 import com.airbnb.mvrx.asMavericksArgs
@@ -18,7 +19,6 @@ import com.gsq.iart.app.base.BaseFragment
 import com.gsq.iart.app.ext.*
 import com.gsq.iart.app.util.CacheUtil
 import com.gsq.iart.app.util.MobAgentUtil
-import com.gsq.iart.app.weight.recyclerview.GridItemDecoration
 import com.gsq.iart.data.Constant.COMPLEX_TYPE_COLLECT
 import com.gsq.iart.data.Constant.COMPLEX_TYPE_SEARCH
 import com.gsq.iart.data.Constant.DATA_WORK
@@ -60,6 +60,7 @@ class WorksListFragment : BaseFragment<WorksViewModel, FragmentWorksListBinding>
     private var selectType: String = "年代"
     private var searchKey: String? = null
     private var propSearchMap = hashMapOf<String, MutableList<ConditionClassifyBean>>()
+    private var mScrollState = -1
 
     override fun initView(savedInstanceState: Bundle?) {
         if (args.complexType == COMPLEX_TYPE_SEARCH) {
@@ -78,18 +79,43 @@ class WorksListFragment : BaseFragment<WorksViewModel, FragmentWorksListBinding>
         }
         //初始化recyclerView和Adapter
         val layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
-        works_recycler_view.addItemDecoration(
-            GridItemDecoration(
-                2,
-                SizeUtils.dp2px(12f),
-                includeEdge = true, hasTopBottomSpace = false
-            )
-        )
+//        works_recycler_view.addItemDecoration(
+//            GridItemDecoration(
+//                2,
+//                SizeUtils.dp2px(12f),
+//                includeEdge = true, hasTopBottomSpace = false
+//            )
+//        )
         works_recycler_view.init(layoutManager, worksAdapter)
         works_recycler_view.initFooter {
             //加载更多
             requestData()
         }
+        works_recycler_view.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                mScrollState = newState
+            }
+
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                val itemCount = layoutManager.itemCount
+                if (itemCount <= 0) return
+                val lastVisiblePositionArray: IntArray =
+                    layoutManager.findLastCompletelyVisibleItemPositions(null)
+                val lastVisiblePosition =
+                    lastVisiblePositionArray[lastVisiblePositionArray.size - 1]
+
+                if (itemCount == lastVisiblePosition + 5 &&
+                    (mScrollState == RecyclerView.SCROLL_STATE_DRAGGING || mScrollState == RecyclerView.SCROLL_STATE_SETTLING)
+                ) {
+                    //加载更多
+                    requestData()
+                }
+            }
+        })
+
+
 
         initTypeConditionView()
 
@@ -511,7 +537,7 @@ class WorksListFragment : BaseFragment<WorksViewModel, FragmentWorksListBinding>
             propSearchs = mutableListOf()//多条件过滤
             propSearchMap.forEach { map ->
                 if (map.value[map.value.size - 1].id == -1) {
-                    if(map.value.size > 1){
+                    if (map.value.size > 1) {
                         propSearchs.add(
                             WorkPropSearchBean(
                                 map.value[map.value.size - 2].searchField,
@@ -519,7 +545,7 @@ class WorksListFragment : BaseFragment<WorksViewModel, FragmentWorksListBinding>
                             )
                         )
                     }
-                }else{
+                } else {
                     propSearchs.add(
                         WorkPropSearchBean(
                             map.value[map.value.size - 1].searchField,

@@ -48,6 +48,7 @@ import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.CommonNav
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerIndicator
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerTitleView
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.indicators.LinePagerIndicator
+import kotlin.math.roundToInt
 
 fun LoadService<*>.setErrorText(message: String) {
     if (message.isNotEmpty()) {
@@ -429,18 +430,13 @@ fun View.setImageViewRatio(width: Int = 0, height: Int = 0) {
         var biliary = width.toFloat() / height.toFloat()
         LogUtils.dTag("test", "biliary:$biliary")
         layoutParams.width = (ScreenUtils.getScreenWidth() - SizeUtils.dp2px(44f)) / 2
-        if ((biliary < 4) && (biliary > 1 / 3)) {
+        if ((biliary < 4) && (biliary > 1.0f / 3.0f)) {
             layoutParams.height = layoutParams.width * height / width
         } else if (biliary >= 4) {
-            layoutParams.height = layoutParams.width * 1 / 4
-        } else if (biliary <= 1 / 3) {
+            layoutParams.height = (layoutParams.width * 1 / 4.0).roundToInt()
+        } else if (biliary <= 1.0f / 3.0f) {
             layoutParams.height = layoutParams.width * 3
         }
-//        if (width / height > 4 / 5) {
-//            layoutParams.height = layoutParams.width * height / width
-//        } else {
-//            layoutParams.height = layoutParams.width * 5 / 4
-//        }
     } else {
         layoutParams.height = layoutParams.width * 2
     }
