@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.airbnb.mvrx.args
 import com.airbnb.mvrx.asMavericksArgs
 import com.blankj.utilcode.util.ColorUtils
+import com.blankj.utilcode.util.LogUtils
 import com.blankj.utilcode.util.ScreenUtils
 import com.blankj.utilcode.util.SizeUtils
 import com.gsq.iart.R
@@ -101,17 +102,26 @@ class WorksListFragment : BaseFragment<WorksViewModel, FragmentWorksListBinding>
                 super.onScrolled(recyclerView, dx, dy)
                 val itemCount = layoutManager.itemCount
                 if (itemCount <= 0) return
+//TODO
+//                var mLastVisibleItems: IntArray = intArrayOf()
+//                layoutManager.findLastVisibleItemPositions(mLastVisibleItems)
+//                mLastVisibleItems.forEach {
+//
+//                }
+
                 val lastVisiblePositionArray: IntArray =
                     layoutManager.findLastCompletelyVisibleItemPositions(null)
                 val lastVisiblePosition =
                     lastVisiblePositionArray[lastVisiblePositionArray.size - 1]
 
-                if (itemCount == lastVisiblePosition + 5 &&
-                    (mScrollState == RecyclerView.SCROLL_STATE_DRAGGING || mScrollState == RecyclerView.SCROLL_STATE_SETTLING)
-                ) {
-                    //加载更多
-                    requestData()
-                }
+                LogUtils.dTag(TAG, "recyclerView onScrolled: lastVisiblePosition${lastVisiblePosition}")
+                LogUtils.dTag(TAG, "recyclerView onScrolled: itemCount${itemCount}")
+//                if (itemCount == lastVisiblePosition + 5 &&
+//                    (mScrollState == RecyclerView.SCROLL_STATE_DRAGGING || mScrollState == RecyclerView.SCROLL_STATE_SETTLING)
+//                ) {
+//                    //加载更多
+//                    requestData()
+//                }
             }
         })
 
@@ -641,6 +651,8 @@ class WorksListFragment : BaseFragment<WorksViewModel, FragmentWorksListBinding>
     }
 
     companion object {
+
+        const val TAG = "WorksListFragment"
         fun start(args: ArgsType): WorksListFragment {
             val fragment = WorksListFragment()
             fragment.arguments = args.asMavericksArgs()
