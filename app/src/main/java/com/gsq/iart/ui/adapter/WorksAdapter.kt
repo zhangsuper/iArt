@@ -14,13 +14,19 @@ import com.gsq.iart.data.bean.WorksBean
 import com.gsq.mvvm.ext.view.gone
 import com.gsq.mvvm.ext.view.visible
 
-class WorksAdapter : BaseQuickAdapter<WorksBean, BaseViewHolder>(R.layout.item_works_layout) {
+class WorksAdapter constructor(var listener: CallBackListener) :
+    BaseQuickAdapter<WorksBean, BaseViewHolder>(R.layout.item_works_layout) {
 
     init {
         setAdapterAnimation(SettingUtil.getListMode())
     }
 
+    interface CallBackListener {
+        fun loadMore()
+    }
+
     override fun convert(holder: BaseViewHolder, item: WorksBean) {
+        LogUtils.dTag("WorksAdapter", "layoutPosition:${holder.layoutPosition}")
         holder.setText(R.id.item_works_name, item.name)
         holder.setText(R.id.item_works_desc, "${item.author}  ${item.age}")
         var vipIcon = holder.getView<ImageView>(R.id.icon_vip)
@@ -31,6 +37,10 @@ class WorksAdapter : BaseQuickAdapter<WorksBean, BaseViewHolder>(R.layout.item_w
         }
         imageView.setImageViewRatio(item.thumbWidth, item.thumbHeight)
         GlideHelper.load(imageView, item.thumb, R.color.color_DDDDDD)
+        if (holder.layoutPosition + 4 == data.size) {
+            listener.loadMore()
+//            EventBus.getDefault().post(LoadMoreEvent(true))
+        }
 //        if (holder.layoutPosition == 1) {
 //            imageView.layoutParams.height = SizeUtils.dp2px(318f)
 //        } else {

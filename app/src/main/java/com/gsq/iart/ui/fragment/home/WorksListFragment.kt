@@ -6,13 +6,12 @@ import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
+import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.airbnb.mvrx.args
 import com.airbnb.mvrx.asMavericksArgs
 import com.blankj.utilcode.util.ColorUtils
-import com.blankj.utilcode.util.LogUtils
 import com.blankj.utilcode.util.ScreenUtils
 import com.blankj.utilcode.util.SizeUtils
 import com.gsq.iart.R
@@ -29,6 +28,7 @@ import com.gsq.iart.data.Constant.WORKS_SUB_TYPE_NEW
 import com.gsq.iart.data.bean.ArgsType
 import com.gsq.iart.data.bean.ConditionClassifyBean
 import com.gsq.iart.data.bean.WorksBean
+import com.gsq.iart.data.event.BigImageClickEvent
 import com.gsq.iart.data.request.WorkPropSearchBean
 import com.gsq.iart.databinding.FragmentWorksListBinding
 import com.gsq.iart.ui.adapter.WorksAdapter
@@ -41,7 +41,10 @@ import com.gsq.mvvm.ext.navigateAction
 import com.gsq.mvvm.ext.view.gone
 import com.gsq.mvvm.ext.view.visible
 import com.kingja.loadsir.core.LoadService
+import kotlinx.android.synthetic.main.fragment_work_detail.*
 import kotlinx.android.synthetic.main.fragment_works_list.*
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
 /**
  * 作品列表
@@ -51,7 +54,13 @@ class WorksListFragment : BaseFragment<WorksViewModel, FragmentWorksListBinding>
     private val args: ArgsType by args()
 
     //适配器
-    private val worksAdapter: WorksAdapter by lazy { WorksAdapter() }
+    private val worksAdapter: WorksAdapter by lazy {
+        WorksAdapter(object : WorksAdapter.CallBackListener {
+            override fun loadMore() {
+                requestData()
+            }
+        })
+    }
 
     //界面状态管理者
     private lateinit var loadsir: LoadService<Any>
@@ -92,40 +101,6 @@ class WorksListFragment : BaseFragment<WorksViewModel, FragmentWorksListBinding>
             //加载更多
             requestData()
         }
-        works_recycler_view.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                super.onScrollStateChanged(recyclerView, newState)
-                mScrollState = newState
-            }
-
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                super.onScrolled(recyclerView, dx, dy)
-                val itemCount = layoutManager.itemCount
-                if (itemCount <= 0) return
-//TODO
-//                var mLastVisibleItems: IntArray = intArrayOf()
-//                layoutManager.findLastVisibleItemPositions(mLastVisibleItems)
-//                mLastVisibleItems.forEach {
-//
-//                }
-
-                val lastVisiblePositionArray: IntArray =
-                    layoutManager.findLastCompletelyVisibleItemPositions(null)
-                val lastVisiblePosition =
-                    lastVisiblePositionArray[lastVisiblePositionArray.size - 1]
-
-                LogUtils.dTag(TAG, "recyclerView onScrolled: lastVisiblePosition${lastVisiblePosition}")
-                LogUtils.dTag(TAG, "recyclerView onScrolled: itemCount${itemCount}")
-//                if (itemCount == lastVisiblePosition + 5 &&
-//                    (mScrollState == RecyclerView.SCROLL_STATE_DRAGGING || mScrollState == RecyclerView.SCROLL_STATE_SETTLING)
-//                ) {
-//                    //加载更多
-//                    requestData()
-//                }
-            }
-        })
-
-
 
         initTypeConditionView()
 
@@ -648,6 +623,17 @@ class WorksListFragment : BaseFragment<WorksViewModel, FragmentWorksListBinding>
 
             }
         })
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onMessageEvent(event: BigImageClickEvent?) {
+        event?.let {
+            if (content_view.isVisible) {
+                content_view.gone()
+            } else {
+                content_view.visible()
+            }
+        }
     }
 
     companion object {
