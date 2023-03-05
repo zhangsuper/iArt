@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import com.blankj.utilcode.util.ToastUtils
 import com.gsq.iart.R
 import com.gsq.iart.app.base.BaseFragment
+import com.gsq.iart.app.ext.hideSoftKeyboard
 import com.gsq.iart.app.util.MobAgentUtil
 import com.gsq.iart.app.util.StatusBarUtil
 import com.gsq.iart.data.Constant.COMPLEX_TYPE_SEARCH
@@ -22,13 +23,14 @@ import kotlinx.android.synthetic.main.fragment_search.*
  */
 class SearchFragment : BaseFragment<SearchViewModel, FragmentSearchBinding>() {
 
-    private val searchResultFragment: WorksListFragment by lazy {
-        WorksListFragment.start(
-            ArgsType(
-                COMPLEX_TYPE_SEARCH
-            )
-        )
-    }
+    //    private val searchResultFragment: WorksListFragment by lazy {
+//        WorksListFragment.start(
+//            ArgsType(
+//                COMPLEX_TYPE_SEARCH
+//            )
+//        )
+//    }
+    private var searchResultFragment: WorksListFragment? = null
     private val searchInitFragment: SearchInitFragment by lazy { SearchInitFragment() }
 
     override fun onResume() {
@@ -64,6 +66,7 @@ class SearchFragment : BaseFragment<SearchViewModel, FragmentSearchBinding>() {
             if (i == EditorInfo.IME_ACTION_SEARCH && !TextUtils.isEmpty(inputKey)) {
                 searchInitFragment.updateKey(inputKey)
                 searchData(inputKey)
+
                 var eventMap = mutableMapOf<String, Any?>()
                 eventMap["query"] = inputKey
                 MobAgentUtil.onEvent("search_guohua", eventMap)
@@ -72,9 +75,9 @@ class SearchFragment : BaseFragment<SearchViewModel, FragmentSearchBinding>() {
             false
         }
         search_input_view.setOnClickListener {
-            if (!isInitFragment) {
-                transactionInitFragment()
-            }
+//            if (!isInitFragment) {
+//                transactionInitFragment()
+//            }
         }
         transactionInitFragment()
         searchInitFragment.setOnClickItemListener {
@@ -90,9 +93,18 @@ class SearchFragment : BaseFragment<SearchViewModel, FragmentSearchBinding>() {
 
     private var isInitFragment = true
     private fun searchData(key: String) {
-        var searchResultFragment =
+        hideSoftKeyboard(activity)
+        if (!isInitFragment) {
+            searchResultFragment?.let {
+                it.requestSearchData(key)
+            }
+            return
+        }
+        searchResultFragment =
             WorksListFragment.start(ArgsType(COMPLEX_TYPE_SEARCH, searchKey = key))
-        transactionFragment(searchResultFragment)
+        searchResultFragment?.let {
+            transactionFragment(it)
+        }
         isInitFragment = false
     }
 

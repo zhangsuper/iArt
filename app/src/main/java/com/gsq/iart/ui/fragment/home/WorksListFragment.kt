@@ -513,6 +513,11 @@ class WorksListFragment : BaseFragment<WorksViewModel, FragmentWorksListBinding>
         requestData()
     }
 
+    fun requestSearchData(searchKey: String) {
+        this.searchKey = searchKey
+        requestData(true)
+    }
+
     /**
      * 获取列表数据
      */
