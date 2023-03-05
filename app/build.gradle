@@ -13,7 +13,7 @@ android {
         applicationId "com.gsq.iart"
         minSdk buildVers.min_sdk
         targetSdk buildVers.target_sdk
-        versionCode 2
+        versionCode 3
         versionName "1.2.2"
         multiDexEnabled true
 
