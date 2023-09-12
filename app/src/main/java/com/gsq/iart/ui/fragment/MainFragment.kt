@@ -23,13 +23,17 @@ class MainFragment : BaseFragment<BaseViewModel, FragmentMainBinding>() {
                     MobAgentUtil.onEvent("tab_home")
                     main_viewpager.setCurrentItem(0, false)
                 }
+                R.id.menu_dictionary -> {
+                    MobAgentUtil.onEvent("tab_dictionary")
+                    main_viewpager.setCurrentItem(1, false)
+                }
                 R.id.menu_mine -> {
                     MobAgentUtil.onEvent("tab_my")
-                    main_viewpager.setCurrentItem(1, false)
+                    main_viewpager.setCurrentItem(2, false)
                 }
             }
         }
-        mainBottom.interceptLongClick(R.id.menu_home, R.id.menu_mine)
+        mainBottom.interceptLongClick(R.id.menu_home, R.id.menu_dictionary, R.id.menu_mine)
     }
 
     override fun createObserver() {

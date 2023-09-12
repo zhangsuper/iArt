@@ -30,6 +30,7 @@ import com.gsq.iart.app.weight.recyclerview.DefineLoadMoreView
 import com.gsq.iart.data.Constant
 import com.gsq.iart.data.Constant.ENABLE_IMAGE_AUTO_RETRY
 import com.gsq.iart.data.Constant.LOAD_PIC_DELAY
+import com.gsq.iart.ui.fragment.dictionary.DictionaryFragment
 import com.gsq.iart.ui.fragment.home.HomeFragment
 import com.gsq.iart.ui.fragment.mine.MineFragment
 import com.gsq.mvvm.base.appContext
@@ -276,6 +277,9 @@ fun ViewPager2.initMain(fragment: Fragment): ViewPager2 {
                     return HomeFragment()
                 }
                 1 -> {
+                    return DictionaryFragment()
+                }
+                2 -> {
                     return MineFragment()
                 }
                 else -> {
@@ -284,7 +288,7 @@ fun ViewPager2.initMain(fragment: Fragment): ViewPager2 {
             }
         }
 
-        override fun getItemCount() = 2
+        override fun getItemCount() = 3
     }
     return this
 }

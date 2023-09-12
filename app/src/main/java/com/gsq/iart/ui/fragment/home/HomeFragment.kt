@@ -18,6 +18,9 @@ import com.gsq.mvvm.ext.view.visible
 import kotlinx.android.synthetic.main.fragment_home.*
 
 
+/**
+ * 首页
+ */
 class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
 
     //fragment集合
