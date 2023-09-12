@@ -8,9 +8,12 @@ import com.gsq.iart.app.ext.bindViewPager2
 import com.gsq.iart.app.ext.init
 import com.gsq.iart.app.util.StatusBarUtil
 import com.gsq.iart.databinding.FragmentDictionaryBinding
+import com.gsq.iart.ui.adapter.AllConditionAdapter
+import com.gsq.iart.ui.adapter.DictionaryMenuAdapter
 import com.gsq.iart.viewmodel.DictionaryViewModel
 import com.gsq.mvvm.ext.nav
 import com.gsq.mvvm.ext.navigateAction
+import kotlinx.android.synthetic.main.fragment_dictionary.recycler_view
 import kotlinx.android.synthetic.main.fragment_home.*
 
 
@@ -19,11 +22,7 @@ import kotlinx.android.synthetic.main.fragment_home.*
  */
 class DictionaryFragment : BaseFragment<DictionaryViewModel, FragmentDictionaryBinding>() {
 
-    //fragment集合
-    var fragments: ArrayList<Fragment> = arrayListOf()
-
-    //标题集合
-    var mDataList: ArrayList<String> = arrayListOf()
+    private var mAdapter: DictionaryMenuAdapter? = null
 
     override fun onResume() {
         super.onResume()
@@ -36,15 +35,12 @@ class DictionaryFragment : BaseFragment<DictionaryViewModel, FragmentDictionaryB
     }
 
     override fun initView(savedInstanceState: Bundle?) {
-        //初始化viewpager2
-        home_view_pager.init(this, fragments)
-        //初始化 magic_indicator
-        home_magic_indicator.bindViewPager2(home_view_pager, mDataList)
-
         home_search_view.setOnClickListener {
             //跳转搜索节面
             nav().navigateAction(R.id.action_mainFragment_to_searchFragment)
         }
+        mAdapter = DictionaryMenuAdapter()
+        recycler_view.adapter = mAdapter
     }
 
     override fun lazyLoadData() {

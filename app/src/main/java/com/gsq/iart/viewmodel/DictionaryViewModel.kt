@@ -13,9 +13,9 @@ class DictionaryViewModel: BaseViewModel() {
     var classifyList: MutableLiveData<ArrayList<HomeClassifyBean>> = MutableLiveData()
 
     /**
-     * 请求首页分类列表
+     * 请求图典分类列表
      */
-    fun getClassifyList(){
+    fun getDictionaryClassifyList(){
         request(
             { apiService.getClassifyList()},
             {
