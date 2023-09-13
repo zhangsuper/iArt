@@ -151,4 +151,23 @@ interface ApiService {
     @GET("art/app/queryAppUpdate")
     suspend fun checkAppVersion(@Query("appVersion") version: String): ApiResponse<AppVersion>
 
+
+    /**
+     * 图典菜单列表
+     */
+    @GET("art/classify/atlas/all")
+    suspend fun getDictionaryClassify(): ApiResponse<ArrayList<DictionaryMenuBean>>
+
+    /**
+     * 图典一级分类
+     */
+    @GET("art/classify/atlas/root")
+    suspend fun getDictionaryRootClassify(): ApiResponse<ArrayList<DictionaryMenuBean>>
+
+    /**
+     * 图典指定分类列表
+     */
+    @GET("art/classify/atlas/sub")
+    suspend fun getDictionaryClassifyById(@Query("id") id: String): ApiResponse<ArrayList<DictionaryMenuBean>>
+
 }

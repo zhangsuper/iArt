@@ -45,11 +45,17 @@ class DictionaryFragment : BaseFragment<DictionaryViewModel, FragmentDictionaryB
 
     override fun lazyLoadData() {
         super.lazyLoadData()
+        mViewModel.getDictionaryClassifyList()//请求图典菜单列表
     }
 
 
     override fun createObserver() {
         super.createObserver()
-
+        mViewModel.classifyList.observe(viewLifecycleOwner){
+            if(it!=null){
+                mAdapter?.data = it
+                mAdapter?.notifyDataSetChanged()
+            }
+        }
     }
 }
