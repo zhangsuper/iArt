@@ -16,6 +16,12 @@ import com.gsq.iart.data.bean.DictionaryMenuBean
 
 class DictionaryMenuAdapter : BaseQuickAdapter<DictionaryMenuBean, BaseViewHolder>(R.layout.item_dictionary_layout) {
 
+    private var mClickListener: ((bean: DictionaryMenuBean) -> Unit)? = null
+
+    fun setClickBackListener(listener: ((bean: DictionaryMenuBean) -> Unit)?){
+        mClickListener = listener
+    }
+
     override fun convert(holder: BaseViewHolder, item: DictionaryMenuBean) {
         var mMenuLogo = holder.getView<ImageView>(R.id.menu_logo)
         var mMenuName = holder.getView<TextView>(R.id.menu_name)
@@ -36,7 +42,11 @@ class DictionaryMenuAdapter : BaseQuickAdapter<DictionaryMenuBean, BaseViewHolde
         if(item.subs!= null){
             mSecondMenuAdapter.data = item.subs
         }
+        mSecondMenuAdapter.setOnItemClickListener { adapter, view, position ->
+            mClickListener?.invoke(item)
+        }
     }
+
 
     private var onBackListener: OnBackListener? = null
 

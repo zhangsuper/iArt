@@ -2,6 +2,7 @@ package com.gsq.iart.ui.fragment.home
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
+import com.blankj.utilcode.util.ThreadUtils
 import com.gsq.iart.R
 import com.gsq.iart.app.base.BaseFragment
 import com.gsq.iart.app.ext.bindViewPager2
@@ -31,12 +32,14 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
 
     override fun onResume() {
         super.onResume()
-        StatusBarUtil.init(
-            requireActivity(),
-            fitSystem = true,
-            statusBarColor = R.color.white,
-            isDarkFont = true
-        )
+        ThreadUtils.getMainHandler().postDelayed({
+            StatusBarUtil.init(
+                requireActivity(),
+                fitSystem = true,
+                statusBarColor = R.color.white,
+                isDarkFont = true
+            )
+        },100)
     }
 
     override fun initView(savedInstanceState: Bundle?) {

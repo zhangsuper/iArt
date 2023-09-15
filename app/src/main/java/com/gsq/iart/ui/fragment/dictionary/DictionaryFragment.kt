@@ -2,11 +2,14 @@ package com.gsq.iart.ui.fragment.dictionary
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
+import com.blankj.utilcode.util.ThreadUtils
 import com.gsq.iart.R
 import com.gsq.iart.app.base.BaseFragment
 import com.gsq.iart.app.ext.bindViewPager2
 import com.gsq.iart.app.ext.init
 import com.gsq.iart.app.util.StatusBarUtil
+import com.gsq.iart.data.Constant
+import com.gsq.iart.data.bean.WorksBean
 import com.gsq.iart.databinding.FragmentDictionaryBinding
 import com.gsq.iart.ui.adapter.AllConditionAdapter
 import com.gsq.iart.ui.adapter.DictionaryMenuAdapter
@@ -26,12 +29,15 @@ class DictionaryFragment : BaseFragment<DictionaryViewModel, FragmentDictionaryB
 
     override fun onResume() {
         super.onResume()
-        StatusBarUtil.init(
-            requireActivity(),
-            fitSystem = true,
-            statusBarColor = R.color.white,
-            isDarkFont = true
-        )
+        ThreadUtils.getMainHandler().postDelayed({
+            StatusBarUtil.init(
+                requireActivity(),
+                fitSystem = true,
+                statusBarColor = R.color.white,
+                isDarkFont = true
+            )
+        },100)
+
     }
 
     override fun initView(savedInstanceState: Bundle?) {
@@ -40,6 +46,11 @@ class DictionaryFragment : BaseFragment<DictionaryViewModel, FragmentDictionaryB
             nav().navigateAction(R.id.action_mainFragment_to_searchFragment)
         }
         mAdapter = DictionaryMenuAdapter()
+        mAdapter!!.setClickBackListener {
+            var bundle = Bundle()
+            bundle.putSerializable(Constant.INTENT_DATA, it)
+            nav().navigateAction(R.id.action_mainFragment_to_dictionaryListFragment, bundle)
+        }
         recycler_view.adapter = mAdapter
     }
 
@@ -58,4 +69,5 @@ class DictionaryFragment : BaseFragment<DictionaryViewModel, FragmentDictionaryB
             }
         }
     }
+
 }
