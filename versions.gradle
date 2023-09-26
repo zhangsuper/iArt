@@ -17,10 +17,10 @@
 // build version -----------------------------
 ext.buildVers = [:]
 
-buildVers.compile_sdk = 31
+buildVers.compile_sdk = 33
 buildVers.build_tool = '31.0.0'
 buildVers.min_sdk = 21
-buildVers.target_sdk = 28
+buildVers.target_sdk = 33
 
 buildVers.kotlin_version = '1.7.0'
 
