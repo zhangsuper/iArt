@@ -41,6 +41,7 @@ import com.gsq.iart.ui.adapter.WorksAdapter
 import com.gsq.iart.ui.dialog.AllConditionPopupWindow
 import com.gsq.iart.ui.dialog.ConditionPopupWindow
 import com.gsq.iart.ui.fragment.mine.MemberFragment
+import com.gsq.iart.viewmodel.DictionaryViewModel
 import com.gsq.iart.viewmodel.WorksViewModel
 import com.gsq.mvvm.ext.nav
 import com.gsq.mvvm.ext.navigateAction
@@ -58,7 +59,7 @@ import org.greenrobot.eventbus.ThreadMode
 /**
  * 图典作品列表
  */
-class DictionarySubListFragment : BaseFragment<WorksViewModel, FragmentDictionarySubListBinding>() {
+class DictionarySubListFragment : BaseFragment<DictionaryViewModel, FragmentDictionarySubListBinding>() {
 
     private val args: DictionaryArgsType by args()
 
@@ -88,14 +89,20 @@ class DictionarySubListFragment : BaseFragment<WorksViewModel, FragmentDictionar
         //初始化搜搜历史Recyclerview
         level_three_recycler_view.init(layoutManager1, mThreeDictionaryAdapter, false)
 
-        var list = mutableListOf<String>()
-        list.add("汉")
-        list.add("宋")
-        list.add("秦")
-        list.add("元")
-        list.add("明")
-        list.add("清")
-        mThreeDictionaryAdapter.data = list
+//        var list = mutableListOf<String>()
+//        if(args.tag != "all"){
+//            list.add("测试1")
+//            list.add("测试2")
+//            list.add("测试3")
+//            list.add("测试4")
+//            list.add("测试5")
+//            list.add("测试6")
+//            list.add("测试7")
+//            list.add("测试8")
+//            list.add("测试9")
+//            list.add("测试10")
+//        }
+//        mThreeDictionaryAdapter.data = list
         //状态页配置
         loadsir = loadServiceInit(works_refresh_layout) {
             //点击重试时触发的操作
@@ -122,7 +129,6 @@ class DictionarySubListFragment : BaseFragment<WorksViewModel, FragmentDictionar
             requestData()
         }
 
-
     }
 
 
@@ -131,6 +137,9 @@ class DictionarySubListFragment : BaseFragment<WorksViewModel, FragmentDictionar
         super.lazyLoadData()
         loadsir.showLoading()
         requestData(true)
+        args.pid?.let {
+            mViewModel.getDictionaryClassifyById(it)
+        }
     }
 
     override fun onLoadMore() {
@@ -172,6 +181,16 @@ class DictionarySubListFragment : BaseFragment<WorksViewModel, FragmentDictionar
 
     override fun createObserver() {
         super.createObserver()
+        mViewModel.classifySubList.observe(viewLifecycleOwner){
+            it?.let { subList ->
+                var list = mutableListOf<String>()
+                subList.forEach {
+                    list.add(it.name)
+                }
+                mThreeDictionaryAdapter.data = list
+                mThreeDictionaryAdapter.notifyDataSetChanged()
+            }
+        }
     }
 
     companion object {

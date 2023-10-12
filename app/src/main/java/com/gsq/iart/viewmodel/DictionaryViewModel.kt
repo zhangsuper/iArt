@@ -12,6 +12,7 @@ import com.gsq.mvvm.ext.request
 class DictionaryViewModel: BaseViewModel() {
 
     var classifyList: MutableLiveData<ArrayList<DictionaryMenuBean>> = MutableLiveData()
+    var classifySubList: MutableLiveData<ArrayList<DictionaryMenuBean>> = MutableLiveData()
 
     /**
      * 请求图典分类列表
@@ -48,16 +49,16 @@ class DictionaryViewModel: BaseViewModel() {
     /**
      * 图典指定分类的子类
      */
-    fun getDictionaryClassifyById(id: String){
+    fun getDictionaryClassifyById(id: Int){
         request(
             { apiService.getDictionaryClassifyById(id)},
             {
                 //请求成功
-                classifyList.value = it
+                classifySubList.value = it
             },
             {
                 //请求失败
-                classifyList.value = null
+                classifySubList.value = null
             })
     }
 }

@@ -57,7 +57,7 @@ class DictionaryListFragment : BaseFragment<DictionaryViewModel, FragmentDiction
             mDataList.add(it.name)
             fragments.add(
                 DictionarySubListFragment.start(
-                    DictionaryArgsType(it.name)
+                    DictionaryArgsType(pid = it.id)
                 )
             )
         }
@@ -76,9 +76,13 @@ class DictionaryListFragment : BaseFragment<DictionaryViewModel, FragmentDiction
         third_recycler_view.init(layoutManager1, mThreeDictionaryAdapter, false)
 
         var list = mutableListOf<String>()
-        list.add("汉")
-        list.add("宋")
+        list.add("春秋")
+        list.add("战国")
         list.add("秦")
+        list.add("汉")
+        list.add("魏")
+        list.add("宋")
+        list.add("唐")
         list.add("元")
         list.add("明")
         list.add("清")

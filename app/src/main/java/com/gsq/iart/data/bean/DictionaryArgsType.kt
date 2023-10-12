@@ -6,5 +6,6 @@ import java.io.Serializable
 @Keep
 class DictionaryArgsType constructor(
     val tag: String? = null,
+    val pid: Int? = null,
     val searchKey: String? = null//搜索的key
 ) : Serializable

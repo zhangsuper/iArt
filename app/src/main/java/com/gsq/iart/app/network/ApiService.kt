@@ -168,6 +168,6 @@ interface ApiService {
      * 图典指定分类列表
      */
     @GET("art/classify/atlas/sub")
-    suspend fun getDictionaryClassifyById(@Query("id") id: String): ApiResponse<ArrayList<DictionaryMenuBean>>
+    suspend fun getDictionaryClassifyById(@Query("pid") id: Int): ApiResponse<ArrayList<DictionaryMenuBean>>
 
 }
