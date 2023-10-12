@@ -36,6 +36,7 @@ import com.gsq.iart.data.event.BigImageClickEvent
 import com.gsq.iart.data.request.WorkPropSearchBean
 import com.gsq.iart.databinding.FragmentDictionarySubListBinding
 import com.gsq.iart.databinding.FragmentWorksListBinding
+import com.gsq.iart.ui.adapter.DictionaryLevelAdapter
 import com.gsq.iart.ui.adapter.SearchHistoryAdapter
 import com.gsq.iart.ui.adapter.WorksAdapter
 import com.gsq.iart.ui.dialog.AllConditionPopupWindow
@@ -63,7 +64,7 @@ class DictionarySubListFragment : BaseFragment<DictionaryViewModel, FragmentDict
 
     private val args: DictionaryArgsType by args()
 
-    private val mThreeDictionaryAdapter: SearchHistoryAdapter by lazy { SearchHistoryAdapter(arrayListOf()) }
+    private val mThreeDictionaryAdapter: DictionaryLevelAdapter by lazy { DictionaryLevelAdapter(arrayListOf()) }
 
     //适配器
     private val worksAdapter: WorksAdapter by lazy {
@@ -128,7 +129,9 @@ class DictionarySubListFragment : BaseFragment<DictionaryViewModel, FragmentDict
             //加载更多
             requestData()
         }
-
+        mThreeDictionaryAdapter.setOnItemClickListener { adapter, view, position ->
+            mThreeDictionaryAdapter.setSelectedPosition(position)
+        }
     }
 
 
@@ -183,11 +186,11 @@ class DictionarySubListFragment : BaseFragment<DictionaryViewModel, FragmentDict
         super.createObserver()
         mViewModel.classifySubList.observe(viewLifecycleOwner){
             it?.let { subList ->
-                var list = mutableListOf<String>()
-                subList.forEach {
-                    list.add(it.name)
-                }
-                mThreeDictionaryAdapter.data = list
+//                var list = mutableListOf<String>()
+//                subList.forEach {
+//                    list.add(it.name)
+//                }
+                mThreeDictionaryAdapter.data = subList
                 mThreeDictionaryAdapter.notifyDataSetChanged()
             }
         }
