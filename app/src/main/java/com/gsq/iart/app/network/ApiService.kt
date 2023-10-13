@@ -1,6 +1,7 @@
 package com.gsq.iart.app.network
 
 import com.gsq.iart.data.bean.*
+import com.gsq.iart.data.request.DictionaryWoksRequestParam
 import com.gsq.iart.data.request.MemberPayRequestParam
 import com.gsq.iart.data.request.WorkPageRequestParam
 import retrofit2.http.*
@@ -169,5 +170,13 @@ interface ApiService {
      */
     @GET("art/classify/atlas/sub")
     suspend fun getDictionaryClassifyById(@Query("pid") id: Int): ApiResponse<ArrayList<DictionaryMenuBean>>
+
+    /**
+     * 图典列表作品数据
+     */
+    @POST("art/work/atlas/page")
+    suspend fun getDictionaryWorks(
+        @Body requestParam: DictionaryWoksRequestParam
+    ): ApiResponse<ArrayList<WorksBean>>
 
 }

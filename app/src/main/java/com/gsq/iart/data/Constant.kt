@@ -22,6 +22,8 @@ object Constant {
     const val COMPLEX_TYPE_SEARCH = "type_search"//搜索
     const val COMPLEX_TYPE_COLLECT = "type_collect"//收藏
 
+    const val COMPLEX_TYPE_DICTIONARY = "type_dictionary"//图典
+
     const val WORKS_SUB_TYPE_HOT = 0//热门
     const val WORKS_SUB_TYPE_NEW = 1//新上
 

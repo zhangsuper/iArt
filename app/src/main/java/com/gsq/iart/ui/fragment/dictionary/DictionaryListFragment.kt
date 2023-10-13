@@ -50,14 +50,14 @@ class DictionaryListFragment : BaseFragment<DictionaryViewModel, FragmentDiction
         mDataList.add("全部")
         fragments.add(
             DictionarySubListFragment.start(
-                DictionaryArgsType("all")
+                DictionaryArgsType(firstTag = dictionaryMenuBean.name)
             )
         )
         dictionaryMenuBean.subs.forEach {
             mDataList.add(it.name)
             fragments.add(
                 DictionarySubListFragment.start(
-                    DictionaryArgsType(pid = it.id)
+                    DictionaryArgsType(firstTag = dictionaryMenuBean.name, tag = it.name, pid = it.id)
                 )
             )
         }
