@@ -17,15 +17,22 @@ import com.blankj.utilcode.util.SizeUtils
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
+import com.gsq.iart.R
 import com.gsq.iart.app.base.BaseFragment
 import com.gsq.iart.app.ext.*
+import com.gsq.iart.app.util.CacheUtil
 import com.gsq.iart.app.weight.recyclerview.GridItemDecoration
 import com.gsq.iart.data.Constant
+import com.gsq.iart.data.Constant.COMPLEX_TYPE_DICTIONARY
 import com.gsq.iart.data.bean.DictionaryArgsType
+import com.gsq.iart.data.bean.WorksBean
 import com.gsq.iart.databinding.FragmentDictionarySubListBinding
 import com.gsq.iart.ui.adapter.DictionaryLevelAdapter
 import com.gsq.iart.ui.adapter.DictionaryWorksAdapter
+import com.gsq.iart.ui.fragment.mine.MemberFragment
 import com.gsq.iart.viewmodel.DictionaryViewModel
+import com.gsq.mvvm.ext.nav
+import com.gsq.mvvm.ext.navigateAction
 import com.kingja.loadsir.core.LoadService
 import kotlinx.android.synthetic.main.fragment_dictionary_sub_list.level_three_recycler_view
 import kotlinx.android.synthetic.main.fragment_works_list.*
@@ -100,6 +107,25 @@ class DictionarySubListFragment : BaseFragment<DictionaryViewModel, FragmentDict
                 tag3 = selectBean.name
             }
             requestData(true)
+        }
+
+        worksAdapter.setOnItemClickListener { adapter, view, position ->
+            val worksBean = adapter.data[position] as WorksBean
+            if (worksBean.pay == 1 && CacheUtil.getUser()?.memberType != 1) {
+                //需要付费且没有开通了会员
+                nav().navigateAction(
+                    R.id.action_dictionaryListFragment_to_workDetailFragment,
+                    bundleOf(MemberFragment.INTENT_KEY_TYPE to MemberFragment.INTENT_VALUE_WORKS)
+                )
+            } else {
+                var bundle = Bundle()
+                bundle.putSerializable(
+                    Constant.DATA_WORK,
+                    (adapter.data as MutableList<WorksBean>)[position]
+                )
+                bundle.putString(Constant.INTENT_TYPE, COMPLEX_TYPE_DICTIONARY)
+                nav().navigateAction(R.id.action_dictionaryListFragment_to_workDetailFragment, bundle)
+            }
         }
     }
 
