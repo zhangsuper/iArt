@@ -40,6 +40,11 @@
         <item name="cornerSizeTopRight">@dimen/dp_4</item>
     </style>
 
+    <style name="DictionaryWorksCoverStyle">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">@dimen/dp_4</item>
+    </style>
+
     <style name="CircleStyle">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">50%</item>

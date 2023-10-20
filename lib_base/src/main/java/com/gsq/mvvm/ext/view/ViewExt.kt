@@ -6,6 +6,7 @@ import android.graphics.Color
 import android.graphics.drawable.BitmapDrawable
 import android.view.View
 import android.widget.ImageView
+import com.gsq.lib_base.R
 
 /**
  * 设置view显示
@@ -117,5 +118,21 @@ fun Any?.notNull(notNullAction:(value:Any) ->Unit,nullAction1:() ->Unit){
         notNullAction.invoke(this)
     }else{
         nullAction1.invoke()
+    }
+}
+
+fun View.onClick(wait: Long = 500, block: ((View) -> Unit)) {
+    setOnClickListener(throttleClick(wait, block))
+}
+
+fun throttleClick(wait: Long = 200, block: ((View) -> Unit)): View.OnClickListener {
+
+    return View.OnClickListener { v ->
+        val current = System.currentTimeMillis()
+        val lastClickTime = (v.getTag(R.id.click_timestamp) as? Long) ?: 0
+        if (current - lastClickTime > wait) {
+            v.setTag(R.id.click_timestamp, current)
+            block(v)
+        }
     }
 }

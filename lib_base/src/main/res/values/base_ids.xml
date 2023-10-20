@@ -19,4 +19,6 @@
 
     <item name="cover_retried_tag" type="id" />
 
+    <item name="click_timestamp" type="id"/>
+
 </resources>

@@ -14,7 +14,7 @@ class DictionaryLevelAdapter(data: MutableList<DictionaryMenuBean>) :
     init {
 //        setAdapterAnimation(SettingUtil.getListMode())
     }
-    private var selectedPosition: Int? = null
+    var selectedPosition: Int? = null
 
     fun setSelectedPosition(position: Int){
         selectedPosition = position

@@ -31,6 +31,7 @@ import kotlinx.android.synthetic.main.fragment_setting.title_layout
 class DictionaryListFragment : BaseFragment<DictionaryViewModel, FragmentDictionaryListBinding>()  {
 
     private lateinit var dictionaryMenuBean : DictionaryMenuBean
+    private var position: Int = 0
 
     //标题集合
     var mDataList: ArrayList<String> = arrayListOf()
@@ -46,6 +47,7 @@ class DictionaryListFragment : BaseFragment<DictionaryViewModel, FragmentDiction
 
         }
         dictionaryMenuBean = arguments?.getSerializable(Constant.INTENT_DATA) as DictionaryMenuBean
+        position = arguments?.getInt(Constant.INTENT_POSITION,0)?: 0
         title_layout.setTitle(dictionaryMenuBean.name)
         mDataList.add("全部")
         fragments.add(
@@ -53,18 +55,24 @@ class DictionaryListFragment : BaseFragment<DictionaryViewModel, FragmentDiction
                 DictionaryArgsType(firstTag = dictionaryMenuBean.name)
             )
         )
-        dictionaryMenuBean.subs.forEach {
-            mDataList.add(it.name)
-            fragments.add(
-                DictionarySubListFragment.start(
-                    DictionaryArgsType(firstTag = dictionaryMenuBean.name, tag = it.name, pid = it.id)
+        dictionaryMenuBean.subs?.let {
+            it.forEach {
+                mDataList.add(it.name)
+                fragments.add(
+                    DictionarySubListFragment.start(
+                        DictionaryArgsType(firstTag = dictionaryMenuBean.name, tag = it.name, pid = it.id)
+                    )
                 )
-            )
+            }
         }
+
         //初始化viewpager2
         dictionary_view_pager.init(this, fragments)
         //初始化 magic_indicator
         dictionary_magic_indicator.bindViewPager2(dictionary_view_pager, mDataList)
+        dictionary_view_pager.setCurrentItem(position, false)
+
+//        dictionary_view_pager.setCurrentItem()
 
         //创建流式布局layout
         val layoutManager1 = FlexboxLayoutManager(context)
@@ -72,7 +80,6 @@ class DictionaryListFragment : BaseFragment<DictionaryViewModel, FragmentDiction
         layoutManager1.flexDirection = FlexDirection.ROW
         //左对齐
         layoutManager1.justifyContent = JustifyContent.FLEX_START
-        //初始化搜搜历史Recyclerview
         third_recycler_view.init(layoutManager1, mThreeDictionaryAdapter, false)
 
         var list = mutableListOf<String>()

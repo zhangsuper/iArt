@@ -7,7 +7,7 @@
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:id="@+id/left_view"
-        android:layout_width="wrap_content"
+        android:layout_width="@dimen/dp_60"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dp_12"
         android:layout_marginLeft="@dimen/dp_16"

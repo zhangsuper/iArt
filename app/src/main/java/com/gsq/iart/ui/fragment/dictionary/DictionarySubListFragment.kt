@@ -17,47 +17,18 @@ import com.blankj.utilcode.util.SizeUtils
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
-import com.gsq.iart.R
 import com.gsq.iart.app.base.BaseFragment
 import com.gsq.iart.app.ext.*
-import com.gsq.iart.app.util.CacheUtil
-import com.gsq.iart.app.util.MobAgentUtil
 import com.gsq.iart.app.weight.recyclerview.GridItemDecoration
 import com.gsq.iart.data.Constant
-import com.gsq.iart.data.Constant.COMPLEX_TYPE_COLLECT
-import com.gsq.iart.data.Constant.COMPLEX_TYPE_SEARCH
-import com.gsq.iart.data.Constant.DATA_WORK
-import com.gsq.iart.data.Constant.INTENT_TYPE
-import com.gsq.iart.data.Constant.WORKS_SUB_TYPE_HOT
-import com.gsq.iart.data.Constant.WORKS_SUB_TYPE_NEW
-import com.gsq.iart.data.bean.ArgsType
-import com.gsq.iart.data.bean.ConditionClassifyBean
 import com.gsq.iart.data.bean.DictionaryArgsType
-import com.gsq.iart.data.bean.WorksBean
-import com.gsq.iart.data.event.BigImageClickEvent
-import com.gsq.iart.data.request.WorkPropSearchBean
 import com.gsq.iart.databinding.FragmentDictionarySubListBinding
-import com.gsq.iart.databinding.FragmentWorksListBinding
 import com.gsq.iart.ui.adapter.DictionaryLevelAdapter
-import com.gsq.iart.ui.adapter.SearchHistoryAdapter
-import com.gsq.iart.ui.adapter.WorksAdapter
-import com.gsq.iart.ui.dialog.AllConditionPopupWindow
-import com.gsq.iart.ui.dialog.ConditionPopupWindow
-import com.gsq.iart.ui.fragment.mine.MemberFragment
+import com.gsq.iart.ui.adapter.DictionaryWorksAdapter
 import com.gsq.iart.viewmodel.DictionaryViewModel
-import com.gsq.iart.viewmodel.WorksViewModel
-import com.gsq.mvvm.ext.nav
-import com.gsq.mvvm.ext.navigateAction
-import com.gsq.mvvm.ext.view.gone
-import com.gsq.mvvm.ext.view.visible
 import com.kingja.loadsir.core.LoadService
 import kotlinx.android.synthetic.main.fragment_dictionary_sub_list.level_three_recycler_view
-import kotlinx.android.synthetic.main.fragment_search_init.search_historyRv
-import kotlinx.android.synthetic.main.fragment_search_init.search_hotRv
-import kotlinx.android.synthetic.main.fragment_work_detail.*
 import kotlinx.android.synthetic.main.fragment_works_list.*
-import org.greenrobot.eventbus.Subscribe
-import org.greenrobot.eventbus.ThreadMode
 
 /**
  * 图典作品列表
@@ -69,8 +40,8 @@ class DictionarySubListFragment : BaseFragment<DictionaryViewModel, FragmentDict
     private val mThreeDictionaryAdapter: DictionaryLevelAdapter by lazy { DictionaryLevelAdapter(arrayListOf()) }
 
     //适配器
-    private val worksAdapter: WorksAdapter by lazy {
-        WorksAdapter(object : WorksAdapter.CallBackListener {
+    private val worksAdapter: DictionaryWorksAdapter by lazy {
+        DictionaryWorksAdapter(object : DictionaryWorksAdapter.CallBackListener {
             override fun loadMore() {
                 requestData()
             }
@@ -106,23 +77,28 @@ class DictionarySubListFragment : BaseFragment<DictionaryViewModel, FragmentDict
         }
         //初始化recyclerView和Adapter
         val layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
-        works_recycler_view.addItemDecoration(
-            GridItemDecoration(
-                2,
-                SizeUtils.dp2px(12f),
-                includeEdge = true, hasTopBottomSpace = false
-            )
-        )
+//        works_recycler_view.addItemDecoration(
+//            GridItemDecoration(
+//                2,
+//                SizeUtils.dp2px(12f),
+//                includeEdge = true, hasTopBottomSpace = false
+//            )
+//        )
         works_recycler_view.init(layoutManager, worksAdapter)
         works_recycler_view.initFooter {
             //加载更多
             requestData()
         }
         mThreeDictionaryAdapter.setOnItemClickListener { adapter, view, position ->
-            mThreeDictionaryAdapter.setSelectedPosition(position)
-            //标签选择过滤
-            var selectBean = mThreeDictionaryAdapter.data[position]
-            tag3 = selectBean.name
+            if(mThreeDictionaryAdapter.selectedPosition == position){
+                mThreeDictionaryAdapter.setSelectedPosition(-1)
+                tag3 = ""
+            }else{
+                mThreeDictionaryAdapter.setSelectedPosition(position)
+                //标签选择过滤
+                var selectBean = mThreeDictionaryAdapter.data[position]
+                tag3 = selectBean.name
+            }
             requestData(true)
         }
     }

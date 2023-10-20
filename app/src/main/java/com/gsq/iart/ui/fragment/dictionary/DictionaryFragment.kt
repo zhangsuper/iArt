@@ -46,9 +46,10 @@ class DictionaryFragment : BaseFragment<DictionaryViewModel, FragmentDictionaryB
             nav().navigateAction(R.id.action_mainFragment_to_searchFragment)
         }
         mAdapter = DictionaryMenuAdapter()
-        mAdapter!!.setClickBackListener {
+        mAdapter!!.setClickBackListener { bean, position ->
             var bundle = Bundle()
-            bundle.putSerializable(Constant.INTENT_DATA, it)
+            bundle.putSerializable(Constant.INTENT_DATA, bean)
+            bundle.putInt(Constant.INTENT_POSITION, position)
             nav().navigateAction(R.id.action_mainFragment_to_dictionaryListFragment, bundle)
         }
         recycler_view.adapter = mAdapter

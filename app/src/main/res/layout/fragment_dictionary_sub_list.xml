@@ -14,7 +14,7 @@
             android:id="@+id/level_three_recycler_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/dp_12"
+            android:layout_marginHorizontal="@dimen/dp_16"
             android:scrollbars="none"
             app:layout_constraintTop_toTopOf="parent" />
 
