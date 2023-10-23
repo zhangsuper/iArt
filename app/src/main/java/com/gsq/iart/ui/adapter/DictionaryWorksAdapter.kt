@@ -10,12 +10,20 @@ import com.gsq.iart.app.ext.setAdapterAnimation
 import com.gsq.iart.app.ext.setImageViewRatio
 import com.gsq.iart.app.image.GlideHelper
 import com.gsq.iart.app.util.SettingUtil
+import com.gsq.iart.data.bean.DictionaryMenuBean
 import com.gsq.iart.data.bean.WorksBean
 import com.gsq.mvvm.ext.view.gone
+import com.gsq.mvvm.ext.view.onClick
 import com.gsq.mvvm.ext.view.visible
 
 class DictionaryWorksAdapter constructor(var listener: CallBackListener) :
     BaseQuickAdapter<WorksBean, BaseViewHolder>(R.layout.item_dictionary_works_layout) {
+
+    var mClickContrastListener: ((position: Int) -> Unit)? = null
+
+    fun setClickContrastListener(listener: ((position: Int) -> Unit)?){
+        mClickContrastListener = listener
+    }
 
     init {
         setAdapterAnimation(SettingUtil.getListMode())
@@ -27,6 +35,7 @@ class DictionaryWorksAdapter constructor(var listener: CallBackListener) :
 
     override fun convert(holder: BaseViewHolder, item: WorksBean) {
         LogUtils.dTag("WorksAdapter", "layoutPosition:${holder.layoutPosition}")
+        var contrastBtn = holder.getView<ImageView>(R.id.iv_contrast)
         holder.setText(R.id.item_works_name, item.name)
         holder.setText(R.id.item_works_source, "来源：${item.owner}")
         var vipIcon = holder.getView<ImageView>(R.id.icon_vip)
@@ -50,6 +59,9 @@ class DictionaryWorksAdapter constructor(var listener: CallBackListener) :
             vipIcon.visible()
         } else {
             vipIcon.gone()
+        }
+        contrastBtn.onClick {
+            mClickContrastListener?.invoke(holder.layoutPosition)
         }
     }
 }

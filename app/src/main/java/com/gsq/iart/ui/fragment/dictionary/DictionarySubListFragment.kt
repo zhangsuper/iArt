@@ -14,6 +14,7 @@ import com.airbnb.mvrx.asMavericksArgs
 import com.blankj.utilcode.util.ColorUtils
 import com.blankj.utilcode.util.ScreenUtils
 import com.blankj.utilcode.util.SizeUtils
+import com.blankj.utilcode.util.ToastUtils
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
@@ -127,6 +128,24 @@ class DictionarySubListFragment : BaseFragment<DictionaryViewModel, FragmentDict
                 nav().navigateAction(R.id.action_dictionaryListFragment_to_workDetailFragment, bundle)
             }
         }
+        worksAdapter.setClickContrastListener {
+            //加入对比
+            ToastUtils.showShort("加入对比")
+        }
+        var list = mutableListOf<String>()
+        list.add("测试1")
+        list.add("测试2")
+        list.add("测试3")
+        list.add("测试4")
+        list.add("测试5")
+        list.add("测试6")
+        list.add("测试7")
+        list.add("测试8")
+        list.add("测试9")
+        list.add("测试10")
+        list.add("测试11")
+        list.add("测试12")
+        mViewBind.flowContentLayout.addViews(list)
     }
 
 

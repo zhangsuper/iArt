@@ -49,6 +49,7 @@
             android:layout_weight="1"/>
 
         <ImageView
+            android:id="@+id/iv_contrast"
             android:layout_width="@dimen/dp_24"
             android:layout_height="@dimen/dp_24"
             android:src="@drawable/icon_add"/>
