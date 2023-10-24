@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.RelativeLayout;
 
+import com.blankj.utilcode.util.ToastUtils;
 import com.gsq.iart.R;
 
 import org.jetbrains.annotations.NotNull;
@@ -22,6 +23,16 @@ public class FlowContentLayout extends RelativeLayout{
     private List<String> list = new ArrayList<>();
     private View upView;
     private View downView;
+
+    private ClickListener mListener;
+
+    public interface ClickListener{
+        void onClick(String tag);
+    }
+
+    public void setOnclickListener(ClickListener listener){
+        mListener = listener;
+    }
 
 
     public FlowContentLayout(Context context) {
@@ -58,6 +69,16 @@ public class FlowContentLayout extends RelativeLayout{
         mFontFlowLayout = findViewById(R.id.mFontFlowLayout);
         mFontFlowLayout.setUpFoldView(upView);
         mFontFlowLayout.setDownFoldView(downView);
+        mFontFlowLayout.setOnclickListener(new FlowLayout.ClickListener() {
+            @Override
+            public void onClick(String tag) {
+                if(mListener!= null){
+                    mListener.onClick(tag);
+                }
+                refreshViews();
+//                addViews(list);
+            }
+        });
     }
 
 

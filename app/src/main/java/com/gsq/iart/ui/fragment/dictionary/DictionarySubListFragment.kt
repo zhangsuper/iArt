@@ -22,6 +22,8 @@ import com.gsq.iart.R
 import com.gsq.iart.app.base.BaseFragment
 import com.gsq.iart.app.ext.*
 import com.gsq.iart.app.util.CacheUtil
+import com.gsq.iart.app.weight.FlowContentLayout
+import com.gsq.iart.app.weight.FlowContentLayout.ClickListener
 import com.gsq.iart.app.weight.recyclerview.GridItemDecoration
 import com.gsq.iart.data.Constant
 import com.gsq.iart.data.Constant.COMPLEX_TYPE_DICTIONARY
@@ -45,7 +47,7 @@ class DictionarySubListFragment : BaseFragment<DictionaryViewModel, FragmentDict
 
     private val args: DictionaryArgsType by args()
 
-    private val mThreeDictionaryAdapter: DictionaryLevelAdapter by lazy { DictionaryLevelAdapter(arrayListOf()) }
+//    private val mThreeDictionaryAdapter: DictionaryLevelAdapter by lazy { DictionaryLevelAdapter(arrayListOf()) }
 
     //适配器
     private val worksAdapter: DictionaryWorksAdapter by lazy {
@@ -64,13 +66,13 @@ class DictionarySubListFragment : BaseFragment<DictionaryViewModel, FragmentDict
     override fun initView(savedInstanceState: Bundle?) {
 
         //创建流式布局layout
-        val layoutManager1 = FlexboxLayoutManager(context)
-        //方向 主轴为水平方向，起点在左端
-        layoutManager1.flexDirection = FlexDirection.ROW
-        //左对齐
-        layoutManager1.justifyContent = JustifyContent.FLEX_START
-        //初始化搜搜历史Recyclerview
-        level_three_recycler_view.init(layoutManager1, mThreeDictionaryAdapter, false)
+//        val layoutManager1 = FlexboxLayoutManager(context)
+//        //方向 主轴为水平方向，起点在左端
+//        layoutManager1.flexDirection = FlexDirection.ROW
+//        //左对齐
+//        layoutManager1.justifyContent = JustifyContent.FLEX_START
+//        //初始化搜搜历史Recyclerview
+//        level_three_recycler_view.init(layoutManager1, mThreeDictionaryAdapter, false)
 
         //状态页配置
         loadsir = loadServiceInit(works_refresh_layout) {
@@ -97,18 +99,18 @@ class DictionarySubListFragment : BaseFragment<DictionaryViewModel, FragmentDict
             //加载更多
             requestData()
         }
-        mThreeDictionaryAdapter.setOnItemClickListener { adapter, view, position ->
-            if(mThreeDictionaryAdapter.selectedPosition == position){
-                mThreeDictionaryAdapter.setSelectedPosition(-1)
-                tag3 = ""
-            }else{
-                mThreeDictionaryAdapter.setSelectedPosition(position)
-                //标签选择过滤
-                var selectBean = mThreeDictionaryAdapter.data[position]
-                tag3 = selectBean.name
-            }
-            requestData(true)
-        }
+//        mThreeDictionaryAdapter.setOnItemClickListener { adapter, view, position ->
+//            if(mThreeDictionaryAdapter.selectedPosition == position){
+//                mThreeDictionaryAdapter.setSelectedPosition(-1)
+//                tag3 = ""
+//            }else{
+//                mThreeDictionaryAdapter.setSelectedPosition(position)
+//                //标签选择过滤
+//                var selectBean = mThreeDictionaryAdapter.data[position]
+//                tag3 = selectBean.name
+//            }
+//            requestData(true)
+//        }
 
         worksAdapter.setOnItemClickListener { adapter, view, position ->
             val worksBean = adapter.data[position] as WorksBean
@@ -132,20 +134,28 @@ class DictionarySubListFragment : BaseFragment<DictionaryViewModel, FragmentDict
             //加入对比
             ToastUtils.showShort("加入对比")
         }
-        var list = mutableListOf<String>()
-        list.add("测试1")
-        list.add("测试2")
-        list.add("测试3")
-        list.add("测试4")
-        list.add("测试5")
-        list.add("测试6")
-        list.add("测试7")
-        list.add("测试8")
-        list.add("测试9")
-        list.add("测试10")
-        list.add("测试11")
-        list.add("测试12")
-        mViewBind.flowContentLayout.addViews(list)
+//        var list = mutableListOf<String>()
+//        list.add("测试1")
+//        list.add("测试2")
+//        list.add("测试3")
+//        list.add("测试4")
+//        list.add("测试5")
+//        list.add("测试6")
+//        list.add("测试7")
+//        list.add("测试8")
+//        list.add("测试9")
+//        list.add("测试10")
+//        list.add("测试11")
+//        list.add("测试12")
+//        mViewBind.flowContentLayout.addViews(list)
+        mViewBind.flowContentLayout.setOnclickListener(object : ClickListener{
+            override fun onClick(tag: String?) {
+                tag?.let {
+                    tag3 = it
+                }
+                requestData(true)
+            }
+        })
     }
 
 
@@ -175,8 +185,13 @@ class DictionarySubListFragment : BaseFragment<DictionaryViewModel, FragmentDict
         super.createObserver()
         mViewModel.classifySubList.observe(viewLifecycleOwner){
             it?.let { subList ->
-                mThreeDictionaryAdapter.data = subList
-                mThreeDictionaryAdapter.notifyDataSetChanged()
+                var list = mutableListOf<String>()
+                subList.forEach {
+                    list.add(it.name)
+                }
+                mViewBind.flowContentLayout.addViews(list)
+//                mThreeDictionaryAdapter.data = subList
+//                mThreeDictionaryAdapter.notifyDataSetChanged()
             }
         }
         mViewModel.worksDataState.observe(viewLifecycleOwner, Observer {

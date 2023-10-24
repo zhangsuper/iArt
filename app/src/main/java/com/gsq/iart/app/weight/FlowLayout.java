@@ -61,6 +61,16 @@ public class FlowLayout extends ViewGroup {
         this.downFoldView = downFoldView;
     }
 
+    private ClickListener mListener;
+
+    public interface ClickListener{
+        void onClick(String tag);
+    }
+
+    public void setOnclickListener(ClickListener listener){
+        mListener = listener;
+    }
+
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
@@ -283,6 +293,8 @@ public class FlowLayout extends ViewGroup {
         }
     }
 
+    private String selectedTag = "";
+
 
 
     private void addTextView(String s,LinearLayout.LayoutParams layoutParams){
@@ -294,12 +306,31 @@ public class FlowLayout extends ViewGroup {
         tv.setText(s);
         tv.setSingleLine();
         tv.setTextSize(TypedValue.COMPLEX_UNIT_SP,12);
-        tv.setTextColor(ColorUtils.getColor(R.drawable.selector_dictionary_tag_textcolor));
         tv.setEllipsize(TextUtils.TruncateAt.END);
         tv.setBackgroundResource(R.drawable.bg_dictionary_tag_selector);
+        tv.setSelected(s == selectedTag);
+        if(s == selectedTag){
+            tv.setTextColor(ColorUtils.getColor(R.color.white));
+        }else{
+            tv.setTextColor(ColorUtils.getColor(R.color.color_141414));
+        }
         linearLayout.addView(tv,new FrameLayout.LayoutParams(LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT));
         addView(linearLayout,layoutParams);
 //        textViewHeight = tv.getLayoutParams().height;
         textViewHeight = tv.getHeight();
+        tv.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(mListener!= null){
+                    if(selectedTag == s){
+                        selectedTag = "";
+                    }else {
+                        selectedTag = s;
+                    }
+                    mListener.onClick(selectedTag);
+//                    tv.setSelected(!tv.isSelected());
+                }
+            }
+        });
     }
 }
