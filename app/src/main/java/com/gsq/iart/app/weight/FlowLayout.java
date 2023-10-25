@@ -24,7 +24,7 @@ public class FlowLayout extends ViewGroup {
      */
     private int mHorizontalSpacing = SizeUtils.dp2px(8);
 
-    private static final int MAX_LINE = 3;//从0开始计数
+    private static final int MAX_LINE = 9;//从0开始计数
     private static final int MIN_LINE = 1;//从0开始计数
     private FlowContentLayout mFlowContentLayout;
     private boolean foldState = true;
@@ -299,10 +299,10 @@ public class FlowLayout extends ViewGroup {
 
     private void addTextView(String s,LinearLayout.LayoutParams layoutParams){
         LinearLayout linearLayout = new LinearLayout(getContext());
-        linearLayout.setPadding(0,SizeUtils.dp2px(8),0,0);
+        linearLayout.setPadding(0,0,0,SizeUtils.dp2px(8));
         linearLayout.setLayoutParams(layoutParams);
         TextView tv = new TextView(getContext());
-        tv.setPadding(SizeUtils.dp2px(12), SizeUtils.dp2px(8), SizeUtils.dp2px(12),SizeUtils.dp2px(8));
+        tv.setPadding(SizeUtils.dp2px(12), SizeUtils.dp2px(6), SizeUtils.dp2px(12),SizeUtils.dp2px(6));
         tv.setText(s);
         tv.setSingleLine();
         tv.setTextSize(TypedValue.COMPLEX_UNIT_SP,12);
