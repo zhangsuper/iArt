@@ -328,7 +328,7 @@ public class FlowLayout extends ViewGroup {
                         selectedTag = s;
                     }
                     mListener.onClick(selectedTag);
-//                    tv.setSelected(!tv.isSelected());
+                    tv.setSelected(!tv.isSelected());
                 }
             }
         });

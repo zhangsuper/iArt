@@ -134,20 +134,6 @@ class DictionarySubListFragment : BaseFragment<DictionaryViewModel, FragmentDict
             //加入对比
             ToastUtils.showShort("加入对比")
         }
-//        var list = mutableListOf<String>()
-//        list.add("测试1")
-//        list.add("测试2")
-//        list.add("测试3")
-//        list.add("测试4")
-//        list.add("测试5")
-//        list.add("测试6")
-//        list.add("测试7")
-//        list.add("测试8")
-//        list.add("测试9")
-//        list.add("测试10")
-//        list.add("测试11")
-//        list.add("测试12")
-//        mViewBind.flowContentLayout.addViews(list)
         mViewBind.flowContentLayout.setOnclickListener(object : ClickListener{
             override fun onClick(tag: String?) {
                 tag?.let {
@@ -190,8 +176,6 @@ class DictionarySubListFragment : BaseFragment<DictionaryViewModel, FragmentDict
                     list.add(it.name)
                 }
                 mViewBind.flowContentLayout.addViews(list)
-//                mThreeDictionaryAdapter.data = subList
-//                mThreeDictionaryAdapter.notifyDataSetChanged()
             }
         }
         mViewModel.worksDataState.observe(viewLifecycleOwner, Observer {
