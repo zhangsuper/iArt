@@ -37,7 +37,7 @@ class DictionaryWorksAdapter constructor(var listener: CallBackListener) :
         LogUtils.dTag("WorksAdapter", "layoutPosition:${holder.layoutPosition}")
         var contrastBtn = holder.getView<ImageView>(R.id.iv_contrast)
         holder.setText(R.id.item_works_name, item.name)
-        holder.setText(R.id.item_works_source, "来源：${item.owner}")
+        holder.setText(R.id.item_works_source, "来源：${item.author}")
         var vipIcon = holder.getView<ImageView>(R.id.icon_vip)
         var imageView = holder.getView<ShapeableImageView>(R.id.item_works_cover)
         if (item.thumbWidth > 0 && item.thumbHeight > 0) {

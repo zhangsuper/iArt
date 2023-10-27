@@ -25,6 +25,7 @@ import com.gsq.iart.app.util.MobAgentUtil
 import com.gsq.iart.app.util.StatusBarUtil
 import com.gsq.iart.data.Constant
 import com.gsq.iart.data.Constant.COMPLEX_TYPE_COLLECT
+import com.gsq.iart.data.Constant.COMPLEX_TYPE_DICTIONARY
 import com.gsq.iart.data.Constant.COMPLEX_TYPE_GROUP
 import com.gsq.iart.data.Constant.DATA_WORK
 import com.gsq.iart.data.Constant.DOWNLOAD_PARENT_PATH
@@ -37,6 +38,7 @@ import com.gsq.iart.viewmodel.WorksViewModel
 import com.gsq.mvvm.ext.nav
 import com.gsq.mvvm.ext.navigateAction
 import com.gsq.mvvm.ext.view.gone
+import com.gsq.mvvm.ext.view.onClick
 import com.gsq.mvvm.ext.view.visible
 import kotlinx.android.synthetic.main.fragment_work_detail.*
 import org.greenrobot.eventbus.EventBus
@@ -66,6 +68,22 @@ class WorkDetailFragment : BaseFragment<WorksViewModel, FragmentWorkDetailBindin
     override fun initView(savedInstanceState: Bundle?) {
         worksBean = arguments?.getSerializable(DATA_WORK) as? WorksBean
         intentType = arguments?.getString(Constant.INTENT_TYPE, COMPLEX_TYPE_GROUP)
+
+        if(intentType  == COMPLEX_TYPE_DICTIONARY){
+            //图典
+            common_title_layout.gone()
+            dictionary_title_layout.visible()
+            work_name.text = worksBean?.name
+            if(worksBean?.author!=null){
+                work_source.visible()
+                work_source.text = worksBean?.author
+            }else{
+                work_source.gone()
+            }
+        }else{
+            common_title_layout.visible()
+            dictionary_title_layout.gone()
+        }
 
         var eventMap = mutableMapOf<String, Any?>()
         eventMap["work_id"] = worksBean?.id
@@ -179,10 +197,13 @@ class WorkDetailFragment : BaseFragment<WorksViewModel, FragmentWorkDetailBindin
     }
 
     private fun initListener() {
-        iv_back.setOnClickListener {
+        iv_back.onClick {
             nav().navigateUp()
         }
-        iv_introduce.setOnClickListener {
+        iv_dictionary_back.onClick {
+            nav().navigateUp()
+        }
+        iv_introduce.onClick {
             //简介
             var eventMap = mutableMapOf<String, Any?>()
             eventMap["work_id"] = worksBean?.id
@@ -192,7 +213,7 @@ class WorkDetailFragment : BaseFragment<WorksViewModel, FragmentWorkDetailBindin
             args.putSerializable(DATA_WORK, worksBean)
             nav().navigateAction(R.id.action_workDetailFragment_to_workIntroduceFragment, args)
         }
-        iv_collect.setOnClickListener {
+        iv_collect.onClick {
             //收藏与取消收藏
             if (CacheUtil.isLogin()) {
                 worksBean?.let {
@@ -219,7 +240,7 @@ class WorkDetailFragment : BaseFragment<WorksViewModel, FragmentWorkDetailBindin
             }
 
         }
-        iv_download.setOnClickListener {
+        iv_download.onClick {
             if (CacheUtil.isLogin()) {
                 if (CacheUtil.getUser()?.memberType == 1) {
                     //下载

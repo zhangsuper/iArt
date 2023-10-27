@@ -20,9 +20,6 @@ import com.gsq.mvvm.ext.nav
 import kotlinx.android.synthetic.main.fragment_dictionary_list.dictionary_magic_indicator
 import kotlinx.android.synthetic.main.fragment_dictionary_list.dictionary_view_pager
 import kotlinx.android.synthetic.main.fragment_dictionary_list.third_recycler_view
-import kotlinx.android.synthetic.main.fragment_dictionary_sub_list.level_three_recycler_view
-import kotlinx.android.synthetic.main.fragment_home.home_magic_indicator
-import kotlinx.android.synthetic.main.fragment_home.home_view_pager
 import kotlinx.android.synthetic.main.fragment_setting.title_layout
 
 /**
