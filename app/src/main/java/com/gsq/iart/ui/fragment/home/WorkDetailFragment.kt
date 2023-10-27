@@ -80,9 +80,11 @@ class WorkDetailFragment : BaseFragment<WorksViewModel, FragmentWorkDetailBindin
             }else{
                 work_source.gone()
             }
+            contrast_view.visible()
         }else{
             common_title_layout.visible()
             dictionary_title_layout.gone()
+            contrast_view.gone()
         }
 
         var eventMap = mutableMapOf<String, Any?>()

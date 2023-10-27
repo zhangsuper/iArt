@@ -118,6 +118,23 @@
             app:layout_constraintBottom_toBottomOf="parent">
 
             <RelativeLayout
+                android:id="@+id/contrast_view"
+                android:layout_width="@dimen/dp_0"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:layout_weight="1"
+                android:visibility="gone">
+
+                <ImageView
+                    android:id="@+id/iv_contrast"
+                    android:layout_width="@dimen/dp_24"
+                    android:layout_height="@dimen/dp_24"
+                    android:src="@drawable/icon_contrast" />
+
+            </RelativeLayout>
+
+
+            <RelativeLayout
                 android:layout_width="@dimen/dp_0"
                 android:layout_height="match_parent"
                 android:gravity="center"
