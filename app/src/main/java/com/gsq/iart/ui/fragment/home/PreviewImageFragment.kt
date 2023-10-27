@@ -6,6 +6,7 @@ import com.airbnb.mvrx.args
 import com.airbnb.mvrx.asMavericksArgs
 import com.blankj.utilcode.util.FileUtils
 import com.blankj.utilcode.util.LogUtils
+import com.blankj.utilcode.util.ThreadUtils
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.SimpleTarget
 import com.bumptech.glide.request.transition.Transition
@@ -104,7 +105,9 @@ class PreviewImageFragment : BaseFragment<BaseViewModel, FragmentPreviewImageBin
             // 最大显示比例
             photo_view.maxScale = 20f
             photo_view.minScale = 0.5f
-            loadsir.showSuccess()
+            ThreadUtils.getMainHandler().postDelayed({
+                loadsir.showSuccess()
+            },200)
             return
         }
         Glide.with(App.instance).load(args.workHdPics.url)
