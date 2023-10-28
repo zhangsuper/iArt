@@ -68,29 +68,8 @@ class DictionaryListFragment : BaseFragment<DictionaryViewModel, FragmentDiction
         //初始化 magic_indicator
         dictionary_magic_indicator.bindViewPager2(dictionary_view_pager, mDataList)
         dictionary_view_pager.setCurrentItem(position, false)
+        dictionary_view_pager.offscreenPageLimit = 1
 
-//        dictionary_view_pager.setCurrentItem()
-
-        //创建流式布局layout
-        val layoutManager1 = FlexboxLayoutManager(context)
-        //方向 主轴为水平方向，起点在左端
-        layoutManager1.flexDirection = FlexDirection.ROW
-        //左对齐
-        layoutManager1.justifyContent = JustifyContent.FLEX_START
-        third_recycler_view.init(layoutManager1, mThreeDictionaryAdapter, false)
-
-        var list = mutableListOf<String>()
-        list.add("春秋")
-        list.add("战国")
-        list.add("秦")
-        list.add("汉")
-        list.add("魏")
-        list.add("宋")
-        list.add("唐")
-        list.add("元")
-        list.add("明")
-        list.add("清")
-        mThreeDictionaryAdapter.data = list
     }
 
 }

@@ -6,6 +6,7 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.airbnb.mvrx.args
 import com.airbnb.mvrx.asMavericksArgs
+import com.blankj.utilcode.util.LogUtils
 import com.blankj.utilcode.util.ThreadUtils
 import com.blankj.utilcode.util.ToastUtils
 import com.gsq.iart.R
@@ -105,10 +106,10 @@ class DictionarySubListFragment : BaseFragment<DictionaryViewModel, FragmentDict
     override fun lazyLoadData() {
         super.lazyLoadData()
         loadsir.showLoading()
-        requestData(true)
         args.pid?.let {
             mViewModel.getDictionaryClassifyById(it)
         }
+        requestData(true)
     }
 
     override fun onLoadMore() {
