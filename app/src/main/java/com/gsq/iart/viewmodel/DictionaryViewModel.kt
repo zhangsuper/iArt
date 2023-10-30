@@ -23,6 +23,7 @@ class DictionaryViewModel: BaseViewModel() {
     var classifySubList: MutableLiveData<ArrayList<DictionaryMenuBean>> = MutableLiveData()
     //作品列表
     var worksDataState: MutableLiveData<ListDataUiState<WorksBean>> = MutableLiveData()
+    var classifyFourSubList: MutableLiveData<ArrayList<DictionaryMenuBean>> = MutableLiveData()//四级标签
 
     /**
      * 请求图典分类列表
@@ -69,6 +70,22 @@ class DictionaryViewModel: BaseViewModel() {
             {
                 //请求失败
                 classifySubList.value = null
+            })
+    }
+
+    /**
+     * 图典指定分类的子类
+     */
+    fun getDictionaryFourClassifyById(id: Int){
+        request(
+            { apiService.getDictionaryClassifyById(id)},
+            {
+                //请求成功
+                classifyFourSubList.value = it
+            },
+            {
+                //请求失败
+                classifyFourSubList.value = null
             })
     }
 

@@ -9,6 +9,9 @@ import com.airbnb.mvrx.asMavericksArgs
 import com.blankj.utilcode.util.LogUtils
 import com.blankj.utilcode.util.ThreadUtils
 import com.blankj.utilcode.util.ToastUtils
+import com.google.android.flexbox.FlexDirection
+import com.google.android.flexbox.FlexboxLayoutManager
+import com.google.android.flexbox.JustifyContent
 import com.gsq.iart.R
 import com.gsq.iart.app.base.BaseFragment
 import com.gsq.iart.app.ext.*
@@ -17,14 +20,23 @@ import com.gsq.iart.app.weight.FlowContentLayout.ClickListener
 import com.gsq.iart.data.Constant
 import com.gsq.iart.data.Constant.COMPLEX_TYPE_DICTIONARY
 import com.gsq.iart.data.bean.DictionaryArgsType
+import com.gsq.iart.data.bean.DictionaryMenuBean
 import com.gsq.iart.data.bean.WorksBean
 import com.gsq.iart.databinding.FragmentDictionarySubListBinding
+import com.gsq.iart.ui.adapter.DictionaryLevelAdapter
 import com.gsq.iart.ui.adapter.DictionaryWorksAdapter
+import com.gsq.iart.ui.adapter.SearchHotAdapter
 import com.gsq.iart.ui.fragment.mine.MemberFragment
 import com.gsq.iart.viewmodel.DictionaryViewModel
 import com.gsq.mvvm.ext.nav
 import com.gsq.mvvm.ext.navigateAction
+import com.gsq.mvvm.ext.view.gone
+import com.gsq.mvvm.ext.view.visible
 import com.kingja.loadsir.core.LoadService
+import kotlinx.android.synthetic.main.fragment_dictionary_sub_list.fourth_recycler_view
+import kotlinx.android.synthetic.main.fragment_dictionary_sub_list.line_view
+import kotlinx.android.synthetic.main.fragment_search_init.search_historyRv
+import kotlinx.android.synthetic.main.fragment_search_init.search_hotRv
 import kotlinx.android.synthetic.main.fragment_works_list.*
 
 /**
@@ -33,6 +45,7 @@ import kotlinx.android.synthetic.main.fragment_works_list.*
 class DictionarySubListFragment : BaseFragment<DictionaryViewModel, FragmentDictionarySubListBinding>() {
 
     private val args: DictionaryArgsType by args()
+    private var subTitleList: MutableList<DictionaryMenuBean>? = null
 
 
     //适配器
@@ -44,9 +57,12 @@ class DictionarySubListFragment : BaseFragment<DictionaryViewModel, FragmentDict
         })
     }
 
+    private val fourTagAdapter: DictionaryLevelAdapter by lazy { DictionaryLevelAdapter(arrayListOf()) }
+
     //界面状态管理者
     private lateinit var loadsir: LoadService<Any>
     private var tag3:String = ""
+    private var tag4:String = ""
 
 
     override fun initView(savedInstanceState: Bundle?) {
@@ -68,6 +84,14 @@ class DictionarySubListFragment : BaseFragment<DictionaryViewModel, FragmentDict
             //加载更多
             requestData()
         }
+
+        //创建流式布局layout
+        val layoutManager2 = FlexboxLayoutManager(context)
+        //方向 主轴为水平方向，起点在左端
+        layoutManager2.flexDirection = FlexDirection.ROW
+        //左对齐
+        layoutManager2.justifyContent = JustifyContent.FLEX_START
+        fourth_recycler_view.init(layoutManager2, fourTagAdapter, false)
 
         worksAdapter.setOnItemClickListener { adapter, view, position ->
             val worksBean = adapter.data[position] as WorksBean
@@ -96,9 +120,31 @@ class DictionarySubListFragment : BaseFragment<DictionaryViewModel, FragmentDict
                 tag?.let {
                     tag3 = it
                 }
+                if(tag.isNullOrEmpty()) {
+                    fourth_recycler_view.gone()
+                    line_view.gone()
+                }else{
+                    subTitleList?.let {
+                        it.find { it.name == tag }.let {
+                            it?.id?.let {
+                                mViewModel.getDictionaryFourClassifyById(it)
+                            }
+                        }
+                    }
+                }
                 requestData(true)
             }
         })
+        fourTagAdapter.setOnItemClickListener { adapter, view, position ->
+            if(fourTagAdapter.selectedPosition == position){
+                fourTagAdapter.setSelectedPosition(-1)
+                tag4 = ""
+            }else {
+                fourTagAdapter.setSelectedPosition(position)
+                tag4 = fourTagAdapter.data[position].name
+            }
+            requestData(true)
+        }
     }
 
 
@@ -121,7 +167,7 @@ class DictionarySubListFragment : BaseFragment<DictionaryViewModel, FragmentDict
      * 获取列表数据
      */
     private fun requestData(isRefresh: Boolean = false) {
-        mViewModel.getDictionaryWorks(isRefresh,"",args.firstTag?: "",args.tag?:"",tag3,"")
+        mViewModel.getDictionaryWorks(isRefresh,"",args.firstTag?: "",args.tag?:"",tag3,tag4)
     }
 
     override fun createObserver() {
@@ -132,7 +178,27 @@ class DictionarySubListFragment : BaseFragment<DictionaryViewModel, FragmentDict
                 subList.forEach {
                     list.add(it.name)
                 }
+                subTitleList = subList
                 mViewBind.flowContentLayout.addViews(list)
+            }
+        }
+        mViewModel.classifyFourSubList.observe(viewLifecycleOwner){
+            it?.let { subList ->
+//                var list = mutableListOf<String>()
+//                subList.forEach {
+//                    list.add(it.name)
+//                }
+                fourTagAdapter.data = subList
+                if(subList.size>0) {
+                    fourth_recycler_view.visible()
+                    line_view.visible()
+                }else{
+                    fourth_recycler_view.gone()
+                    line_view.gone()
+                }
+            }?: let {
+                fourth_recycler_view.gone()
+                line_view.gone()
             }
         }
         mViewModel.worksDataState.observe(viewLifecycleOwner, Observer {

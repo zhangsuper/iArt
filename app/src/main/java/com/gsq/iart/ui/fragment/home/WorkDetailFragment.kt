@@ -11,6 +11,7 @@ import androidx.lifecycle.Observer
 import androidx.viewpager2.widget.ViewPager2
 import com.blankj.utilcode.util.FileUtils
 import com.blankj.utilcode.util.LogUtils
+import com.blankj.utilcode.util.ThreadUtils
 import com.blankj.utilcode.util.ToastUtils
 import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView.*
 import com.downloader.OnDownloadListener

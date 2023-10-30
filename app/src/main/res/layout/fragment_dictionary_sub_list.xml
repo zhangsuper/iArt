@@ -4,11 +4,12 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.appcompat.widget.LinearLayoutCompat
         android:id="@+id/condition_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        android:orientation="vertical">
 
         <com.gsq.iart.app.weight.FlowContentLayout
             android:id="@+id/flow_content_layout"
@@ -17,7 +18,23 @@
             app:layout_constraintTop_toTopOf="parent"
             android:layout_marginHorizontal="@dimen/dp_16"/>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        <View
+            android:id="@+id/line_view"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_1"
+            android:background="#1A000000"
+            android:visibility="gone"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/fourth_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/dp_16"
+            android:layout_marginTop="@dimen/dp_10"
+            android:visibility="gone"/>
+
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/works_refresh_layout"

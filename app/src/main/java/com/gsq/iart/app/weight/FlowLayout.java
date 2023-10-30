@@ -25,7 +25,7 @@ public class FlowLayout extends ViewGroup {
     private int mHorizontalSpacing = SizeUtils.dp2px(8);
 
     private static final int MAX_LINE = 9;//从0开始计数
-    private static final int MIN_LINE = 1;//从0开始计数
+    private static final int MIN_LINE = 0;//从0开始计数
     private FlowContentLayout mFlowContentLayout;
     private boolean foldState = true;
     private View upFoldView;
@@ -310,7 +310,7 @@ public class FlowLayout extends ViewGroup {
         tv.setPadding(SizeUtils.dp2px(12), SizeUtils.dp2px(6), SizeUtils.dp2px(12),SizeUtils.dp2px(6));
         tv.setText(s);
         tv.setSingleLine();
-        tv.setTextSize(TypedValue.COMPLEX_UNIT_SP,12);
+        tv.setTextSize(TypedValue.COMPLEX_UNIT_SP,14);
         tv.setEllipsize(TextUtils.TruncateAt.END);
         tv.setBackgroundResource(backgroundResource);
         tv.setSelected(s == selectedTag);
