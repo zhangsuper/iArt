@@ -32,6 +32,7 @@ public class FlowLayout extends ViewGroup {
     private View downFoldView;
     private int mWidth;
     private int textViewHeight;
+    private int backgroundResource;
 
     public FlowLayout(Context context) {
         this(context, null);
@@ -59,6 +60,10 @@ public class FlowLayout extends ViewGroup {
 
     public void setDownFoldView(View downFoldView) {
         this.downFoldView = downFoldView;
+    }
+
+    public void setBackgroundResource(int resource){
+        backgroundResource = resource;
     }
 
     private ClickListener mListener;
@@ -307,7 +312,7 @@ public class FlowLayout extends ViewGroup {
         tv.setSingleLine();
         tv.setTextSize(TypedValue.COMPLEX_UNIT_SP,12);
         tv.setEllipsize(TextUtils.TruncateAt.END);
-        tv.setBackgroundResource(R.drawable.bg_dictionary_tag_selector);
+        tv.setBackgroundResource(backgroundResource);
         tv.setSelected(s == selectedTag);
         if(s == selectedTag){
             tv.setTextColor(ColorUtils.getColor(R.color.white));

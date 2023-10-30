@@ -24,10 +24,16 @@ public class FlowContentLayout extends RelativeLayout{
     private View upView;
     private View downView;
 
+    private int backgroundResource = R.drawable.bg_dictionary_tag_selector;
+
     private ClickListener mListener;
 
     public interface ClickListener{
         void onClick(String tag);
+    }
+
+    public void setBackgroundResource(int resource){
+        backgroundResource = resource;
     }
 
     public void setOnclickListener(ClickListener listener){
@@ -69,6 +75,7 @@ public class FlowContentLayout extends RelativeLayout{
         mFontFlowLayout = findViewById(R.id.mFontFlowLayout);
         mFontFlowLayout.setUpFoldView(upView);
         mFontFlowLayout.setDownFoldView(downView);
+        mFontFlowLayout.setBackgroundResource(backgroundResource);
         mFontFlowLayout.setOnclickListener(new FlowLayout.ClickListener() {
             @Override
             public void onClick(String tag) {
