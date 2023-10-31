@@ -9,10 +9,36 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_32"
         android:textSize="@dimen/font_14"
-        android:textColor="@color/color_141414"
+        android:textColor="@color/color_888888"
         app:layout_constraintTop_toTopOf="parent"
         android:gravity="center"
         android:background="@drawable/bg_eff1f5_conner_2"/>
+
+    <LinearLayout
+        android:id="@+id/frame_down_layout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_32"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toTopOf="parent"
+        android:gravity="center"
+        android:visibility="gone"
+        android:background="@drawable/bg_eff1f5_conner_2">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/font_14"
+            android:textColor="@color/color_141414"
+            app:layout_constraintTop_toTopOf="parent"
+            android:gravity="center"
+            android:text="展开"/>
+        <ImageView
+            android:layout_width="@dimen/dp_10"
+            android:layout_height="@dimen/dp_10"
+            android:layout_marginLeft="@dimen/dp_6"
+            android:src="@drawable/icon_frame"/>
+
+    </LinearLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
