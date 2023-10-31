@@ -25,6 +25,7 @@ import com.gsq.iart.viewmodel.LoginViewModel
 import com.gsq.iart.viewmodel.MemberViewModel
 import com.gsq.mvvm.ext.nav
 import com.gsq.mvvm.ext.navigateAction
+import com.gsq.mvvm.ext.view.onClick
 import kotlinx.android.synthetic.main.fragment_member.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -74,6 +75,14 @@ class MemberFragment : BaseFragment<MemberViewModel, FragmentMemberBinding>() {
             payType = 2
             iv_wechat_pay_selected.setImageResource(R.drawable.check_box_unselected)
             iv_ali_pay_selected.setImageResource(R.drawable.check_box_selected)
+        }
+        user_info_view.onClick {
+            if (!CacheUtil.isLogin()) {
+                nav().navigateAction(R.id.action_memberFragment_to_loginFragment)
+                var eventMap = mutableMapOf<String, Any?>()
+                eventMap["type"] = "vip"
+                MobAgentUtil.onEvent("signin", eventMap)
+            }
         }
 
         val clickableSpan = object : ClickableSpan() {

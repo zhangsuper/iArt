@@ -2,7 +2,8 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
 
     <include
@@ -19,9 +20,26 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintTop_toBottomOf="@+id/home_search_view"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        />
+
+    <TextView
+        android:id="@+id/open_vip_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/vip_more_tag"
+        android:background="@drawable/bg_141414_conner_24"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:paddingHorizontal="@dimen/dp_27"
+        android:paddingVertical="@dimen/dp_13"
+        android:textSize="@dimen/font_16"
+        android:textColor="@color/white"
+        android:visibility="gone"
+        tools:visibility="visible"
+        android:layout_marginTop="@dimen/dp_20"
+        app:layout_constraintTop_toBottomOf="@+id/recycler_view"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

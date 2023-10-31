@@ -70,4 +70,6 @@
     <string name="my_member">我的会员</string>
     <string name="vip_agreement">会员服务协议</string>
 
+    <string name="vip_more_tag">点击开通超级会员，查看更多标签</string>
+
 </resources>
