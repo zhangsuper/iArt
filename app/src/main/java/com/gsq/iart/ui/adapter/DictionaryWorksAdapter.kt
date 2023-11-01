@@ -9,6 +9,7 @@ import com.gsq.iart.R
 import com.gsq.iart.app.ext.setAdapterAnimation
 import com.gsq.iart.app.ext.setImageViewRatio
 import com.gsq.iart.app.image.GlideHelper
+import com.gsq.iart.app.util.CacheUtil
 import com.gsq.iart.app.util.SettingUtil
 import com.gsq.iart.data.bean.DictionaryMenuBean
 import com.gsq.iart.data.bean.WorksBean
@@ -46,15 +47,10 @@ class DictionaryWorksAdapter constructor(var listener: CallBackListener) :
         }
 //        imageView.setImageViewRatio(item.thumbWidth, item.thumbHeight)
         GlideHelper.load(imageView, item.thumb, R.color.color_DDDDDD)
-        if (holder.layoutPosition + 4 == data.size) {
+        if (holder.layoutPosition + 4 == data.size && CacheUtil.getUser()?.memberType == 1) {
             listener.loadMore()
 //            EventBus.getDefault().post(LoadMoreEvent(true))
         }
-//        if (holder.layoutPosition == 1) {
-//            imageView.layoutParams.height = SizeUtils.dp2px(318f)
-//        } else {
-//            imageView.layoutParams.height = SizeUtils.dp2px(208f)
-//        }
         if (item.pay == 1) {
             vipIcon.visible()
         } else {

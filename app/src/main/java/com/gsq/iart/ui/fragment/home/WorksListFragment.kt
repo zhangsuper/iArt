@@ -14,6 +14,7 @@ import com.airbnb.mvrx.asMavericksArgs
 import com.blankj.utilcode.util.ColorUtils
 import com.blankj.utilcode.util.ScreenUtils
 import com.blankj.utilcode.util.SizeUtils
+import com.gsq.iart.BuildConfig
 import com.gsq.iart.R
 import com.gsq.iart.app.base.BaseFragment
 import com.gsq.iart.app.ext.*
@@ -39,8 +40,10 @@ import com.gsq.iart.viewmodel.WorksViewModel
 import com.gsq.mvvm.ext.nav
 import com.gsq.mvvm.ext.navigateAction
 import com.gsq.mvvm.ext.view.gone
+import com.gsq.mvvm.ext.view.onClick
 import com.gsq.mvvm.ext.view.visible
 import com.kingja.loadsir.core.LoadService
+import kotlinx.android.synthetic.main.fragment_dictionary_sub_list.open_vip_btn
 import kotlinx.android.synthetic.main.fragment_work_detail.*
 import kotlinx.android.synthetic.main.fragment_works_list.*
 import org.greenrobot.eventbus.Subscribe
@@ -99,7 +102,11 @@ class WorksListFragment : BaseFragment<WorksViewModel, FragmentWorksListBinding>
         works_recycler_view.init(layoutManager, worksAdapter)
         works_recycler_view.initFooter {
             //加载更多
-            requestData()
+            if(CacheUtil.getUser()?.memberType != 1 && BuildConfig.DEBUG) {
+                works_recycler_view.loadMoreFinish(false,true)
+            }else{
+                requestData()
+            }
         }
 
         initTypeConditionView()
@@ -149,6 +156,10 @@ class WorksListFragment : BaseFragment<WorksViewModel, FragmentWorksListBinding>
                 bundle.putString(INTENT_TYPE, args.complexType)
                 nav().navigateAction(R.id.action_mainFragment_to_workDetailFragment, bundle)
             }
+        }
+
+        open_vip_btn.onClick {
+            //开通超级会员
         }
     }
 
@@ -589,6 +600,11 @@ class WorksListFragment : BaseFragment<WorksViewModel, FragmentWorksListBinding>
                 works_refresh_layout,
                 args.complexType
             )
+            if(it.isRefresh && it.listData.size>8 && CacheUtil.getUser()?.memberType != 1 && BuildConfig.DEBUG){
+                open_vip_btn.visible()
+            }else{
+                open_vip_btn.gone()
+            }
         })
         mViewModel.conditionRootClassifys.observe(viewLifecycleOwner, Observer {
             if (it.isSuccess) {

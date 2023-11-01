@@ -31,10 +31,12 @@ import com.gsq.iart.viewmodel.DictionaryViewModel
 import com.gsq.mvvm.ext.nav
 import com.gsq.mvvm.ext.navigateAction
 import com.gsq.mvvm.ext.view.gone
+import com.gsq.mvvm.ext.view.onClick
 import com.gsq.mvvm.ext.view.visible
 import com.kingja.loadsir.core.LoadService
 import kotlinx.android.synthetic.main.fragment_dictionary_sub_list.fourth_recycler_view
 import kotlinx.android.synthetic.main.fragment_dictionary_sub_list.line_view
+import kotlinx.android.synthetic.main.fragment_dictionary_sub_list.open_vip_btn
 import kotlinx.android.synthetic.main.fragment_search_init.search_historyRv
 import kotlinx.android.synthetic.main.fragment_search_init.search_hotRv
 import kotlinx.android.synthetic.main.fragment_works_list.*
@@ -82,7 +84,11 @@ class DictionarySubListFragment : BaseFragment<DictionaryViewModel, FragmentDict
         works_recycler_view.init(layoutManager, worksAdapter)
         works_recycler_view.initFooter {
             //加载更多
-            requestData()
+            if(CacheUtil.getUser()?.memberType == 1) {
+                requestData()
+            }else{
+                works_recycler_view.loadMoreFinish(false,true)
+            }
         }
 
         //创建流式布局layout
@@ -145,6 +151,9 @@ class DictionarySubListFragment : BaseFragment<DictionaryViewModel, FragmentDict
             }
             requestData(true)
         }
+        open_vip_btn.onClick {
+            //开通超级会员
+        }
     }
 
 
@@ -203,7 +212,7 @@ class DictionarySubListFragment : BaseFragment<DictionaryViewModel, FragmentDict
         }
         mViewModel.worksDataState.observe(viewLifecycleOwner, Observer {
             //设值 新写了个拓展函数
-            loadListData(
+            loadDictionaryListData(
                 it,
                 worksAdapter,
                 loadsir,
@@ -211,6 +220,11 @@ class DictionarySubListFragment : BaseFragment<DictionaryViewModel, FragmentDict
                 works_refresh_layout,
                 Constant.COMPLEX_TYPE_DICTIONARY
             )
+            if(it.isRefresh && it.listData.size>8 && CacheUtil.getUser()?.memberType != 1){
+                open_vip_btn.visible()
+            }else{
+                open_vip_btn.gone()
+            }
         })
     }
 

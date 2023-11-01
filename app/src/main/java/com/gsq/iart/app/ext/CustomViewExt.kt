@@ -24,6 +24,7 @@ import com.bumptech.glide.request.target.DrawableImageViewTarget
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.gsq.iart.R
 import com.gsq.iart.app.network.stateCallback.ListDataUiState
+import com.gsq.iart.app.util.CacheUtil
 import com.gsq.iart.app.util.SettingUtil
 import com.gsq.iart.app.weight.loadCallBack.*
 import com.gsq.iart.app.weight.recyclerview.DefineLoadMoreView
@@ -391,6 +392,63 @@ fun <T> loadListData(
             //是第一页
             data.isRefresh -> {
                 baseQuickAdapter.setList(data.listData)
+                baseQuickAdapter.recyclerView.scrollToPosition(0)
+                loadService.showSuccess()
+            }
+            //不是第一页
+            else -> {
+                baseQuickAdapter.addData(data.listData)
+                loadService.showSuccess()
+            }
+        }
+    } else {
+        //失败
+        if (data.isRefresh) {
+            //如果是第一页，则显示错误界面，并提示错误信息
+            loadService.showError(data.errMessage)
+        } else {
+            recyclerView.loadMoreError(0, data.errMessage)
+        }
+    }
+}
+
+/**
+* 加载列表数据
+*/
+fun <T> loadDictionaryListData(
+    data: ListDataUiState<T>,
+    baseQuickAdapter: BaseQuickAdapter<T, *>,
+    loadService: LoadService<*>,
+    recyclerView: SwipeRecyclerView,
+    swipeRefreshLayout: SwipeRefreshLayout?,
+    complexType: String
+) {
+    swipeRefreshLayout?.isRefreshing = false
+    recyclerView.loadMoreFinish(data.isEmpty, !data.isEmpty)
+    if (data.isSuccess) {
+        //成功
+        when {
+            //第一页并没有数据 显示空布局界面
+            data.isFirstEmpty -> {
+                when (complexType) {
+                    Constant.COMPLEX_TYPE_SEARCH -> {
+                        loadService.showWorksSearchEmpty()
+                    }
+                    Constant.COMPLEX_TYPE_COLLECT -> {
+                        loadService.showWorksCollectEmpty()
+                    }
+                    else -> {
+                        loadService.showEmpty()
+                    }
+                }
+            }
+            //是第一页
+            data.isRefresh -> {
+                if(CacheUtil.getUser()?.memberType != 1 && data.listData.size>8) {
+                    baseQuickAdapter.setList(data.listData.subList(0, 8))
+                }else{
+                    baseQuickAdapter.setList(data.listData)
+                }
                 baseQuickAdapter.recyclerView.scrollToPosition(0)
                 loadService.showSuccess()
             }
