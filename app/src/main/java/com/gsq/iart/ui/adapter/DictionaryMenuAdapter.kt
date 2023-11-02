@@ -24,9 +24,14 @@ import com.gsq.mvvm.ext.view.visible
 class DictionaryMenuAdapter : BaseQuickAdapter<DictionaryMenuBean, BaseViewHolder>(R.layout.item_dictionary_layout) {
 
     private var mClickListener: ((bean: DictionaryMenuBean, position: Int) -> Unit)? = null
+    private var onExtendClickListener: (() -> Unit)? = null
 
     fun setClickBackListener(listener: ((bean: DictionaryMenuBean, position: Int) -> Unit)?){
         mClickListener = listener
+    }
+
+    fun setExtendClickListener(listener: (() -> Unit)?) {
+        onExtendClickListener = listener
     }
 
     override fun convert(holder: BaseViewHolder, item: DictionaryMenuBean) {
@@ -60,6 +65,7 @@ class DictionaryMenuAdapter : BaseQuickAdapter<DictionaryMenuBean, BaseViewHolde
                 //展开 需要超级会员
                 if(CacheUtil.getUser()?.memberType != 1){
                     ToastUtils.showLong("需要超级会员才能展开")
+                    onExtendClickListener?.invoke()
                 }else {
                     mSecondMenuAdapter.setExpendStatus(true)
                     mSecondMenuAdapter.setData(item.subs)
@@ -78,15 +84,4 @@ class DictionaryMenuAdapter : BaseQuickAdapter<DictionaryMenuBean, BaseViewHolde
         }
     }
 
-
-    private var onBackListener: OnBackListener? = null
-
-    interface OnBackListener {
-        fun onClick()
-    }
-
-    fun onBackListener(listener: OnBackListener): DictionaryMenuAdapter {
-        this.onBackListener = listener
-        return this
-    }
 }

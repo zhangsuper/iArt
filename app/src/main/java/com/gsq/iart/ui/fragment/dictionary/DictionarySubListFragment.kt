@@ -104,7 +104,7 @@ class DictionarySubListFragment : BaseFragment<DictionaryViewModel, FragmentDict
             if (worksBean.pay == 1 && CacheUtil.getUser()?.memberType != 1) {
                 //需要付费且没有开通了会员
                 nav().navigateAction(
-                    R.id.action_mainFragment_to_memberFragment,
+                    R.id.action_dictionaryListFragment_to_memberFragment,
                     bundleOf(MemberFragment.INTENT_KEY_TYPE to MemberFragment.INTENT_VALUE_WORKS)
                 )
             } else {
@@ -153,6 +153,10 @@ class DictionarySubListFragment : BaseFragment<DictionaryViewModel, FragmentDict
         }
         open_vip_btn.onClick {
             //开通超级会员
+            nav().navigateAction(
+                R.id.action_dictionaryListFragment_to_memberFragment,
+                bundleOf(MemberFragment.INTENT_KEY_TYPE to MemberFragment.INTENT_VALUE_WORKS)
+            )
         }
     }
 

@@ -64,6 +64,12 @@ class DictionaryFragment : BaseFragment<DictionaryViewModel, FragmentDictionaryB
             bundle.putInt(Constant.INTENT_POSITION, position)
             nav().navigateAction(R.id.action_mainFragment_to_dictionaryListFragment, bundle)
         }
+        mAdapter!!.setExtendClickListener {
+            nav().navigateAction(
+                R.id.action_mainFragment_to_memberFragment,
+                bundleOf(MemberFragment.INTENT_KEY_TYPE to MemberFragment.INTENT_VALUE_WORKS)
+            )
+        }
         recycler_view.adapter = mAdapter
         open_vip_btn.onClick {
             isClickVipBtn = true
