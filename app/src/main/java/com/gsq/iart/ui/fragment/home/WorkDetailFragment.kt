@@ -16,6 +16,7 @@ import com.blankj.utilcode.util.ToastUtils
 import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView.*
 import com.downloader.OnDownloadListener
 import com.downloader.PRDownloader
+import com.gsq.iart.BuildConfig
 import com.gsq.iart.R
 import com.gsq.iart.app.App
 import com.gsq.iart.app.base.BaseFragment
@@ -245,7 +246,7 @@ class WorkDetailFragment : BaseFragment<WorksViewModel, FragmentWorkDetailBindin
         }
         iv_download.onClick {
             if (CacheUtil.isLogin()) {
-                if (CacheUtil.getUser()?.memberType == 1) {
+                if (CacheUtil.getUser()?.memberType == 1 || BuildConfig.DEBUG) {
                     //下载
                     var eventMap = mutableMapOf<String, Any?>()
                     eventMap["work_id"] = worksBean?.id

@@ -9,12 +9,14 @@ import androidx.core.os.bundleOf
 import androidx.lifecycle.ViewModelProvider
 import com.blankj.utilcode.util.LogUtils
 import com.blankj.utilcode.util.SpanUtils
+import com.blankj.utilcode.util.ThreadUtils
 import com.blankj.utilcode.util.ToastUtils
 import com.gsq.iart.R
 import com.gsq.iart.app.base.BaseFragment
 import com.gsq.iart.app.image.GlideHelper
 import com.gsq.iart.app.util.CacheUtil
 import com.gsq.iart.app.util.MobAgentUtil
+import com.gsq.iart.app.util.StatusBarUtil
 import com.gsq.iart.app.util.WxLoginUtil
 import com.gsq.iart.data.bean.PayConfigBean
 import com.gsq.iart.data.bean.VipPriceBean
@@ -174,6 +176,12 @@ class MemberFragment : BaseFragment<MemberViewModel, FragmentMemberBinding>() {
 
     override fun onResume() {
         super.onResume()
+        StatusBarUtil.init(
+            requireActivity(),
+            fitSystem = true,
+            statusBarColor = R.color.white,
+            isDarkFont = true
+        )
         initDate()
     }
 
