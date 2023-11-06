@@ -18,6 +18,7 @@ import com.gsq.iart.app.ext.loadServiceInit
 import com.gsq.iart.app.ext.showError
 import com.gsq.iart.app.ext.showLoading
 import com.gsq.iart.app.util.FileUtil
+import com.gsq.iart.data.Constant.DOWNLOAD_PARENT_PATH
 import com.gsq.iart.data.bean.DetailArgsType
 import com.gsq.iart.data.event.BigImageClickEvent
 import com.gsq.iart.databinding.FragmentPreviewImageBinding
@@ -98,7 +99,8 @@ class PreviewImageFragment : BaseFragment<BaseViewModel, FragmentPreviewImageBin
             args.workHdPics.url.indexOf('?')
         )
         LogUtils.dTag(TAG, "testname:${fileName}")
-        var imageResource = FileUtil.getPrivateSavePath("download") + fileName
+//        var imageResource = FileUtil.getPrivateSavePath("download") + fileName
+        var imageResource = DOWNLOAD_PARENT_PATH + File.separator + fileName
         if (FileUtils.isFileExists(imageResource)) {
             LogUtils.dTag(TAG, "local imageResource File isExists:${imageResource}")
             photo_view.setImage(ImageSource.uri(imageResource))

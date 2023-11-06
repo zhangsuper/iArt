@@ -2,6 +2,7 @@ package com.gsq.iart.ui.fragment.home
 
 import android.Manifest
 import android.content.Intent
+import android.media.MediaScannerConnection
 import android.net.Uri
 import android.os.Bundle
 import androidx.core.os.bundleOf
@@ -11,7 +12,6 @@ import androidx.lifecycle.Observer
 import androidx.viewpager2.widget.ViewPager2
 import com.blankj.utilcode.util.FileUtils
 import com.blankj.utilcode.util.LogUtils
-import com.blankj.utilcode.util.ThreadUtils
 import com.blankj.utilcode.util.ToastUtils
 import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView.*
 import com.downloader.OnDownloadListener
@@ -42,6 +42,8 @@ import com.gsq.mvvm.ext.navigateAction
 import com.gsq.mvvm.ext.view.gone
 import com.gsq.mvvm.ext.view.onClick
 import com.gsq.mvvm.ext.view.visible
+import com.gsq.mvvm.util.SaveUtils
+import com.liulishuo.okdownload.OkDownloadProvider
 import kotlinx.android.synthetic.main.fragment_work_detail.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -317,24 +319,28 @@ class WorkDetailFragment : BaseFragment<WorksViewModel, FragmentWorkDetailBindin
                     it.indexOf('?')
                 )
                 LogUtils.dTag(TAG, "testname:${fileName}")
-                var imageResource = FileUtil.getPrivateSavePath("download") + fileName
+//                var imageResource = FileUtil.getSDPath(App.instance) + fileName
 
                 FileUtils.createOrExistsDir(DOWNLOAD_PARENT_PATH)
-                var destPath = DOWNLOAD_PARENT_PATH + File.separator + fileName
-//                if (FileUtils.isFileExists(destPath)) {
-//                    LogUtils.dTag(TAG, "图片已存在")
-//                    ToastUtils.showLong("文件已保存在：${destPath}")
-//                    return@let
-//                }
+                var imageResource = DOWNLOAD_PARENT_PATH + File.separator + fileName
                 if (FileUtils.isFileExists(imageResource)) {
-                    LogUtils.dTag(TAG, "File copy to destPath")
-                    FileUtils.copy(imageResource, destPath)
-
+//                    LogUtils.dTag(TAG, "File copy to destPath")
+//                    FileUtils.copy(imageResource, destPath)
+//
                     //把图片保存后声明这个广播事件通知系统相册有新图片到来
-                    val intent = Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE)
-                    val uri: Uri = Uri.fromFile(File(destPath))
-                    intent.data = uri
-                    App.instance.sendBroadcast(intent)
+//                    val intent = Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE)
+//                    val uri: Uri = Uri.fromFile(File(imageResource))
+//                    intent.data = uri
+//                    App.instance.sendBroadcast(intent)
+
+//                    val file = File(imageResource)
+//                    MediaScannerConnection.scanFile(
+//                        OkDownloadProvider.context, arrayOf(file.toString()),
+//                        null, null
+//                    )
+
+                    SaveUtils.saveImgFileToAlbum(App.instance, imageResource)
+
                     ToastUtils.showLong("文件已保存在相册")
                     return@let
                 }
@@ -373,12 +379,15 @@ class WorkDetailFragment : BaseFragment<WorksViewModel, FragmentWorkDetailBindin
             .start(object : OnDownloadListener {
                 override fun onDownloadComplete() {
                     progress_bar.gone()
-                    var destPath = dirPath + File.separator + fileName
+                    var destPath = DOWNLOAD_PARENT_PATH + File.separator + fileName
+
                     //把图片保存后声明这个广播事件通知系统相册有新图片到来
-                    val intent = Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE)
-                    val uri: Uri = Uri.fromFile(File(destPath))
-                    intent.data = uri
-                    App.instance.sendBroadcast(intent)
+//                    val intent = Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE)
+//                    val uri: Uri = Uri.fromFile(File(destPath))
+//                    intent.data = uri
+//                    App.instance.sendBroadcast(intent)
+
+                    SaveUtils.saveImgFileToAlbum(App.instance, destPath)
                     ToastUtils.showLong("文件已保存在相册")
                 }
 

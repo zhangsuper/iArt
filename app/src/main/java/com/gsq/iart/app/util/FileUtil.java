@@ -1002,14 +1002,29 @@ public class FileUtil {
 //    }
 
     public static String getSDPath(Context context) {
-        if (Environment.getExternalStorageState().equals(
-                Environment.MEDIA_MOUNTED)) {
-            File external = context.getExternalFilesDir(null);
-            if (external != null) {
-                return external.getAbsolutePath();
+//        if (Environment.getExternalStorageState().equals(
+//                Environment.MEDIA_MOUNTED)) {
+//            File external = context.getExternalFilesDir(null);
+//            if (external != null) {
+//                return external.getAbsolutePath();
+//            }
+//        }
+//        return context.getFilesDir().getAbsolutePath();
+
+        File sdDir = null;
+        boolean sdCardExist = Environment.getExternalStorageState().equals(
+                Environment.MEDIA_MOUNTED);// 判断sd卡是否存在
+        if (sdCardExist) {
+            if (Build.VERSION.SDK_INT>=29){
+                //Android10之后
+                sdDir = context.getExternalFilesDir(null);
+            }else {
+                sdDir = Environment.getExternalStorageDirectory();// 获取SD卡根目录
             }
+        } else {
+            sdDir = Environment.getRootDirectory();// 获取跟目录
         }
-        return context.getFilesDir().getAbsolutePath();
+        return sdDir.toString();
     }
 
     public static String getPrivateSavePath(String folderName) {

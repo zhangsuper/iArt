@@ -36,10 +36,10 @@ object Constant {
 
 
     const val CLIENT_PATH = "yishuguan" //SD卡根目录存储位置
-    const val DOWNLOAD_PATH = "艺术馆"//下载目录
+//    const val DOWNLOAD_PATH = "艺术馆"//下载目录
 
     var DOWNLOAD_PARENT_PATH =
-        FileUtil.getSDPath(App.instance) + File.separator + CLIENT_PATH + File.separator + DOWNLOAD_PATH
+        FileUtil.getSDPath(App.instance) + File.separator + CLIENT_PATH
 
 //    val download_path: String = FileUtil.getSavePath(CLIENT_PATH + DOWNLOAD_PATH)
 
