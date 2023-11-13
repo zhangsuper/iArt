@@ -65,7 +65,7 @@
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/font_16"
                     android:textColor="@color/black"
-                    android:text="现        存: " />
+                    android:text="现&#12288;&#12288;存: " />
 
                 <TextView
                     android:id="@+id/tv_scf"
@@ -88,7 +88,7 @@
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/font_16"
                     android:textColor="@color/black"
-                    android:text="题        材: " />
+                    android:text="题&#12288;&#12288;材: " />
 
                 <TextView
                     android:id="@+id/tv_tc"
@@ -111,7 +111,7 @@
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/font_16"
                     android:textColor="@color/black"
-                    android:text="颜        色: " />
+                    android:text="颜&#12288;&#12288;色: " />
 
                 <TextView
                     android:id="@+id/tv_ys"
@@ -157,7 +157,7 @@
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/font_16"
                     android:textColor="@color/black"
-                    android:text="材        质: " />
+                    android:text="材&#12288;&#12288;质: " />
 
                 <TextView
                     android:id="@+id/tv_cz"
@@ -180,7 +180,7 @@
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/font_16"
                     android:textColor="@color/black"
-                    android:text="形        制: " />
+                    android:text="形&#12288;&#12288;制: " />
 
                 <TextView
                     android:id="@+id/tv_xz"
@@ -203,7 +203,7 @@
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/font_16"
                     android:textColor="@color/black"
-                    android:text="标        签: " />
+                    android:text="标&#12288;&#12288;签: " />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/tag_recycler_view"
@@ -255,7 +255,7 @@
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/font_16"
                     android:textColor="@color/black"
-                    android:text="简        介: " />
+                    android:text="简&#12288;&#12288;介: " />
 
 
                 <TextView
