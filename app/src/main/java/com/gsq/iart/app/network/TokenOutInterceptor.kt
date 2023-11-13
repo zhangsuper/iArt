@@ -3,9 +3,11 @@ package com.gsq.iart.app.network
 import android.content.Intent
 import com.google.gson.Gson
 import com.gsq.iart.data.bean.ApiResponse
+import com.gsq.iart.data.event.LoginEvent
 import okhttp3.Interceptor
 import okhttp3.Response
 import okhttp3.ResponseBody
+import org.greenrobot.eventbus.EventBus
 import java.io.IOException
 
 /**
@@ -24,11 +26,13 @@ class TokenOutInterceptor : Interceptor {
             val responseBody = ResponseBody.create(mediaType, string)
             val apiResponse = gson.fromJson(string, ApiResponse::class.java)
             //判断逻辑 模拟一下
-            if (apiResponse.code == "99999") {
+            //A0401
+            if (apiResponse.code == "A0401") {
                 //如果是普通的activity话 可以直接跳转，如果是navigation中的fragment，可以发送通知跳转
 //                appContext.startActivity(Intent(appContext, TestActivity::class.java).apply {
 //                    flags = Intent.FLAG_ACTIVITY_NEW_TASK
 //                })
+                EventBus.getDefault().post(LoginEvent("A0401", "Token过期"))
             }
             response.newBuilder().body(responseBody).build()
         } else {

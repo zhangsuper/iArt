@@ -23,6 +23,7 @@ import com.gsq.iart.app.util.CacheUtil
 import com.gsq.iart.app.util.FileUtil
 import com.gsq.iart.app.util.StatusBarUtil
 import com.gsq.iart.app.util.WxLoginUtil
+import com.gsq.iart.data.event.LoginEvent
 import com.gsq.iart.databinding.ActivityMainBinding
 import com.gsq.iart.ui.dialog.DialogUtils
 import com.gsq.iart.ui.dialog.SecretDialog
@@ -31,6 +32,9 @@ import com.gsq.iart.viewmodel.LoginViewModel
 import com.gsq.mvvm.network.manager.NetState
 import com.tencent.mm.opensdk.openapi.IWXAPI
 import com.tencent.mm.opensdk.openapi.WXAPIFactory
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 import java.io.File
 
 
@@ -48,6 +52,7 @@ class MainActivity : BaseActivity<AppViewModel, ActivityMainBinding>() {
 
     @SuppressLint("ResourceAsColor")
     override fun initView(savedInstanceState: Bundle?) {
+        EventBus.getDefault().register(this)
         StatusBarUtil.init(this)
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
@@ -228,5 +233,20 @@ class MainActivity : BaseActivity<AppViewModel, ActivityMainBinding>() {
         api = WXAPIFactory.createWXAPI(this, BuildConfig.WEIXIN_KEY, true)
         // 将应用的 appId 注册到微信
         api.registerApp(BuildConfig.WEIXIN_KEY)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        EventBus.getDefault().unregister(this)
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onMessageEvent(event: LoginEvent?) {
+        event?.code?.let {
+            if (it == "A0401") {
+                //token过期
+                CacheUtil.setUser(null)
+            }
+        }
     }
 }
