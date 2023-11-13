@@ -98,8 +98,6 @@ class MainActivity : BaseActivity<AppViewModel, ActivityMainBinding>() {
                 it.data?.let { userInfo ->
                     CacheUtil.setUser(userInfo)
                 }
-            } else {
-                CacheUtil.setUser(null)
             }
         }
         mViewModel.appVersionDataState.observe(this) {
