@@ -277,10 +277,10 @@ fun ViewPager2.initMain(fragment: Fragment): ViewPager2 {
                 0 -> {
                     return HomeFragment()
                 }
+//                1 -> {
+//                    return DictionaryFragment()
+//                }
                 1 -> {
-                    return DictionaryFragment()
-                }
-                2 -> {
                     return MineFragment()
                 }
                 else -> {
@@ -289,7 +289,7 @@ fun ViewPager2.initMain(fragment: Fragment): ViewPager2 {
             }
         }
 
-        override fun getItemCount() = 3
+        override fun getItemCount() = 2
     }
     return this
 }

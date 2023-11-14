@@ -8,6 +8,12 @@
         android:icon="@drawable/home_tab"/>
 
     <item
+        android:id="@+id/menu_dictionary"
+        android:checked="true"
+        android:title="@string/main_tab_dictionary"
+        android:icon="@drawable/dictionary_tab"/>
+
+    <item
         android:id="@+id/menu_mine"
         android:title="@string/main_tab_mine"
         android:icon="@drawable/mine_tab"/>
