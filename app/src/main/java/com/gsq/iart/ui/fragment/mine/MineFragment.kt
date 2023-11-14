@@ -27,6 +27,7 @@ class MineFragment : BaseFragment<BaseViewModel, FragmentMineBinding>() {
     override fun onResume() {
         super.onResume()
         StatusBarUtil.init(requireActivity(), statusBarColor = R.color.color_EFF1F5)
+        setLoginStatus()
     }
 
     override fun getUserVisibleHint(): Boolean {
