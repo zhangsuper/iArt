@@ -6,6 +6,9 @@ plugins {
     id 'kotlin-android-extensions'
 }
 
+// 获取当前系统时间
+def versionTime = new Date().format("MMdd.HHmm")
+
 android {
     compileSdk buildVers.compile_sdk
 
@@ -71,7 +74,7 @@ android {
     // 自定义APK安装包名
     applicationVariants.all { variant ->
         variant.outputs.all {
-            outputFileName = "Android_v${variant.versionName}_${variant.flavorName}-${variant.buildType.name}.apk"
+            outputFileName = "Android_v${variant.versionName}_${variant.flavorName}_${versionTime}-${variant.buildType.name}.apk"
         }
 
     }
