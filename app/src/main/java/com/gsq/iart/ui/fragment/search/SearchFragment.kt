@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.text.TextUtils
 import android.view.inputmethod.EditorInfo
 import androidx.fragment.app.Fragment
+import com.blankj.utilcode.util.KeyboardUtils
+import com.blankj.utilcode.util.ThreadUtils
 import com.blankj.utilcode.util.ToastUtils
 import com.gsq.iart.R
 import com.gsq.iart.app.base.BaseFragment
@@ -53,7 +55,7 @@ class SearchFragment : BaseFragment<SearchViewModel, FragmentSearchBinding>() {
             if (!TextUtils.isEmpty(inputKey)) {
                 searchInitFragment.updateKey(inputKey)
                 searchData(inputKey)
-
+                KeyboardUtils.hideSoftInput(search_input_view)
                 var eventMap = mutableMapOf<String, Any?>()
                 eventMap["query"] = inputKey
                 MobAgentUtil.onEvent("search_guohua", eventMap)
@@ -66,7 +68,7 @@ class SearchFragment : BaseFragment<SearchViewModel, FragmentSearchBinding>() {
             if (i == EditorInfo.IME_ACTION_SEARCH && !TextUtils.isEmpty(inputKey)) {
                 searchInitFragment.updateKey(inputKey)
                 searchData(inputKey)
-
+                KeyboardUtils.hideSoftInput(search_input_view)
                 var eventMap = mutableMapOf<String, Any?>()
                 eventMap["query"] = inputKey
                 MobAgentUtil.onEvent("search_guohua", eventMap)
@@ -83,7 +85,12 @@ class SearchFragment : BaseFragment<SearchViewModel, FragmentSearchBinding>() {
         searchInitFragment.setOnClickItemListener {
             search_input_view.setText(it)
             searchData(it)
+            KeyboardUtils.hideSoftInput(search_input_view)
         }
+        search_input_view.requestFocus()
+        ThreadUtils.getMainHandler().postDelayed({
+            KeyboardUtils.showSoftInput()
+        },200)
     }
 
     private fun transactionInitFragment() {
@@ -122,6 +129,15 @@ class SearchFragment : BaseFragment<SearchViewModel, FragmentSearchBinding>() {
         transaction.replace(R.id.search_frameLayout, fragment)
         transaction.setReorderingAllowed(false)
         transaction.commit()
+    }
+
+    override fun onStop() {
+        KeyboardUtils.hideSoftInput(search_input_view)
+        super.onStop()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
     }
 
 }
