@@ -36,7 +36,7 @@ class App : BaseApp() {
             .addCallback(EmptyWorksCollectCallback())//作品收藏空页面
             .setDefaultCallback(SuccessCallback::class.java)//设置默认加载状态页
             .commit()
-        initBugly()
+//        initBugly()
         LogUtils.getConfig().globalTag = "my_tag"
 
         val config = PRDownloaderConfig.newBuilder()
