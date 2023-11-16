@@ -30,6 +30,7 @@ import com.gsq.iart.ui.dialog.SecretDialog
 import com.gsq.iart.viewmodel.AppViewModel
 import com.gsq.iart.viewmodel.LoginViewModel
 import com.gsq.mvvm.network.manager.NetState
+import com.tencent.bugly.crashreport.CrashReport
 import com.tencent.mm.opensdk.openapi.IWXAPI
 import com.tencent.mm.opensdk.openapi.WXAPIFactory
 import org.greenrobot.eventbus.EventBus
@@ -94,7 +95,15 @@ class MainActivity : BaseActivity<AppViewModel, ActivityMainBinding>() {
                 }
 
             }, 1000)
+            initBugly()
         }
+    }
+
+    private fun initBugly() {
+        //初始化Bugly
+//        if (!BuildConfig.DEBUG) {
+        CrashReport.initCrashReport(applicationContext, "8bc600eefc", false)
+//        }
     }
 
     override fun createObserver() {
