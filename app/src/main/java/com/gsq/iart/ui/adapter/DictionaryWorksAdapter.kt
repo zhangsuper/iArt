@@ -12,13 +12,14 @@ import com.gsq.iart.app.image.GlideHelper
 import com.gsq.iart.app.util.CacheUtil
 import com.gsq.iart.app.util.SettingUtil
 import com.gsq.iart.data.bean.DictionaryMenuBean
+import com.gsq.iart.data.bean.DictionaryWorksBean
 import com.gsq.iart.data.bean.WorksBean
 import com.gsq.mvvm.ext.view.gone
 import com.gsq.mvvm.ext.view.onClick
 import com.gsq.mvvm.ext.view.visible
 
 class DictionaryWorksAdapter constructor(var listener: CallBackListener) :
-    BaseQuickAdapter<WorksBean, BaseViewHolder>(R.layout.item_dictionary_works_layout) {
+    BaseQuickAdapter<DictionaryWorksBean, BaseViewHolder>(R.layout.item_dictionary_works_layout) {
 
     var mClickContrastListener: ((position: Int) -> Unit)? = null
 
@@ -34,11 +35,11 @@ class DictionaryWorksAdapter constructor(var listener: CallBackListener) :
         fun loadMore()
     }
 
-    override fun convert(holder: BaseViewHolder, item: WorksBean) {
+    override fun convert(holder: BaseViewHolder, item: DictionaryWorksBean) {
         LogUtils.dTag("WorksAdapter", "layoutPosition:${holder.layoutPosition}")
         var contrastBtn = holder.getView<ImageView>(R.id.iv_contrast)
         holder.setText(R.id.item_works_name, item.name)
-        holder.setText(R.id.item_works_source, "来源：${item.author}")
+        holder.setText(R.id.item_works_source, "来源：[${item.mainAge}]${item.mainName}")
         var vipIcon = holder.getView<ImageView>(R.id.icon_vip)
         var imageView = holder.getView<ShapeableImageView>(R.id.item_works_cover)
         if (item.thumbWidth > 0 && item.thumbHeight > 0) {

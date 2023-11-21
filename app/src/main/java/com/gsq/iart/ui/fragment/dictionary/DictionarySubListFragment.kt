@@ -6,8 +6,6 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.airbnb.mvrx.args
 import com.airbnb.mvrx.asMavericksArgs
-import com.blankj.utilcode.util.LogUtils
-import com.blankj.utilcode.util.ThreadUtils
 import com.blankj.utilcode.util.ToastUtils
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
@@ -21,11 +19,10 @@ import com.gsq.iart.data.Constant
 import com.gsq.iart.data.Constant.COMPLEX_TYPE_DICTIONARY
 import com.gsq.iart.data.bean.DictionaryArgsType
 import com.gsq.iart.data.bean.DictionaryMenuBean
-import com.gsq.iart.data.bean.WorksBean
+import com.gsq.iart.data.bean.DictionaryWorksBean
 import com.gsq.iart.databinding.FragmentDictionarySubListBinding
 import com.gsq.iart.ui.adapter.DictionaryLevelAdapter
 import com.gsq.iart.ui.adapter.DictionaryWorksAdapter
-import com.gsq.iart.ui.adapter.SearchHotAdapter
 import com.gsq.iart.ui.fragment.mine.MemberFragment
 import com.gsq.iart.viewmodel.DictionaryViewModel
 import com.gsq.mvvm.ext.nav
@@ -100,7 +97,7 @@ class DictionarySubListFragment : BaseFragment<DictionaryViewModel, FragmentDict
         fourth_recycler_view.init(layoutManager2, fourTagAdapter, false)
 
         worksAdapter.setOnItemClickListener { adapter, view, position ->
-            val worksBean = adapter.data[position] as WorksBean
+            val worksBean = adapter.data[position] as DictionaryWorksBean
             if (worksBean.pay == 1 && CacheUtil.getUser()?.memberType != 1) {
                 //需要付费且没有开通了会员
                 nav().navigateAction(
@@ -111,7 +108,7 @@ class DictionarySubListFragment : BaseFragment<DictionaryViewModel, FragmentDict
                 var bundle = Bundle()
                 bundle.putSerializable(
                     Constant.DATA_WORK,
-                    (adapter.data as MutableList<WorksBean>)[position]
+                    (adapter.data as MutableList<DictionaryWorksBean>)[position]
                 )
                 bundle.putString(Constant.INTENT_TYPE, COMPLEX_TYPE_DICTIONARY)
                 nav().navigateAction(R.id.action_dictionaryListFragment_to_workDetailFragment, bundle)

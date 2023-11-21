@@ -6,6 +6,7 @@ import com.gsq.iart.app.network.apiService
 import com.gsq.iart.app.network.stateCallback.ListDataUiState
 import com.gsq.iart.data.Constant
 import com.gsq.iart.data.bean.DictionaryMenuBean
+import com.gsq.iart.data.bean.DictionaryWorksBean
 import com.gsq.iart.data.bean.HomeClassifyBean
 import com.gsq.iart.data.bean.WorksBean
 import com.gsq.iart.data.request.DictionaryWoksRequestParam
@@ -22,7 +23,7 @@ class DictionaryViewModel: BaseViewModel() {
     var classifyList: MutableLiveData<ArrayList<DictionaryMenuBean>> = MutableLiveData()
     var classifySubList: MutableLiveData<ArrayList<DictionaryMenuBean>> = MutableLiveData()
     //作品列表
-    var worksDataState: MutableLiveData<ListDataUiState<WorksBean>> = MutableLiveData()
+    var worksDataState: MutableLiveData<ListDataUiState<DictionaryWorksBean>> = MutableLiveData()
     var classifyFourSubList: MutableLiveData<ArrayList<DictionaryMenuBean>> = MutableLiveData()//四级标签
 
     /**
@@ -132,7 +133,7 @@ class DictionaryViewModel: BaseViewModel() {
                         isSuccess = false,
                         errMessage = it.errorMsg,
                         isRefresh = isRefresh,
-                        listData = arrayListOf<WorksBean>()
+                        listData = arrayListOf<DictionaryWorksBean>()
                     )
                 worksDataState.value = listDataUiState
             })

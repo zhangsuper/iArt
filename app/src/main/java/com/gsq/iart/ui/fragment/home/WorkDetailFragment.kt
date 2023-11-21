@@ -32,6 +32,8 @@ import com.gsq.iart.data.Constant.COMPLEX_TYPE_GROUP
 import com.gsq.iart.data.Constant.DATA_WORK
 import com.gsq.iart.data.Constant.DOWNLOAD_PARENT_PATH
 import com.gsq.iart.data.bean.DetailArgsType
+import com.gsq.iart.data.bean.DictionaryWorksBean
+import com.gsq.iart.data.bean.WorkHdPics
 import com.gsq.iart.data.bean.WorksBean
 import com.gsq.iart.data.event.BigImageClickEvent
 import com.gsq.iart.databinding.FragmentWorkDetailBinding
@@ -62,6 +64,7 @@ class WorkDetailFragment : BaseFragment<WorksViewModel, FragmentWorkDetailBindin
     }
 
     private var worksBean: WorksBean? = null
+    private var dictionaryWorksBean: DictionaryWorksBean? = null
     private var intentType: String? = null
     private var RC_EXTERNAL_STORAGE_CODE: Int = 10
 
@@ -70,30 +73,30 @@ class WorkDetailFragment : BaseFragment<WorksViewModel, FragmentWorkDetailBindin
 
 
     override fun initView(savedInstanceState: Bundle?) {
-        worksBean = arguments?.getSerializable(DATA_WORK) as? WorksBean
         intentType = arguments?.getString(Constant.INTENT_TYPE, COMPLEX_TYPE_GROUP)
 
         if(intentType  == COMPLEX_TYPE_DICTIONARY){
             //图典
+            dictionaryWorksBean = arguments?.getSerializable(DATA_WORK) as? DictionaryWorksBean
             common_title_layout.gone()
             dictionary_title_layout.visible()
-            work_name.text = worksBean?.name
-            if(worksBean?.author!=null){
-                work_source.visible()
-                work_source.text = worksBean?.author
-            }else{
-                work_source.gone()
-            }
+            work_name.text = dictionaryWorksBean?.name
+            work_source.text = "来源：[${dictionaryWorksBean?.mainAge}]${dictionaryWorksBean?.mainName}"
             contrast_view.visible()
+
+            var eventMap = mutableMapOf<String, Any?>()
+            eventMap["work_id"] = dictionaryWorksBean?.id
+            MobAgentUtil.onEvent("preview_jump", eventMap)
         }else{
+            worksBean = arguments?.getSerializable(DATA_WORK) as? WorksBean
             common_title_layout.visible()
             dictionary_title_layout.gone()
             contrast_view.gone()
-        }
 
-        var eventMap = mutableMapOf<String, Any?>()
-        eventMap["work_id"] = worksBean?.id
-        MobAgentUtil.onEvent("preview_jump", eventMap)
+            var eventMap = mutableMapOf<String, Any?>()
+            eventMap["work_id"] = worksBean?.id
+            MobAgentUtil.onEvent("preview_jump", eventMap)
+        }
 
         fragmentList = arrayListOf()
         view_pager.init(this, fragmentList)
@@ -121,14 +124,30 @@ class WorkDetailFragment : BaseFragment<WorksViewModel, FragmentWorkDetailBindin
 
     override fun lazyLoadData() {
         super.lazyLoadData()
-        worksBean?.let {
-            if (intentType == COMPLEX_TYPE_COLLECT) {
-                mViewModel.getWorkDetail(it.workId)
-            } else {
-                mViewModel.getWorkDetail(it.id)
-            }
+        if(intentType  == COMPLEX_TYPE_DICTIONARY) {
+            loadDictionaryData()
+        }else{
+            worksBean?.let {
+                if (intentType == COMPLEX_TYPE_COLLECT) {
+                    mViewModel.getWorkDetail(it.workId)
+                } else {
+                    mViewModel.getWorkDetail(it.id)
+                }
 
+            }
         }
+    }
+
+    private fun loadDictionaryData(){
+        var workHdPics = WorkHdPics("", dictionaryWorksBean?.image?:"")
+        fragmentList.add(PreviewImageFragment.start(DetailArgsType(workHdPics)))
+        view_pager.adapter?.notifyDataSetChanged()
+        if (fragmentList.size == 1) {
+            tv_index.gone()
+        } else {
+            tv_index.visible()
+        }
+        tv_index.text = "1/${fragmentList.size}"
     }
 
     override fun createObserver() {
@@ -136,10 +155,9 @@ class WorkDetailFragment : BaseFragment<WorksViewModel, FragmentWorkDetailBindin
         mViewModel.workDetailDataState.observe(viewLifecycleOwner, Observer {
             if (it.isSuccess) {
                 worksBean = it.data
-                worksBean?.displayType//展示方式：1=直接展示；2=横向拼接
                 LogUtils.d("worksBean.displayType:${worksBean?.displayType}")
                 updateCollectState()
-                if (worksBean?.displayType == 2) {
+                if (worksBean?.displayType == 2) {//展示方式：1=直接展示；2=横向拼接
 //                    ToastUtils.showLong("横向拼接")
                     var hdPics = it.data?.hdPics
                     if (hdPics != null) {

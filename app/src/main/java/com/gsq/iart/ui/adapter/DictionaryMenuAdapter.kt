@@ -14,12 +14,14 @@ import com.blankj.utilcode.util.ToastUtils
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.gsq.iart.R
+import com.gsq.iart.app.image.GlideHelper
 import com.gsq.iart.app.util.CacheUtil
 import com.gsq.iart.app.weight.recyclerview.GridItemDecoration
 import com.gsq.iart.data.bean.DictionaryMenuBean
 import com.gsq.mvvm.ext.view.gone
 import com.gsq.mvvm.ext.view.onClick
 import com.gsq.mvvm.ext.view.visible
+import kotlinx.android.synthetic.main.fragment_mine.iv_avatar
 
 class DictionaryMenuAdapter : BaseQuickAdapter<DictionaryMenuBean, BaseViewHolder>(R.layout.item_dictionary_layout) {
 
@@ -52,6 +54,8 @@ class DictionaryMenuAdapter : BaseQuickAdapter<DictionaryMenuBean, BaseViewHolde
         )
         var mSecondMenuAdapter = DictionarySecondMenuAdapter()
 //        mSecondMenuAdapter.min_count = 2
+
+        GlideHelper.load(mMenuLogo, item.icon)
         mRecyclerView.adapter = mSecondMenuAdapter
         mMenuName.text = item.name
         if(item.subs!= null){

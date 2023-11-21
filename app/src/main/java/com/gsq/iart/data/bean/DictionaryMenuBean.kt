@@ -9,4 +9,5 @@ data class DictionaryMenuBean(
     var level: String,
     var name: String,
     var subs: MutableList<DictionaryMenuBean>,//属性值列表
+    var icon: String
 ) : Serializable

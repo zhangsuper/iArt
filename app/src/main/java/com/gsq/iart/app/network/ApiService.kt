@@ -177,6 +177,6 @@ interface ApiService {
     @POST("art/work/atlas/page")
     suspend fun getDictionaryWorks(
         @Body requestParam: DictionaryWoksRequestParam
-    ): ApiResponse<ArrayList<WorksBean>>
+    ): ApiResponse<ArrayList<DictionaryWorksBean>>
 
 }
