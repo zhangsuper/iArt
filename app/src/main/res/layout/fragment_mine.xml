@@ -132,6 +132,15 @@
         android:background="@drawable/bg_white_conner_8">
 
         <com.gsq.iart.app.weight.CommonItemLayout
+            android:id="@+id/item_dictionary_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:item_title="@string/mine_dictionary_list"
+            app:item_divider_visible="true"
+            app:item_right_icon_visible="true" />
+
+
+        <com.gsq.iart.app.weight.CommonItemLayout
             android:id="@+id/item_collect"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

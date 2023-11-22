@@ -268,9 +268,16 @@ class WorkDetailFragment : BaseFragment<WorksViewModel, FragmentWorkDetailBindin
             if (CacheUtil.isLogin()) {
                 if (CacheUtil.getUser()?.memberType == 1 || BuildConfig.DEBUG) {
                     //下载
-                    var eventMap = mutableMapOf<String, Any?>()
-                    eventMap["work_id"] = worksBean?.id
-                    MobAgentUtil.onEvent("download", eventMap)
+                    if(intentType  == COMPLEX_TYPE_DICTIONARY) {
+                        var eventMap = mutableMapOf<String, Any?>()
+                        eventMap["work_id"] = dictionaryWorksBean?.id
+                        MobAgentUtil.onEvent("download", eventMap)
+                    }else{
+                        var eventMap = mutableMapOf<String, Any?>()
+                        eventMap["work_id"] = worksBean?.id
+                        MobAgentUtil.onEvent("download", eventMap)
+                    }
+
                     checkStoragePermission()
                 } else {
                     //跳转到会员页
@@ -327,47 +334,59 @@ class WorkDetailFragment : BaseFragment<WorksViewModel, FragmentWorkDetailBindin
             )
         ) {
             // Already have permission, do the thing
-            var url = worksBean?.hdPics?.get(view_pager.currentItem)?.url
-            url?.let {
-                worksBean?.id?.let {
-                    mViewModel.downloadInc(it)
+            if(intentType  == COMPLEX_TYPE_DICTIONARY) {//图典
+                var url = dictionaryWorksBean?.image
+                url?.let {
+                    dictionaryWorksBean?.id?.let {
+                        mViewModel.downloadInc(it)
+                    }
+                    var fileName = it.substring(
+                        it.lastIndexOf('/') + 1,
+                        it.indexOf('?')
+                    )
+                    LogUtils.dTag(TAG, "testname:${fileName}")
+
+                    FileUtils.createOrExistsDir(DOWNLOAD_PARENT_PATH)
+                    var imageResource = DOWNLOAD_PARENT_PATH + File.separator + fileName
+                    if (FileUtils.isFileExists(imageResource)) {
+                        SaveUtils.saveImgFileToAlbum(App.instance, imageResource)
+                        ToastUtils.showLong("文件已保存在相册")
+                        return@let
+                    }
+                    LogUtils.dTag(TAG, "startDownload")
+                    startDownload(
+                        it,
+                        DOWNLOAD_PARENT_PATH,
+                        fileName
+                    )
                 }
-                var fileName = it.substring(
-                    it.lastIndexOf('/') + 1,
-                    it.indexOf('?')
-                )
-                LogUtils.dTag(TAG, "testname:${fileName}")
+            }else {
+                var url = worksBean?.hdPics?.get(view_pager.currentItem)?.url
+                url?.let {
+                    worksBean?.id?.let {
+                        mViewModel.downloadInc(it)
+                    }
+                    var fileName = it.substring(
+                        it.lastIndexOf('/') + 1,
+                        it.indexOf('?')
+                    )
+                    LogUtils.dTag(TAG, "testname:${fileName}")
 //                var imageResource = FileUtil.getSDPath(App.instance) + fileName
 
-                FileUtils.createOrExistsDir(DOWNLOAD_PARENT_PATH)
-                var imageResource = DOWNLOAD_PARENT_PATH + File.separator + fileName
-                if (FileUtils.isFileExists(imageResource)) {
-//                    LogUtils.dTag(TAG, "File copy to destPath")
-//                    FileUtils.copy(imageResource, destPath)
-//
-                    //把图片保存后声明这个广播事件通知系统相册有新图片到来
-//                    val intent = Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE)
-//                    val uri: Uri = Uri.fromFile(File(imageResource))
-//                    intent.data = uri
-//                    App.instance.sendBroadcast(intent)
-
-//                    val file = File(imageResource)
-//                    MediaScannerConnection.scanFile(
-//                        OkDownloadProvider.context, arrayOf(file.toString()),
-//                        null, null
-//                    )
-
-                    SaveUtils.saveImgFileToAlbum(App.instance, imageResource)
-
-                    ToastUtils.showLong("文件已保存在相册")
-                    return@let
+                    FileUtils.createOrExistsDir(DOWNLOAD_PARENT_PATH)
+                    var imageResource = DOWNLOAD_PARENT_PATH + File.separator + fileName
+                    if (FileUtils.isFileExists(imageResource)) {
+                        SaveUtils.saveImgFileToAlbum(App.instance, imageResource)
+                        ToastUtils.showLong("文件已保存在相册")
+                        return@let
+                    }
+                    LogUtils.dTag(TAG, "startDownload")
+                    startDownload(
+                        it,
+                        DOWNLOAD_PARENT_PATH,
+                        fileName
+                    )
                 }
-                LogUtils.dTag(TAG, "startDownload")
-                startDownload(
-                    it,
-                    DOWNLOAD_PARENT_PATH,
-                    fileName
-                )
             }
         } else {
             // Do not have permissions, request them now

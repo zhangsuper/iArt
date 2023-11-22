@@ -66,25 +66,25 @@ class DictionarySubListFragment : BaseFragment<DictionaryViewModel, FragmentDict
 
     override fun initView(savedInstanceState: Bundle?) {
         //状态页配置
-        loadsir = loadServiceInit(works_refresh_layout) {
+        loadsir = loadServiceInit(mViewBind.worksRefreshLayout) {
             //点击重试时触发的操作
             loadsir.showLoading()
             requestData(true)
         }
         //初始化 SwipeRefreshLayout
-        works_refresh_layout.init {
+        mViewBind.worksRefreshLayout.init {
             //触发刷新监听时请求数据
             requestData(true)
         }
         //初始化recyclerView和Adapter
         val layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
-        works_recycler_view.init(layoutManager, worksAdapter)
-        works_recycler_view.initFooter {
+        mViewBind.worksRecyclerView.init(layoutManager, worksAdapter)
+        mViewBind.worksRecyclerView.initFooter {
             //加载更多
             if(CacheUtil.getUser()?.memberType == 1) {
                 requestData()
             }else{
-                works_recycler_view.loadMoreFinish(false,true)
+                mViewBind.worksRecyclerView.loadMoreFinish(false,true)
             }
         }
 
@@ -217,8 +217,8 @@ class DictionarySubListFragment : BaseFragment<DictionaryViewModel, FragmentDict
                 it,
                 worksAdapter,
                 loadsir,
-                works_recycler_view,
-                works_refresh_layout,
+                mViewBind.worksRecyclerView,
+                mViewBind.worksRefreshLayout,
                 Constant.COMPLEX_TYPE_DICTIONARY
             )
             if(it.isRefresh && it.listData.size>8 && CacheUtil.getUser()?.memberType != 1){

@@ -16,6 +16,7 @@ import com.gsq.mvvm.base.viewmodel.BaseViewModel
 import com.gsq.mvvm.ext.nav
 import com.gsq.mvvm.ext.navigateAction
 import com.gsq.mvvm.ext.view.gone
+import com.gsq.mvvm.ext.view.onClick
 import com.gsq.mvvm.ext.view.visible
 import kotlinx.android.synthetic.main.fragment_mine.*
 
@@ -40,7 +41,20 @@ class MineFragment : BaseFragment<BaseViewModel, FragmentMineBinding>() {
     }
 
     override fun initView(savedInstanceState: Bundle?) {
-        item_collect.setOnClickListener {
+        item_dictionary_list.onClick {
+            //我的图单
+            MobAgentUtil.onEvent("mydictionarylist")
+            if (CacheUtil.isLogin()) {
+                nav().navigateAction(R.id.action_mainFragment_to_myDictionarySetsFragment)
+            } else {
+                //跳转登录界面
+                nav().navigateAction(R.id.action_mainFragment_to_loginFragment)
+                var eventMap = mutableMapOf<String, Any?>()
+                eventMap["type"] = "signin"
+                MobAgentUtil.onEvent("signin", eventMap)
+            }
+        }
+        item_collect.onClick {
             //收藏
             MobAgentUtil.onEvent("mycollect")
             if (CacheUtil.isLogin()) {
@@ -53,7 +67,7 @@ class MineFragment : BaseFragment<BaseViewModel, FragmentMineBinding>() {
                 MobAgentUtil.onEvent("signin", eventMap)
             }
         }
-        item_setting.setOnClickListener {
+        item_setting.onClick {
             //设置
             nav().navigateAction(R.id.action_mainFragment_to_settingFragment)
         }

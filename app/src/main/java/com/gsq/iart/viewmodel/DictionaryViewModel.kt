@@ -6,9 +6,11 @@ import com.gsq.iart.app.network.apiService
 import com.gsq.iart.app.network.stateCallback.ListDataUiState
 import com.gsq.iart.data.Constant
 import com.gsq.iart.data.bean.DictionaryMenuBean
+import com.gsq.iart.data.bean.DictionarySetsBean
 import com.gsq.iart.data.bean.DictionaryWorksBean
 import com.gsq.iart.data.bean.HomeClassifyBean
 import com.gsq.iart.data.bean.WorksBean
+import com.gsq.iart.data.request.ComparePageRequestParam
 import com.gsq.iart.data.request.DictionaryWoksRequestParam
 import com.gsq.iart.data.request.WorkPageRequestParam
 import com.gsq.iart.data.request.WorkPropSearchBean
@@ -25,6 +27,9 @@ class DictionaryViewModel: BaseViewModel() {
     //作品列表
     var worksDataState: MutableLiveData<ListDataUiState<DictionaryWorksBean>> = MutableLiveData()
     var classifyFourSubList: MutableLiveData<ArrayList<DictionaryMenuBean>> = MutableLiveData()//四级标签
+
+    //图单列表
+    var comparePageDataState: MutableLiveData<ListDataUiState<DictionarySetsBean>> = MutableLiveData()
 
     /**
      * 请求图典分类列表
@@ -136,6 +141,47 @@ class DictionaryViewModel: BaseViewModel() {
                         listData = arrayListOf<DictionaryWorksBean>()
                     )
                 worksDataState.value = listDataUiState
+            })
+    }
+
+    /**
+     * 图单列表
+     */
+    fun findComparePage(isRefresh: Boolean){
+        if (isRefresh) {
+            pageNo = 1
+        }
+        var requestParam = ComparePageRequestParam(
+            0,
+            pageNo,
+            Constant.DEFAULT_REQUEST_SIZE
+        )
+        request(
+            { apiService.findComparePage(requestParam) },
+            {
+                //请求成功
+                pageNo++
+                val listDataUiState =
+                    ListDataUiState(
+                        isSuccess = true,
+                        isRefresh = isRefresh,
+                        isEmpty = it.isEmpty(),
+//                    hasMore = it.hasMore(),
+                        isFirstEmpty = isRefresh && it.isEmpty(),
+                        listData = it
+                    )
+                comparePageDataState.value = listDataUiState
+            },
+            {
+                //请求失败
+                val listDataUiState =
+                    ListDataUiState(
+                        isSuccess = false,
+                        errMessage = it.errorMsg,
+                        isRefresh = isRefresh,
+                        listData = arrayListOf<DictionarySetsBean>()
+                    )
+                comparePageDataState.value = listDataUiState
             })
     }
 }

@@ -55,6 +55,7 @@
     <string name="vip_continue">立即续费</string>
     <string name="app_login_out">退出登录</string>
 
+    <string name="mine_dictionary_list">我的图单</string>
     <string name="mine_collect">我的收藏</string>
     <string name="mine_setting">设置</string>
     <string name="mine_contact">联系客服</string>

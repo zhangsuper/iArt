@@ -9,7 +9,7 @@ import java.io.Serializable
 @Keep
 data class DictionaryWorksBean(
     val downloadCount: Int,
-    val id: Int,
+    val id: String,
     val image: String,
     val mainAge: String,
     val mainImage: String,
