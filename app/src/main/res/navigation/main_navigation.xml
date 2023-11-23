@@ -236,6 +236,26 @@
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
 
+        <action
+            android:id="@+id/action_dictionaryListFragment_to_compareListFragment"
+            app:destination="@+id/compareListFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/compareListFragment"
+        android:name="com.gsq.iart.ui.fragment.dictionary.CompareListFragment">
+        <action
+            android:id="@+id/action_compareListFragment_to_workDetailFragment"
+            app:destination="@+id/workDetailFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
 
 

@@ -11,6 +11,8 @@ import com.gsq.iart.app.ext.setImageViewRatio
 import com.gsq.iart.app.image.GlideHelper
 import com.gsq.iart.app.util.CacheUtil
 import com.gsq.iart.app.util.SettingUtil
+import com.gsq.iart.data.Constant.COMPLEX_TYPE_COMPARE
+import com.gsq.iart.data.bean.DictionaryArgsType
 import com.gsq.iart.data.bean.DictionaryMenuBean
 import com.gsq.iart.data.bean.DictionaryWorksBean
 import com.gsq.iart.data.bean.WorksBean
@@ -21,13 +23,8 @@ import com.gsq.mvvm.ext.view.visible
 class DictionaryWorksAdapter constructor(var listener: CallBackListener) :
     BaseQuickAdapter<DictionaryWorksBean, BaseViewHolder>(R.layout.item_dictionary_works_layout) {
 
-    var mClickContrastListener: ((position: Int) -> Unit)? = null
-
-    fun setClickContrastListener(listener: ((position: Int) -> Unit)?){
-        mClickContrastListener = listener
-    }
-
     var compareList: ArrayList<DictionaryWorksBean>
+    private var args: DictionaryArgsType? = null
 
     init {
         setAdapterAnimation(SettingUtil.getListMode())
@@ -37,6 +34,10 @@ class DictionaryWorksAdapter constructor(var listener: CallBackListener) :
 
     interface CallBackListener {
         fun loadMore()
+    }
+
+    fun setArgsType(args: DictionaryArgsType){
+        this.args = args
     }
 
     fun updateCompareList(){
@@ -56,10 +57,15 @@ class DictionaryWorksAdapter constructor(var listener: CallBackListener) :
         }
 //        imageView.setImageViewRatio(item.thumbWidth, item.thumbHeight)
         GlideHelper.load(imageView, item.thumb, R.color.color_DDDDDD)
-        if(compareList.find { it.workId == item.workId } != null){
+        if(args?.firstTag == COMPLEX_TYPE_COMPARE){
+            contrastBtn.gone()
+        }else {
+            contrastBtn.visible()
+        }
+        if (compareList.find { it.workId == item.workId } != null) {
             item.isAddCompare = true
             contrastBtn.setImageResource(R.drawable.compare_remove)
-        }else{
+        } else {
             contrastBtn.setImageResource(R.drawable.icon_add)
             item.isAddCompare = false
         }
@@ -73,9 +79,6 @@ class DictionaryWorksAdapter constructor(var listener: CallBackListener) :
         } else {
             vipIcon.gone()
         }
-//        contrastBtn.onClick {
-//            mClickContrastListener?.invoke(holder.layoutPosition)
-//        }
 
     }
 }

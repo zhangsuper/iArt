@@ -126,6 +126,12 @@ object CacheUtil {
         return arrayListOf()
     }
 
+    fun setCompareList(list: ArrayList<DictionaryWorksBean>){
+        val kv = MMKV.mmkvWithID("app")
+        kv.encode("CompareList", list.toJson())
+        EventBus.getDefault().post(CompareEvent())
+    }
+
     /**
      * 加入对比列表
      */

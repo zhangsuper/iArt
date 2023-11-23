@@ -1,6 +1,7 @@
 package com.gsq.iart.ui.fragment.dictionary
 
 import android.os.Bundle
+import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import com.blankj.utilcode.util.ThreadUtils
@@ -22,8 +23,10 @@ import com.gsq.iart.data.event.CompareEvent
 import com.gsq.iart.databinding.FragmentDictionaryListBinding
 import com.gsq.iart.ui.adapter.SearchHistoryAdapter
 import com.gsq.iart.ui.fragment.home.WorksListFragment
+import com.gsq.iart.ui.fragment.mine.MemberFragment
 import com.gsq.iart.viewmodel.DictionaryViewModel
 import com.gsq.mvvm.ext.nav
+import com.gsq.mvvm.ext.navigateAction
 import com.gsq.mvvm.ext.view.gone
 import com.gsq.mvvm.ext.view.visible
 import kotlinx.android.synthetic.main.fragment_dictionary_list.dictionary_magic_indicator
@@ -70,6 +73,7 @@ class DictionaryListFragment : BaseFragment<DictionaryViewModel, FragmentDiction
         }
         title_layout.setRightClickListener {
             //对比列表
+            nav().navigateAction(R.id.action_dictionaryListFragment_to_compareListFragment)
         }
         dictionaryMenuBean = arguments?.getSerializable(Constant.INTENT_DATA) as DictionaryMenuBean
         position = arguments?.getInt(Constant.INTENT_POSITION,0)?: 0

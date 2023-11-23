@@ -118,7 +118,11 @@ class DictionarySubListFragment : BaseFragment<DictionaryViewModel, FragmentDict
                 )
                 selectedPosition = position
                 bundle.putString(Constant.INTENT_TYPE, COMPLEX_TYPE_DICTIONARY)
-                nav().navigateAction(R.id.action_dictionaryListFragment_to_workDetailFragment, bundle)
+                if(args.firstTag == Constant.COMPLEX_TYPE_COMPARE){
+                    nav().navigateAction(R.id.action_compareListFragment_to_workDetailFragment, bundle)
+                }else{
+                    nav().navigateAction(R.id.action_dictionaryListFragment_to_workDetailFragment, bundle)
+                }
             }
         }
         worksAdapter.setOnItemChildClickListener { adapter, view, position ->
@@ -136,26 +140,24 @@ class DictionarySubListFragment : BaseFragment<DictionaryViewModel, FragmentDict
                 worksAdapter.notifyDataSetChanged()
             }
         }
-        mViewBind.flowContentLayout.setOnclickListener(object : ClickListener{
-            override fun onClick(tag: String?) {
-                tag?.let {
-                    tag3 = it
-                }
-                if(tag.isNullOrEmpty()) {
-                    fourth_recycler_view.gone()
-                    line_view.gone()
-                }else{
-                    subTitleList?.let {
-                        it.find { it.name == tag }.let {
-                            it?.id?.let {
-                                mViewModel.getDictionaryFourClassifyById(it)
-                            }
+        mViewBind.flowContentLayout.setOnclickListener { tag ->
+            tag?.let {
+                tag3 = it
+            }
+            if (tag.isNullOrEmpty()) {
+                fourth_recycler_view.gone()
+                line_view.gone()
+            } else {
+                subTitleList?.let {
+                    it.find { it.name == tag }.let {
+                        it?.id?.let {
+                            mViewModel.getDictionaryFourClassifyById(it)
                         }
                     }
                 }
-                requestData(true)
             }
-        })
+            requestData(true)
+        }
         fourTagAdapter.setOnItemClickListener { adapter, view, position ->
             if(fourTagAdapter.selectedPosition == position){
                 fourTagAdapter.setSelectedPosition(-1)
@@ -173,14 +175,17 @@ class DictionarySubListFragment : BaseFragment<DictionaryViewModel, FragmentDict
                 bundleOf(MemberFragment.INTENT_KEY_TYPE to MemberFragment.INTENT_VALUE_WORKS)
             )
         }
+        worksAdapter.setArgsType(args)
     }
 
 
     override fun onResume() {
         super.onResume()
-        if(selectedPosition>=0) {
-            worksAdapter.updateCompareList()
-            worksAdapter.notifyItemChanged(selectedPosition)
+        if(args.firstTag != Constant.COMPLEX_TYPE_COMPARE) {
+            if (selectedPosition >= 0) {
+                worksAdapter.updateCompareList()
+                worksAdapter.notifyItemChanged(selectedPosition)
+            }
         }
     }
 
@@ -203,7 +208,24 @@ class DictionarySubListFragment : BaseFragment<DictionaryViewModel, FragmentDict
      * 获取列表数据
      */
     private fun requestData(isRefresh: Boolean = false) {
-        mViewModel.getDictionaryWorks(isRefresh,"",args.firstTag?: "",args.tag?:"",tag3,tag4)
+        if(args.firstTag == Constant.COMPLEX_TYPE_COMPARE){
+            var compareList = CacheUtil.getCompareList()
+            worksAdapter.setList(compareList)
+            if(compareList.size>0){
+                loadsir.showSuccess()
+            }else{
+                loadsir.showEmpty()
+            }
+        }else {
+            mViewModel.getDictionaryWorks(
+                isRefresh,
+                "",
+                args.firstTag ?: "",
+                args.tag ?: "",
+                tag3,
+                tag4
+            )
+        }
     }
 
     override fun createObserver() {
