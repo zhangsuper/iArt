@@ -3,8 +3,12 @@ package com.gsq.iart.app.util
 import android.text.TextUtils
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import com.gsq.iart.data.bean.DictionaryWorksBean
 import com.gsq.iart.data.bean.UserInfo
+import com.gsq.iart.data.event.CompareEvent
+import com.gsq.mvvm.ext.util.toJson
 import com.tencent.mmkv.MMKV
+import org.greenrobot.eventbus.EventBus
 
 object CacheUtil {
     /**
@@ -108,5 +112,36 @@ object CacheUtil {
     fun setSearchHistoryData(searchResponseStr: String) {
         val kv = MMKV.mmkvWithID("cache")
         kv.encode("history", searchResponseStr)
+    }
+
+    /**
+     * 获取对比列表
+     */
+    fun getCompareList(): ArrayList<DictionaryWorksBean> {
+        val kv = MMKV.mmkvWithID("app")
+        val compareList = kv.decodeString("CompareList")
+        if (!TextUtils.isEmpty(compareList)) {
+            return Gson().fromJson(compareList, object : TypeToken<ArrayList<DictionaryWorksBean>>() {}.type)
+        }
+        return arrayListOf()
+    }
+
+    /**
+     * 加入对比列表
+     */
+    fun addCompareList(item: DictionaryWorksBean){
+        var compareList = getCompareList()
+        compareList.add(item)
+        val kv = MMKV.mmkvWithID("app")
+        kv.encode("CompareList", compareList.toJson())
+        EventBus.getDefault().post(CompareEvent())
+    }
+
+    fun removeCompare(item: DictionaryWorksBean){
+        var compareList = getCompareList()
+        var compareFilterList = compareList.filterNot { it.workId == item.workId }
+        val kv = MMKV.mmkvWithID("app")
+        kv.encode("CompareList", compareFilterList.toJson())
+        EventBus.getDefault().post(CompareEvent())
     }
 }

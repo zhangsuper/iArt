@@ -7,11 +7,14 @@ import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
 import com.gsq.iart.R
+import com.gsq.mvvm.ext.view.gone
+import com.gsq.mvvm.ext.view.visible
 
 class CommonTitleLayout: RelativeLayout {
 
     private var iv_back: ImageView
     private var tv_title: TextView
+    private var tv_right: TextView
 
     constructor(context: Context) : this(context, null)
     constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, 0)
@@ -24,11 +27,14 @@ class CommonTitleLayout: RelativeLayout {
         val view = View.inflate(context, R.layout.common_title_layout, this)
         val typedArray = context.obtainStyledAttributes(attrs, R.styleable.CommonTitleLayout)
         val titleString = typedArray.getString(R.styleable.CommonTitleLayout_title_string)
+        val rightString = typedArray.getString(R.styleable.CommonTitleLayout_right_string)
         typedArray.recycle()
 
         iv_back = view.findViewById(R.id.iv_back)
         tv_title = view.findViewById(R.id.tv_title)
+        tv_right = view.findViewById(R.id.tv_right)
         tv_title.text = titleString
+        tv_right.text = rightString
     }
 
 
@@ -38,8 +44,23 @@ class CommonTitleLayout: RelativeLayout {
         }
     }
 
+    fun setRightClickListener(listener: () -> Unit) {
+        tv_right.setOnClickListener {
+            listener.invoke()
+        }
+    }
+
     fun setTitle(title: String) {
         tv_title.text = title
+    }
+
+    fun setRightText(text: String){
+        tv_right.text = text
+        if(text.isNullOrEmpty()){
+            tv_right.gone()
+        }else {
+            tv_right.visible()
+        }
     }
 
 

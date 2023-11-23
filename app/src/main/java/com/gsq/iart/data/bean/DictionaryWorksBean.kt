@@ -28,7 +28,8 @@ data class DictionaryWorksBean(
     val thumbHeight: Int,
     val thumbWidth: Int,
     val viewCount: Int,
-    val workId: String
+    val workId: String,
+    var isAddCompare: Boolean
 ): Serializable {
 
 }

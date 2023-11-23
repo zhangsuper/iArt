@@ -31,11 +31,13 @@ import com.gsq.iart.data.Constant.COMPLEX_TYPE_DICTIONARY
 import com.gsq.iart.data.Constant.COMPLEX_TYPE_GROUP
 import com.gsq.iart.data.Constant.DATA_WORK
 import com.gsq.iart.data.Constant.DOWNLOAD_PARENT_PATH
+import com.gsq.iart.data.Constant.INTENT_POSITION
 import com.gsq.iart.data.bean.DetailArgsType
 import com.gsq.iart.data.bean.DictionaryWorksBean
 import com.gsq.iart.data.bean.WorkHdPics
 import com.gsq.iart.data.bean.WorksBean
 import com.gsq.iart.data.event.BigImageClickEvent
+import com.gsq.iart.data.event.CompareEvent
 import com.gsq.iart.databinding.FragmentWorkDetailBinding
 import com.gsq.iart.ui.fragment.mine.MemberFragment
 import com.gsq.iart.viewmodel.WorksViewModel
@@ -148,6 +150,31 @@ class WorkDetailFragment : BaseFragment<WorksViewModel, FragmentWorkDetailBindin
             tv_index.visible()
         }
         tv_index.text = "1/${fragmentList.size}"
+
+        updateCompareStatus()
+        iv_contrast.onClick {
+            dictionaryWorksBean?.let {
+                if(it.isAddCompare){
+                    //移除对比列表
+                    CacheUtil.removeCompare(it)
+                    ToastUtils.showShort("移除成功")
+                }else{
+                    //加入对比列表
+                    CacheUtil.addCompareList(it)
+                    ToastUtils.showShort("加入成功")
+                }
+                it.isAddCompare = !it.isAddCompare
+                updateCompareStatus()
+            }
+        }
+    }
+
+    private fun updateCompareStatus(){
+        if(dictionaryWorksBean?.isAddCompare == true){
+            iv_contrast.setImageResource(R.drawable.compare_remove)
+        }else{
+            iv_contrast.setImageResource(R.drawable.icon_add)
+        }
     }
 
     override fun createObserver() {

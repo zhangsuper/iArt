@@ -11,6 +11,7 @@
 
     <declare-styleable name="CommonTitleLayout">
         <attr name="title_string" format="reference" />
+        <attr name="right_string" format="reference" />
     </declare-styleable>
 
 </resources>

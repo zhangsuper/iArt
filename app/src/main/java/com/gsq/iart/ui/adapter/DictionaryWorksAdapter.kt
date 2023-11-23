@@ -27,12 +27,20 @@ class DictionaryWorksAdapter constructor(var listener: CallBackListener) :
         mClickContrastListener = listener
     }
 
+    var compareList: ArrayList<DictionaryWorksBean>
+
     init {
         setAdapterAnimation(SettingUtil.getListMode())
+        addChildClickViewIds(R.id.iv_contrast)
+        compareList = CacheUtil.getCompareList()
     }
 
     interface CallBackListener {
         fun loadMore()
+    }
+
+    fun updateCompareList(){
+        compareList = CacheUtil.getCompareList()
     }
 
     override fun convert(holder: BaseViewHolder, item: DictionaryWorksBean) {
@@ -48,6 +56,14 @@ class DictionaryWorksAdapter constructor(var listener: CallBackListener) :
         }
 //        imageView.setImageViewRatio(item.thumbWidth, item.thumbHeight)
         GlideHelper.load(imageView, item.thumb, R.color.color_DDDDDD)
+        if(compareList.find { it.workId == item.workId } != null){
+            item.isAddCompare = true
+            contrastBtn.setImageResource(R.drawable.compare_remove)
+        }else{
+            contrastBtn.setImageResource(R.drawable.icon_add)
+            item.isAddCompare = false
+        }
+
         if (holder.layoutPosition + 4 == data.size && CacheUtil.getUser()?.memberType == 1) {
             listener.loadMore()
 //            EventBus.getDefault().post(LoadMoreEvent(true))
@@ -57,8 +73,9 @@ class DictionaryWorksAdapter constructor(var listener: CallBackListener) :
         } else {
             vipIcon.gone()
         }
-        contrastBtn.onClick {
-            mClickContrastListener?.invoke(holder.layoutPosition)
-        }
+//        contrastBtn.onClick {
+//            mClickContrastListener?.invoke(holder.layoutPosition)
+//        }
+
     }
 }

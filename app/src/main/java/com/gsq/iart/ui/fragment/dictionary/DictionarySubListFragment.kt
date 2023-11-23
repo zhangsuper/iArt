@@ -6,6 +6,7 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.airbnb.mvrx.args
 import com.airbnb.mvrx.asMavericksArgs
+import com.blankj.utilcode.util.ThreadUtils
 import com.blankj.utilcode.util.ToastUtils
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
@@ -20,6 +21,7 @@ import com.gsq.iart.data.Constant.COMPLEX_TYPE_DICTIONARY
 import com.gsq.iart.data.bean.DictionaryArgsType
 import com.gsq.iart.data.bean.DictionaryMenuBean
 import com.gsq.iart.data.bean.DictionaryWorksBean
+import com.gsq.iart.data.event.CompareEvent
 import com.gsq.iart.databinding.FragmentDictionarySubListBinding
 import com.gsq.iart.ui.adapter.DictionaryLevelAdapter
 import com.gsq.iart.ui.adapter.DictionaryWorksAdapter
@@ -37,6 +39,9 @@ import kotlinx.android.synthetic.main.fragment_dictionary_sub_list.open_vip_btn
 import kotlinx.android.synthetic.main.fragment_search_init.search_historyRv
 import kotlinx.android.synthetic.main.fragment_search_init.search_hotRv
 import kotlinx.android.synthetic.main.fragment_works_list.*
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
 /**
  * 图典作品列表
@@ -62,6 +67,7 @@ class DictionarySubListFragment : BaseFragment<DictionaryViewModel, FragmentDict
     private lateinit var loadsir: LoadService<Any>
     private var tag3:String = ""
     private var tag4:String = ""
+    private var selectedPosition = -1
 
 
     override fun initView(savedInstanceState: Bundle?) {
@@ -110,13 +116,25 @@ class DictionarySubListFragment : BaseFragment<DictionaryViewModel, FragmentDict
                     Constant.DATA_WORK,
                     (adapter.data as MutableList<DictionaryWorksBean>)[position]
                 )
+                selectedPosition = position
                 bundle.putString(Constant.INTENT_TYPE, COMPLEX_TYPE_DICTIONARY)
                 nav().navigateAction(R.id.action_dictionaryListFragment_to_workDetailFragment, bundle)
             }
         }
-        worksAdapter.setClickContrastListener {
-            //加入对比
-            ToastUtils.showShort("加入对比")
+        worksAdapter.setOnItemChildClickListener { adapter, view, position ->
+            if(view.id == R.id.iv_contrast){
+                val worksBean = adapter.data[position] as DictionaryWorksBean
+                if(worksBean.isAddCompare){
+                    CacheUtil.removeCompare(worksBean)
+                    ToastUtils.showShort("移除成功")
+                }else{
+                    //加入对比
+                    CacheUtil.addCompareList(worksBean)
+                    ToastUtils.showShort("加入成功")
+                }
+                worksAdapter.updateCompareList()
+                worksAdapter.notifyDataSetChanged()
+            }
         }
         mViewBind.flowContentLayout.setOnclickListener(object : ClickListener{
             override fun onClick(tag: String?) {
@@ -157,6 +175,14 @@ class DictionarySubListFragment : BaseFragment<DictionaryViewModel, FragmentDict
         }
     }
 
+
+    override fun onResume() {
+        super.onResume()
+        if(selectedPosition>=0) {
+            worksAdapter.updateCompareList()
+            worksAdapter.notifyItemChanged(selectedPosition)
+        }
+    }
 
 
     override fun lazyLoadData() {
@@ -228,6 +254,11 @@ class DictionarySubListFragment : BaseFragment<DictionaryViewModel, FragmentDict
             }
         })
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+    }
+
 
     companion object {
 
