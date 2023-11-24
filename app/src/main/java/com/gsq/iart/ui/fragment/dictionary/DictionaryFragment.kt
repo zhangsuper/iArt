@@ -66,10 +66,14 @@ class DictionaryFragment : BaseFragment<DictionaryViewModel, FragmentDictionaryB
             nav().navigateAction(R.id.action_mainFragment_to_dictionaryListFragment, bundle)
         }
         mAdapter!!.setExtendClickListener {
-            nav().navigateAction(
-                R.id.action_mainFragment_to_memberFragment,
-                bundleOf(MemberFragment.INTENT_KEY_TYPE to MemberFragment.INTENT_VALUE_WORKS)
-            )
+            if(CacheUtil.getUser()?.memberType != 1 && !BuildConfig.DEBUG){
+                nav().navigateAction(
+                    R.id.action_mainFragment_to_memberFragment,
+                    bundleOf(MemberFragment.INTENT_KEY_TYPE to MemberFragment.INTENT_VALUE_WORKS)
+                )
+            }else{
+                recycler_view.scrollToPosition(mAdapter!!.data.size - 1)
+            }
         }
         recycler_view.adapter = mAdapter
         open_vip_btn.onClick {

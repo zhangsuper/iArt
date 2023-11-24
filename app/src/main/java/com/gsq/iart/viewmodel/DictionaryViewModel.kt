@@ -10,6 +10,7 @@ import com.gsq.iart.data.bean.DictionarySetsBean
 import com.gsq.iart.data.bean.DictionaryWorksBean
 import com.gsq.iart.data.bean.HomeClassifyBean
 import com.gsq.iart.data.bean.WorksBean
+import com.gsq.iart.data.request.CompareAddRequestParam
 import com.gsq.iart.data.request.ComparePageRequestParam
 import com.gsq.iart.data.request.DictionaryWoksRequestParam
 import com.gsq.iart.data.request.WorkPageRequestParam
@@ -30,6 +31,8 @@ class DictionaryViewModel: BaseViewModel() {
 
     //图单列表
     var comparePageDataState: MutableLiveData<ListDataUiState<DictionarySetsBean>> = MutableLiveData()
+    //添加图单
+    var addComparePageLiveData: MutableLiveData<Boolean> = MutableLiveData()
 
     /**
      * 请求图典分类列表
@@ -182,6 +185,22 @@ class DictionaryViewModel: BaseViewModel() {
                         listData = arrayListOf<DictionarySetsBean>()
                     )
                 comparePageDataState.value = listDataUiState
+            })
+    }
+
+    fun addCompare(name: String, ids: MutableList<String>){
+        var requestParam = CompareAddRequestParam(
+            name, ids
+        )
+        request(
+            { apiService.addCompare(requestParam) },
+            {
+                //请求成功
+                addComparePageLiveData.value = true
+            },
+            {
+                //请求失败
+                addComparePageLiveData.value = false
             })
     }
 }

@@ -13,6 +13,7 @@ import com.blankj.utilcode.util.SizeUtils
 import com.blankj.utilcode.util.ToastUtils
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
+import com.gsq.iart.BuildConfig
 import com.gsq.iart.R
 import com.gsq.iart.app.image.GlideHelper
 import com.gsq.iart.app.util.CacheUtil
@@ -69,13 +70,16 @@ class DictionaryMenuAdapter : BaseQuickAdapter<DictionaryMenuBean, BaseViewHolde
         mSecondMenuAdapter?.setOnItemChildClickListener { adapter, view, position ->
             if (view.id == R.id.frame_down_layout) {
                 //展开 需要超级会员
-                if(CacheUtil.getUser()?.memberType != 1){
+                if(CacheUtil.getUser()?.memberType != 1 && !BuildConfig.DEBUG){
                     ToastUtils.showLong("需要超级会员才能展开")
                     onExtendClickListener?.invoke()
                 }else {
                     mSecondMenuAdapter.setExpendStatus(true)
                     mSecondMenuAdapter.setData(item.subs)
                     frameUpLayout.visible()
+                    if(holder.layoutPosition + 1 == data.size){
+                        onExtendClickListener?.invoke()
+                    }
                 }
             }
         }
