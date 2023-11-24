@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import com.blankj.utilcode.util.ThreadUtils
+import com.gsq.iart.BuildConfig
 import com.gsq.iart.R
 import com.gsq.iart.app.base.BaseFragment
 import com.gsq.iart.app.ext.bindViewPager2
@@ -90,7 +91,7 @@ class DictionaryFragment : BaseFragment<DictionaryViewModel, FragmentDictionaryB
         super.createObserver()
         mViewModel.classifyList.observe(viewLifecycleOwner){
             if(it!=null){
-                if (it.size>3 && CacheUtil.getUser()?.memberType != 1) {
+                if (it.size>3 && CacheUtil.getUser()?.memberType != 1 && !BuildConfig.DEBUG) {
                     mAdapter?.data = it.subList(0,3)
                     mAdapter?.notifyDataSetChanged()
                     //需要付费且没有开通了会员

@@ -45,13 +45,15 @@ class DictionaryMenuAdapter : BaseQuickAdapter<DictionaryMenuBean, BaseViewHolde
         mRecyclerView.layoutManager  = StaggeredGridLayoutManager(
             3, StaggeredGridLayoutManager.VERTICAL
         )
-        mRecyclerView.addItemDecoration(
-            GridItemDecoration(
-                3,
-                SizeUtils.dp2px(10f),
-                includeEdge = true, hasTopBottomSpace = true
+        if(mRecyclerView.itemDecorationCount == 0) {
+            mRecyclerView.addItemDecoration(
+                GridItemDecoration(
+                    3,
+                    SizeUtils.dp2px(10f),
+                    includeEdge = true, hasTopBottomSpace = true
+                )
             )
-        )
+        }
         var mSecondMenuAdapter = DictionarySecondMenuAdapter()
 //        mSecondMenuAdapter.min_count = 2
 
