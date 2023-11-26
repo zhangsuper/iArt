@@ -1,13 +1,14 @@
 package com.gsq.iart.data.bean
 
 import androidx.annotation.Keep
+import java.io.Serializable
 
 @Keep
 data class DictionarySetsBean(
     val createdTime: String,
-    val id: Int,
+    val id: Long,
     val img: String,
     val name: String,
     val num: Int,
-    val userId: Int
-)
+    val userId: Long
+) : Serializable

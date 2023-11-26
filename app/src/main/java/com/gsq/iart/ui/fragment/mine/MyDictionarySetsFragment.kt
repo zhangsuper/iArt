@@ -5,31 +5,23 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.gsq.iart.R
 import com.gsq.iart.app.App
 import com.gsq.iart.app.base.BaseFragment
-import com.gsq.iart.app.ext.init
-import com.gsq.iart.app.ext.initFooter
-import com.gsq.iart.app.ext.loadDictionaryListData
-import com.gsq.iart.app.ext.loadListData
-import com.gsq.iart.app.ext.loadServiceInit
-import com.gsq.iart.app.ext.showEmpty
-import com.gsq.iart.app.ext.showError
-import com.gsq.iart.app.ext.showLoading
-import com.gsq.iart.app.ext.showWorksCollectEmpty
-import com.gsq.iart.app.ext.showWorksSearchEmpty
-import com.gsq.iart.app.util.CacheUtil
+import com.gsq.iart.app.ext.*
 import com.gsq.iart.app.util.StatusBarUtil
 import com.gsq.iart.data.Constant
+import com.gsq.iart.data.bean.DictionarySetsBean
 import com.gsq.iart.databinding.FragmentDictionarySetsBinding
 import com.gsq.iart.ui.adapter.DictionarySetsAdapter
 import com.gsq.iart.viewmodel.DictionaryViewModel
 import com.gsq.mvvm.ext.nav
+import com.gsq.mvvm.ext.navigateAction
 import com.kingja.loadsir.core.LoadService
-import kotlinx.android.synthetic.main.fragment_my_collect.title_layout
-import kotlinx.android.synthetic.main.fragment_works_list.works_recycler_view
-import kotlinx.android.synthetic.main.fragment_works_list.works_refresh_layout
+import kotlinx.android.synthetic.main.fragment_my_collect.*
 
-class MyDictionarySetsFragment: BaseFragment<DictionaryViewModel, FragmentDictionarySetsBinding>() {
+class MyDictionarySetsFragment :
+    BaseFragment<DictionaryViewModel, FragmentDictionarySetsBinding>() {
 
     private lateinit var mAdapter: DictionarySetsAdapter
+
     //界面状态管理者
     private lateinit var loadsir: LoadService<Any>
 
@@ -67,7 +59,14 @@ class MyDictionarySetsFragment: BaseFragment<DictionaryViewModel, FragmentDictio
             requestData()
         }
         mAdapter.setOnItemClickListener { adapter, view, position ->
-
+            var bean = adapter.data[position] as DictionarySetsBean
+            var bundle = Bundle()
+            bundle.putString(Constant.INTENT_TYPE, Constant.COMPLEX_TYPE_COMPARE)
+            bundle.putSerializable(Constant.INTENT_DATA, bean)
+            nav().navigateAction(
+                R.id.action_myDictionarySetsFragment_to_compareListFragment,
+                bundle
+            )
         }
     }
 
@@ -77,13 +76,13 @@ class MyDictionarySetsFragment: BaseFragment<DictionaryViewModel, FragmentDictio
         requestData(true)
     }
 
-    private fun requestData(isRefresh: Boolean = false){
+    private fun requestData(isRefresh: Boolean = false) {
         mViewModel.findComparePage(isRefresh)
     }
 
     override fun createObserver() {
         super.createObserver()
-        mViewModel.comparePageDataState.observe(viewLifecycleOwner){
+        mViewModel.comparePageDataState.observe(viewLifecycleOwner) {
             it?.let {
                 loadListData(
                     it,

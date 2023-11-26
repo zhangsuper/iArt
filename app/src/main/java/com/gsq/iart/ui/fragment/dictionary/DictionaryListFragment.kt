@@ -1,13 +1,8 @@
 package com.gsq.iart.ui.fragment.dictionary
 
 import android.os.Bundle
-import androidx.core.os.bundleOf
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import com.blankj.utilcode.util.ThreadUtils
-import com.google.android.flexbox.FlexDirection
-import com.google.android.flexbox.FlexboxLayoutManager
-import com.google.android.flexbox.JustifyContent
 import com.gsq.iart.R
 import com.gsq.iart.app.base.BaseFragment
 import com.gsq.iart.app.ext.bindViewPager2
@@ -15,25 +10,17 @@ import com.gsq.iart.app.ext.init
 import com.gsq.iart.app.util.CacheUtil
 import com.gsq.iart.app.util.StatusBarUtil
 import com.gsq.iart.data.Constant
-import com.gsq.iart.data.bean.ArgsType
 import com.gsq.iart.data.bean.DictionaryArgsType
 import com.gsq.iart.data.bean.DictionaryMenuBean
-import com.gsq.iart.data.event.BigImageClickEvent
 import com.gsq.iart.data.event.CompareEvent
 import com.gsq.iart.databinding.FragmentDictionaryListBinding
 import com.gsq.iart.ui.adapter.SearchHistoryAdapter
-import com.gsq.iart.ui.fragment.home.WorksListFragment
-import com.gsq.iart.ui.fragment.mine.MemberFragment
 import com.gsq.iart.viewmodel.DictionaryViewModel
 import com.gsq.mvvm.ext.nav
 import com.gsq.mvvm.ext.navigateAction
-import com.gsq.mvvm.ext.view.gone
-import com.gsq.mvvm.ext.view.visible
 import kotlinx.android.synthetic.main.fragment_dictionary_list.dictionary_magic_indicator
 import kotlinx.android.synthetic.main.fragment_dictionary_list.dictionary_view_pager
-import kotlinx.android.synthetic.main.fragment_dictionary_list.third_recycler_view
 import kotlinx.android.synthetic.main.fragment_setting.title_layout
-import kotlinx.android.synthetic.main.fragment_work_detail.content_view
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -41,9 +28,9 @@ import org.greenrobot.eventbus.ThreadMode
 /**
  * 图典列表
  */
-class DictionaryListFragment : BaseFragment<DictionaryViewModel, FragmentDictionaryListBinding>()  {
+class DictionaryListFragment : BaseFragment<DictionaryViewModel, FragmentDictionaryListBinding>() {
 
-    private lateinit var dictionaryMenuBean : DictionaryMenuBean
+    private lateinit var dictionaryMenuBean: DictionaryMenuBean
     private var position: Int = 0
 
     //标题集合
@@ -52,7 +39,11 @@ class DictionaryListFragment : BaseFragment<DictionaryViewModel, FragmentDiction
     //fragment集合
     var fragments: ArrayList<Fragment> = arrayListOf()
 
-    private val mThreeDictionaryAdapter: SearchHistoryAdapter by lazy { SearchHistoryAdapter(arrayListOf()) }
+    private val mThreeDictionaryAdapter: SearchHistoryAdapter by lazy {
+        SearchHistoryAdapter(
+            arrayListOf()
+        )
+    }
 
     override fun onResume() {
         super.onResume()
@@ -63,7 +54,7 @@ class DictionaryListFragment : BaseFragment<DictionaryViewModel, FragmentDiction
                 statusBarColor = R.color.white,
                 isDarkFont = true
             )
-        },100)
+        }, 100)
     }
 
     override fun initView(savedInstanceState: Bundle?) {
@@ -73,10 +64,12 @@ class DictionaryListFragment : BaseFragment<DictionaryViewModel, FragmentDiction
         }
         title_layout.setRightClickListener {
             //对比列表
-            nav().navigateAction(R.id.action_dictionaryListFragment_to_compareListFragment)
+            var bundle = Bundle()
+            bundle.putString(Constant.INTENT_TYPE, Constant.COMPLEX_TYPE_NATIVE_COMPARE)
+            nav().navigateAction(R.id.action_dictionaryListFragment_to_compareListFragment, bundle)
         }
         dictionaryMenuBean = arguments?.getSerializable(Constant.INTENT_DATA) as DictionaryMenuBean
-        position = arguments?.getInt(Constant.INTENT_POSITION,0)?: 0
+        position = arguments?.getInt(Constant.INTENT_POSITION, 0) ?: 0
         title_layout.setTitle(dictionaryMenuBean.name)
         mDataList.add("全部")
         fragments.add(
@@ -89,7 +82,11 @@ class DictionaryListFragment : BaseFragment<DictionaryViewModel, FragmentDiction
                 mDataList.add(it.name)
                 fragments.add(
                     DictionarySubListFragment.start(
-                        DictionaryArgsType(firstTag = dictionaryMenuBean.name, tag = it.name, pid = it.id)
+                        DictionaryArgsType(
+                            firstTag = dictionaryMenuBean.name,
+                            tag = it.name,
+                            pid = it.id
+                        )
                     )
                 )
             }
@@ -106,11 +103,11 @@ class DictionaryListFragment : BaseFragment<DictionaryViewModel, FragmentDiction
 
     }
 
-    private fun updateRightData(){
+    private fun updateRightData() {
         var compareList = CacheUtil.getCompareList()
-        if(compareList.size>0){
+        if (compareList.size > 0) {
             title_layout.setRightText("对比列表（${compareList.size}）")
-        }else{
+        } else {
             title_layout.setRightText("")
         }
     }
@@ -126,7 +123,6 @@ class DictionaryListFragment : BaseFragment<DictionaryViewModel, FragmentDiction
             updateRightData()
         }
     }
-
 
 
 }

@@ -114,6 +114,14 @@
     <fragment
         android:id="@+id/myDictionarySetsFragment"
         android:name="com.gsq.iart.ui.fragment.mine.MyDictionarySetsFragment">
+
+        <action
+            android:id="@+id/action_myDictionarySetsFragment_to_compareListFragment"
+            app:destination="@+id/compareListFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
 
 
@@ -264,6 +272,7 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
+
     </fragment>
 
 

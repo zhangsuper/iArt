@@ -2,7 +2,6 @@ package com.gsq.iart.app.network
 
 import com.gsq.iart.data.bean.*
 import com.gsq.iart.data.request.CompareAddRequestParam
-import com.gsq.iart.data.request.ComparePageRequestParam
 import com.gsq.iart.data.request.DictionaryWoksRequestParam
 import com.gsq.iart.data.request.MemberPayRequestParam
 import com.gsq.iart.data.request.WorkPageRequestParam
@@ -185,18 +184,18 @@ interface ApiService {
     /**
      * 图单列表
      */
-    @POST("art/work/atlas/compare/findPage")
+    @GET("art/work/atlas/compare/findPage")
     suspend fun findComparePage(
-        @Body requestParam: ComparePageRequestParam
+        @Query("pageNum") pageNum: Int, @Query("pageSize") pageSize: Int
     ): ApiResponse<ArrayList<DictionarySetsBean>>
 
 
     /**
      * 图单作品列表
      */
-    @POST("art/work/atlas/compare/findItemPage")
+    @GET("art/work/atlas/compare/findItemPage")
     suspend fun findCompareItemPage(
-        @Body requestParam: ComparePageRequestParam
+        @Query("id") id: Long, @Query("pageNum") pageNum: Int, @Query("pageSize") pageSize: Int
     ): ApiResponse<ArrayList<DictionaryWorksBean>>
 
     /**

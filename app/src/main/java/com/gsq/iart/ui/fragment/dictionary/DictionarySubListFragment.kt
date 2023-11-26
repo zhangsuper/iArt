@@ -6,7 +6,6 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.airbnb.mvrx.args
 import com.airbnb.mvrx.asMavericksArgs
-import com.blankj.utilcode.util.ThreadUtils
 import com.blankj.utilcode.util.ToastUtils
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
@@ -15,13 +14,11 @@ import com.gsq.iart.R
 import com.gsq.iart.app.base.BaseFragment
 import com.gsq.iart.app.ext.*
 import com.gsq.iart.app.util.CacheUtil
-import com.gsq.iart.app.weight.FlowContentLayout.ClickListener
 import com.gsq.iart.data.Constant
 import com.gsq.iart.data.Constant.COMPLEX_TYPE_DICTIONARY
 import com.gsq.iart.data.bean.DictionaryArgsType
 import com.gsq.iart.data.bean.DictionaryMenuBean
 import com.gsq.iart.data.bean.DictionaryWorksBean
-import com.gsq.iart.data.event.CompareEvent
 import com.gsq.iart.databinding.FragmentDictionarySubListBinding
 import com.gsq.iart.ui.adapter.DictionaryLevelAdapter
 import com.gsq.iart.ui.adapter.DictionaryWorksAdapter
@@ -33,20 +30,13 @@ import com.gsq.mvvm.ext.view.gone
 import com.gsq.mvvm.ext.view.onClick
 import com.gsq.mvvm.ext.view.visible
 import com.kingja.loadsir.core.LoadService
-import kotlinx.android.synthetic.main.fragment_dictionary_sub_list.fourth_recycler_view
-import kotlinx.android.synthetic.main.fragment_dictionary_sub_list.line_view
-import kotlinx.android.synthetic.main.fragment_dictionary_sub_list.open_vip_btn
-import kotlinx.android.synthetic.main.fragment_search_init.search_historyRv
-import kotlinx.android.synthetic.main.fragment_search_init.search_hotRv
-import kotlinx.android.synthetic.main.fragment_works_list.*
-import org.greenrobot.eventbus.EventBus
-import org.greenrobot.eventbus.Subscribe
-import org.greenrobot.eventbus.ThreadMode
+import kotlinx.android.synthetic.main.fragment_dictionary_sub_list.*
 
 /**
  * 图典作品列表
  */
-class DictionarySubListFragment : BaseFragment<DictionaryViewModel, FragmentDictionarySubListBinding>() {
+class DictionarySubListFragment :
+    BaseFragment<DictionaryViewModel, FragmentDictionarySubListBinding>() {
 
     private val args: DictionaryArgsType by args()
     private var subTitleList: MutableList<DictionaryMenuBean>? = null
@@ -65,8 +55,8 @@ class DictionarySubListFragment : BaseFragment<DictionaryViewModel, FragmentDict
 
     //界面状态管理者
     private lateinit var loadsir: LoadService<Any>
-    private var tag3:String = ""
-    private var tag4:String = ""
+    private var tag3: String = ""
+    private var tag4: String = ""
     private var selectedPosition = -1
 
 
@@ -87,10 +77,10 @@ class DictionarySubListFragment : BaseFragment<DictionaryViewModel, FragmentDict
         mViewBind.worksRecyclerView.init(layoutManager, worksAdapter)
         mViewBind.worksRecyclerView.initFooter {
             //加载更多
-            if(CacheUtil.getUser()?.memberType == 1) {
+            if (CacheUtil.getUser()?.memberType == 1) {
                 requestData()
-            }else{
-                mViewBind.worksRecyclerView.loadMoreFinish(false,true)
+            } else {
+                mViewBind.worksRecyclerView.loadMoreFinish(false, true)
             }
         }
 
@@ -118,20 +108,26 @@ class DictionarySubListFragment : BaseFragment<DictionaryViewModel, FragmentDict
                 )
                 selectedPosition = position
                 bundle.putString(Constant.INTENT_TYPE, COMPLEX_TYPE_DICTIONARY)
-                if(args.firstTag == Constant.COMPLEX_TYPE_COMPARE){
-                    nav().navigateAction(R.id.action_compareListFragment_to_workDetailFragment, bundle)
-                }else{
-                    nav().navigateAction(R.id.action_dictionaryListFragment_to_workDetailFragment, bundle)
+                if (args.firstTag == Constant.COMPLEX_TYPE_NATIVE_COMPARE || args.firstTag == Constant.COMPLEX_TYPE_COMPARE) {
+                    nav().navigateAction(
+                        R.id.action_compareListFragment_to_workDetailFragment,
+                        bundle
+                    )
+                } else {
+                    nav().navigateAction(
+                        R.id.action_dictionaryListFragment_to_workDetailFragment,
+                        bundle
+                    )
                 }
             }
         }
         worksAdapter.setOnItemChildClickListener { adapter, view, position ->
-            if(view.id == R.id.iv_contrast){
+            if (view.id == R.id.iv_contrast) {
                 val worksBean = adapter.data[position] as DictionaryWorksBean
-                if(worksBean.isAddCompare){
+                if (worksBean.isAddCompare) {
                     CacheUtil.removeCompare(worksBean)
                     ToastUtils.showShort("移除成功")
-                }else{
+                } else {
                     //加入对比
                     CacheUtil.addCompareList(worksBean)
                     ToastUtils.showShort("加入成功")
@@ -159,10 +155,10 @@ class DictionarySubListFragment : BaseFragment<DictionaryViewModel, FragmentDict
             requestData(true)
         }
         fourTagAdapter.setOnItemClickListener { adapter, view, position ->
-            if(fourTagAdapter.selectedPosition == position){
+            if (fourTagAdapter.selectedPosition == position) {
                 fourTagAdapter.setSelectedPosition(-1)
                 tag4 = ""
-            }else {
+            } else {
                 fourTagAdapter.setSelectedPosition(position)
                 tag4 = fourTagAdapter.data[position].name
             }
@@ -181,7 +177,7 @@ class DictionarySubListFragment : BaseFragment<DictionaryViewModel, FragmentDict
 
     override fun onResume() {
         super.onResume()
-        if(args.firstTag != Constant.COMPLEX_TYPE_COMPARE) {
+        if (args.firstTag != Constant.COMPLEX_TYPE_NATIVE_COMPARE) {
             if (selectedPosition >= 0) {
                 worksAdapter.updateCompareList()
                 worksAdapter.notifyItemChanged(selectedPosition)
@@ -208,15 +204,19 @@ class DictionarySubListFragment : BaseFragment<DictionaryViewModel, FragmentDict
      * 获取列表数据
      */
     private fun requestData(isRefresh: Boolean = false) {
-        if(args.firstTag == Constant.COMPLEX_TYPE_COMPARE){
+        if (args.firstTag == Constant.COMPLEX_TYPE_NATIVE_COMPARE) {
             var compareList = CacheUtil.getCompareList()
             worksAdapter.setList(compareList)
-            if(compareList.size>0){
+            if (compareList.size > 0) {
                 loadsir.showSuccess()
-            }else{
+            } else {
                 loadsir.showEmpty()
             }
-        }else {
+        } else if (args.firstTag == Constant.COMPLEX_TYPE_COMPARE) {
+            args.dictionarySetId?.let {
+                mViewModel.findCompareItemPage(isRefresh, it)
+            }
+        } else {
             mViewModel.getDictionaryWorks(
                 isRefresh,
                 "",
@@ -230,7 +230,7 @@ class DictionarySubListFragment : BaseFragment<DictionaryViewModel, FragmentDict
 
     override fun createObserver() {
         super.createObserver()
-        mViewModel.classifySubList.observe(viewLifecycleOwner){
+        mViewModel.classifySubList.observe(viewLifecycleOwner) {
             it?.let { subList ->
                 var list = mutableListOf<String>()
                 subList.forEach {
@@ -240,21 +240,21 @@ class DictionarySubListFragment : BaseFragment<DictionaryViewModel, FragmentDict
                 mViewBind.flowContentLayout.addViews(list)
             }
         }
-        mViewModel.classifyFourSubList.observe(viewLifecycleOwner){
+        mViewModel.classifyFourSubList.observe(viewLifecycleOwner) {
             it?.let { subList ->
 //                var list = mutableListOf<String>()
 //                subList.forEach {
 //                    list.add(it.name)
 //                }
                 fourTagAdapter.data = subList
-                if(subList.size>0) {
+                if (subList.size > 0) {
                     fourth_recycler_view.visible()
                     line_view.visible()
-                }else{
+                } else {
                     fourth_recycler_view.gone()
                     line_view.gone()
                 }
-            }?: let {
+            } ?: let {
                 fourth_recycler_view.gone()
                 line_view.gone()
             }
@@ -269,11 +269,22 @@ class DictionarySubListFragment : BaseFragment<DictionaryViewModel, FragmentDict
                 mViewBind.worksRefreshLayout,
                 Constant.COMPLEX_TYPE_DICTIONARY
             )
-            if(it.isRefresh && it.listData.size>8 && CacheUtil.getUser()?.memberType != 1){
+            if (it.isRefresh && it.listData.size > 8 && CacheUtil.getUser()?.memberType != 1) {
                 open_vip_btn.visible()
-            }else{
+            } else {
                 open_vip_btn.gone()
             }
+        })
+        mViewModel.compareItemPageDataState.observe(viewLifecycleOwner, Observer {
+            //图单对比列表
+            loadDictionaryListData(
+                it,
+                worksAdapter,
+                loadsir,
+                mViewBind.worksRecyclerView,
+                mViewBind.worksRefreshLayout,
+                Constant.COMPLEX_TYPE_COMPARE
+            )
         })
     }
 

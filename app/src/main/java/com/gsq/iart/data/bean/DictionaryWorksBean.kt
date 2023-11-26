@@ -9,7 +9,7 @@ import java.io.Serializable
 @Keep
 data class DictionaryWorksBean(
     val downloadCount: Int,
-    val id: String,
+    val id: Int,
     val image: String,
     val mainAge: String,
     val mainImage: String,
@@ -30,6 +30,6 @@ data class DictionaryWorksBean(
     val viewCount: Int,
     val workId: String,
     var isAddCompare: Boolean
-): Serializable {
+) : Serializable {
 
 }

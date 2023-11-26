@@ -2,8 +2,6 @@ package com.gsq.iart.ui.fragment.home
 
 import android.Manifest
 import android.content.Intent
-import android.media.MediaScannerConnection
-import android.net.Uri
 import android.os.Bundle
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
@@ -22,7 +20,6 @@ import com.gsq.iart.app.App
 import com.gsq.iart.app.base.BaseFragment
 import com.gsq.iart.app.ext.init
 import com.gsq.iart.app.util.CacheUtil
-import com.gsq.iart.app.util.FileUtil
 import com.gsq.iart.app.util.MobAgentUtil
 import com.gsq.iart.app.util.StatusBarUtil
 import com.gsq.iart.data.Constant
@@ -31,13 +28,11 @@ import com.gsq.iart.data.Constant.COMPLEX_TYPE_DICTIONARY
 import com.gsq.iart.data.Constant.COMPLEX_TYPE_GROUP
 import com.gsq.iart.data.Constant.DATA_WORK
 import com.gsq.iart.data.Constant.DOWNLOAD_PARENT_PATH
-import com.gsq.iart.data.Constant.INTENT_POSITION
 import com.gsq.iart.data.bean.DetailArgsType
 import com.gsq.iart.data.bean.DictionaryWorksBean
 import com.gsq.iart.data.bean.WorkHdPics
 import com.gsq.iart.data.bean.WorksBean
 import com.gsq.iart.data.event.BigImageClickEvent
-import com.gsq.iart.data.event.CompareEvent
 import com.gsq.iart.databinding.FragmentWorkDetailBinding
 import com.gsq.iart.ui.fragment.mine.MemberFragment
 import com.gsq.iart.viewmodel.WorksViewModel
@@ -47,7 +42,6 @@ import com.gsq.mvvm.ext.view.gone
 import com.gsq.mvvm.ext.view.onClick
 import com.gsq.mvvm.ext.view.visible
 import com.gsq.mvvm.util.SaveUtils
-import com.liulishuo.okdownload.OkDownloadProvider
 import kotlinx.android.synthetic.main.fragment_work_detail.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -77,19 +71,20 @@ class WorkDetailFragment : BaseFragment<WorksViewModel, FragmentWorkDetailBindin
     override fun initView(savedInstanceState: Bundle?) {
         intentType = arguments?.getString(Constant.INTENT_TYPE, COMPLEX_TYPE_GROUP)
 
-        if(intentType  == COMPLEX_TYPE_DICTIONARY){
+        if (intentType == COMPLEX_TYPE_DICTIONARY) {
             //图典
             dictionaryWorksBean = arguments?.getSerializable(DATA_WORK) as? DictionaryWorksBean
             common_title_layout.gone()
             dictionary_title_layout.visible()
             work_name.text = dictionaryWorksBean?.name
-            work_source.text = "来源：[${dictionaryWorksBean?.mainAge}]${dictionaryWorksBean?.mainName}"
+            work_source.text =
+                "来源：[${dictionaryWorksBean?.mainAge}]${dictionaryWorksBean?.mainName}"
             contrast_view.visible()
 
             var eventMap = mutableMapOf<String, Any?>()
             eventMap["work_id"] = dictionaryWorksBean?.id
             MobAgentUtil.onEvent("preview_jump", eventMap)
-        }else{
+        } else {
             worksBean = arguments?.getSerializable(DATA_WORK) as? WorksBean
             common_title_layout.visible()
             dictionary_title_layout.gone()
@@ -126,9 +121,9 @@ class WorkDetailFragment : BaseFragment<WorksViewModel, FragmentWorkDetailBindin
 
     override fun lazyLoadData() {
         super.lazyLoadData()
-        if(intentType  == COMPLEX_TYPE_DICTIONARY) {
+        if (intentType == COMPLEX_TYPE_DICTIONARY) {
             loadDictionaryData()
-        }else{
+        } else {
             worksBean?.let {
                 if (intentType == COMPLEX_TYPE_COLLECT) {
                     mViewModel.getWorkDetail(it.workId)
@@ -140,8 +135,8 @@ class WorkDetailFragment : BaseFragment<WorksViewModel, FragmentWorkDetailBindin
         }
     }
 
-    private fun loadDictionaryData(){
-        var workHdPics = WorkHdPics("", dictionaryWorksBean?.image?:"")
+    private fun loadDictionaryData() {
+        var workHdPics = WorkHdPics("", dictionaryWorksBean?.image ?: "")
         fragmentList.add(PreviewImageFragment.start(DetailArgsType(workHdPics)))
         view_pager.adapter?.notifyDataSetChanged()
         if (fragmentList.size == 1) {
@@ -154,11 +149,11 @@ class WorkDetailFragment : BaseFragment<WorksViewModel, FragmentWorkDetailBindin
         updateCompareStatus()
         iv_contrast.onClick {
             dictionaryWorksBean?.let {
-                if(it.isAddCompare){
+                if (it.isAddCompare) {
                     //移除对比列表
                     CacheUtil.removeCompare(it)
                     ToastUtils.showShort("移除成功")
-                }else{
+                } else {
                     //加入对比列表
                     CacheUtil.addCompareList(it)
                     ToastUtils.showShort("加入成功")
@@ -169,10 +164,10 @@ class WorkDetailFragment : BaseFragment<WorksViewModel, FragmentWorkDetailBindin
         }
     }
 
-    private fun updateCompareStatus(){
-        if(dictionaryWorksBean?.isAddCompare == true){
+    private fun updateCompareStatus() {
+        if (dictionaryWorksBean?.isAddCompare == true) {
             iv_contrast.setImageResource(R.drawable.compare_remove)
-        }else{
+        } else {
             iv_contrast.setImageResource(R.drawable.icon_add)
         }
     }
@@ -295,11 +290,11 @@ class WorkDetailFragment : BaseFragment<WorksViewModel, FragmentWorkDetailBindin
             if (CacheUtil.isLogin()) {
                 if (CacheUtil.getUser()?.memberType == 1 || BuildConfig.DEBUG) {
                     //下载
-                    if(intentType  == COMPLEX_TYPE_DICTIONARY) {
+                    if (intentType == COMPLEX_TYPE_DICTIONARY) {
                         var eventMap = mutableMapOf<String, Any?>()
                         eventMap["work_id"] = dictionaryWorksBean?.id
                         MobAgentUtil.onEvent("download", eventMap)
-                    }else{
+                    } else {
                         var eventMap = mutableMapOf<String, Any?>()
                         eventMap["work_id"] = worksBean?.id
                         MobAgentUtil.onEvent("download", eventMap)
@@ -361,11 +356,11 @@ class WorkDetailFragment : BaseFragment<WorksViewModel, FragmentWorkDetailBindin
             )
         ) {
             // Already have permission, do the thing
-            if(intentType  == COMPLEX_TYPE_DICTIONARY) {//图典
+            if (intentType == COMPLEX_TYPE_DICTIONARY) {//图典
                 var url = dictionaryWorksBean?.image
                 url?.let {
                     dictionaryWorksBean?.id?.let {
-                        mViewModel.downloadInc(it)
+                        mViewModel.downloadInc(it.toString())
                     }
                     var fileName = it.substring(
                         it.lastIndexOf('/') + 1,
@@ -387,7 +382,7 @@ class WorkDetailFragment : BaseFragment<WorksViewModel, FragmentWorkDetailBindin
                         fileName
                     )
                 }
-            }else {
+            } else {
                 var url = worksBean?.hdPics?.get(view_pager.currentItem)?.url
                 url?.let {
                     worksBean?.id?.let {

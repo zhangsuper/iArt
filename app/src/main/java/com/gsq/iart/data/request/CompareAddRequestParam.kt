@@ -6,6 +6,6 @@ import java.io.Serializable
 @Keep
 class CompareAddRequestParam(
     var name: String? = null,
-    var workIds: MutableList<String>? = null,// 图典id
+    var workIds: MutableList<Int>? = null,// 图典id
 ) : Serializable {
 }
