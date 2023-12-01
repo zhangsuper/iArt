@@ -6,6 +6,7 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.airbnb.mvrx.args
 import com.airbnb.mvrx.asMavericksArgs
+import com.blankj.utilcode.util.ThreadUtils
 import com.blankj.utilcode.util.ToastUtils
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
@@ -75,12 +76,19 @@ class DictionarySubListFragment :
         //初始化recyclerView和Adapter
         val layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
         mViewBind.worksRecyclerView.init(layoutManager, worksAdapter)
+//        if (args.firstTag == Constant.COMPLEX_TYPE_NATIVE_COMPARE) {
+//            mViewBind.worksRecyclerView.setAutoLoadMore(false)
+//            mViewBind.worksRefreshLayout.isEnabled = false
+//        }
         mViewBind.worksRecyclerView.initFooter {
             //加载更多
-            if (CacheUtil.getUser()?.memberType == 1) {
-                requestData()
+            if (CacheUtil.getUser()?.memberType != 1) {
+                mViewBind.worksRecyclerView.loadMoreFinish(
+                    false,
+                    args.firstTag != Constant.COMPLEX_TYPE_NATIVE_COMPARE
+                )
             } else {
-                mViewBind.worksRecyclerView.loadMoreFinish(false, true)
+                requestData()
             }
         }
 
@@ -206,12 +214,16 @@ class DictionarySubListFragment :
     private fun requestData(isRefresh: Boolean = false) {
         if (args.firstTag == Constant.COMPLEX_TYPE_NATIVE_COMPARE) {
             var compareList = CacheUtil.getCompareList()
-            worksAdapter.setList(compareList)
-            if (compareList.size > 0) {
-                loadsir.showSuccess()
-            } else {
-                loadsir.showEmpty()
-            }
+            ThreadUtils.getMainHandler().postDelayed({
+                mViewBind.worksRefreshLayout?.isRefreshing = false
+                mViewBind.worksRecyclerView.loadMoreFinish(false, false);
+                worksAdapter.setList(compareList)
+                if (compareList.size > 0) {
+                    loadsir.showSuccess()
+                } else {
+                    loadsir.showEmpty()
+                }
+            }, 500)
         } else if (args.firstTag == Constant.COMPLEX_TYPE_COMPARE) {
             args.dictionarySetId?.let {
                 mViewModel.findCompareItemPage(isRefresh, it)

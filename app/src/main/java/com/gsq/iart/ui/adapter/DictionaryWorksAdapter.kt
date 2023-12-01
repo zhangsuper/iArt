@@ -67,7 +67,7 @@ class DictionaryWorksAdapter constructor(var listener: CallBackListener) :
             item.isAddCompare = false
         }
 
-        if (holder.layoutPosition + 4 == data.size && CacheUtil.getUser()?.memberType == 1) {
+        if (holder.layoutPosition + 4 == data.size && CacheUtil.getUser()?.memberType == 1 && args?.firstTag != COMPLEX_TYPE_NATIVE_COMPARE) {
             listener.loadMore()
 //            EventBus.getDefault().post(LoadMoreEvent(true))
         }
