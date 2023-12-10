@@ -10,11 +10,12 @@ import com.gsq.iart.R
 import com.gsq.mvvm.ext.view.gone
 import com.gsq.mvvm.ext.view.visible
 
-class CommonTitleLayout: RelativeLayout {
+class CommonTitleLayout : RelativeLayout {
 
     private var iv_back: ImageView
     private var tv_title: TextView
     private var tv_right: TextView
+    private var iv_center: ImageView
 
     constructor(context: Context) : this(context, null)
     constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, 0)
@@ -33,6 +34,7 @@ class CommonTitleLayout: RelativeLayout {
         iv_back = view.findViewById(R.id.iv_back)
         tv_title = view.findViewById(R.id.tv_title)
         tv_right = view.findViewById(R.id.tv_right)
+        iv_center = view.findViewById(R.id.iv_center)
         tv_title.text = titleString
         tv_right.text = rightString
     }
@@ -50,17 +52,28 @@ class CommonTitleLayout: RelativeLayout {
         }
     }
 
+    fun setCenterClickListener(listener: () -> Unit) {
+        iv_center.setOnClickListener {
+            listener.invoke()
+        }
+    }
+
     fun setTitle(title: String) {
         tv_title.text = title
     }
 
-    fun setRightText(text: String){
+    fun setRightText(text: String) {
         tv_right.text = text
-        if(text.isNullOrEmpty()){
+        if (text.isNullOrEmpty()) {
             tv_right.gone()
-        }else {
+        } else {
             tv_right.visible()
         }
+    }
+
+    fun setCenterImage(img: Int) {
+        iv_center.visible()
+        iv_center.setImageResource(img)
     }
 
 

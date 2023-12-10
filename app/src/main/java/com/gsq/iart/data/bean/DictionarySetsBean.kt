@@ -8,7 +8,7 @@ data class DictionarySetsBean(
     val createdTime: String,
     val id: Long,
     val img: String,
-    val name: String,
+    var name: String,
     val num: Int,
     val userId: Long
 ) : Serializable

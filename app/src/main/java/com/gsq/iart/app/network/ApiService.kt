@@ -1,6 +1,7 @@
 package com.gsq.iart.app.network
 
 import com.gsq.iart.data.bean.*
+import com.gsq.iart.data.request.CompareAddItemsRequestParam
 import com.gsq.iart.data.request.CompareAddRequestParam
 import com.gsq.iart.data.request.DictionaryWoksRequestParam
 import com.gsq.iart.data.request.MemberPayRequestParam
@@ -204,6 +205,33 @@ interface ApiService {
     @POST("art/work/atlas/compare/add")
     suspend fun addCompare(
         @Body requestParam: CompareAddRequestParam
+    ): ApiResponse<Any>
+
+    @POST("art/work/atlas/compare/addItems")
+    suspend fun addCompareItems(
+        @Body requestParam: CompareAddItemsRequestParam
+    ): ApiResponse<Any>
+
+    /**
+     * 图单重命名
+     */
+    @PUT("art/work/atlas/compare/rename")
+    suspend fun compareRename(
+        @Query("id") id: Long,
+        @Query("name") name: String
+    ): ApiResponse<Any>
+
+    /**
+     * 批量删除
+     */
+    @DELETE("art/work/atlas/compare/deleteItems")
+    suspend fun deleteCompareItems(
+        @Body requestParam: CompareAddItemsRequestParam
+    ): ApiResponse<Any>
+
+    @DELETE("art/work/atlas/compare/delete")
+    suspend fun deleteCompare(
+        @Query("id") id: Long
     ): ApiResponse<Any>
 
 }

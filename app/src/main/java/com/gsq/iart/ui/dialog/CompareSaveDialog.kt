@@ -7,11 +7,12 @@ import com.gsq.iart.app.base.BaseDialog
 import com.gsq.iart.databinding.DialogCompareSaveBinding
 import com.gsq.mvvm.ext.view.onClick
 
-class CompareSaveDialog: BaseDialog(R.layout.dialog_compare_save) {
+class CompareSaveDialog : BaseDialog(R.layout.dialog_compare_save) {
 
     private val binding by viewBinding(DialogCompareSaveBinding::bind)
 
     private var mBackListener: ((name: String) -> Unit)? = null
+    private var type: Int = 1//1:保存 2：修改
 
     override fun changeDialogStyle() {
         isCancelable = true
@@ -19,11 +20,16 @@ class CompareSaveDialog: BaseDialog(R.layout.dialog_compare_save) {
     }
 
     override fun initialize() {
+        if (type == 2) {
+            binding.tvTitle.text = "修改图单名称"
+        } else {
+            binding.tvTitle.text = "图单名称"
+        }
         binding.cancelBtn.onClick {
             dismiss()
         }
         binding.sureBtn.onClick {
-            if(binding.etName.text.isNullOrEmpty()){
+            if (binding.etName.text.isNullOrEmpty()) {
                 ToastUtils.showShort("请输入图单名称！")
                 return@onClick
             }
@@ -32,8 +38,13 @@ class CompareSaveDialog: BaseDialog(R.layout.dialog_compare_save) {
         }
     }
 
-    fun setBackListener(listener: ((name: String) -> Unit)):CompareSaveDialog{
+    fun setBackListener(listener: ((name: String) -> Unit)): CompareSaveDialog {
         mBackListener = listener
+        return this
+    }
+
+    fun setDialogType(type: Int): CompareSaveDialog {
+        this.type = type
         return this
     }
 }

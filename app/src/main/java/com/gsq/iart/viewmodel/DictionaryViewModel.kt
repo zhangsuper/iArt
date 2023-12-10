@@ -7,6 +7,7 @@ import com.gsq.iart.data.Constant
 import com.gsq.iart.data.bean.DictionaryMenuBean
 import com.gsq.iart.data.bean.DictionarySetsBean
 import com.gsq.iart.data.bean.DictionaryWorksBean
+import com.gsq.iart.data.request.CompareAddItemsRequestParam
 import com.gsq.iart.data.request.CompareAddRequestParam
 import com.gsq.iart.data.request.DictionaryWoksRequestParam
 import com.gsq.mvvm.base.viewmodel.BaseViewModel
@@ -35,6 +36,15 @@ class DictionaryViewModel : BaseViewModel() {
 
     //添加图单
     var addComparePageLiveData: MutableLiveData<Boolean> = MutableLiveData()
+
+    //添加图单列表切图
+    var addCompareItemsLiveData: MutableLiveData<Boolean> = MutableLiveData()
+
+    //图单重命名
+    var compareRenameLiveData: MutableLiveData<Boolean> = MutableLiveData()
+
+    //添加图单列表切图
+    var deleteCompareItemsLiveData: MutableLiveData<Boolean> = MutableLiveData()
 
     /**
      * 请求图典分类列表
@@ -231,6 +241,54 @@ class DictionaryViewModel : BaseViewModel() {
             {
                 //请求失败
                 addComparePageLiveData.value = false
+            })
+    }
+
+    fun addCompareItems(id: Long, worksIds: MutableList<Int>) {
+        var requestParam = CompareAddItemsRequestParam(
+            id, worksIds
+        )
+        request(
+            { apiService.addCompareItems(requestParam) },
+            {
+                //请求成功
+                addCompareItemsLiveData.value = true
+            },
+            {
+                //请求失败
+                addCompareItemsLiveData.value = false
+            })
+    }
+
+    /**
+     * 图单重命名
+     */
+    fun compareRename(id: Long, name: String) {
+        request(
+            { apiService.compareRename(id, name) },
+            {
+                //请求成功
+                compareRenameLiveData.value = true
+            },
+            {
+                //请求失败
+                compareRenameLiveData.value = false
+            })
+    }
+
+    fun deleteCompareItems(id: Long, worksIds: MutableList<Int>) {
+        var requestParam = CompareAddItemsRequestParam(
+            id, worksIds
+        )
+        request(
+            { apiService.deleteCompareItems(requestParam) },
+            {
+                //请求成功
+                deleteCompareItemsLiveData.value = true
+            },
+            {
+                //请求失败
+                deleteCompareItemsLiveData.value = false
             })
     }
 }

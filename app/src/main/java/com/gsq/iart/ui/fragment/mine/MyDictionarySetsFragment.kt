@@ -5,17 +5,25 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.gsq.iart.R
 import com.gsq.iart.app.App
 import com.gsq.iart.app.base.BaseFragment
-import com.gsq.iart.app.ext.*
+import com.gsq.iart.app.ext.init
+import com.gsq.iart.app.ext.initFooter
+import com.gsq.iart.app.ext.loadListData
+import com.gsq.iart.app.ext.loadServiceInit
+import com.gsq.iart.app.ext.showLoading
 import com.gsq.iart.app.util.StatusBarUtil
 import com.gsq.iart.data.Constant
 import com.gsq.iart.data.bean.DictionarySetsBean
+import com.gsq.iart.data.event.CompareRenameEvent
 import com.gsq.iart.databinding.FragmentDictionarySetsBinding
 import com.gsq.iart.ui.adapter.DictionarySetsAdapter
 import com.gsq.iart.viewmodel.DictionaryViewModel
 import com.gsq.mvvm.ext.nav
 import com.gsq.mvvm.ext.navigateAction
 import com.kingja.loadsir.core.LoadService
-import kotlinx.android.synthetic.main.fragment_my_collect.*
+import kotlinx.android.synthetic.main.fragment_my_collect.title_layout
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
 class MyDictionarySetsFragment :
     BaseFragment<DictionaryViewModel, FragmentDictionarySetsBinding>() {
@@ -68,6 +76,7 @@ class MyDictionarySetsFragment :
                 bundle
             )
         }
+        EventBus.getDefault().register(this)
     }
 
     override fun lazyLoadData() {
@@ -99,5 +108,16 @@ class MyDictionarySetsFragment :
     override fun onLoadMore() {
         super.onLoadMore()
         requestData(false)
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onMessageEvent(event: CompareRenameEvent) {
+        mAdapter.data.find { it.id == event.id }?.name = event.name
+        mAdapter.notifyDataSetChanged()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        EventBus.getDefault().unregister(this)
     }
 }

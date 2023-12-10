@@ -13,7 +13,12 @@ import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
 import com.gsq.iart.R
 import com.gsq.iart.app.base.BaseFragment
-import com.gsq.iart.app.ext.*
+import com.gsq.iart.app.ext.init
+import com.gsq.iart.app.ext.initFooter
+import com.gsq.iart.app.ext.loadDictionaryListData
+import com.gsq.iart.app.ext.loadServiceInit
+import com.gsq.iart.app.ext.showEmpty
+import com.gsq.iart.app.ext.showLoading
 import com.gsq.iart.app.util.CacheUtil
 import com.gsq.iart.data.Constant
 import com.gsq.iart.data.Constant.COMPLEX_TYPE_DICTIONARY
@@ -31,7 +36,9 @@ import com.gsq.mvvm.ext.view.gone
 import com.gsq.mvvm.ext.view.onClick
 import com.gsq.mvvm.ext.view.visible
 import com.kingja.loadsir.core.LoadService
-import kotlinx.android.synthetic.main.fragment_dictionary_sub_list.*
+import kotlinx.android.synthetic.main.fragment_dictionary_sub_list.fourth_recycler_view
+import kotlinx.android.synthetic.main.fragment_dictionary_sub_list.line_view
+import kotlinx.android.synthetic.main.fragment_dictionary_sub_list.open_vip_btn
 
 /**
  * 图典作品列表
@@ -299,6 +306,7 @@ class DictionarySubListFragment :
             )
         })
     }
+
 
     override fun onDestroy() {
         super.onDestroy()
