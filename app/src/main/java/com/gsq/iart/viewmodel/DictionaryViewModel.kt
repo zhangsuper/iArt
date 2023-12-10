@@ -7,11 +7,13 @@ import com.gsq.iart.data.Constant
 import com.gsq.iart.data.bean.DictionaryMenuBean
 import com.gsq.iart.data.bean.DictionarySetsBean
 import com.gsq.iart.data.bean.DictionaryWorksBean
+import com.gsq.iart.data.event.CompareDeleteEvent
 import com.gsq.iart.data.request.CompareAddItemsRequestParam
 import com.gsq.iart.data.request.CompareAddRequestParam
 import com.gsq.iart.data.request.DictionaryWoksRequestParam
 import com.gsq.mvvm.base.viewmodel.BaseViewModel
 import com.gsq.mvvm.ext.request
+import org.greenrobot.eventbus.EventBus
 
 class DictionaryViewModel : BaseViewModel() {
 
@@ -43,8 +45,11 @@ class DictionaryViewModel : BaseViewModel() {
     //图单重命名
     var compareRenameLiveData: MutableLiveData<Boolean> = MutableLiveData()
 
-    //添加图单列表切图
+    //批量删除图典
     var deleteCompareItemsLiveData: MutableLiveData<Boolean> = MutableLiveData()
+
+    //删除整个图单
+    var deleteCompareLiveData: MutableLiveData<Boolean> = MutableLiveData()
 
     /**
      * 请求图典分类列表
@@ -289,6 +294,23 @@ class DictionaryViewModel : BaseViewModel() {
             {
                 //请求失败
                 deleteCompareItemsLiveData.value = false
+            })
+    }
+
+    /**
+     * 删除整个图单
+     */
+    fun deleteCompare(id: Long) {
+        request(
+            { apiService.deleteCompare(id) },
+            {
+                //请求成功
+                deleteCompareLiveData.value = true
+                EventBus.getDefault().post(CompareDeleteEvent(id))
+            },
+            {
+                //请求失败
+                deleteCompareLiveData.value = false
             })
     }
 }

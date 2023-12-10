@@ -14,6 +14,7 @@ import com.gsq.iart.data.bean.DictionarySetsBean
 import com.gsq.iart.data.event.CompareRenameEvent
 import com.gsq.iart.databinding.FragmentCompareListBinding
 import com.gsq.iart.ui.dialog.CompareSaveDialog
+import com.gsq.iart.ui.dialog.DialogUtils
 import com.gsq.iart.viewmodel.DictionaryViewModel
 import com.gsq.mvvm.ext.nav
 import com.gsq.mvvm.ext.navigateAction
@@ -50,6 +51,7 @@ class CompareListFragment : BaseFragment<DictionaryViewModel, FragmentCompareLis
             title_layout.setTitle("对比列表")
             save_btn.visible()
             add_btn.gone()
+            clear_btn.text = "清空"
         } else if (intentType == COMPLEX_TYPE_COMPARE) {
             save_btn.gone()
             add_btn.visible()
@@ -59,6 +61,7 @@ class CompareListFragment : BaseFragment<DictionaryViewModel, FragmentCompareLis
                 title_layout.setTitle(it.name)
             }
             title_layout.setCenterImage(R.drawable.icon_edit)
+            clear_btn.text = "删除"
         }
         title_layout.setBackListener {
             nav().navigateUp()
@@ -106,11 +109,35 @@ class CompareListFragment : BaseFragment<DictionaryViewModel, FragmentCompareLis
             //清空
             if (intentType == COMPLEX_TYPE_NATIVE_COMPARE) {
                 //本地对比列表
-                CacheUtil.setCompareList(arrayListOf())
-                listFragment.lazyLoadData()
+                DialogUtils.showNormalDoubleButtonDialog(
+                    activity,
+                    "提示",
+                    "是否清空对比列表？",
+                    "确定",
+                    "取消",
+                    true
+                ) { dialog, isLeft ->
+                    if (!isLeft) {
+                        CacheUtil.setCompareList(arrayListOf())
+                        listFragment.lazyLoadData()
+                    }
+                }
             } else if (intentType == COMPLEX_TYPE_COMPARE) {
                 //图单对比列表
-
+                DialogUtils.showNormalDoubleButtonDialog(
+                    activity,
+                    "提示",
+                    "是否删除整个图单？",
+                    "确定",
+                    "取消",
+                    true
+                ) { dialog, isLeft ->
+                    if (!isLeft) {
+                        dictionarySetsBean?.let {
+                            mViewModel.deleteCompare(it.id)
+                        }
+                    }
+                }
             }
         }
     }
@@ -140,6 +167,14 @@ class CompareListFragment : BaseFragment<DictionaryViewModel, FragmentCompareLis
                 }
             } else {
                 ToastUtils.showShort("修改失败！")
+            }
+        }
+        mViewModel.deleteCompareLiveData.observe(viewLifecycleOwner) {
+            if (it) {
+                nav().navigateUp()
+                ToastUtils.showShort("删除成功")
+            } else {
+                ToastUtils.showShort("删除失败！")
             }
         }
     }

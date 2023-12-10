@@ -13,6 +13,7 @@ import com.gsq.iart.app.ext.showLoading
 import com.gsq.iart.app.util.StatusBarUtil
 import com.gsq.iart.data.Constant
 import com.gsq.iart.data.bean.DictionarySetsBean
+import com.gsq.iart.data.event.CompareDeleteEvent
 import com.gsq.iart.data.event.CompareRenameEvent
 import com.gsq.iart.databinding.FragmentDictionarySetsBinding
 import com.gsq.iart.ui.adapter.DictionarySetsAdapter
@@ -114,6 +115,14 @@ class MyDictionarySetsFragment :
     fun onMessageEvent(event: CompareRenameEvent) {
         mAdapter.data.find { it.id == event.id }?.name = event.name
         mAdapter.notifyDataSetChanged()
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onMessageEvent(event: CompareDeleteEvent) {
+        var bean = mAdapter.data.find { it.id == event.id }
+        bean?.let {
+            mAdapter.remove(it)
+        }
     }
 
     override fun onDestroy() {
