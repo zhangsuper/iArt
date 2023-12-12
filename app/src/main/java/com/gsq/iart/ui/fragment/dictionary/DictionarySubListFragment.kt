@@ -67,6 +67,13 @@ class DictionarySubListFragment :
     private var tag4: String = ""
     private var selectedPosition = -1
 
+    private var deleteIdPosition: Int? = null
+
+    fun setEditStatus(isEdit: Boolean) {
+        worksAdapter.isEdit = isEdit
+        worksAdapter.notifyDataSetChanged()
+    }
+
 
     override fun initView(savedInstanceState: Bundle?) {
         //状态页配置
@@ -149,6 +156,22 @@ class DictionarySubListFragment :
                 }
                 worksAdapter.updateCompareList()
                 worksAdapter.notifyDataSetChanged()
+            } else if (view.id == R.id.iv_delete) {
+                //删除
+                val worksBean = adapter.data[position] as DictionaryWorksBean
+                if (args.firstTag == Constant.COMPLEX_TYPE_COMPARE) {
+                    //图单列表删除
+                    args.dictionarySetId?.let {
+                        var list = mutableListOf<Int>()
+                        list.add(worksBean.id)
+                        deleteIdPosition = position
+                        mViewModel.deleteCompareItems(it, list)
+                    }
+                } else if (args.firstTag == Constant.COMPLEX_TYPE_NATIVE_COMPARE) {
+                    //本地对比列表删除
+                    CacheUtil.removeCompare(worksBean)
+                    worksAdapter.removeAt(position)
+                }
             }
         }
         mViewBind.flowContentLayout.setOnclickListener { tag ->
@@ -305,6 +328,17 @@ class DictionarySubListFragment :
                 Constant.COMPLEX_TYPE_COMPARE
             )
         })
+
+        mViewModel.deleteCompareItemsLiveData.observe(viewLifecycleOwner) {
+            if (it) {
+                ToastUtils.showShort("删除成功")
+                deleteIdPosition?.let {
+                    worksAdapter.removeAt(it)
+                }
+            } else {
+                ToastUtils.showShort("删除失败！")
+            }
+        }
     }
 
 

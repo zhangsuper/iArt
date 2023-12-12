@@ -17,6 +17,15 @@
         app:shapeAppearanceOverlay="@style/DictionaryWorksCoverStyle" />
 
     <ImageView
+        android:id="@+id/iv_delete"
+        android:layout_width="@dimen/dp_18"
+        android:layout_height="@dimen/dp_18"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:src="@drawable/icon_edit"
+        android:visibility="gone" />
+
+    <ImageView
         android:id="@+id/icon_vip"
         android:layout_width="@dimen/dp_20"
         android:layout_height="@dimen/dp_20"
@@ -33,6 +42,7 @@
         android:layout_marginTop="@dimen/dp_8"
         android:gravity="center_vertical"
         app:layout_constraintTop_toBottomOf="@+id/item_works_cover">
+
         <TextView
             android:id="@+id/item_works_name"
             android:layout_width="0dp"
@@ -46,13 +56,13 @@
             android:textColor="@color/black"
             android:maxLines="1"
             android:ellipsize="end"
-            android:layout_weight="1"/>
+            android:layout_weight="1" />
 
         <ImageView
             android:id="@+id/iv_contrast"
             android:layout_width="@dimen/dp_24"
             android:layout_height="@dimen/dp_24"
-            android:src="@drawable/icon_add"/>
+            android:src="@drawable/icon_add" />
     </androidx.appcompat.widget.LinearLayoutCompat>
 
     <TextView
@@ -68,6 +78,6 @@
         android:maxLines="1"
         android:ellipsize="end"
         android:paddingHorizontal="@dimen/dp_10"
-        android:paddingVertical="@dimen/dp_3"/>
+        android:paddingVertical="@dimen/dp_3" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

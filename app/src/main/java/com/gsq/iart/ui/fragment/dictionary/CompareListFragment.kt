@@ -66,6 +66,11 @@ class CompareListFragment : BaseFragment<DictionaryViewModel, FragmentCompareLis
         title_layout.setBackListener {
             nav().navigateUp()
         }
+        title_layout.setRightClickListener {
+            title_layout.setRightText("")
+            mViewBind.bottomView.visible()
+            listFragment.setEditStatus(false)
+        }
         title_layout.setCenterClickListener {
             //重命名
             CompareSaveDialog().setDialogType(2).setBackListener {
@@ -88,6 +93,9 @@ class CompareListFragment : BaseFragment<DictionaryViewModel, FragmentCompareLis
 
         manage_btn.onClick {
             //管理
+            mViewBind.bottomView.gone()
+            title_layout.setRightText("完成")
+            listFragment.setEditStatus(true)
         }
         save_btn.onClick {
             //保存

@@ -224,7 +224,7 @@ interface ApiService {
     /**
      * 批量删除
      */
-    @DELETE("art/work/atlas/compare/deleteItems")
+    @HTTP(method = "DELETE", path = "art/work/atlas/compare/deleteItems", hasBody = true)
     suspend fun deleteCompareItems(
         @Body requestParam: CompareAddItemsRequestParam
     ): ApiResponse<Any>

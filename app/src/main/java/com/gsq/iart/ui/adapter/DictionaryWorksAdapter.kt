@@ -22,10 +22,11 @@ class DictionaryWorksAdapter constructor(var listener: CallBackListener) :
 
     var compareList: ArrayList<DictionaryWorksBean>
     private var args: DictionaryArgsType? = null
+    var isEdit: Boolean = false
 
     init {
         setAdapterAnimation(SettingUtil.getListMode())
-        addChildClickViewIds(R.id.iv_contrast)
+        addChildClickViewIds(R.id.iv_contrast, R.id.iv_delete)
         compareList = CacheUtil.getCompareList()
     }
 
@@ -76,6 +77,10 @@ class DictionaryWorksAdapter constructor(var listener: CallBackListener) :
         } else {
             vipIcon.gone()
         }
-
+        if (isEdit) {
+            holder.getView<ImageView>(R.id.iv_delete).visible()
+        } else {
+            holder.getView<ImageView>(R.id.iv_delete).gone()
+        }
     }
 }
