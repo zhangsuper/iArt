@@ -22,7 +22,7 @@
         android:layout_height="@dimen/dp_18"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        android:src="@drawable/icon_edit"
+        android:src="@drawable/icon_delete"
         android:visibility="gone" />
 
     <ImageView

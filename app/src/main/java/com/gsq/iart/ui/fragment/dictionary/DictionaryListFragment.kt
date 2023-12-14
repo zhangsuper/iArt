@@ -12,6 +12,7 @@ import com.gsq.iart.app.util.StatusBarUtil
 import com.gsq.iart.data.Constant
 import com.gsq.iart.data.bean.DictionaryArgsType
 import com.gsq.iart.data.bean.DictionaryMenuBean
+import com.gsq.iart.data.bean.DictionarySetsBean
 import com.gsq.iart.data.event.CompareEvent
 import com.gsq.iart.databinding.FragmentDictionaryListBinding
 import com.gsq.iart.ui.adapter.SearchHistoryAdapter
@@ -39,6 +40,8 @@ class DictionaryListFragment : BaseFragment<DictionaryViewModel, FragmentDiction
     //fragment集合
     var fragments: ArrayList<Fragment> = arrayListOf()
 
+    private var intent_data_sub: DictionarySetsBean? = null
+
     private val mThreeDictionaryAdapter: SearchHistoryAdapter by lazy {
         SearchHistoryAdapter(
             arrayListOf()
@@ -58,6 +61,7 @@ class DictionaryListFragment : BaseFragment<DictionaryViewModel, FragmentDiction
     }
 
     override fun initView(savedInstanceState: Bundle?) {
+        intent_data_sub = arguments?.getSerializable(Constant.INTENT_DATA_SUB) as? DictionarySetsBean
         title_layout.setBackListener {
             nav().navigateUp()
 
@@ -104,12 +108,17 @@ class DictionaryListFragment : BaseFragment<DictionaryViewModel, FragmentDiction
     }
 
     private fun updateRightData() {
-        var compareList = CacheUtil.getCompareList()
-        if (compareList.size > 0) {
-            title_layout.setRightText("对比列表（${compareList.size}）")
-        } else {
-            title_layout.setRightText("")
+        intent_data_sub?.let {
+            title_layout.setRightText("${it.name} (${it.num})")
+        }?: let {
+            var compareList = CacheUtil.getCompareList()
+            if (compareList.size > 0) {
+                title_layout.setRightText("对比列表（${compareList.size}）")
+            } else {
+                title_layout.setRightText("")
+            }
         }
+
     }
 
     override fun onDestroy() {

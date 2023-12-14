@@ -12,6 +12,7 @@ import com.gsq.iart.app.ext.init
 import com.gsq.iart.app.util.CacheUtil
 import com.gsq.iart.app.util.StatusBarUtil
 import com.gsq.iart.data.Constant
+import com.gsq.iart.data.bean.DictionarySetsBean
 import com.gsq.iart.data.bean.WorksBean
 import com.gsq.iart.databinding.FragmentDictionaryBinding
 import com.gsq.iart.ui.adapter.AllConditionAdapter
@@ -23,6 +24,7 @@ import com.gsq.mvvm.ext.navigateAction
 import com.gsq.mvvm.ext.view.gone
 import com.gsq.mvvm.ext.view.onClick
 import com.gsq.mvvm.ext.view.visible
+import com.gsq.mvvm.util.get
 import kotlinx.android.synthetic.main.fragment_dictionary.open_vip_btn
 import kotlinx.android.synthetic.main.fragment_dictionary.recycler_view
 import kotlinx.android.synthetic.main.fragment_home.*
@@ -35,6 +37,7 @@ class DictionaryFragment : BaseFragment<DictionaryViewModel, FragmentDictionaryB
 
     private var mAdapter: DictionaryMenuAdapter? = null
     private var isClickVipBtn = false
+    private var intent_data:DictionarySetsBean? = null
 
     override fun onResume() {
         super.onResume()
@@ -54,6 +57,7 @@ class DictionaryFragment : BaseFragment<DictionaryViewModel, FragmentDictionaryB
     }
 
     override fun initView(savedInstanceState: Bundle?) {
+        intent_data = arguments?.getSerializable(Constant.INTENT_DATA) as? DictionarySetsBean
         home_search_view.setOnClickListener {
             //跳转搜索节面
             nav().navigateAction(R.id.action_mainFragment_to_searchFragment)
@@ -63,6 +67,9 @@ class DictionaryFragment : BaseFragment<DictionaryViewModel, FragmentDictionaryB
             var bundle = Bundle()
             bundle.putSerializable(Constant.INTENT_DATA, bean)
             bundle.putInt(Constant.INTENT_POSITION, position)
+            intent_data?.let {
+                bundle.putSerializable(Constant.INTENT_DATA_SUB, it)
+            }
             nav().navigateAction(R.id.action_mainFragment_to_dictionaryListFragment, bundle)
         }
         mAdapter!!.setExtendClickListener {

@@ -25,6 +25,7 @@ import com.gsq.iart.data.Constant.COMPLEX_TYPE_DICTIONARY
 import com.gsq.iart.data.bean.DictionaryArgsType
 import com.gsq.iart.data.bean.DictionaryMenuBean
 import com.gsq.iart.data.bean.DictionaryWorksBean
+import com.gsq.iart.data.event.CompareItemDeleteEvent
 import com.gsq.iart.databinding.FragmentDictionarySubListBinding
 import com.gsq.iart.ui.adapter.DictionaryLevelAdapter
 import com.gsq.iart.ui.adapter.DictionaryWorksAdapter
@@ -39,6 +40,7 @@ import com.kingja.loadsir.core.LoadService
 import kotlinx.android.synthetic.main.fragment_dictionary_sub_list.fourth_recycler_view
 import kotlinx.android.synthetic.main.fragment_dictionary_sub_list.line_view
 import kotlinx.android.synthetic.main.fragment_dictionary_sub_list.open_vip_btn
+import org.greenrobot.eventbus.EventBus
 
 /**
  * 图典作品列表
@@ -335,6 +337,7 @@ class DictionarySubListFragment :
                 deleteIdPosition?.let {
                     worksAdapter.removeAt(it)
                 }
+                EventBus.getDefault().post(CompareItemDeleteEvent())
             } else {
                 ToastUtils.showShort("删除失败！")
             }

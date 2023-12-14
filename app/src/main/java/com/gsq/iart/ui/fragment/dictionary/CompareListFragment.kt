@@ -148,6 +148,13 @@ class CompareListFragment : BaseFragment<DictionaryViewModel, FragmentCompareLis
                 }
             }
         }
+        add_btn.onClick {
+            //新增
+            var bundle = Bundle()
+//            bundle.putString(Constant.INTENT_TYPE, COMPLEX_TYPE_COMPARE)
+            bundle.putSerializable(Constant.INTENT_DATA, dictionarySetsBean)
+            nav().navigateAction(R.id.action_compareListFragment_to_dictionaryFragment, bundle)
+        }
     }
 
     override fun createObserver() {

@@ -14,6 +14,7 @@ import com.gsq.iart.app.util.StatusBarUtil
 import com.gsq.iart.data.Constant
 import com.gsq.iart.data.bean.DictionarySetsBean
 import com.gsq.iart.data.event.CompareDeleteEvent
+import com.gsq.iart.data.event.CompareItemDeleteEvent
 import com.gsq.iart.data.event.CompareRenameEvent
 import com.gsq.iart.databinding.FragmentDictionarySetsBinding
 import com.gsq.iart.ui.adapter.DictionarySetsAdapter
@@ -123,6 +124,11 @@ class MyDictionarySetsFragment :
         bean?.let {
             mAdapter.remove(it)
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onMessageEvent(event: CompareItemDeleteEvent) {
+        requestData(true)
     }
 
     override fun onDestroy() {
