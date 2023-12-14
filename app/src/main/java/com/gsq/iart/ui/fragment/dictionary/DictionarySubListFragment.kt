@@ -24,7 +24,9 @@ import com.gsq.iart.data.Constant
 import com.gsq.iart.data.Constant.COMPLEX_TYPE_DICTIONARY
 import com.gsq.iart.data.bean.DictionaryArgsType
 import com.gsq.iart.data.bean.DictionaryMenuBean
+import com.gsq.iart.data.bean.DictionarySetsBean
 import com.gsq.iart.data.bean.DictionaryWorksBean
+import com.gsq.iart.data.event.CompareItemAddEvent
 import com.gsq.iart.data.event.CompareItemDeleteEvent
 import com.gsq.iart.databinding.FragmentDictionarySubListBinding
 import com.gsq.iart.ui.adapter.DictionaryLevelAdapter
@@ -50,6 +52,7 @@ class DictionarySubListFragment :
 
     private val args: DictionaryArgsType by args()
     private var subTitleList: MutableList<DictionaryMenuBean>? = null
+    var compareItemPageData: MutableList<DictionaryWorksBean>? = null
 
 
     //适配器
@@ -70,6 +73,9 @@ class DictionarySubListFragment :
     private var selectedPosition = -1
 
     private var deleteIdPosition: Int? = null
+
+    private var intent_data_sub: DictionarySetsBean? = null
+    private var addComparePageItem: DictionaryWorksBean? = null//往图单新增的对象
 
     fun setEditStatus(isEdit: Boolean) {
         worksAdapter.isEdit = isEdit
@@ -116,6 +122,8 @@ class DictionarySubListFragment :
         layoutManager2.justifyContent = JustifyContent.FLEX_START
         fourth_recycler_view.init(layoutManager2, fourTagAdapter, false)
 
+        intent_data_sub = args.dictionarySetsBean
+
         worksAdapter.setOnItemClickListener { adapter, view, position ->
             val worksBean = adapter.data[position] as DictionaryWorksBean
             if (worksBean.pay == 1 && CacheUtil.getUser()?.memberType != 1) {
@@ -151,13 +159,22 @@ class DictionarySubListFragment :
                 if (worksBean.isAddCompare) {
                     CacheUtil.removeCompare(worksBean)
                     ToastUtils.showShort("移除成功")
+                    worksAdapter.updateCompareList()
+                    worksAdapter.notifyDataSetChanged()
                 } else {
                     //加入对比
-                    CacheUtil.addCompareList(worksBean)
-                    ToastUtils.showShort("加入成功")
+                    intent_data_sub?.let {
+                        var list = mutableListOf<Int>()
+                        list.add(worksBean.id)
+                        addComparePageItem = worksBean
+                        mViewModel.addCompareItems(it.id, list)
+                    }?: let{
+                        CacheUtil.addCompareList(worksBean)
+                        ToastUtils.showShort("加入成功")
+                        worksAdapter.updateCompareList()
+                        worksAdapter.notifyDataSetChanged()
+                    }
                 }
-                worksAdapter.updateCompareList()
-                worksAdapter.notifyDataSetChanged()
             } else if (view.id == R.id.iv_delete) {
                 //删除
                 val worksBean = adapter.data[position] as DictionaryWorksBean
@@ -243,7 +260,7 @@ class DictionarySubListFragment :
     /**
      * 获取列表数据
      */
-    private fun requestData(isRefresh: Boolean = false) {
+    fun requestData(isRefresh: Boolean = false) {
         if (args.firstTag == Constant.COMPLEX_TYPE_NATIVE_COMPARE) {
             var compareList = CacheUtil.getCompareList()
             ThreadUtils.getMainHandler().postDelayed({
@@ -321,6 +338,7 @@ class DictionarySubListFragment :
         })
         mViewModel.compareItemPageDataState.observe(viewLifecycleOwner, Observer {
             //图单对比列表
+            compareItemPageData = it.listData
             loadDictionaryListData(
                 it,
                 worksAdapter,
@@ -340,6 +358,19 @@ class DictionarySubListFragment :
                 EventBus.getDefault().post(CompareItemDeleteEvent())
             } else {
                 ToastUtils.showShort("删除失败！")
+            }
+        }
+        mViewModel.addCompareItemsLiveData.observe(viewLifecycleOwner) {
+            //图单列表新增切图
+            if(it){
+                addComparePageItem?.let { bean ->
+                    Constant.compareItemPageData?.add(bean)
+                }
+                ToastUtils.showShort("添加成功！")
+                worksAdapter.notifyDataSetChanged()
+                EventBus.getDefault().post(CompareItemAddEvent())
+            }else{
+                ToastUtils.showShort("添加失败！")
             }
         }
     }

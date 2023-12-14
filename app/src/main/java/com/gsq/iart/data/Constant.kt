@@ -2,6 +2,7 @@ package com.gsq.iart.data
 
 import com.gsq.iart.app.App
 import com.gsq.iart.app.util.FileUtil
+import com.gsq.iart.data.bean.DictionaryWorksBean
 import java.io.File
 
 object Constant {
@@ -45,6 +46,8 @@ object Constant {
         FileUtil.getSDPath(App.instance) + File.separator + CLIENT_PATH
 
 //    val download_path: String = FileUtil.getSavePath(CLIENT_PATH + DOWNLOAD_PATH)
+
+    var compareItemPageData: MutableList<DictionaryWorksBean>? = null
 
 
 }

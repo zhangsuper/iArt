@@ -10,6 +10,7 @@ import com.gsq.iart.app.ext.setAdapterAnimation
 import com.gsq.iart.app.image.GlideHelper
 import com.gsq.iart.app.util.CacheUtil
 import com.gsq.iart.app.util.SettingUtil
+import com.gsq.iart.data.Constant
 import com.gsq.iart.data.Constant.COMPLEX_TYPE_COMPARE
 import com.gsq.iart.data.Constant.COMPLEX_TYPE_NATIVE_COMPARE
 import com.gsq.iart.data.bean.DictionaryArgsType
@@ -58,14 +59,29 @@ class DictionaryWorksAdapter constructor(var listener: CallBackListener) :
         if (args?.firstTag == COMPLEX_TYPE_NATIVE_COMPARE || args?.firstTag == COMPLEX_TYPE_COMPARE) {
             contrastBtn.gone()
         } else {
-            contrastBtn.visible()
-        }
-        if (compareList.find { it.workId == item.workId } != null) {
-            item.isAddCompare = true
-            contrastBtn.setImageResource(R.drawable.compare_remove)
-        } else {
-            contrastBtn.setImageResource(R.drawable.icon_add)
-            item.isAddCompare = false
+//            contrastBtn.visible()
+            args?.dictionarySetsBean?.let {
+                Constant.compareItemPageData?.let { compareList ->
+                    if (compareList.find { it.workId == item.workId } != null) {
+                        item.isAddCompare = true
+                        contrastBtn.gone()
+                        contrastBtn.setImageResource(R.drawable.compare_remove)
+                    } else {
+                        contrastBtn.visible()
+                        contrastBtn.setImageResource(R.drawable.icon_add)
+                        item.isAddCompare = false
+                    }
+                }
+            }?:let {
+                contrastBtn.visible()
+                if (compareList.find { it.workId == item.workId } != null) {
+                    item.isAddCompare = true
+                    contrastBtn.setImageResource(R.drawable.compare_remove)
+                } else {
+                    contrastBtn.setImageResource(R.drawable.icon_add)
+                    item.isAddCompare = false
+                }
+            }
         }
 
         if (holder.layoutPosition + 4 == data.size && CacheUtil.getUser()?.memberType == 1 && args?.firstTag != COMPLEX_TYPE_NATIVE_COMPARE) {

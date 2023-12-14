@@ -14,6 +14,7 @@ import com.gsq.iart.data.bean.DictionaryArgsType
 import com.gsq.iart.data.bean.DictionaryMenuBean
 import com.gsq.iart.data.bean.DictionarySetsBean
 import com.gsq.iart.data.event.CompareEvent
+import com.gsq.iart.data.event.CompareItemAddEvent
 import com.gsq.iart.databinding.FragmentDictionaryListBinding
 import com.gsq.iart.ui.adapter.SearchHistoryAdapter
 import com.gsq.iart.viewmodel.DictionaryViewModel
@@ -68,9 +69,19 @@ class DictionaryListFragment : BaseFragment<DictionaryViewModel, FragmentDiction
         }
         title_layout.setRightClickListener {
             //对比列表
-            var bundle = Bundle()
-            bundle.putString(Constant.INTENT_TYPE, Constant.COMPLEX_TYPE_NATIVE_COMPARE)
-            nav().navigateAction(R.id.action_dictionaryListFragment_to_compareListFragment, bundle)
+            intent_data_sub?.let {
+                var bundle = Bundle()
+                bundle.putString(Constant.INTENT_TYPE, Constant.COMPLEX_TYPE_COMPARE)
+                bundle.putSerializable(Constant.INTENT_DATA, it)
+                nav().navigateAction(
+                    R.id.action_dictionaryListFragment_to_compareListFragment,
+                    bundle
+                )
+            }?: let {
+                var bundle = Bundle()
+                bundle.putString(Constant.INTENT_TYPE, Constant.COMPLEX_TYPE_NATIVE_COMPARE)
+                nav().navigateAction(R.id.action_dictionaryListFragment_to_compareListFragment, bundle)
+            }
         }
         dictionaryMenuBean = arguments?.getSerializable(Constant.INTENT_DATA) as DictionaryMenuBean
         position = arguments?.getInt(Constant.INTENT_POSITION, 0) ?: 0
@@ -78,7 +89,7 @@ class DictionaryListFragment : BaseFragment<DictionaryViewModel, FragmentDiction
         mDataList.add("全部")
         fragments.add(
             DictionarySubListFragment.start(
-                DictionaryArgsType(firstTag = dictionaryMenuBean.name)
+                DictionaryArgsType(firstTag = dictionaryMenuBean.name, dictionarySetsBean = intent_data_sub)
             )
         )
         dictionaryMenuBean.subs?.let {
@@ -89,7 +100,8 @@ class DictionaryListFragment : BaseFragment<DictionaryViewModel, FragmentDiction
                         DictionaryArgsType(
                             firstTag = dictionaryMenuBean.name,
                             tag = it.name,
-                            pid = it.id
+                            pid = it.id,
+                            dictionarySetsBean = intent_data_sub
                         )
                     )
                 )
@@ -127,9 +139,18 @@ class DictionaryListFragment : BaseFragment<DictionaryViewModel, FragmentDiction
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onMessageEvent(event: CompareEvent?) {
+    fun onMessageEvent(event: CompareEvent?) {//本地对比列表新增
         event?.let {
             updateRightData()
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onMessageEvent(event: CompareItemAddEvent?) {//图单列表新增
+        event?.let {
+            intent_data_sub?.let {
+                title_layout.setRightText("${it.name} (${Constant.compareItemPageData?.size})")
+            }
         }
     }
 

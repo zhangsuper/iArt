@@ -11,6 +11,7 @@ import com.gsq.iart.data.Constant.COMPLEX_TYPE_COMPARE
 import com.gsq.iart.data.Constant.COMPLEX_TYPE_NATIVE_COMPARE
 import com.gsq.iart.data.bean.DictionaryArgsType
 import com.gsq.iart.data.bean.DictionarySetsBean
+import com.gsq.iart.data.event.CompareItemAddEvent
 import com.gsq.iart.data.event.CompareRenameEvent
 import com.gsq.iart.databinding.FragmentCompareListBinding
 import com.gsq.iart.ui.dialog.CompareSaveDialog
@@ -26,7 +27,10 @@ import kotlinx.android.synthetic.main.fragment_compare_list.clear_btn
 import kotlinx.android.synthetic.main.fragment_compare_list.manage_btn
 import kotlinx.android.synthetic.main.fragment_compare_list.save_btn
 import kotlinx.android.synthetic.main.fragment_my_collect.title_layout
+import kotlinx.android.synthetic.main.fragment_setting.title_layout
 import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
 class CompareListFragment : BaseFragment<DictionaryViewModel, FragmentCompareListBinding>() {
 
@@ -48,7 +52,7 @@ class CompareListFragment : BaseFragment<DictionaryViewModel, FragmentCompareLis
     override fun initView(savedInstanceState: Bundle?) {
         intentType = arguments?.getString(Constant.INTENT_TYPE, COMPLEX_TYPE_NATIVE_COMPARE)
         if (intentType == COMPLEX_TYPE_NATIVE_COMPARE) {
-            title_layout.setTitle("对比列表")
+            mViewBind.titleLayout.setTitle("对比列表")
             save_btn.visible()
             add_btn.gone()
             clear_btn.text = "清空"
@@ -58,20 +62,20 @@ class CompareListFragment : BaseFragment<DictionaryViewModel, FragmentCompareLis
             dictionarySetsBean =
                 arguments?.getSerializable(Constant.INTENT_DATA) as? DictionarySetsBean
             dictionarySetsBean?.let {
-                title_layout.setTitle(it.name)
+                mViewBind.titleLayout.setTitle(it.name)
             }
-            title_layout.setCenterImage(R.drawable.icon_edit)
+            mViewBind.titleLayout.setCenterImage(R.drawable.icon_edit)
             clear_btn.text = "删除"
         }
-        title_layout.setBackListener {
+        mViewBind.titleLayout.setBackListener {
             nav().navigateUp()
         }
-        title_layout.setRightClickListener {
-            title_layout.setRightText("")
+        mViewBind.titleLayout.setRightClickListener {
+            mViewBind.titleLayout.setRightText("")
             mViewBind.bottomView.visible()
             listFragment.setEditStatus(false)
         }
-        title_layout.setCenterClickListener {
+        mViewBind.titleLayout.setCenterClickListener {
             //重命名
             CompareSaveDialog().setDialogType(2).setBackListener {
                 dictionarySetsBean?.id?.let { id ->
@@ -94,7 +98,7 @@ class CompareListFragment : BaseFragment<DictionaryViewModel, FragmentCompareLis
         manage_btn.onClick {
             //管理
             mViewBind.bottomView.gone()
-            title_layout.setRightText("完成")
+            mViewBind.titleLayout.setRightText("完成")
             listFragment.setEditStatus(true)
         }
         save_btn.onClick {
@@ -154,7 +158,9 @@ class CompareListFragment : BaseFragment<DictionaryViewModel, FragmentCompareLis
 //            bundle.putString(Constant.INTENT_TYPE, COMPLEX_TYPE_COMPARE)
             bundle.putSerializable(Constant.INTENT_DATA, dictionarySetsBean)
             nav().navigateAction(R.id.action_compareListFragment_to_dictionaryFragment, bundle)
+            Constant.compareItemPageData = listFragment.compareItemPageData
         }
+        EventBus.getDefault().register(this)
     }
 
     override fun createObserver() {
@@ -174,7 +180,7 @@ class CompareListFragment : BaseFragment<DictionaryViewModel, FragmentCompareLis
             if (it) {
                 ToastUtils.showShort("修改成功！")
                 newName?.let {
-                    title_layout.setTitle(it)
+                    mViewBind.titleLayout.setTitle(it)
                     dictionarySetsBean?.id?.let { id ->
                         EventBus.getDefault().post(CompareRenameEvent(id, it))
                     }
@@ -192,5 +198,17 @@ class CompareListFragment : BaseFragment<DictionaryViewModel, FragmentCompareLis
                 ToastUtils.showShort("删除失败！")
             }
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onMessageEvent(event: CompareItemAddEvent?) {//图单列表新增
+        event?.let {
+            listFragment?.requestData(true)
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        EventBus.getDefault().unregister(this)
     }
 }
