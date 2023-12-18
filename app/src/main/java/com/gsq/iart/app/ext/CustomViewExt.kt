@@ -424,7 +424,7 @@ fun <T> loadDictionaryListData(
     complexType: String
 ) {
     swipeRefreshLayout?.isRefreshing = false
-    recyclerView.loadMoreFinish(data.isEmpty, !data.isEmpty)
+    recyclerView.loadMoreFinish(false, !data.isEmpty)
     if (data.isSuccess) {
         //成功
         when {
