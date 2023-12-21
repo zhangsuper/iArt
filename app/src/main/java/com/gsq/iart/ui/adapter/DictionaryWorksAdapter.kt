@@ -57,6 +57,7 @@ class DictionaryWorksAdapter constructor(var listener: CallBackListener) :
 //        imageView.setImageViewRatio(item.thumbWidth, item.thumbHeight)
         GlideHelper.load(imageView, item.thumb, R.color.color_DDDDDD)
         if (args?.firstTag == COMPLEX_TYPE_NATIVE_COMPARE || args?.firstTag == COMPLEX_TYPE_COMPARE) {
+            item.isAddCompare = true
             contrastBtn.gone()
         } else {
 //            contrastBtn.visible()

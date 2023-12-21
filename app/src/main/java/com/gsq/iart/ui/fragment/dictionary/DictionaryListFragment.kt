@@ -113,7 +113,7 @@ class DictionaryListFragment : BaseFragment<DictionaryViewModel, FragmentDiction
         //初始化 magic_indicator
         dictionary_magic_indicator.bindViewPager2(dictionary_view_pager, mDataList)
         dictionary_view_pager.setCurrentItem(position, false)
-        dictionary_view_pager.offscreenPageLimit = 1
+        dictionary_view_pager.offscreenPageLimit = 20
         updateRightData()
         EventBus.getDefault().register(this)
 

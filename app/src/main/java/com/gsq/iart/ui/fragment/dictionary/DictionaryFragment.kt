@@ -83,12 +83,20 @@ class DictionaryFragment : BaseFragment<DictionaryViewModel, FragmentDictionaryB
             }
         }
         recycler_view.adapter = mAdapter
+        intent_data?.let {
+            mViewBind.ivClose.visible()
+        }?: let {
+            mViewBind.ivClose.gone()
+        }
         open_vip_btn.onClick {
             isClickVipBtn = true
             nav().navigateAction(
                 R.id.action_mainFragment_to_memberFragment,
                 bundleOf(MemberFragment.INTENT_KEY_TYPE to MemberFragment.INTENT_VALUE_WORKS)
             )
+        }
+        mViewBind.ivClose.onClick {
+            nav().popBackStack()
         }
     }
 

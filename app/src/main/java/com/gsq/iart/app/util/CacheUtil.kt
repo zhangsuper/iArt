@@ -137,7 +137,7 @@ object CacheUtil {
      */
     fun addCompareList(item: DictionaryWorksBean){
         var compareList = getCompareList()
-        compareList.add(item)
+        compareList.add(0, item)
         val kv = MMKV.mmkvWithID("app")
         kv.encode("CompareList", compareList.toJson())
         EventBus.getDefault().post(CompareEvent())
