@@ -221,6 +221,7 @@ public class DialogUtils {
         TextView contentView = normalDialog.findViewById(R.id.content);
         TextView leftView = normalDialog.findViewById(R.id.left);
         TextView rightView = normalDialog.findViewById(R.id.right);
+        View emptyView = normalDialog.findViewById(R.id.empty_view);
         View dividerHorizontal = normalDialog.findViewById(R.id.divider_horizontal);
         View divider = normalDialog.findViewById(R.id.divider);
 
@@ -232,6 +233,9 @@ public class DialogUtils {
         contentView.setMovementMethod(ScrollingMovementMethod.getInstance());
         if (TextUtils.isEmpty(title)) {
             titleView.setVisibility(View.GONE);
+        }
+        if (title.toString().trim().isEmpty()){
+            emptyView.setVisibility(View.VISIBLE);
         }
         if (TextUtils.isEmpty(detail)) {
             detailView.setVisibility(View.GONE);

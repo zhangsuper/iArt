@@ -1,6 +1,9 @@
 package com.gsq.iart.ui.dialog
 
+import android.content.DialogInterface
 import by.kirich1409.viewbindingdelegate.viewBinding
+import com.blankj.utilcode.util.KeyboardUtils
+import com.blankj.utilcode.util.ThreadUtils
 import com.blankj.utilcode.util.ToastUtils
 import com.gsq.iart.R
 import com.gsq.iart.app.base.BaseDialog
@@ -13,6 +16,7 @@ class CompareSaveDialog : BaseDialog(R.layout.dialog_compare_save) {
 
     private var mBackListener: ((name: String) -> Unit)? = null
     private var type: Int = 1//1:保存 2：修改
+    private var content: String =""
 
     override fun changeDialogStyle() {
         isCancelable = true
@@ -36,6 +40,9 @@ class CompareSaveDialog : BaseDialog(R.layout.dialog_compare_save) {
             mBackListener?.invoke(binding.etName.text.toString())
             dismiss()
         }
+        binding.etName.setText(content)
+        binding.etName.requestFocus()
+        KeyboardUtils.showSoftInput()
     }
 
     fun setBackListener(listener: ((name: String) -> Unit)): CompareSaveDialog {
@@ -46,5 +53,17 @@ class CompareSaveDialog : BaseDialog(R.layout.dialog_compare_save) {
     fun setDialogType(type: Int): CompareSaveDialog {
         this.type = type
         return this
+    }
+
+    fun setDialogContent(content: String?): CompareSaveDialog {
+        content?.let {
+            this.content = it
+        }
+        return this
+    }
+
+    override fun onDismiss(dialog: DialogInterface) {
+        KeyboardUtils.hideSoftInput(binding.etName)
+        super.onDismiss(dialog)
     }
 }

@@ -2,20 +2,17 @@ package com.gsq.iart.ui.fragment.dictionary
 
 import android.os.Bundle
 import androidx.core.os.bundleOf
-import androidx.fragment.app.Fragment
 import com.blankj.utilcode.util.ThreadUtils
 import com.gsq.iart.BuildConfig
 import com.gsq.iart.R
 import com.gsq.iart.app.base.BaseFragment
-import com.gsq.iart.app.ext.bindViewPager2
-import com.gsq.iart.app.ext.init
 import com.gsq.iart.app.util.CacheUtil
 import com.gsq.iart.app.util.StatusBarUtil
 import com.gsq.iart.data.Constant
 import com.gsq.iart.data.bean.DictionarySetsBean
-import com.gsq.iart.data.bean.WorksBean
+import com.gsq.iart.data.event.LoginSuccessEvent
+import com.gsq.iart.data.event.LogoutEvent
 import com.gsq.iart.databinding.FragmentDictionaryBinding
-import com.gsq.iart.ui.adapter.AllConditionAdapter
 import com.gsq.iart.ui.adapter.DictionaryMenuAdapter
 import com.gsq.iart.ui.fragment.mine.MemberFragment
 import com.gsq.iart.viewmodel.DictionaryViewModel
@@ -24,10 +21,12 @@ import com.gsq.mvvm.ext.navigateAction
 import com.gsq.mvvm.ext.view.gone
 import com.gsq.mvvm.ext.view.onClick
 import com.gsq.mvvm.ext.view.visible
-import com.gsq.mvvm.util.get
 import kotlinx.android.synthetic.main.fragment_dictionary.open_vip_btn
 import kotlinx.android.synthetic.main.fragment_dictionary.recycler_view
 import kotlinx.android.synthetic.main.fragment_home.*
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
 
 /**
@@ -57,6 +56,7 @@ class DictionaryFragment : BaseFragment<DictionaryViewModel, FragmentDictionaryB
     }
 
     override fun initView(savedInstanceState: Bundle?) {
+        EventBus.getDefault().register(this)
         intent_data = arguments?.getSerializable(Constant.INTENT_DATA) as? DictionarySetsBean
         home_search_view.setOnClickListener {
             //跳转搜索节面
@@ -121,6 +121,25 @@ class DictionaryFragment : BaseFragment<DictionaryViewModel, FragmentDictionaryB
                     open_vip_btn.gone()
                 }
             }
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        EventBus.getDefault().unregister(this)
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onMessageEvent(event: LogoutEvent?) {
+        event?.let {
+            mViewModel.getDictionaryClassifyList()//请求图典菜单列表
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onMessageEvent(event: LoginSuccessEvent?) {
+        event?.let {
+            mViewModel.getDictionaryClassifyList()//请求图典菜单列表
         }
     }
 

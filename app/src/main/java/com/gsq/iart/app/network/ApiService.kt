@@ -122,7 +122,7 @@ interface ApiService {
      *支付套餐列表
      */
     @POST("art/member/pay/config/listPayTerms")
-    suspend fun getPayConfig(): ApiResponse<ArrayList<PayConfigBean>>
+    suspend fun getPayConfig(@Query("memberType")  memberType: Int): ApiResponse<ArrayList<PayConfigBean>>
 
     /**
      *创建预支付订单

@@ -139,7 +139,7 @@ class MemberFragment : BaseFragment<MemberViewModel, FragmentMemberBinding>() {
         if (CacheUtil.isLogin()) {
             mLoginViewModel?.getUserInfo()
         }
-        mViewModel.getPayConfig()
+        mViewModel.getPayConfig(1)
     }
 
     override fun createObserver() {

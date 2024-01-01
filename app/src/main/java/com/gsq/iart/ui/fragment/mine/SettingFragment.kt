@@ -8,6 +8,7 @@ import com.gsq.iart.R
 import com.gsq.iart.app.base.BaseFragment
 import com.gsq.iart.app.util.CacheUtil
 import com.gsq.iart.app.util.MobAgentUtil
+import com.gsq.iart.data.event.LogoutEvent
 import com.gsq.iart.databinding.FragmentSettingBinding
 import com.gsq.iart.viewmodel.LoginViewModel
 import com.gsq.mvvm.base.viewmodel.BaseViewModel
@@ -17,6 +18,7 @@ import com.gsq.mvvm.ext.view.gone
 import com.gsq.mvvm.ext.view.visible
 import com.umeng.analytics.MobclickAgent
 import kotlinx.android.synthetic.main.fragment_setting.*
+import org.greenrobot.eventbus.EventBus
 
 /**
  * 设置
@@ -85,6 +87,7 @@ class SettingFragment : BaseFragment<BaseViewModel, FragmentSettingBinding>() {
         super.createObserver()
         mLoginViewModel?.logoutResultDataState?.observe(viewLifecycleOwner) {
             if (it.isSuccess) {
+                EventBus.getDefault().post(LogoutEvent())
                 ToastUtils.showLong("已退出登录")
                 CacheUtil.setUser(null)
                 MobclickAgent.onProfileSignOff()

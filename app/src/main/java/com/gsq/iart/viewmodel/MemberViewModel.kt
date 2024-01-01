@@ -19,9 +19,9 @@ class MemberViewModel : BaseViewModel() {
     /**
      * 支付套餐列表
      */
-    fun getPayConfig() {
+    fun getPayConfig(memberType: Int) {
         request(
-            { apiService.getPayConfig() },
+            { apiService.getPayConfig(memberType) },
             {
                 //请求成功
                 val listDataUiState =

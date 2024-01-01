@@ -8,8 +8,10 @@ import com.gsq.iart.R
 import com.gsq.iart.app.network.apiService
 import com.gsq.iart.app.network.stateCallback.UpdateUiState
 import com.gsq.iart.data.bean.UserInfo
+import com.gsq.iart.data.event.LoginSuccessEvent
 import com.gsq.mvvm.base.viewmodel.BaseViewModel
 import com.gsq.mvvm.ext.request
+import org.greenrobot.eventbus.EventBus
 
 class LoginViewModel : BaseViewModel() {
 
@@ -32,6 +34,7 @@ class LoginViewModel : BaseViewModel() {
                     data = it,
                 )
                 loginResultDataState.value = updateDataUiState
+                EventBus.getDefault().post(LoginSuccessEvent())
             },
             {
                 //请求失败

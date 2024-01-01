@@ -77,7 +77,7 @@ class CompareListFragment : BaseFragment<DictionaryViewModel, FragmentCompareLis
         }
         mViewBind.titleLayout.setCenterClickListener {
             //重命名
-            CompareSaveDialog().setDialogType(2).setBackListener {
+            CompareSaveDialog().setDialogType(2).setDialogContent(dictionarySetsBean?.name).setBackListener {
                 dictionarySetsBean?.id?.let { id ->
                     newName = it
                     mViewModel.compareRename(id, it)
@@ -123,7 +123,7 @@ class CompareListFragment : BaseFragment<DictionaryViewModel, FragmentCompareLis
                 //本地对比列表
                 DialogUtils.showNormalDoubleButtonDialog(
                     activity,
-                    "提示",
+                    " ",
                     "是否清空对比列表？",
                     "确定",
                     "取消",
@@ -138,7 +138,7 @@ class CompareListFragment : BaseFragment<DictionaryViewModel, FragmentCompareLis
                 //图单对比列表
                 DialogUtils.showNormalDoubleButtonDialog(
                     activity,
-                    "提示",
+                    " ",
                     "是否删除整个图单？",
                     "确定",
                     "取消",
