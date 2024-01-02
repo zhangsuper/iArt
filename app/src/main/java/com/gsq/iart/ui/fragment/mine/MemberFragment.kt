@@ -6,6 +6,7 @@ import android.text.style.ClickableSpan
 import android.view.View
 import android.widget.TextView
 import androidx.core.os.bundleOf
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.blankj.utilcode.util.LogUtils
 import com.blankj.utilcode.util.SpanUtils
@@ -13,21 +14,28 @@ import com.blankj.utilcode.util.ThreadUtils
 import com.blankj.utilcode.util.ToastUtils
 import com.gsq.iart.R
 import com.gsq.iart.app.base.BaseFragment
+import com.gsq.iart.app.ext.bindViewPager2
+import com.gsq.iart.app.ext.init
 import com.gsq.iart.app.image.GlideHelper
 import com.gsq.iart.app.util.CacheUtil
 import com.gsq.iart.app.util.MobAgentUtil
 import com.gsq.iart.app.util.StatusBarUtil
 import com.gsq.iart.app.util.WxLoginUtil
+import com.gsq.iart.data.bean.DictionaryArgsType
+import com.gsq.iart.data.bean.MemberArgsType
 import com.gsq.iart.data.bean.PayConfigBean
 import com.gsq.iart.data.bean.VipPriceBean
 import com.gsq.iart.data.event.PayResultEvent
 import com.gsq.iart.databinding.FragmentMemberBinding
 import com.gsq.iart.ui.adapter.VipPriceAdapter
+import com.gsq.iart.ui.fragment.dictionary.DictionarySubListFragment
 import com.gsq.iart.viewmodel.LoginViewModel
 import com.gsq.iart.viewmodel.MemberViewModel
 import com.gsq.mvvm.ext.nav
 import com.gsq.mvvm.ext.navigateAction
 import com.gsq.mvvm.ext.view.onClick
+import kotlinx.android.synthetic.main.fragment_dictionary_list.dictionary_magic_indicator
+import kotlinx.android.synthetic.main.fragment_dictionary_list.dictionary_view_pager
 import kotlinx.android.synthetic.main.fragment_member.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -52,6 +60,11 @@ class MemberFragment : BaseFragment<MemberViewModel, FragmentMemberBinding>() {
     private var payType = 1 //1:微信支付  2：支付宝支付
     private var mLoginViewModel: LoginViewModel? = null
     private var agreementType: String? = null
+
+    //标题集合
+    var mDataList: ArrayList<String> = arrayListOf()
+    //fragment集合
+    var fragments: ArrayList<Fragment> = arrayListOf()
 
     override fun initView(savedInstanceState: Bundle?) {
         title_layout.setBackListener {
@@ -132,6 +145,24 @@ class MemberFragment : BaseFragment<MemberViewModel, FragmentMemberBinding>() {
         }
         mLoginViewModel = ViewModelProvider(this)[LoginViewModel::class.java]
         EventBus.getDefault().register(this)
+
+
+        mDataList.add("超级会员")
+        mDataList.add("国画通会员")
+
+        fragments.add(
+            MemberSuperFragment.start()
+        )
+        fragments.add(
+            MemberGhtFragment.start()
+        )
+
+        //初始化viewpager2
+        mViewBind.memberViewPager.init(this, fragments)
+        //初始化 magic_indicator
+        mViewBind.memberMagicIndicator.bindViewPager2(mViewBind.memberViewPager, mDataList)
+        mViewBind.memberViewPager.setCurrentItem(0, false)
+        mViewBind.memberViewPager.offscreenPageLimit = 2
     }
 
     override fun lazyLoadData() {
