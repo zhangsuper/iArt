@@ -1,6 +1,12 @@
 package com.gsq.iart.ui.fragment.mine
 
 import android.os.Bundle
+import android.text.TextPaint
+import android.text.style.ClickableSpan
+import android.view.View
+import android.widget.TextView
+import androidx.core.os.bundleOf
+import com.blankj.utilcode.util.SpanUtils
 import com.blankj.utilcode.util.ToastUtils
 import com.gsq.iart.R
 import com.gsq.iart.app.base.BaseFragment
@@ -16,7 +22,7 @@ import com.gsq.mvvm.ext.view.onClick
 
 class MemberSuperFragment: BaseFragment<MemberViewModel, FragmentMemberSuperBinding>() {
 
-    private val vipPriceAdapter: VipPriceAdapter by lazy { VipPriceAdapter() }
+    private val vipPriceAdapter: VipPriceAdapter by lazy { VipPriceAdapter(99) }
 
 
     override fun initView(savedInstanceState: Bundle?) {
@@ -24,6 +30,28 @@ class MemberSuperFragment: BaseFragment<MemberViewModel, FragmentMemberSuperBind
         vipPriceAdapter.setOnItemClickListener { adapter, view, position ->
             vipPriceAdapter.selectItem(adapter.getItem(position) as PayConfigBean)
         }
+
+        val clickableSpan = object : ClickableSpan() {
+            override fun onClick(widget: View) {
+                //会员服务协议
+                (widget as TextView).highlightColor =
+                    resources.getColor(android.R.color.transparent)
+                nav().navigateAction(
+                    R.id.action_memberFragment_to_userAgreementFragment,
+                    bundleOf(UserAgreementFragment.INTENT_KEY_TYPE to UserAgreementFragment.INTENT_VALUE_VIP_AGREEMENT)
+                )
+            }
+
+            override fun updateDrawState(ds: TextPaint) {
+                ds.isUnderlineText = false
+            }
+        }
+        SpanUtils.with(mViewBind.agreementPrivacy)
+            .append("我已阅读并同意")
+            .append("《${resources.getString(R.string.vip_agreement)}》")
+            .setForegroundColor(resources.getColor(R.color.color_DBBC7C))
+            .setClickSpan(clickableSpan)
+            .create()
 
         mViewBind.payButton.onClick {
             vipPriceAdapter.selectBean?.let {

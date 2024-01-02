@@ -55,7 +55,7 @@ class MemberFragment : BaseFragment<MemberViewModel, FragmentMemberBinding>() {
         const val INTENT_VALUE_RENEW = "renew"
     }
 
-    private val vipPriceAdapter: VipPriceAdapter by lazy { VipPriceAdapter() }
+    private val vipPriceAdapter: VipPriceAdapter by lazy { VipPriceAdapter(1) }
     private var priceList: MutableList<VipPriceBean> = mutableListOf()
     private var payType = 1 //1:微信支付  2：支付宝支付
     private var mLoginViewModel: LoginViewModel? = null

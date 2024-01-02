@@ -14,7 +14,8 @@ import retrofit2.http.*
 interface ApiService {
 
     companion object {
-        const val SERVER_URL = "https://api.hxysg.com/"
+//        const val SERVER_URL = "https://api.hxysg.com/"
+        const val SERVER_URL = "https://api-dev.hxysg.com/"
 
         const val H5_SERVER_URL = "https://www.hxysg.com/"
         const val agreement_url = "${H5_SERVER_URL}agreement/legal/index.html"//服务协议

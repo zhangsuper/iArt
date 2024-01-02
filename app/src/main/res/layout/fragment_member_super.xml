@@ -41,26 +41,34 @@
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/dp_52"
                         android:gravity="center"
-                        android:text="国画通会员"
+                        android:text="超级会员"
                         android:textStyle="bold"
                         android:textSize="@dimen/font_16"
                         android:textColor="@color/color_141414"
-                        android:background="@drawable/bg_faba97_conner_8" />
+                        android:background="@drawable/bg_f7d089_conner_8" />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/dp_52"
                         android:gravity="center"
-                        android:text="浏览所有国画"
+                        android:text="浏览所有内容"
                         android:textColor="@color/color_141414"
-                        android:background="@color/color_FFE5D7" />
+                        android:background="@color/color_FFEECF" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dp_52"
+                        android:gravity="center"
+                        android:text="图典完整功能"
+                        android:textColor="@color/color_141414"
+                        android:background="@color/color_FFFAF0" />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/dp_52"
                         android:gravity="center"
                         android:text="高级检索"
-                        android:background="@color/color_FFF5F0"
+                        android:background="@color/color_FFEECF"
                         android:textColor="@color/color_141414" />
 
                     <TextView
@@ -69,7 +77,7 @@
                         android:gravity="center"
                         android:text="高清版下载"
                         android:textColor="@color/color_141414"
-                        android:background="@drawable/bg_ffe5d7_conner_8" />
+                        android:background="@drawable/bg_fffaf0_conner_8" />
 
                 </LinearLayout>
 
@@ -93,7 +101,15 @@
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/dp_52"
                         android:gravity="center"
-                        android:text="浏览部分国画"
+                        android:text="浏览部分内容"
+                        android:background="@color/color_F3F3F3"
+                        android:textColor="@color/color_141414" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dp_52"
+                        android:gravity="center"
+                        android:text="体验部分图典功能"
                         android:background="@color/color_F3F3F3"
                         android:textColor="@color/color_141414" />
 
@@ -170,7 +186,7 @@
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
                         android:layout_marginRight="@dimen/dp_16"
-                        android:src="@drawable/check_box_selected" />
+                        android:src="@drawable/check_box_selected_1" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -237,7 +253,7 @@
         android:textSize="@dimen/font_16"
         android:textColor="@color/white"
         android:textStyle="bold"
-        android:background="@drawable/bg_de824e_faba97_conner_24"
+        android:background="@drawable/bg_f6cf88_ffecc7_conner_24"
         app:layout_constraintBottom_toTopOf="@+id/agreement_view" />
 
     <LinearLayout
