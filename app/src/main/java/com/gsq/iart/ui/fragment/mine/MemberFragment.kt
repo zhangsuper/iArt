@@ -8,6 +8,7 @@ import android.widget.TextView
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.viewpager2.widget.ViewPager2
 import com.blankj.utilcode.util.LogUtils
 import com.blankj.utilcode.util.SpanUtils
 import com.blankj.utilcode.util.ThreadUtils
@@ -24,6 +25,7 @@ import com.gsq.iart.app.util.WxLoginUtil
 import com.gsq.iart.data.bean.DictionaryArgsType
 import com.gsq.iart.data.bean.MemberArgsType
 import com.gsq.iart.data.bean.PayConfigBean
+import com.gsq.iart.data.bean.UserInfo
 import com.gsq.iart.data.bean.VipPriceBean
 import com.gsq.iart.data.event.PayResultEvent
 import com.gsq.iart.databinding.FragmentMemberBinding
@@ -66,6 +68,8 @@ class MemberFragment : BaseFragment<MemberViewModel, FragmentMemberBinding>() {
     //fragment集合
     var fragments: ArrayList<Fragment> = arrayListOf()
 
+    var memberType: Int = 99
+
     override fun initView(savedInstanceState: Bundle?) {
         title_layout.setBackListener {
             nav().navigateUp()
@@ -77,20 +81,20 @@ class MemberFragment : BaseFragment<MemberViewModel, FragmentMemberBinding>() {
             eventMap["type"] = it
             MobAgentUtil.onEvent("vip", eventMap)
         }
-        price_recycler_view.adapter = vipPriceAdapter
-        vipPriceAdapter.setOnItemClickListener { adapter, view, position ->
-            vipPriceAdapter.selectItem(adapter.getItem(position) as PayConfigBean)
-        }
-        wechat_pay_view.setOnClickListener {
-            payType = 1
-            iv_wechat_pay_selected.setImageResource(R.drawable.check_box_selected)
-            iv_ali_pay_selected.setImageResource(R.drawable.check_box_unselected)
-        }
-        ali_pay_view.setOnClickListener {
-            payType = 2
-            iv_wechat_pay_selected.setImageResource(R.drawable.check_box_unselected)
-            iv_ali_pay_selected.setImageResource(R.drawable.check_box_selected)
-        }
+//        price_recycler_view.adapter = vipPriceAdapter
+//        vipPriceAdapter.setOnItemClickListener { adapter, view, position ->
+//            vipPriceAdapter.selectItem(adapter.getItem(position) as PayConfigBean)
+//        }
+//        wechat_pay_view.setOnClickListener {
+//            payType = 1
+//            iv_wechat_pay_selected.setImageResource(R.drawable.check_box_selected)
+//            iv_ali_pay_selected.setImageResource(R.drawable.check_box_unselected)
+//        }
+//        ali_pay_view.setOnClickListener {
+//            payType = 2
+//            iv_wechat_pay_selected.setImageResource(R.drawable.check_box_unselected)
+//            iv_ali_pay_selected.setImageResource(R.drawable.check_box_selected)
+//        }
         user_info_view.onClick {
             if (!CacheUtil.isLogin()) {
                 nav().navigateAction(R.id.action_memberFragment_to_loginFragment)
@@ -163,6 +167,17 @@ class MemberFragment : BaseFragment<MemberViewModel, FragmentMemberBinding>() {
         mViewBind.memberMagicIndicator.bindViewPager2(mViewBind.memberViewPager, mDataList)
         mViewBind.memberViewPager.setCurrentItem(0, false)
         mViewBind.memberViewPager.offscreenPageLimit = 2
+        mViewBind.memberViewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
+                if(position == 0){
+                    memberType = 99
+                }else if(position == 1){
+                    memberType = 1
+                }
+                updateMemberInfo()
+                super.onPageSelected(position)
+            }
+        })
     }
 
     override fun lazyLoadData() {
@@ -170,21 +185,21 @@ class MemberFragment : BaseFragment<MemberViewModel, FragmentMemberBinding>() {
         if (CacheUtil.isLogin()) {
             mLoginViewModel?.getUserInfo()
         }
-        mViewModel.getPayConfig(1)
+//        mViewModel.getPayConfig(1)
     }
 
     override fun createObserver() {
         super.createObserver()
-        mViewModel.payConfigDataState.observe(viewLifecycleOwner) {
-            if (!it.isSuccess) {
-                ToastUtils.showLong(it.errMessage)
-            }
-            vipPriceAdapter.data = it.listData
-//            vipPriceAdapter.notifyDataSetChanged()
-            if (vipPriceAdapter.data.size > 0) {
-                vipPriceAdapter.selectItem(vipPriceAdapter.getItem(0) as PayConfigBean)
-            }
-        }
+//        mViewModel.payConfigDataState.observe(viewLifecycleOwner) {
+//            if (!it.isSuccess) {
+//                ToastUtils.showLong(it.errMessage)
+//            }
+//            vipPriceAdapter.data = it.listData
+////            vipPriceAdapter.notifyDataSetChanged()
+//            if (vipPriceAdapter.data.size > 0) {
+//                vipPriceAdapter.selectItem(vipPriceAdapter.getItem(0) as PayConfigBean)
+//            }
+//        }
         mViewModel.preparePayDataState.observe(viewLifecycleOwner) {
             if (it.isSuccess) {
                 it.data?.let {
@@ -224,12 +239,33 @@ class MemberFragment : BaseFragment<MemberViewModel, FragmentMemberBinding>() {
         var userInfo = CacheUtil.getUser()
         nike_name.text = userInfo?.nickname
         GlideHelper.load(iv_avatar, userInfo?.headImgUrl, R.drawable.icon_user_default)
-        if (userInfo?.memberType == 1) {
-            vip_status.text = "国画通会员有效期至${userInfo?.memberEndDate}"
-            pay_button.text = "立即续费"
-        } else {
-            vip_status.text = "您暂未开通国画通会员"
-            pay_button.text = "立即开通"
+        updateMemberInfo()
+    }
+
+    private fun updateMemberInfo(){
+        var userInfo = CacheUtil.getUser()
+        if(memberType == 99){
+            //超级会员
+            var memberBean = userInfo?.members?.find { it.memberType == 99 }
+            if(memberBean != null){
+                vip_status.text = "超级会员有效期至${memberBean.memberEndDate}"
+                pay_button.text = "立即续费"
+            }else{
+                vip_status.text = "您暂未开通超级会员"
+                pay_button.text = "立即开通"
+            }
+            mViewBind.userInfoView.setBackgroundResource(R.drawable.bg_f6cf88_ffecc7_conner_10)
+        }else if(memberType == 1){
+            //国画通会员
+            var memberBean = userInfo?.members?.find { it.memberType == 1 }
+            if(memberBean != null){
+                vip_status.text = "国画通会员有效期至${memberBean.memberEndDate}"
+                pay_button.text = "立即续费"
+            }else{
+                vip_status.text = "您暂未开通国画通会员"
+                pay_button.text = "立即开通"
+            }
+            mViewBind.userInfoView.setBackgroundResource(R.drawable.bg_de824e_faba97_conner_10)
         }
     }
 

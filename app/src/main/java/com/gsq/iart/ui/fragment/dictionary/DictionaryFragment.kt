@@ -60,7 +60,9 @@ class DictionaryFragment : BaseFragment<DictionaryViewModel, FragmentDictionaryB
         intent_data = arguments?.getSerializable(Constant.INTENT_DATA) as? DictionarySetsBean
         home_search_view.setOnClickListener {
             //跳转搜索节面
-            nav().navigateAction(R.id.action_mainFragment_to_searchFragment)
+            var bundle = Bundle()
+            bundle.putInt(Constant.INTENT_DATA, 2)
+            nav().navigateAction(R.id.action_mainFragment_to_searchFragment, bundle)
         }
         mAdapter = DictionaryMenuAdapter()
         mAdapter!!.setClickBackListener { bean, position ->

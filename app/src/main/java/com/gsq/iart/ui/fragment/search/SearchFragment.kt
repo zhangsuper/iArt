@@ -12,9 +12,12 @@ import com.gsq.iart.app.base.BaseFragment
 import com.gsq.iart.app.ext.hideSoftKeyboard
 import com.gsq.iart.app.util.MobAgentUtil
 import com.gsq.iart.app.util.StatusBarUtil
+import com.gsq.iart.data.Constant
 import com.gsq.iart.data.Constant.COMPLEX_TYPE_SEARCH
 import com.gsq.iart.data.bean.ArgsType
+import com.gsq.iart.data.bean.DictionaryArgsType
 import com.gsq.iart.databinding.FragmentSearchBinding
+import com.gsq.iart.ui.fragment.dictionary.DictionarySubListFragment
 import com.gsq.iart.ui.fragment.home.WorksListFragment
 import com.gsq.iart.viewmodel.SearchViewModel
 import com.gsq.mvvm.ext.nav
@@ -33,6 +36,7 @@ class SearchFragment : BaseFragment<SearchViewModel, FragmentSearchBinding>() {
 //        )
 //    }
     private var searchResultFragment: WorksListFragment? = null
+    private var dictionarySearchResultFragment: DictionarySubListFragment? = null
     private val searchInitFragment: SearchInitFragment by lazy { SearchInitFragment() }
 
     override fun onResume() {
@@ -101,18 +105,34 @@ class SearchFragment : BaseFragment<SearchViewModel, FragmentSearchBinding>() {
     private var isInitFragment = true
     private fun searchData(key: String) {
         hideSoftKeyboard(activity)
-        if (!isInitFragment) {
-            searchResultFragment?.let {
-                it.requestSearchData(key)
+        var intentType = arguments?.getInt(Constant.INTENT_DATA)
+        if(intentType == 1){
+            if (!isInitFragment) {
+                searchResultFragment?.let {
+                    it.requestSearchData(key)
+                }
+                return
             }
-            return
+            searchResultFragment =
+                WorksListFragment.start(ArgsType(COMPLEX_TYPE_SEARCH, searchKey = key))
+            searchResultFragment?.let {
+                transactionFragment(it)
+            }
+            isInitFragment = false
+        }else if(intentType == 2){
+            if (!isInitFragment) {
+                dictionarySearchResultFragment?.let {
+                    it.requestSearchData(key)
+                }
+                return
+            }
+            dictionarySearchResultFragment =
+                DictionarySubListFragment.start(DictionaryArgsType(searchKey = key))
+            dictionarySearchResultFragment?.let {
+                transactionFragment(it)
+            }
+            isInitFragment = false
         }
-        searchResultFragment =
-            WorksListFragment.start(ArgsType(COMPLEX_TYPE_SEARCH, searchKey = key))
-        searchResultFragment?.let {
-            transactionFragment(it)
-        }
-        isInitFragment = false
     }
 
 

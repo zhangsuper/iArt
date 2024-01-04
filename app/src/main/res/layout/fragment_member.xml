@@ -31,7 +31,7 @@
                 android:layout_marginLeft="@dimen/dp_16"
                 android:layout_marginRight="@dimen/dp_16"
                 android:layout_marginTop="@dimen/dp_20"
-                android:background="@drawable/bg_de824e_faba97_conner_10"
+                android:background="@drawable/bg_f6cf88_ffecc7_conner_10"
                 android:padding="@dimen/dp_16">
 
                 <com.google.android.material.imageview.ShapeableImageView

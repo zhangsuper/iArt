@@ -8,6 +8,7 @@ import com.gsq.iart.app.base.BaseFragment
 import com.gsq.iart.app.ext.bindViewPager2
 import com.gsq.iart.app.ext.init
 import com.gsq.iart.app.util.StatusBarUtil
+import com.gsq.iart.data.Constant
 import com.gsq.iart.data.Constant.COMPLEX_TYPE_GROUP
 import com.gsq.iart.data.bean.ArgsType
 import com.gsq.iart.databinding.FragmentHomeBinding
@@ -50,7 +51,9 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
 
         home_search_view.setOnClickListener {
             //跳转搜索节面
-            nav().navigateAction(R.id.action_mainFragment_to_searchFragment)
+            var bundle = Bundle()
+            bundle.putInt(Constant.INTENT_DATA, 1)
+            nav().navigateAction(R.id.action_mainFragment_to_searchFragment, bundle)
         }
     }
 

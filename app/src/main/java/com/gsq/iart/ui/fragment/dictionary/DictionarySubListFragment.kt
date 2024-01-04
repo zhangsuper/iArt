@@ -76,6 +76,7 @@ class DictionarySubListFragment :
 
     private var intent_data_sub: DictionarySetsBean? = null
     private var addComparePageItem: DictionaryWorksBean? = null//往图单新增的对象
+    private var searchKey: String = ""
 
     fun setEditStatus(isEdit: Boolean) {
         worksAdapter.isEdit = isEdit
@@ -229,6 +230,7 @@ class DictionarySubListFragment :
             )
         }
         worksAdapter.setArgsType(args)
+        searchKey = args.searchKey?:""
     }
 
 
@@ -280,7 +282,7 @@ class DictionarySubListFragment :
         } else {
             mViewModel.getDictionaryWorks(
                 isRefresh,
-                "",
+                searchKey,
                 args.firstTag ?: "",
                 args.tag ?: "",
                 tag3,
@@ -373,6 +375,11 @@ class DictionarySubListFragment :
                 ToastUtils.showShort("添加失败！")
             }
         }
+    }
+
+    fun requestSearchData(searchKey: String) {
+        this.searchKey = searchKey
+        requestData(true)
     }
 
 

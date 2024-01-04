@@ -12,6 +12,7 @@ import com.gsq.iart.R
 import com.gsq.iart.app.base.BaseFragment
 import com.gsq.iart.app.util.CacheUtil
 import com.gsq.iart.app.util.MobAgentUtil
+import com.gsq.iart.app.util.WxLoginUtil
 import com.gsq.iart.data.bean.PayConfigBean
 import com.gsq.iart.databinding.FragmentMemberGhtBinding
 import com.gsq.iart.ui.adapter.VipPriceAdapter
@@ -90,6 +91,15 @@ class MemberGhtFragment: BaseFragment<MemberViewModel, FragmentMemberGhtBinding>
 //            vipPriceAdapter.notifyDataSetChanged()
             if (vipPriceAdapter.data.size > 0) {
                 vipPriceAdapter.selectItem(vipPriceAdapter.getItem(0) as PayConfigBean)
+            }
+        }
+        mViewModel.preparePayDataState.observe(viewLifecycleOwner) {
+            if (it.isSuccess) {
+                it.data?.let {
+                    WxLoginUtil.payWithWeChat(it)
+                }
+            } else {
+                ToastUtils.showLong(it.errorMsg)
             }
         }
     }
