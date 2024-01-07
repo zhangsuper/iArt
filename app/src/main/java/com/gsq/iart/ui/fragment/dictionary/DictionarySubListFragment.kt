@@ -215,11 +215,14 @@ class DictionarySubListFragment :
         }
         fourTagAdapter.setOnItemClickListener { adapter, view, position ->
             if (fourTagAdapter.selectedPosition == position) {
-                fourTagAdapter.setSelectedPosition(-1)
+                fourTagAdapter.setClickSelectedPosition(0)
                 tag4 = ""
             } else {
-                fourTagAdapter.setSelectedPosition(position)
+                fourTagAdapter.setClickSelectedPosition(position)
                 tag4 = fourTagAdapter.data[position].name
+                if(position == 0){
+                    tag4 = ""
+                }
             }
             requestData(true)
         }
@@ -314,14 +317,17 @@ class DictionarySubListFragment :
 //                subList.forEach {
 //                    list.add(it.name)
 //                }
-                fourTagAdapter.data = subList
+
                 if (subList.size > 0) {
                     fourth_recycler_view.visible()
                     line_view.visible()
+                    fourTagAdapter.data = subList
+                    fourTagAdapter.data.add(0, DictionaryMenuBean(-1,"4","全部", mutableListOf(),""))
                 } else {
                     fourth_recycler_view.gone()
                     line_view.gone()
                 }
+                fourTagAdapter.data = subList
             } ?: let {
                 fourth_recycler_view.gone()
                 line_view.gone()
