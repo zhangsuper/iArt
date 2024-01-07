@@ -43,7 +43,7 @@ class MineFragment : BaseFragment<BaseViewModel, FragmentMineBinding>() {
     override fun initView(savedInstanceState: Bundle?) {
         item_dictionary_list.onClick {
             //我的图单
-            MobAgentUtil.onEvent("mydictionarylist")
+            MobAgentUtil.onEvent("mytudan")
             if (CacheUtil.isLogin()) {
                 nav().navigateAction(R.id.action_mainFragment_to_myDictionarySetsFragment)
             } else {
@@ -96,11 +96,17 @@ class MineFragment : BaseFragment<BaseViewModel, FragmentMineBinding>() {
             nike_name.text = CacheUtil.getUser()?.nickname
             user_id.text = "ID:${CacheUtil.getUser()?.userId}"
             GlideHelper.load(iv_avatar, CacheUtil.getUser()?.headImgUrl)
-            if (CacheUtil.getUser()?.memberType == 1) {
+            if(CacheUtil.getUser()?.members?.size?:0>0){
+                var superMember = CacheUtil.getUser()?.members?.find { it.memberType ==99 }
+                if(superMember!=null){
+                    expired_time.text = "超级会员${superMember.memberEndDate}到期"
+
+                }else{
+                    expired_time.text = "国通画${CacheUtil.getUser()?.members?.get(0)?.memberEndDate}到期"
+                }
                 expired_time.visible()
-                expired_time.text = "国通画${CacheUtil.getUser()?.memberEndDate}到期"
                 join_vip_btn.text = "立即续费"
-            } else {
+            }else{
                 expired_time.gone()
                 join_vip_btn.text = "立即开通"
             }
