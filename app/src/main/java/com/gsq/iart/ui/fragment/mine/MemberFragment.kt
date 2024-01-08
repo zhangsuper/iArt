@@ -15,6 +15,7 @@ import com.blankj.utilcode.util.ThreadUtils
 import com.blankj.utilcode.util.ToastUtils
 import com.gsq.iart.R
 import com.gsq.iart.app.base.BaseFragment
+import com.gsq.iart.app.ext.bindCustomerViewPager2
 import com.gsq.iart.app.ext.bindViewPager2
 import com.gsq.iart.app.ext.init
 import com.gsq.iart.app.image.GlideHelper
@@ -164,7 +165,7 @@ class MemberFragment : BaseFragment<MemberViewModel, FragmentMemberBinding>() {
         //初始化viewpager2
         mViewBind.memberViewPager.init(this, fragments)
         //初始化 magic_indicator
-        mViewBind.memberMagicIndicator.bindViewPager2(mViewBind.memberViewPager, mDataList)
+        mViewBind.memberMagicIndicator.bindCustomerViewPager2(mViewBind.memberViewPager, mDataList)
         mViewBind.memberViewPager.setCurrentItem(0, false)
         mViewBind.memberViewPager.offscreenPageLimit = 2
         mViewBind.memberViewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {

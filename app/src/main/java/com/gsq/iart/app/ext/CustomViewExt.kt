@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.view.animation.AccelerateInterpolator
 import android.view.animation.DecelerateInterpolator
 import android.view.inputmethod.InputMethodManager
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
@@ -50,7 +51,10 @@ import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.CommonNav
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerIndicator
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerTitleView
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.indicators.LinePagerIndicator
+import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.CommonPagerTitleView
+import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.CommonPagerTitleView.OnPagerTitleChangeListener
 import kotlin.math.roundToInt
+
 
 fun LoadService<*>.setErrorText(message: String) {
     if (message.isNotEmpty()) {
@@ -220,6 +224,119 @@ fun MagicIndicator.bindViewPager2(
         override fun onPageScrollStateChanged(state: Int) {
             super.onPageScrollStateChanged(state)
             this@bindViewPager2.onPageScrollStateChanged(state)
+        }
+    })
+}
+
+fun MagicIndicator.bindCustomerViewPager2(
+    viewPager: ViewPager2,
+    mStringList: List<String> = arrayListOf(),
+    action: (index: Int) -> Unit = {}
+) {
+    val commonNavigator = CommonNavigator(appContext)
+    commonNavigator.adapter = object : CommonNavigatorAdapter() {
+
+        override fun getCount(): Int {
+            return mStringList.size
+        }
+
+        override fun getTitleView(context: Context, index: Int): IPagerTitleView {
+            val commonPagerTitleView = CommonPagerTitleView(context)
+            commonPagerTitleView.setContentView(R.layout.layout_member_tab)
+
+
+            var tabLogo: ImageView = commonPagerTitleView.findViewById(R.id.tab_logo)
+            var tabText: TextView = commonPagerTitleView.findViewById(R.id.tab_text)
+            tabText.text = mStringList[index].toHtml()
+            if(index == 0){
+                tabLogo.setImageResource(R.drawable.icon_svip_ed)
+                tabText.setTextColor(appContext.resources.getColor(R.color.color_DBBC7C))
+            }else if(index == 1){
+                tabLogo.setImageResource(R.drawable.icon_vip_ed)
+                tabText.setTextColor(appContext.resources.getColor(R.color.color_EC8E58))
+            }
+
+            commonPagerTitleView.onPagerTitleChangeListener = object : OnPagerTitleChangeListener{
+                override fun onSelected(index: Int, totalCount: Int) {
+                    if(index == 0){
+                        tabLogo.setImageResource(R.drawable.icon_svip)
+                    }else if(index == 1){
+                        tabLogo.setImageResource(R.drawable.icon_vip)
+                    }
+                    tabText.alpha = 1.0f
+                }
+
+                override fun onDeselected(index: Int, totalCount: Int) {
+                    if(index == 0){
+                        tabLogo.setImageResource(R.drawable.icon_svip_ed)
+                    }else if(index == 1){
+                        tabLogo.setImageResource(R.drawable.icon_vip_ed)
+                    }
+                    tabText.alpha = 0.5f
+                }
+
+                override fun onLeave(
+                    index: Int,
+                    totalCount: Int,
+                    leavePercent: Float,
+                    leftToRight: Boolean
+                ) {
+                }
+
+                override fun onEnter(
+                    index: Int,
+                    totalCount: Int,
+                    enterPercent: Float,
+                    leftToRight: Boolean
+                ) {
+                }
+
+            }
+
+            commonPagerTitleView.onPagerTitleChangeListener
+            commonPagerTitleView.setOnClickListener {
+                    viewPager.currentItem = index
+                    action.invoke(index)
+                }
+            return commonPagerTitleView
+        }
+
+        override fun getIndicator(context: Context): IPagerIndicator {
+            return LinePagerIndicator(context).apply {
+                mode = LinePagerIndicator.MODE_EXACTLY
+                //线条的宽高度
+                lineHeight = UIUtil.dip2px(appContext, 3.0).toFloat()
+                lineWidth = UIUtil.dip2px(appContext, 30.0).toFloat()
+                //线条的圆角
+                roundRadius = UIUtil.dip2px(appContext, 6.0).toFloat()
+                startInterpolator = AccelerateInterpolator()
+                endInterpolator = DecelerateInterpolator(2.0f)
+                //线条的颜色
+                setColors(Color.WHITE)
+            }
+        }
+    }
+    this.navigator = commonNavigator
+
+    viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+        override fun onPageSelected(position: Int) {
+            super.onPageSelected(position)
+            this@bindCustomerViewPager2.onPageSelected(position)
+            action.invoke(position)
+        }
+
+        override fun onPageScrolled(
+            position: Int,
+            positionOffset: Float,
+            positionOffsetPixels: Int
+        ) {
+            super.onPageScrolled(position, positionOffset, positionOffsetPixels)
+            this@bindCustomerViewPager2.onPageScrolled(position, positionOffset, positionOffsetPixels)
+        }
+
+        override fun onPageScrollStateChanged(state: Int) {
+            super.onPageScrollStateChanged(state)
+            this@bindCustomerViewPager2.onPageScrollStateChanged(state)
         }
     })
 }

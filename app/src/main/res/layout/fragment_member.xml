@@ -81,6 +81,11 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 android:background="@drawable/bg_454545_conner_18">
 
+                <TableLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    app:layout_constraintTop_toTopOf="parent"/>
+
                 <net.lucode.hackware.magicindicator.MagicIndicator
                     android:id="@+id/member_magic_indicator"
                     android:layout_width="match_parent"
