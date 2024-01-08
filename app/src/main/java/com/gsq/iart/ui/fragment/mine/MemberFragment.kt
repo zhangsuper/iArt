@@ -52,6 +52,7 @@ class MemberFragment : BaseFragment<MemberViewModel, FragmentMemberBinding>() {
     companion object {
         const val INTENT_KEY_TYPE = "data"
         const val INTENT_VALUE_WORKS = "works"
+        const val INTENT_VALUE_DICTIONARY = "dictionary"
         const val INTENT_VALUE_SEARCH = "search"
         const val INTENT_VALUE_DOWNLOAD = "download"
         const val INTENT_VALUE_RECHARGE = "recharge"
@@ -105,49 +106,49 @@ class MemberFragment : BaseFragment<MemberViewModel, FragmentMemberBinding>() {
             }
         }
 
-        val clickableSpan = object : ClickableSpan() {
-            override fun onClick(widget: View) {
-                //会员服务协议
-                (widget as TextView).highlightColor =
-                    resources.getColor(android.R.color.transparent)
-                nav().navigateAction(
-                    R.id.action_memberFragment_to_userAgreementFragment,
-                    bundleOf(UserAgreementFragment.INTENT_KEY_TYPE to UserAgreementFragment.INTENT_VALUE_VIP_AGREEMENT)
-                )
-            }
-
-            override fun updateDrawState(ds: TextPaint) {
-                ds.isUnderlineText = false
-            }
-        }
-        SpanUtils.with(agreement_privacy)
-            .append("我已阅读并同意")
-            .append("《${resources.getString(R.string.vip_agreement)}》")
-            .setForegroundColor(resources.getColor(R.color.color_EC8E58))
-            .setClickSpan(clickableSpan)
-            .create()
-
-        pay_button.setOnClickListener {
-            vipPriceAdapter.selectBean?.let {
-                if (!checkbox.isChecked) {
-                    ToastUtils.showShort("请勾选同意《会员服务协议》")
-                    return@setOnClickListener
-                }
-                if (!CacheUtil.isLogin()) {
-                    nav().navigateAction(R.id.action_memberFragment_to_loginFragment)
-                    var eventMap = mutableMapOf<String, Any?>()
-                    eventMap["type"] = "vip"
-                    MobAgentUtil.onEvent("signin", eventMap)
-                    return@setOnClickListener
-                }
-                mViewModel.createPreparePay(it.id)
-                var eventMap = mutableMapOf<String, Any?>()
-                eventMap["payType"] = "wechat"
-                MobAgentUtil.onEvent("vip_buy", eventMap)
-            } ?: let {
-                ToastUtils.showLong("请选择开通套餐")
-            }
-        }
+//        val clickableSpan = object : ClickableSpan() {
+//            override fun onClick(widget: View) {
+//                //会员服务协议
+//                (widget as TextView).highlightColor =
+//                    resources.getColor(android.R.color.transparent)
+//                nav().navigateAction(
+//                    R.id.action_memberFragment_to_userAgreementFragment,
+//                    bundleOf(UserAgreementFragment.INTENT_KEY_TYPE to UserAgreementFragment.INTENT_VALUE_VIP_AGREEMENT)
+//                )
+//            }
+//
+//            override fun updateDrawState(ds: TextPaint) {
+//                ds.isUnderlineText = false
+//            }
+//        }
+//        SpanUtils.with(agreement_privacy)
+//            .append("我已阅读并同意")
+//            .append("《${resources.getString(R.string.vip_agreement)}》")
+//            .setForegroundColor(resources.getColor(R.color.color_EC8E58))
+//            .setClickSpan(clickableSpan)
+//            .create()
+//
+//        pay_button.setOnClickListener {
+//            vipPriceAdapter.selectBean?.let {
+//                if (!checkbox.isChecked) {
+//                    ToastUtils.showShort("请勾选同意《会员服务协议》")
+//                    return@setOnClickListener
+//                }
+//                if (!CacheUtil.isLogin()) {
+//                    nav().navigateAction(R.id.action_memberFragment_to_loginFragment)
+//                    var eventMap = mutableMapOf<String, Any?>()
+//                    eventMap["type"] = "vip"
+//                    MobAgentUtil.onEvent("signin", eventMap)
+//                    return@setOnClickListener
+//                }
+//                mViewModel.createPreparePay(it.id)
+//                var eventMap = mutableMapOf<String, Any?>()
+//                eventMap["payType"] = "wechat"
+//                MobAgentUtil.onEvent("vip_buy", eventMap)
+//            } ?: let {
+//                ToastUtils.showLong("请选择开通套餐")
+//            }
+//        }
         mLoginViewModel = ViewModelProvider(this)[LoginViewModel::class.java]
         EventBus.getDefault().register(this)
 
@@ -166,7 +167,6 @@ class MemberFragment : BaseFragment<MemberViewModel, FragmentMemberBinding>() {
         mViewBind.memberViewPager.init(this, fragments)
         //初始化 magic_indicator
         mViewBind.memberMagicIndicator.bindCustomerViewPager2(mViewBind.memberViewPager, mDataList)
-        mViewBind.memberViewPager.setCurrentItem(0, false)
         mViewBind.memberViewPager.offscreenPageLimit = 2
         mViewBind.memberViewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
@@ -179,6 +179,12 @@ class MemberFragment : BaseFragment<MemberViewModel, FragmentMemberBinding>() {
                 super.onPageSelected(position)
             }
         })
+
+        if(agreementType == INTENT_VALUE_WORKS){
+            mViewBind.memberViewPager.setCurrentItem(1, false)
+        }else{
+            mViewBind.memberViewPager.setCurrentItem(0, false)
+        }
     }
 
     override fun lazyLoadData() {

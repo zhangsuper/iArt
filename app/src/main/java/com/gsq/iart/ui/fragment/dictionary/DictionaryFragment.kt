@@ -78,7 +78,7 @@ class DictionaryFragment : BaseFragment<DictionaryViewModel, FragmentDictionaryB
             if(CacheUtil.getUser()?.memberType != 1 && !BuildConfig.DEBUG){
                 nav().navigateAction(
                     R.id.action_mainFragment_to_memberFragment,
-                    bundleOf(MemberFragment.INTENT_KEY_TYPE to MemberFragment.INTENT_VALUE_WORKS)
+                    bundleOf(MemberFragment.INTENT_KEY_TYPE to MemberFragment.INTENT_VALUE_DICTIONARY)
                 )
             }else{
                 recycler_view.scrollToPosition(mAdapter!!.data.size - 1)
@@ -94,7 +94,7 @@ class DictionaryFragment : BaseFragment<DictionaryViewModel, FragmentDictionaryB
             isClickVipBtn = true
             nav().navigateAction(
                 R.id.action_mainFragment_to_memberFragment,
-                bundleOf(MemberFragment.INTENT_KEY_TYPE to MemberFragment.INTENT_VALUE_WORKS)
+                bundleOf(MemberFragment.INTENT_KEY_TYPE to MemberFragment.INTENT_VALUE_DICTIONARY)
             )
         }
         mViewBind.ivClose.onClick {

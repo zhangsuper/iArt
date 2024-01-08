@@ -27,7 +27,7 @@ class DictionaryWorksAdapter constructor(var listener: CallBackListener) :
 
     init {
         setAdapterAnimation(SettingUtil.getListMode())
-        addChildClickViewIds(R.id.iv_contrast, R.id.iv_delete)
+        addChildClickViewIds(R.id.iv_contrast, R.id.iv_delete, R.id.item_works_cover)
         compareList = CacheUtil.getCompareList()
     }
 

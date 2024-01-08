@@ -84,6 +84,8 @@ class DictionarySubListFragment :
     }
 
 
+
+
     override fun initView(savedInstanceState: Bundle?) {
         //状态页配置
         loadsir = loadServiceInit(mViewBind.worksRefreshLayout) {
@@ -125,37 +127,36 @@ class DictionarySubListFragment :
 
         intent_data_sub = args.dictionarySetsBean
 
-        worksAdapter.setOnItemClickListener { adapter, view, position ->
-            val worksBean = adapter.data[position] as DictionaryWorksBean
-            if (worksBean.pay == 1 && CacheUtil.getUser()?.memberType != 1) {
-                //需要付费且没有开通了会员
-                nav().navigateAction(
-                    R.id.action_dictionaryListFragment_to_memberFragment,
-                    bundleOf(MemberFragment.INTENT_KEY_TYPE to MemberFragment.INTENT_VALUE_WORKS)
-                )
-            } else {
-                var bundle = Bundle()
-                bundle.putSerializable(
-                    Constant.DATA_WORK,
-                    (adapter.data as MutableList<DictionaryWorksBean>)[position]
-                )
-                selectedPosition = position
-                bundle.putString(Constant.INTENT_TYPE, COMPLEX_TYPE_DICTIONARY)
-                if (args.firstTag == Constant.COMPLEX_TYPE_NATIVE_COMPARE || args.firstTag == Constant.COMPLEX_TYPE_COMPARE) {
+        worksAdapter.setOnItemChildClickListener { adapter, view, position ->
+            if (view.id == R.id.item_works_cover){
+                val worksBean = adapter.data[position] as DictionaryWorksBean
+                if (worksBean.pay == 1 && CacheUtil.getUser()?.memberType != 1) {
+                    //需要付费且没有开通了会员
                     nav().navigateAction(
-                        R.id.action_compareListFragment_to_workDetailFragment,
-                        bundle
+                        R.id.action_dictionaryListFragment_to_memberFragment,
+                        bundleOf(MemberFragment.INTENT_KEY_TYPE to MemberFragment.INTENT_VALUE_DICTIONARY)
                     )
                 } else {
-                    nav().navigateAction(
-                        R.id.action_dictionaryListFragment_to_workDetailFragment,
-                        bundle
+                    var bundle = Bundle()
+                    bundle.putSerializable(
+                        Constant.DATA_WORK,
+                        (adapter.data as MutableList<DictionaryWorksBean>)[position]
                     )
+                    selectedPosition = position
+                    bundle.putString(Constant.INTENT_TYPE, COMPLEX_TYPE_DICTIONARY)
+                    if (args.firstTag == Constant.COMPLEX_TYPE_NATIVE_COMPARE || args.firstTag == Constant.COMPLEX_TYPE_COMPARE) {
+                        nav().navigateAction(
+                            R.id.action_compareListFragment_to_workDetailFragment,
+                            bundle
+                        )
+                    } else {
+                        nav().navigateAction(
+                            R.id.action_dictionaryListFragment_to_workDetailFragment,
+                            bundle
+                        )
+                    }
                 }
-            }
-        }
-        worksAdapter.setOnItemChildClickListener { adapter, view, position ->
-            if (view.id == R.id.iv_contrast) {
+            } else if (view.id == R.id.iv_contrast) {
                 val worksBean = adapter.data[position] as DictionaryWorksBean
                 if (worksBean.isAddCompare) {
                     CacheUtil.removeCompare(worksBean)
@@ -214,11 +215,14 @@ class DictionarySubListFragment :
         }
         fourTagAdapter.setOnItemClickListener { adapter, view, position ->
             if (fourTagAdapter.selectedPosition == position) {
-                fourTagAdapter.setSelectedPosition(-1)
+                fourTagAdapter.setClickSelectedPosition(0)
                 tag4 = ""
             } else {
-                fourTagAdapter.setSelectedPosition(position)
+                fourTagAdapter.setClickSelectedPosition(position)
                 tag4 = fourTagAdapter.data[position].name
+                if(position == 0){
+                    tag4 = ""
+                }
             }
             requestData(true)
         }
@@ -226,7 +230,7 @@ class DictionarySubListFragment :
             //开通超级会员
             nav().navigateAction(
                 R.id.action_dictionaryListFragment_to_memberFragment,
-                bundleOf(MemberFragment.INTENT_KEY_TYPE to MemberFragment.INTENT_VALUE_WORKS)
+                bundleOf(MemberFragment.INTENT_KEY_TYPE to MemberFragment.INTENT_VALUE_DICTIONARY)
             )
         }
         worksAdapter.setArgsType(args)
@@ -241,6 +245,10 @@ class DictionarySubListFragment :
                 worksAdapter.updateCompareList()
                 worksAdapter.notifyItemChanged(selectedPosition)
             }
+        }
+        if(worksAdapter.data.isNotEmpty()){
+            worksAdapter.updateCompareList()
+            worksAdapter.notifyDataSetChanged()
         }
     }
 
@@ -309,14 +317,17 @@ class DictionarySubListFragment :
 //                subList.forEach {
 //                    list.add(it.name)
 //                }
-                fourTagAdapter.data = subList
+
                 if (subList.size > 0) {
                     fourth_recycler_view.visible()
                     line_view.visible()
+                    fourTagAdapter.data = subList
+                    fourTagAdapter.data.add(0, DictionaryMenuBean(-1,"4","全部", mutableListOf(),""))
                 } else {
                     fourth_recycler_view.gone()
                     line_view.gone()
                 }
+                fourTagAdapter.data = subList
             } ?: let {
                 fourth_recycler_view.gone()
                 line_view.gone()

@@ -149,7 +149,8 @@ class DictionaryListFragment : BaseFragment<DictionaryViewModel, FragmentDiction
     fun onMessageEvent(event: CompareItemAddEvent?) {//图单列表新增
         event?.let {
             intent_data_sub?.let {
-                title_layout.setRightText("${it.name} (${Constant.compareItemPageData?.size})")
+                it.num = it.num + 1
+                title_layout.setRightText("${it.name} (${it.num})")
             }
         }
     }

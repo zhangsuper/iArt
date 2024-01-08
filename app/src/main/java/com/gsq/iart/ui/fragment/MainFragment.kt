@@ -24,7 +24,7 @@ class MainFragment : BaseFragment<BaseViewModel, FragmentMainBinding>() {
                     main_viewpager.setCurrentItem(0, false)
                 }
                 R.id.menu_dictionary -> {
-                    MobAgentUtil.onEvent("tab_dictionary")
+                    MobAgentUtil.onEvent("tab_tudian")
                     main_viewpager.setCurrentItem(1, false)
                 }
                 R.id.menu_mine -> {
