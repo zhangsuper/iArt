@@ -59,9 +59,19 @@ class DictionaryListFragment : BaseFragment<DictionaryViewModel, FragmentDiction
                 isDarkFont = true
             )
         }, 100)
+
+        var menuBean = arguments?.getSerializable(Constant.INTENT_DATA) as DictionaryMenuBean
+        if(menuBean?.name != dictionaryMenuBean.name){
+            initViewData()
+        }
     }
 
     override fun initView(savedInstanceState: Bundle?) {
+        initViewData()
+        EventBus.getDefault().register(this)
+    }
+
+    private fun initViewData(){
         intent_data_sub = arguments?.getSerializable(Constant.INTENT_DATA_SUB) as? DictionarySetsBean
         title_layout.setBackListener {
             nav().navigateUp()
@@ -86,6 +96,8 @@ class DictionaryListFragment : BaseFragment<DictionaryViewModel, FragmentDiction
         dictionaryMenuBean = arguments?.getSerializable(Constant.INTENT_DATA) as DictionaryMenuBean
         position = arguments?.getInt(Constant.INTENT_POSITION, 0) ?: 0
         title_layout.setTitle(dictionaryMenuBean.name)
+        mDataList.clear()
+        fragments.clear()
         mDataList.add("全部")
         fragments.add(
             DictionarySubListFragment.start(
@@ -115,8 +127,6 @@ class DictionaryListFragment : BaseFragment<DictionaryViewModel, FragmentDiction
         dictionary_view_pager.setCurrentItem(position, false)
         dictionary_view_pager.offscreenPageLimit = 20
         updateRightData()
-        EventBus.getDefault().register(this)
-
     }
 
     private fun updateRightData() {

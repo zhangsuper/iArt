@@ -81,16 +81,14 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 android:background="@drawable/bg_454545_conner_18">
 
-                <TableLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="48dp"
-                    app:layout_constraintTop_toTopOf="parent"/>
-
                 <net.lucode.hackware.magicindicator.MagicIndicator
                     android:id="@+id/member_magic_indicator"
                     android:layout_width="match_parent"
-                    android:layout_height="48dp"
-                    app:layout_constraintTop_toTopOf="parent"/>
+                    android:layout_height="@dimen/dp_48"
+                    android:layout_marginTop="@dimen/dp_12"
+                    android:layout_marginHorizontal="@dimen/dp_8"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
 
                 <ImageView
                     android:id="@+id/icon_vip"

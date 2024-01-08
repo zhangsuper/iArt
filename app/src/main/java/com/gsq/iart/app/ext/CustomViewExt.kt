@@ -312,7 +312,7 @@ fun MagicIndicator.bindCustomerViewPager2(
                 startInterpolator = AccelerateInterpolator()
                 endInterpolator = DecelerateInterpolator(2.0f)
                 //线条的颜色
-                setColors(Color.WHITE)
+                setColors(Color.TRANSPARENT)
             }
         }
     }
