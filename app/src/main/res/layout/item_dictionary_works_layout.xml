@@ -13,6 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_166"
         android:scaleType="fitCenter"
+        android:background="@drawable/bg_ebebeb_conner_4"
         app:layout_constraintTop_toTopOf="parent"
         app:shapeAppearanceOverlay="@style/DictionaryWorksCoverStyle" />
 

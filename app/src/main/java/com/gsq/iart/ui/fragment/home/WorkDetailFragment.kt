@@ -288,7 +288,7 @@ class WorkDetailFragment : BaseFragment<WorksViewModel, FragmentWorkDetailBindin
         }
         iv_download.onClick {
             if (CacheUtil.isLogin()) {
-                if (CacheUtil.getUser()?.memberType == 1 || BuildConfig.DEBUG) {
+                if (CacheUtil.getUserVipStatus() != 0 || BuildConfig.DEBUG) {
                     //下载
                     if (intentType == COMPLEX_TYPE_DICTIONARY) {
                         var eventMap = mutableMapOf<String, Any?>()

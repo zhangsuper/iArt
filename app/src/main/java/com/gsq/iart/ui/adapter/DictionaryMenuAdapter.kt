@@ -70,7 +70,7 @@ class DictionaryMenuAdapter : BaseQuickAdapter<DictionaryMenuBean, BaseViewHolde
         mSecondMenuAdapter?.setOnItemChildClickListener { adapter, view, position ->
             if (view.id == R.id.frame_down_layout) {
                 //展开 需要超级会员
-                if(CacheUtil.getUser()?.memberType != 1 && !BuildConfig.DEBUG){
+                if(CacheUtil.getUserVipStatus() != 99 && !BuildConfig.DEBUG){
                     ToastUtils.showLong("需要超级会员才能展开")
                     onExtendClickListener?.invoke()
                 }else {

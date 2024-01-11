@@ -40,7 +40,7 @@ class WorksAdapter constructor(var listener: CallBackListener) :
         imageView.setImageViewRatio(item.thumbWidth, item.thumbHeight)
         GlideHelper.load(imageView, item.thumb, R.color.color_DDDDDD)
         if (holder.layoutPosition + 4 == data.size) {
-            if(CacheUtil.getUser()?.memberType != 1 && BuildConfig.DEBUG){
+            if(CacheUtil.getUserVipStatus() == 0 && BuildConfig.DEBUG){
                 return
             }
             listener.loadMore()

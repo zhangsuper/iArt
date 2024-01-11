@@ -33,7 +33,7 @@ class WriteOffFragment : BaseFragment<LoginViewModel, FragmentWriteOffBinding>()
         write_off_btn.setOnClickListener {
             //注销
             MobAgentUtil.onEvent("writeoff")
-            if (CacheUtil.getUser()?.memberType == 1) {
+            if (CacheUtil.getUserVipStatus() != 0) {
                 ToastUtils.showLong("注销失败，请联系客服")
             } else {
                 mViewModel?.writeOff()

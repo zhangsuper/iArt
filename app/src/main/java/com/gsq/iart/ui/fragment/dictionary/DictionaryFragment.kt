@@ -75,7 +75,7 @@ class DictionaryFragment : BaseFragment<DictionaryViewModel, FragmentDictionaryB
             nav().navigateAction(R.id.action_mainFragment_to_dictionaryListFragment, bundle)
         }
         mAdapter!!.setExtendClickListener {
-            if(CacheUtil.getUser()?.memberType != 1 && !BuildConfig.DEBUG){
+            if(CacheUtil.getUserVipStatus() != 99 && !BuildConfig.DEBUG){
                 nav().navigateAction(
                     R.id.action_mainFragment_to_memberFragment,
                     bundleOf(MemberFragment.INTENT_KEY_TYPE to MemberFragment.INTENT_VALUE_DICTIONARY)
@@ -112,8 +112,8 @@ class DictionaryFragment : BaseFragment<DictionaryViewModel, FragmentDictionaryB
         super.createObserver()
         mViewModel.classifyList.observe(viewLifecycleOwner){
             if(it!=null){
-                if (it.size>3 && CacheUtil.getUser()?.memberType != 1 && !BuildConfig.DEBUG) {
-                    mAdapter?.data = it.subList(0,3)
+                if (it.size>6 && CacheUtil.getUserVipStatus() != 99 && !BuildConfig.DEBUG) {
+                    mAdapter?.data = it.subList(0,6)
                     mAdapter?.notifyDataSetChanged()
                     //需要付费且没有开通了会员
                     open_vip_btn.visible()

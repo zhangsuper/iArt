@@ -40,6 +40,23 @@ object CacheUtil {
     }
 
     /**
+     * 用户的会员类型
+     */
+    fun getUserVipStatus(): Int{
+        if(getUser()?.members?.size == 2){
+            return 99
+        }else if(getUser()?.members?.size == 1){
+            var superMemberBean = getUser()?.members?.find { it.memberType == 99 }//超级会员
+            if(superMemberBean != null){
+                return 99
+            }else{
+                return 1
+            }
+        }
+        return 0
+    }
+
+    /**
      * 是否已经登录
      */
     fun isLogin(): Boolean {

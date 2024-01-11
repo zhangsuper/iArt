@@ -139,7 +139,7 @@ class MineFragment : BaseFragment<BaseViewModel, FragmentMineBinding>() {
 //                //跳转登录界面
 //                nav().navigateAction(R.id.action_mainFragment_to_loginFragment)
 //            }
-            if (CacheUtil.getUser()?.memberType == 1) {
+            if (CacheUtil.getUserVipStatus() != 0) {
                 nav().navigateAction(
                     R.id.action_mainFragment_to_memberFragment,
                     bundleOf(MemberFragment.INTENT_KEY_TYPE to MemberFragment.INTENT_VALUE_RENEW)

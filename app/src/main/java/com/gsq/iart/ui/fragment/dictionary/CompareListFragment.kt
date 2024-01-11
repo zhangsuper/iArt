@@ -12,6 +12,7 @@ import com.gsq.iart.data.Constant.COMPLEX_TYPE_NATIVE_COMPARE
 import com.gsq.iart.data.bean.DictionaryArgsType
 import com.gsq.iart.data.bean.DictionarySetsBean
 import com.gsq.iart.data.event.CompareItemAddEvent
+import com.gsq.iart.data.event.CompareItemDeleteEvent
 import com.gsq.iart.data.event.CompareRenameEvent
 import com.gsq.iart.databinding.FragmentCompareListBinding
 import com.gsq.iart.ui.dialog.CompareSaveDialog
@@ -202,6 +203,13 @@ class CompareListFragment : BaseFragment<DictionaryViewModel, FragmentCompareLis
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onMessageEvent(event: CompareItemAddEvent?) {//图单列表新增
+        event?.let {
+            listFragment?.requestData(true)
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onMessageEvent(event: CompareItemDeleteEvent?) {//图单列表移除
         event?.let {
             listFragment?.requestData(true)
         }

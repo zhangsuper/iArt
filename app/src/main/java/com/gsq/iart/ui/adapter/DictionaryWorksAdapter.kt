@@ -65,10 +65,10 @@ class DictionaryWorksAdapter constructor(var listener: CallBackListener) :
                 Constant.compareItemPageData?.let { compareList ->
                     if (compareList.find { it.workId == item.workId } != null) {
                         item.isAddCompare = true
-                        contrastBtn.gone()
+//                        contrastBtn.gone()
                         contrastBtn.setImageResource(R.drawable.compare_remove)
                     } else {
-                        contrastBtn.visible()
+//                        contrastBtn.visible()
                         contrastBtn.setImageResource(R.drawable.icon_add)
                         item.isAddCompare = false
                     }
@@ -85,7 +85,7 @@ class DictionaryWorksAdapter constructor(var listener: CallBackListener) :
             }
         }
 
-        if (holder.layoutPosition + 4 == data.size && CacheUtil.getUser()?.memberType == 1 && args?.firstTag != COMPLEX_TYPE_NATIVE_COMPARE) {
+        if (holder.layoutPosition + 4 == data.size && CacheUtil.getUserVipStatus() == 99 && args?.firstTag != COMPLEX_TYPE_NATIVE_COMPARE) {
             listener.loadMore()
 //            EventBus.getDefault().post(LoadMoreEvent(true))
         }

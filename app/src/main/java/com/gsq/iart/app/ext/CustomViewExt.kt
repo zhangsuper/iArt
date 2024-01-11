@@ -561,7 +561,7 @@ fun <T> loadDictionaryListData(
             }
             //是第一页
             data.isRefresh -> {
-                if(CacheUtil.getUser()?.memberType != 1 && data.listData.size>8) {
+                if(CacheUtil.getUserVipStatus() != 99 && data.listData.size>8) {
                     baseQuickAdapter.setList(data.listData.subList(0, 8))
                 }else{
                     baseQuickAdapter.setList(data.listData)

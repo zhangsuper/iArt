@@ -1,8 +1,13 @@
 package com.gsq.iart.ui.fragment.dictionary
 
+import android.os.Build
 import android.os.Bundle
+import android.view.View
+import android.view.View.OnScrollChangeListener
 import androidx.fragment.app.Fragment
+import com.blankj.utilcode.util.LogUtils
 import com.blankj.utilcode.util.ThreadUtils
+import com.blankj.utilcode.util.ToastUtils
 import com.gsq.iart.R
 import com.gsq.iart.app.base.BaseFragment
 import com.gsq.iart.app.ext.bindViewPager2
@@ -15,6 +20,7 @@ import com.gsq.iart.data.bean.DictionaryMenuBean
 import com.gsq.iart.data.bean.DictionarySetsBean
 import com.gsq.iart.data.event.CompareEvent
 import com.gsq.iart.data.event.CompareItemAddEvent
+import com.gsq.iart.data.event.CompareItemDeleteEvent
 import com.gsq.iart.databinding.FragmentDictionaryListBinding
 import com.gsq.iart.ui.adapter.SearchHistoryAdapter
 import com.gsq.iart.viewmodel.DictionaryViewModel
@@ -160,6 +166,16 @@ class DictionaryListFragment : BaseFragment<DictionaryViewModel, FragmentDiction
         event?.let {
             intent_data_sub?.let {
                 it.num = it.num + 1
+                title_layout.setRightText("${it.name} (${it.num})")
+            }
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onMessageEvent(event: CompareItemDeleteEvent?) {//图单列表移除
+        event?.let {
+            intent_data_sub?.let {
+                it.num = it.num - 1
                 title_layout.setRightText("${it.name} (${it.num})")
             }
         }

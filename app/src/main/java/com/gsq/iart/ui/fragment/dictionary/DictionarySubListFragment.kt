@@ -20,6 +20,7 @@ import com.gsq.iart.app.ext.loadServiceInit
 import com.gsq.iart.app.ext.showEmpty
 import com.gsq.iart.app.ext.showLoading
 import com.gsq.iart.app.util.CacheUtil
+import com.gsq.iart.app.weight.FlowContentLayout.ClickListener
 import com.gsq.iart.data.Constant
 import com.gsq.iart.data.Constant.COMPLEX_TYPE_DICTIONARY
 import com.gsq.iart.data.bean.DictionaryArgsType
@@ -76,6 +77,7 @@ class DictionarySubListFragment :
 
     private var intent_data_sub: DictionarySetsBean? = null
     private var addComparePageItem: DictionaryWorksBean? = null//往图单新增的对象
+    private var deleteComparePageItem: DictionaryWorksBean? = null//从图单移除的对象
     private var searchKey: String = ""
 
     fun setEditStatus(isEdit: Boolean) {
@@ -107,7 +109,7 @@ class DictionarySubListFragment :
 //        }
         mViewBind.worksRecyclerView.initFooter {
             //加载更多
-            if (CacheUtil.getUser()?.memberType != 1) {
+            if (CacheUtil.getUserVipStatus() != 99) {
                 mViewBind.worksRecyclerView.loadMoreFinish(
                     false,
                     args.firstTag != Constant.COMPLEX_TYPE_NATIVE_COMPARE
@@ -130,7 +132,7 @@ class DictionarySubListFragment :
         worksAdapter.setOnItemChildClickListener { adapter, view, position ->
             if (view.id == R.id.item_works_cover){
                 val worksBean = adapter.data[position] as DictionaryWorksBean
-                if (worksBean.pay == 1 && CacheUtil.getUser()?.memberType != 1) {
+                if (worksBean.pay == 1 && CacheUtil.getUserVipStatus() != 99) {
                     //需要付费且没有开通了会员
                     nav().navigateAction(
                         R.id.action_dictionaryListFragment_to_memberFragment,
@@ -159,10 +161,21 @@ class DictionarySubListFragment :
             } else if (view.id == R.id.iv_contrast) {
                 val worksBean = adapter.data[position] as DictionaryWorksBean
                 if (worksBean.isAddCompare) {
-                    CacheUtil.removeCompare(worksBean)
-                    ToastUtils.showShort("移除成功")
-                    worksAdapter.updateCompareList()
-                    worksAdapter.notifyDataSetChanged()
+                    intent_data_sub?.let {
+                        //从图单列表删除
+                        it.id?.let {
+                            var list = mutableListOf<Int>()
+                            list.add(worksBean.id)
+                            deleteComparePageItem = worksBean
+                            mViewModel.deleteCompareItems(it, list)
+                        }
+                    }?: let {
+                        //本地删除
+                        CacheUtil.removeCompare(worksBean)
+                        ToastUtils.showShort("移除成功")
+                        worksAdapter.updateCompareList()
+                        worksAdapter.notifyDataSetChanged()
+                    }
                 } else {
                     //加入对比
                     intent_data_sub?.let {
@@ -195,24 +208,37 @@ class DictionarySubListFragment :
                 }
             }
         }
-        mViewBind.flowContentLayout.setOnclickListener { tag ->
-            tag?.let {
-                tag3 = it
-            }
-            if (tag.isNullOrEmpty()) {
-                fourth_recycler_view.gone()
-                line_view.gone()
-            } else {
-                subTitleList?.let {
-                    it.find { it.name == tag }.let {
-                        it?.id?.let {
-                            mViewModel.getDictionaryFourClassifyById(it)
+        mViewBind.flowContentLayout.setOnclickListener(object : ClickListener{
+            override fun onClick(tag: String?) {
+                tag?.let {
+                    tag3 = it
+                }
+                if (tag.isNullOrEmpty()) {
+                    fourth_recycler_view.gone()
+                    line_view.gone()
+                } else {
+                    subTitleList?.let {
+                        it.find { it.name == tag }.let {
+                            it?.id?.let {
+                                mViewModel.getDictionaryFourClassifyById(it)
+                            }
                         }
                     }
                 }
+                requestData(true)
             }
-            requestData(true)
-        }
+
+            override fun onClickDown() {
+                if(CacheUtil.getUserVipStatus() != 99){//超级会员
+                    mViewBind.flowContentLayout.updateDownStatus()
+                }else{
+                    nav().navigateAction(
+                        R.id.action_dictionaryListFragment_to_memberFragment,
+                        bundleOf(MemberFragment.INTENT_KEY_TYPE to MemberFragment.INTENT_VALUE_DICTIONARY)
+                    )
+                }
+            }
+        })
         fourTagAdapter.setOnItemClickListener { adapter, view, position ->
             if (fourTagAdapter.selectedPosition == position) {
                 fourTagAdapter.setClickSelectedPosition(0)
@@ -343,7 +369,7 @@ class DictionarySubListFragment :
                 mViewBind.worksRefreshLayout,
                 Constant.COMPLEX_TYPE_DICTIONARY
             )
-            if (it.isRefresh && it.listData.size > 8 && CacheUtil.getUser()?.memberType != 1) {
+            if (it.isRefresh && it.listData.size > 8 && CacheUtil.getUserVipStatus() != 99) {
                 open_vip_btn.visible()
             } else {
                 open_vip_btn.gone()
@@ -365,8 +391,15 @@ class DictionarySubListFragment :
         mViewModel.deleteCompareItemsLiveData.observe(viewLifecycleOwner) {
             if (it) {
                 ToastUtils.showShort("删除成功")
-                deleteIdPosition?.let {
-                    worksAdapter.removeAt(it)
+                intent_data_sub?.let {
+                    deleteComparePageItem?.let { bean ->
+                        Constant.compareItemPageData?.remove(bean)
+                    }
+                    worksAdapter.notifyDataSetChanged()
+                }?: let {
+                    deleteIdPosition?.let {
+                        worksAdapter.removeAt(it)
+                    }
                 }
                 EventBus.getDefault().post(CompareItemDeleteEvent())
             } else {

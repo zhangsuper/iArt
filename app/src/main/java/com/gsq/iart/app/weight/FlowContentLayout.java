@@ -30,6 +30,8 @@ public class FlowContentLayout extends RelativeLayout{
 
     public interface ClickListener{
         void onClick(String tag);
+
+        void onClickDown();
     }
 
     public void setBackgroundResource(int resource){
@@ -65,9 +67,9 @@ public class FlowContentLayout extends RelativeLayout{
         downView.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                mBackFlowLayout.setFoldState(false);
-                mFontFlowLayout.setFoldState(false);
-                refreshViews();
+                if(mListener != null){
+                    mListener.onClickDown();
+                }
             }
         });
         mBackFlowLayout = findViewById(R.id.mFlowLayout);
@@ -157,5 +159,11 @@ public class FlowContentLayout extends RelativeLayout{
     public void releaseState(){
         mBackFlowLayout.setFoldState(true);
         mFontFlowLayout.setFoldState(true);
+    }
+
+    public void updateDownStatus(){
+        mBackFlowLayout.setFoldState(false);
+        mFontFlowLayout.setFoldState(false);
+        refreshViews();
     }
 }

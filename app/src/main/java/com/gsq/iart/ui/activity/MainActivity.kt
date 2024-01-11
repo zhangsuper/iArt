@@ -21,6 +21,7 @@ import com.gsq.iart.app.App
 import com.gsq.iart.app.base.BaseActivity
 import com.gsq.iart.app.util.CacheUtil
 import com.gsq.iart.app.util.FileUtil
+import com.gsq.iart.app.util.MobAgentUtil
 import com.gsq.iart.app.util.StatusBarUtil
 import com.gsq.iart.app.util.WxLoginUtil
 import com.gsq.iart.data.event.LoginEvent
@@ -254,6 +255,9 @@ class MainActivity : BaseActivity<AppViewModel, ActivityMainBinding>() {
         event?.code?.let {
             if (it == "A0401") {
                 //token过期
+                var eventMap = mutableMapOf<String, Any?>()
+                eventMap["user_id"] = CacheUtil.getUser()?.userId
+                MobAgentUtil.onEvent("token_expired", eventMap)
                 CacheUtil.setUser(null)
             }
         }
