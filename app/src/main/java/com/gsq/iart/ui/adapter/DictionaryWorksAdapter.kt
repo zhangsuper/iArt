@@ -2,11 +2,14 @@ package com.gsq.iart.ui.adapter
 
 import android.widget.ImageView
 import com.blankj.utilcode.util.LogUtils
+import com.blankj.utilcode.util.ScreenUtils
+import com.blankj.utilcode.util.SizeUtils
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.google.android.material.imageview.ShapeableImageView
 import com.gsq.iart.R
 import com.gsq.iart.app.ext.setAdapterAnimation
+import com.gsq.iart.app.ext.setImageViewRatio
 import com.gsq.iart.app.image.GlideHelper
 import com.gsq.iart.app.util.CacheUtil
 import com.gsq.iart.app.util.SettingUtil
@@ -50,6 +53,8 @@ class DictionaryWorksAdapter constructor(var listener: CallBackListener) :
         holder.setText(R.id.item_works_source, "来源：[${item.mainAge}]${item.mainName}")
         var vipIcon = holder.getView<ImageView>(R.id.icon_vip)
         var imageView = holder.getView<ShapeableImageView>(R.id.item_works_cover)
+        var layoutParams = imageView.layoutParams
+        layoutParams.height = (ScreenUtils.getScreenWidth()-SizeUtils.dp2px(44f))/2
         if (item.thumbWidth > 0 && item.thumbHeight > 0) {
             var biliary = item.thumbWidth.toFloat() / item.thumbHeight.toFloat()
             LogUtils.dTag("WorksAdapter", "name:${item.name},biliary:$biliary")

@@ -230,12 +230,12 @@ class DictionarySubListFragment :
 
             override fun onClickDown() {
                 if(CacheUtil.getUserVipStatus() != 99){//超级会员
-                    mViewBind.flowContentLayout.updateDownStatus()
-                }else{
                     nav().navigateAction(
                         R.id.action_dictionaryListFragment_to_memberFragment,
                         bundleOf(MemberFragment.INTENT_KEY_TYPE to MemberFragment.INTENT_VALUE_DICTIONARY)
                     )
+                }else{
+                    mViewBind.flowContentLayout.updateDownStatus()
                 }
             }
         })
