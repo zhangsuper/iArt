@@ -220,6 +220,7 @@ class DictionarySubListFragment :
                     subTitleList?.let {
                         it.find { it.name == tag }.let {
                             it?.id?.let {
+                                tag4 = ""
                                 mViewModel.getDictionaryFourClassifyById(it)
                             }
                         }
@@ -354,6 +355,7 @@ class DictionarySubListFragment :
                     line_view.gone()
                 }
                 fourTagAdapter.data = subList
+                fourTagAdapter.setClickSelectedPosition(0)
             } ?: let {
                 fourth_recycler_view.gone()
                 line_view.gone()
