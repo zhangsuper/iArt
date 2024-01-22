@@ -317,7 +317,7 @@ public class FlowLayout extends ViewGroup {
         if(s == selectedTag){
             tv.setTextColor(ColorUtils.getColor(R.color.white));
         }else{
-            tv.setTextColor(ColorUtils.getColor(R.color.color_141414));
+            tv.setTextColor(ColorUtils.getColor(R.color.color_888888));
         }
         linearLayout.addView(tv,new FrameLayout.LayoutParams(LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT));
         addView(linearLayout,layoutParams);

@@ -72,6 +72,8 @@ class MemberFragment : BaseFragment<MemberViewModel, FragmentMemberBinding>() {
 
     var memberType: Int = 99
 
+    private var isPayResult = false
+
     override fun initView(savedInstanceState: Bundle?) {
         title_layout.setBackListener {
             nav().navigateUp()
@@ -223,6 +225,9 @@ class MemberFragment : BaseFragment<MemberViewModel, FragmentMemberBinding>() {
                     CacheUtil.setUser(userInfo)
                     updateUserInfo()
                 }
+                if(isPayResult){
+                    nav().navigateUp()
+                }
             }
         }
     }
@@ -280,11 +285,13 @@ class MemberFragment : BaseFragment<MemberViewModel, FragmentMemberBinding>() {
     fun onMessageEvent(event: PayResultEvent?) {
         //服务器端的接收的支付通知
         LogUtils.d("PayResultEvent：getUserInfo")
+        isPayResult = true
         mLoginViewModel?.getUserInfo()
         var eventMap = mutableMapOf<String, Any?>()
         eventMap["payType"] = "wechat"
         if (event?.code == "true") {
             MobAgentUtil.onEvent("paid_suc", eventMap)
+            ToastUtils.showLong("开通会员成功")
         } else if (event?.code == "false") {
             eventMap["reason"] = event.msg
             MobAgentUtil.onEvent("paid_fail", eventMap)

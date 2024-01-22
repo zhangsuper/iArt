@@ -20,6 +20,7 @@
             android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
+            android:textColor="@color/color_141414"
             android:text="收起"/>
 
         <ImageView
