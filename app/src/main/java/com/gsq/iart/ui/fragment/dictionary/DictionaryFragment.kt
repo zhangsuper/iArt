@@ -7,6 +7,7 @@ import com.gsq.iart.BuildConfig
 import com.gsq.iart.R
 import com.gsq.iart.app.base.BaseFragment
 import com.gsq.iart.app.util.CacheUtil
+import com.gsq.iart.app.util.MobAgentUtil
 import com.gsq.iart.app.util.StatusBarUtil
 import com.gsq.iart.data.Constant
 import com.gsq.iart.data.bean.DictionarySetsBean
@@ -60,12 +61,24 @@ class DictionaryFragment : BaseFragment<DictionaryViewModel, FragmentDictionaryB
         intent_data = arguments?.getSerializable(Constant.INTENT_DATA) as? DictionarySetsBean
         home_search_view.setOnClickListener {
             //跳转搜索节面
+            intent_data?.let {
+                var eventMap = mutableMapOf<String, Any?>()
+                MobAgentUtil.onEvent("search_tudian", eventMap)
+            }?: let {
+                var eventMap = mutableMapOf<String, Any?>()
+                MobAgentUtil.onEvent("search_qietu", eventMap)
+            }
+
             var bundle = Bundle()
             bundle.putInt(Constant.INTENT_DATA, 2)
             nav().navigateAction(R.id.action_mainFragment_to_searchFragment, bundle)
         }
         mAdapter = DictionaryMenuAdapter()
         mAdapter!!.setClickBackListener { bean, position ->
+            var eventMap = mutableMapOf<String, Any?>()
+            eventMap["tag_name"] = bean.name
+            MobAgentUtil.onEvent("click_tag", eventMap)
+
             var bundle = Bundle()
             bundle.putSerializable(Constant.INTENT_DATA, bean)
             bundle.putInt(Constant.INTENT_POSITION, position)

@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import android.view.View.OnScrollChangeListener
 import androidx.fragment.app.Fragment
+import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
 import com.blankj.utilcode.util.LogUtils
 import com.blankj.utilcode.util.ThreadUtils
 import com.blankj.utilcode.util.ToastUtils
@@ -13,6 +14,7 @@ import com.gsq.iart.app.base.BaseFragment
 import com.gsq.iart.app.ext.bindViewPager2
 import com.gsq.iart.app.ext.init
 import com.gsq.iart.app.util.CacheUtil
+import com.gsq.iart.app.util.MobAgentUtil
 import com.gsq.iart.app.util.StatusBarUtil
 import com.gsq.iart.data.Constant
 import com.gsq.iart.data.bean.DictionaryArgsType
@@ -85,6 +87,11 @@ class DictionaryListFragment : BaseFragment<DictionaryViewModel, FragmentDiction
         }
         title_layout.setRightClickListener {
             //对比列表
+            var eventMap = mutableMapOf<String, Any?>()
+            intent_data_sub?.let {
+                eventMap["work_count"] = it.num
+            }
+            MobAgentUtil.onEvent("click_list", eventMap)
             intent_data_sub?.let {
                 var bundle = Bundle()
                 bundle.putString(Constant.INTENT_TYPE, Constant.COMPLEX_TYPE_COMPARE)
@@ -133,6 +140,17 @@ class DictionaryListFragment : BaseFragment<DictionaryViewModel, FragmentDiction
         dictionary_view_pager.setCurrentItem(position, false)
         dictionary_view_pager.offscreenPageLimit = 20
         updateRightData()
+
+        dictionary_view_pager.registerOnPageChangeCallback(object :OnPageChangeCallback(){
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+                if(position != 0){
+                    var eventMap = mutableMapOf<String, Any?>()
+                    eventMap["tag_name"] = mDataList[position]
+                    MobAgentUtil.onEvent("select_tag", eventMap)
+                }
+            }
+        })
     }
 
     private fun updateRightData() {

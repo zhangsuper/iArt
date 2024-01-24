@@ -10,6 +10,7 @@ import com.gsq.iart.app.ext.initFooter
 import com.gsq.iart.app.ext.loadListData
 import com.gsq.iart.app.ext.loadServiceInit
 import com.gsq.iart.app.ext.showLoading
+import com.gsq.iart.app.util.MobAgentUtil
 import com.gsq.iart.app.util.StatusBarUtil
 import com.gsq.iart.data.Constant
 import com.gsq.iart.data.bean.DictionarySetsBean
@@ -78,6 +79,11 @@ class MyDictionarySetsFragment :
                 R.id.action_myDictionarySetsFragment_to_compareListFragment,
                 bundle
             )
+            var eventMap = mutableMapOf<String, Any?>()
+            eventMap["tudan_id"] = bean.id
+            eventMap["tudan_name"] = bean.name
+            eventMap["tudan_count"] = bean.num
+            MobAgentUtil.onEvent("click_tudan", eventMap)
         }
         EventBus.getDefault().register(this)
     }

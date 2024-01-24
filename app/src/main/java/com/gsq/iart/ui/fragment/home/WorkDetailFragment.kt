@@ -157,6 +157,11 @@ class WorkDetailFragment : BaseFragment<WorksViewModel, FragmentWorkDetailBindin
                     //加入对比列表
                     CacheUtil.addCompareList(it)
                     ToastUtils.showShort("加入成功")
+                    var eventMap = mutableMapOf<String, Any?>()
+                    eventMap["work_id"] = it.workId
+                    eventMap["work_name"] = it.name
+                    eventMap["main_work_id"] = it.mainWorkId
+                    MobAgentUtil.onEvent("add_qietu_details", eventMap)
                 }
                 it.isAddCompare = !it.isAddCompare
                 updateCompareStatus()
@@ -275,6 +280,14 @@ class WorkDetailFragment : BaseFragment<WorksViewModel, FragmentWorkDetailBindin
                     var eventMap = mutableMapOf<String, Any?>()
                     eventMap["work_id"] = worksBean?.id
                     MobAgentUtil.onEvent("collect", eventMap)
+                }?:let {
+                    dictionaryWorksBean?.let {
+                        var eventMap = mutableMapOf<String, Any?>()
+                        eventMap["work_id"] = it.workId
+                        eventMap["work_name"] = it.name
+                        eventMap["main_work_id"] = it.mainWorkId
+                        MobAgentUtil.onEvent("collect_qietu_details", eventMap)
+                    }
                 }
             } else {
                 //跳转登录界面
@@ -293,7 +306,9 @@ class WorkDetailFragment : BaseFragment<WorksViewModel, FragmentWorkDetailBindin
                     if (intentType == COMPLEX_TYPE_DICTIONARY) {
                         var eventMap = mutableMapOf<String, Any?>()
                         eventMap["work_id"] = dictionaryWorksBean?.id
-                        MobAgentUtil.onEvent("download", eventMap)
+                        eventMap["work_name"] = dictionaryWorksBean?.name
+                        eventMap["main_work_id"] = dictionaryWorksBean?.mainWorkId
+                        MobAgentUtil.onEvent("download_qietu_details", eventMap)
                     } else {
                         var eventMap = mutableMapOf<String, Any?>()
                         eventMap["work_id"] = worksBean?.id
@@ -321,9 +336,18 @@ class WorkDetailFragment : BaseFragment<WorksViewModel, FragmentWorkDetailBindin
         }
         iv_rota.setOnClickListener {
 //            (fragmentList[currentSelectedIndex] as PreviewImageFragment).getPhotoView().rotation -= 90
-            var eventMap = mutableMapOf<String, Any?>()
-            eventMap["work_id"] = worksBean?.id
-            MobAgentUtil.onEvent("rotate", eventMap)
+            if (intentType == COMPLEX_TYPE_DICTIONARY) {
+                var eventMap = mutableMapOf<String, Any?>()
+                eventMap["work_id"] = dictionaryWorksBean?.id
+                eventMap["work_name"] = dictionaryWorksBean?.name
+                eventMap["main_work_id"] = dictionaryWorksBean?.mainWorkId
+                MobAgentUtil.onEvent("rotate_qietu_details", eventMap)
+            }else{
+                var eventMap = mutableMapOf<String, Any?>()
+                eventMap["work_id"] = worksBean?.id
+                MobAgentUtil.onEvent("rotate", eventMap)
+            }
+
             var orientation =
                 (fragmentList[currentSelectedIndex] as PreviewImageFragment).getPhotoView().orientation
             when (orientation) {
