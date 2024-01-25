@@ -89,6 +89,9 @@ class DictionaryFragment : BaseFragment<DictionaryViewModel, FragmentDictionaryB
         }
         mAdapter!!.setExtendClickListener {
             if(CacheUtil.getUserVipStatus() != 99 && !BuildConfig.DEBUG){
+                var eventMap = mutableMapOf<String, Any?>()
+                eventMap["type"] = "tudian"
+                MobAgentUtil.onEvent("svip", eventMap)
                 nav().navigateAction(
                     R.id.action_mainFragment_to_memberFragment,
                     bundleOf(MemberFragment.INTENT_KEY_TYPE to MemberFragment.INTENT_VALUE_DICTIONARY)

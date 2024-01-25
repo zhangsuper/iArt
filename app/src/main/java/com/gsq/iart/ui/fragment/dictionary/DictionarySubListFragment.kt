@@ -148,6 +148,9 @@ class DictionarySubListFragment :
                 }
                 if (worksBean.pay == 1 && CacheUtil.getUserVipStatus() != 99) {
                     //需要付费且没有开通了会员
+                    var eventMap = mutableMapOf<String, Any?>()
+                    eventMap["type"] = "qietu_svip"
+                    MobAgentUtil.onEvent("svip", eventMap)
                     nav().navigateAction(
                         R.id.action_dictionaryListFragment_to_memberFragment,
                         bundleOf(MemberFragment.INTENT_KEY_TYPE to MemberFragment.INTENT_VALUE_DICTIONARY)
@@ -307,6 +310,16 @@ class DictionarySubListFragment :
         }
         open_vip_btn.onClick {
             //开通超级会员
+            args.searchKey?.let {
+                var eventMap = mutableMapOf<String, Any?>()
+                eventMap["type"] = "search"
+                MobAgentUtil.onEvent("svip", eventMap)
+            }?:let {
+                var eventMap = mutableMapOf<String, Any?>()
+                eventMap["type"] = "qietu"
+                MobAgentUtil.onEvent("svip", eventMap)
+            }
+
             nav().navigateAction(
                 R.id.action_dictionaryListFragment_to_memberFragment,
                 bundleOf(MemberFragment.INTENT_KEY_TYPE to MemberFragment.INTENT_VALUE_DICTIONARY)

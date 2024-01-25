@@ -301,27 +301,38 @@ class WorkDetailFragment : BaseFragment<WorksViewModel, FragmentWorkDetailBindin
         }
         iv_download.onClick {
             if (CacheUtil.isLogin()) {
-                if (CacheUtil.getUserVipStatus() != 0 || BuildConfig.DEBUG) {
-                    //下载
-                    if (intentType == COMPLEX_TYPE_DICTIONARY) {
+                if (intentType == COMPLEX_TYPE_DICTIONARY) {
+                    if (CacheUtil.getUserVipStatus() != 99 || BuildConfig.DEBUG) {
+                        //不是超级会员
+                        var eventMap = mutableMapOf<String, Any?>()
+                        eventMap["type"] = "download"
+                        MobAgentUtil.onEvent("svip", eventMap)
+                        nav().navigateAction(
+                            R.id.action_workDetailFragment_to_memberFragment,
+                            bundleOf(MemberFragment.INTENT_KEY_TYPE to MemberFragment.INTENT_VALUE_DICTIONARY)
+                        )
+                    }else{
                         var eventMap = mutableMapOf<String, Any?>()
                         eventMap["work_id"] = dictionaryWorksBean?.id
                         eventMap["work_name"] = dictionaryWorksBean?.name
                         eventMap["main_work_id"] = dictionaryWorksBean?.mainWorkId
                         MobAgentUtil.onEvent("download_qietu_details", eventMap)
-                    } else {
+                        checkStoragePermission()
+                    }
+                }else{
+                    if (CacheUtil.getUserVipStatus() != 0 || BuildConfig.DEBUG) {
+                        //下载
                         var eventMap = mutableMapOf<String, Any?>()
                         eventMap["work_id"] = worksBean?.id
                         MobAgentUtil.onEvent("download", eventMap)
+                        checkStoragePermission()
+                    } else {
+                        //跳转到会员页
+                        nav().navigateAction(
+                            R.id.action_workDetailFragment_to_memberFragment,
+                            bundleOf(MemberFragment.INTENT_KEY_TYPE to MemberFragment.INTENT_VALUE_WORKS)
+                        )
                     }
-
-                    checkStoragePermission()
-                } else {
-                    //跳转到会员页
-                    nav().navigateAction(
-                        R.id.action_workDetailFragment_to_memberFragment,
-                        bundleOf(MemberFragment.INTENT_KEY_TYPE to MemberFragment.INTENT_VALUE_DOWNLOAD)
-                    )
                 }
             } else {
                 //跳转登录界面

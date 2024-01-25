@@ -140,11 +140,17 @@ class MineFragment : BaseFragment<BaseViewModel, FragmentMineBinding>() {
 //                nav().navigateAction(R.id.action_mainFragment_to_loginFragment)
 //            }
             if (CacheUtil.getUserVipStatus() != 0) {
+                var eventMap = mutableMapOf<String, Any?>()
+                eventMap["type"] = "renew"
+                MobAgentUtil.onEvent("svip", eventMap)
                 nav().navigateAction(
                     R.id.action_mainFragment_to_memberFragment,
                     bundleOf(MemberFragment.INTENT_KEY_TYPE to MemberFragment.INTENT_VALUE_RENEW)
                 )
             } else {
+                var eventMap = mutableMapOf<String, Any?>()
+                eventMap["type"] = "recharge"
+                MobAgentUtil.onEvent("svip", eventMap)
                 nav().navigateAction(
                     R.id.action_mainFragment_to_memberFragment,
                     bundleOf(MemberFragment.INTENT_KEY_TYPE to MemberFragment.INTENT_VALUE_RECHARGE)
