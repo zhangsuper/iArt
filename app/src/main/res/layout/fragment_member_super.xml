@@ -15,14 +15,23 @@
             android:layout_height="wrap_content"
             android:focusableInTouchMode="true">
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/price_recycler_view"
+            <com.gsq.iart.app.weight.NestedScrollableHost
+                android:id="@+id/nested_scrollable_host"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="@dimen/dp_4"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+                app:layout_constraintTop_toTopOf="parent">
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/price_recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="@dimen/dp_4"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+            </com.gsq.iart.app.weight.NestedScrollableHost>
+
+
 
             <LinearLayout
                 android:id="@+id/vip_info"
@@ -30,7 +39,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:layout_marginTop="@dimen/dp_16"
-                app:layout_constraintTop_toBottomOf="@+id/price_recycler_view">
+                app:layout_constraintTop_toBottomOf="@+id/nested_scrollable_host">
 
                 <LinearLayout
                     android:layout_width="0dp"
