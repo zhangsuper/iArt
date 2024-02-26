@@ -39,17 +39,18 @@ object CacheUtil {
 
     }
 
+
     /**
      * 用户的会员类型
      */
-    fun getUserVipStatus(): Int{
-        if(getUser()?.members?.size == 2){
+    fun getUserVipStatus(): Int {
+        if (getUser()?.members?.size == 2) {
             return 99
-        }else if(getUser()?.members?.size == 1){
+        } else if (getUser()?.members?.size == 1) {
             var superMemberBean = getUser()?.members?.find { it.memberType == 99 }//超级会员
-            if(superMemberBean != null){
+            if (superMemberBean != null) {
                 return 99
-            }else{
+            } else {
                 return 1
             }
         }
@@ -138,12 +139,15 @@ object CacheUtil {
         val kv = MMKV.mmkvWithID("app")
         val compareList = kv.decodeString("CompareList")
         if (!TextUtils.isEmpty(compareList)) {
-            return Gson().fromJson(compareList, object : TypeToken<ArrayList<DictionaryWorksBean>>() {}.type)
+            return Gson().fromJson(
+                compareList,
+                object : TypeToken<ArrayList<DictionaryWorksBean>>() {}.type
+            )
         }
         return arrayListOf()
     }
 
-    fun setCompareList(list: ArrayList<DictionaryWorksBean>){
+    fun setCompareList(list: ArrayList<DictionaryWorksBean>) {
         val kv = MMKV.mmkvWithID("app")
         kv.encode("CompareList", list.toJson())
         EventBus.getDefault().post(CompareEvent())
@@ -152,7 +156,7 @@ object CacheUtil {
     /**
      * 加入对比列表
      */
-    fun addCompareList(item: DictionaryWorksBean){
+    fun addCompareList(item: DictionaryWorksBean) {
         var compareList = getCompareList()
         compareList.add(0, item)
         val kv = MMKV.mmkvWithID("app")
@@ -160,7 +164,7 @@ object CacheUtil {
         EventBus.getDefault().post(CompareEvent())
     }
 
-    fun removeCompare(item: DictionaryWorksBean){
+    fun removeCompare(item: DictionaryWorksBean) {
         var compareList = getCompareList()
         var compareFilterList = compareList.filterNot { it.workId == item.workId }
         val kv = MMKV.mmkvWithID("app")
