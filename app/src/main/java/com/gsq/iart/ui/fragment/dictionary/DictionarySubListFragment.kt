@@ -20,6 +20,7 @@ import com.gsq.iart.app.ext.loadServiceInit
 import com.gsq.iart.app.ext.showEmpty
 import com.gsq.iart.app.ext.showLoading
 import com.gsq.iart.app.util.CacheUtil
+import com.gsq.iart.app.util.MobAgentUtil
 import com.gsq.iart.app.weight.FlowContentLayout.ClickListener
 import com.gsq.iart.data.Constant
 import com.gsq.iart.data.Constant.COMPLEX_TYPE_DICTIONARY
@@ -132,8 +133,24 @@ class DictionarySubListFragment :
         worksAdapter.setOnItemChildClickListener { adapter, view, position ->
             if (view.id == R.id.item_works_cover){
                 val worksBean = adapter.data[position] as DictionaryWorksBean
+                args.searchKey?.let {
+                    var eventMap = mutableMapOf<String, Any?>()
+                    eventMap["work_id"] = worksBean.workId
+                    eventMap["work_name"] = worksBean.name
+                    eventMap["main_work_id"] = worksBean.mainWorkId
+                    MobAgentUtil.onEvent("click_s_qietu", eventMap)
+                }?:let {
+                    var eventMap = mutableMapOf<String, Any?>()
+                    eventMap["work_id"] = worksBean.workId
+                    eventMap["work_name"] = worksBean.name
+                    eventMap["main_work_id"] = worksBean.mainWorkId
+                    MobAgentUtil.onEvent("click_qietu", eventMap)
+                }
                 if (worksBean.pay == 1 && CacheUtil.getUserVipStatus() != 99) {
                     //需要付费且没有开通了会员
+                    var eventMap = mutableMapOf<String, Any?>()
+                    eventMap["type"] = "qietu_svip"
+                    MobAgentUtil.onEvent("svip", eventMap)
                     nav().navigateAction(
                         R.id.action_dictionaryListFragment_to_memberFragment,
                         bundleOf(MemberFragment.INTENT_KEY_TYPE to MemberFragment.INTENT_VALUE_DICTIONARY)
@@ -184,6 +201,20 @@ class DictionarySubListFragment :
                         addComparePageItem = worksBean
                         mViewModel.addCompareItems(it.id, list)
                     }?: let{
+                        args.searchKey?.let {
+                            var eventMap = mutableMapOf<String, Any?>()
+                            eventMap["work_id"] = worksBean.workId
+                            eventMap["work_name"] = worksBean.name
+                            eventMap["main_work_id"] = worksBean.mainWorkId
+                            MobAgentUtil.onEvent("add_s_qietu", eventMap)
+                        }?:let {
+                            var eventMap = mutableMapOf<String, Any?>()
+                            eventMap["work_id"] = worksBean.workId
+                            eventMap["work_name"] = worksBean.name
+                            eventMap["main_work_id"] = worksBean.mainWorkId
+                            MobAgentUtil.onEvent("add_qietu", eventMap)
+                        }
+
                         CacheUtil.addCompareList(worksBean)
                         ToastUtils.showShort("加入成功")
                         worksAdapter.updateCompareList()
@@ -192,6 +223,14 @@ class DictionarySubListFragment :
                 }
             } else if (view.id == R.id.iv_delete) {
                 //删除
+                intent_data_sub?.let {
+                    var eventMap = mutableMapOf<String, Any?>()
+                    eventMap["tudan_id"] = it.id
+                    MobAgentUtil.onEvent("tudan_X", eventMap)
+                }?:let {
+                    MobAgentUtil.onEvent("list_manage_X")
+                }
+
                 val worksBean = adapter.data[position] as DictionaryWorksBean
                 if (args.firstTag == Constant.COMPLEX_TYPE_COMPARE) {
                     //图单列表删除
@@ -205,6 +244,22 @@ class DictionarySubListFragment :
                     //本地对比列表删除
                     CacheUtil.removeCompare(worksBean)
                     worksAdapter.removeAt(position)
+                }
+            } else if (view.id == R.id.item_works_source){
+                //作品来源
+                val worksBean = adapter.data[position] as DictionaryWorksBean
+                args.searchKey?.let {
+                    var eventMap = mutableMapOf<String, Any?>()
+                    eventMap["work_id"] = worksBean.workId
+                    eventMap["work_name"] = worksBean.name
+                    eventMap["main_work_id"] = worksBean.mainWorkId
+                    MobAgentUtil.onEvent("click_s_source", eventMap)
+                }?:let {
+                    var eventMap = mutableMapOf<String, Any?>()
+                    eventMap["work_id"] = worksBean.workId
+                    eventMap["work_name"] = worksBean.name
+                    eventMap["main_work_id"] = worksBean.mainWorkId
+                    MobAgentUtil.onEvent("click_source", eventMap)
                 }
             }
         }
@@ -220,6 +275,7 @@ class DictionarySubListFragment :
                     subTitleList?.let {
                         it.find { it.name == tag }.let {
                             it?.id?.let {
+                                tag4 = ""
                                 mViewModel.getDictionaryFourClassifyById(it)
                             }
                         }
@@ -254,6 +310,16 @@ class DictionarySubListFragment :
         }
         open_vip_btn.onClick {
             //开通超级会员
+            args.searchKey?.let {
+                var eventMap = mutableMapOf<String, Any?>()
+                eventMap["type"] = "search"
+                MobAgentUtil.onEvent("svip", eventMap)
+            }?:let {
+                var eventMap = mutableMapOf<String, Any?>()
+                eventMap["type"] = "qietu"
+                MobAgentUtil.onEvent("svip", eventMap)
+            }
+
             nav().navigateAction(
                 R.id.action_dictionaryListFragment_to_memberFragment,
                 bundleOf(MemberFragment.INTENT_KEY_TYPE to MemberFragment.INTENT_VALUE_DICTIONARY)
@@ -354,6 +420,7 @@ class DictionarySubListFragment :
                     line_view.gone()
                 }
                 fourTagAdapter.data = subList
+                fourTagAdapter.setClickSelectedPosition(0)
             } ?: let {
                 fourth_recycler_view.gone()
                 line_view.gone()

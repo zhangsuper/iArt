@@ -38,6 +38,7 @@ class SearchFragment : BaseFragment<SearchViewModel, FragmentSearchBinding>() {
     private var searchResultFragment: WorksListFragment? = null
     private var dictionarySearchResultFragment: DictionarySubListFragment? = null
     private val searchInitFragment: SearchInitFragment by lazy { SearchInitFragment() }
+    private var intentType: Int = 1
 
     override fun onResume() {
         super.onResume()
@@ -51,6 +52,8 @@ class SearchFragment : BaseFragment<SearchViewModel, FragmentSearchBinding>() {
 
 
     override fun initView(savedInstanceState: Bundle?) {
+        intentType = arguments?.getInt(Constant.INTENT_DATA)?: 1
+        searchInitFragment.setIntentType(intentType)
         back_btn.setOnClickListener {
             nav().navigateUp()
         }
@@ -60,9 +63,15 @@ class SearchFragment : BaseFragment<SearchViewModel, FragmentSearchBinding>() {
                 searchInitFragment.updateKey(inputKey)
                 searchData(inputKey)
                 KeyboardUtils.hideSoftInput(search_input_view)
-                var eventMap = mutableMapOf<String, Any?>()
-                eventMap["query"] = inputKey
-                MobAgentUtil.onEvent("search_guohua", eventMap)
+                if(intentType == 2){
+                    var eventMap = mutableMapOf<String, Any?>()
+                    eventMap["query"] = inputKey
+                    MobAgentUtil.onEvent("search_tudian", eventMap)
+                }else {
+                    var eventMap = mutableMapOf<String, Any?>()
+                    eventMap["query"] = inputKey
+                    MobAgentUtil.onEvent("search_guohua", eventMap)
+                }
             } else {
                 ToastUtils.showShort("请输入关键字")
             }
@@ -73,9 +82,15 @@ class SearchFragment : BaseFragment<SearchViewModel, FragmentSearchBinding>() {
                 searchInitFragment.updateKey(inputKey)
                 searchData(inputKey)
                 KeyboardUtils.hideSoftInput(search_input_view)
-                var eventMap = mutableMapOf<String, Any?>()
-                eventMap["query"] = inputKey
-                MobAgentUtil.onEvent("search_guohua", eventMap)
+                if(intentType == 2){
+                    var eventMap = mutableMapOf<String, Any?>()
+                    eventMap["query"] = inputKey
+                    MobAgentUtil.onEvent("search_tudian", eventMap)
+                }else {
+                    var eventMap = mutableMapOf<String, Any?>()
+                    eventMap["query"] = inputKey
+                    MobAgentUtil.onEvent("search_guohua", eventMap)
+                }
                 true
             }
             false

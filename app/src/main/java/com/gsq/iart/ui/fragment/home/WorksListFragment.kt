@@ -102,7 +102,7 @@ class WorksListFragment : BaseFragment<WorksViewModel, FragmentWorksListBinding>
         works_recycler_view.init(layoutManager, worksAdapter)
         works_recycler_view.initFooter {
             //加载更多
-            if(CacheUtil.getUserVipStatus() != 1 && BuildConfig.DEBUG) {
+            if(CacheUtil.getUserVipStatus() == 0) {
                 works_recycler_view.loadMoreFinish(false,true)
             }else{
                 requestData()
@@ -126,7 +126,7 @@ class WorksListFragment : BaseFragment<WorksViewModel, FragmentWorksListBinding>
                     MobAgentUtil.onEvent("click", eventMap)
                 }
             }
-            if (worksBean.pay == 1 && CacheUtil.getUserVipStatus() != 1) {
+            if (worksBean.pay == 1 && CacheUtil.getUserVipStatus() == 0) {
 //                if (CacheUtil.isLogin()) {
 //                    if (CacheUtil.getUser()?.memberType != 1) {
 //                        nav().navigateAction(R.id.action_mainFragment_to_memberFragment)

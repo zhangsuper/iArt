@@ -28,6 +28,8 @@ class SearchInitFragment : BaseFragment<SearchViewModel, FragmentSearchInitBindi
 
     private val hotAdapter: SearchHotAdapter by lazy { SearchHotAdapter(arrayListOf()) }
 
+    private var intentType: Int = 1
+
     override fun initView(savedInstanceState: Bundle?) {
         //创建流式布局layout
         val layoutManager1 = FlexboxLayoutManager(context)
@@ -54,9 +56,15 @@ class SearchInitFragment : BaseFragment<SearchViewModel, FragmentSearchInitBindi
                 updateKey(queryStr)
                 searchData(queryStr)
 
-                var eventMap = mutableMapOf<String, Any?>()
-                eventMap["query"] = queryStr
-                MobAgentUtil.onEvent("search_guohua_history", eventMap)
+                if(intentType == 2){
+                    var eventMap = mutableMapOf<String, Any?>()
+                    eventMap["query"] = queryStr
+                    MobAgentUtil.onEvent("search_tudian_history", eventMap)
+                }else {
+                    var eventMap = mutableMapOf<String, Any?>()
+                    eventMap["query"] = queryStr
+                    MobAgentUtil.onEvent("search_guohua_history", eventMap)
+                }
             }
         }
 
@@ -66,9 +74,15 @@ class SearchInitFragment : BaseFragment<SearchViewModel, FragmentSearchInitBindi
                 updateKey(queryStr)
                 searchData(queryStr)
 
-                var eventMap = mutableMapOf<String, Any?>()
-                eventMap["query"] = queryStr
-                MobAgentUtil.onEvent("search_guohua_hot", eventMap)
+                if(intentType == 2){
+                    var eventMap = mutableMapOf<String, Any?>()
+                    eventMap["query"] = queryStr
+                    MobAgentUtil.onEvent("search_tudian_hot", eventMap)
+                }else {
+                    var eventMap = mutableMapOf<String, Any?>()
+                    eventMap["query"] = queryStr
+                    MobAgentUtil.onEvent("search_guohua_hot", eventMap)
+                }
             }
         }
     }
@@ -98,6 +112,10 @@ class SearchInitFragment : BaseFragment<SearchViewModel, FragmentSearchInitBindi
         mViewModel.hotSearchDataState.observe(viewLifecycleOwner) { resultState ->
             hotAdapter.setList(resultState.listData)
         }
+    }
+
+    fun setIntentType(type: Int){
+        intentType = type
     }
 
     /**

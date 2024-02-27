@@ -5,6 +5,7 @@ import com.blankj.utilcode.util.ToastUtils
 import com.gsq.iart.R
 import com.gsq.iart.app.base.BaseFragment
 import com.gsq.iart.app.util.CacheUtil
+import com.gsq.iart.app.util.MobAgentUtil
 import com.gsq.iart.app.util.StatusBarUtil
 import com.gsq.iart.data.Constant
 import com.gsq.iart.data.Constant.COMPLEX_TYPE_COMPARE
@@ -75,9 +76,13 @@ class CompareListFragment : BaseFragment<DictionaryViewModel, FragmentCompareLis
             mViewBind.titleLayout.setRightText("")
             mViewBind.bottomView.visible()
             listFragment.setEditStatus(false)
+            MobAgentUtil.onEvent("list_manage_ok")
         }
         mViewBind.titleLayout.setCenterClickListener {
             //重命名
+            var eventMap = mutableMapOf<String, Any?>()
+            eventMap["tudan_id"] = dictionarySetsBean?.id
+            MobAgentUtil.onEvent("tudan_edit", eventMap)
             CompareSaveDialog().setDialogType(2).setDialogContent(dictionarySetsBean?.name).setBackListener {
                 dictionarySetsBean?.id?.let { id ->
                     newName = it
@@ -101,11 +106,20 @@ class CompareListFragment : BaseFragment<DictionaryViewModel, FragmentCompareLis
             mViewBind.bottomView.gone()
             mViewBind.titleLayout.setRightText("完成")
             listFragment.setEditStatus(true)
+            dictionarySetsBean?.let {
+                var eventMap = mutableMapOf<String, Any?>()
+                eventMap["tudan_id"] = it.id
+                MobAgentUtil.onEvent("tudan_manage", eventMap)
+            }?: let {
+                MobAgentUtil.onEvent("list_manage")
+            }
         }
         save_btn.onClick {
             //保存
+            MobAgentUtil.onEvent("list_save")
             if (CacheUtil.isLogin()) {
                 CompareSaveDialog().setDialogType(1).setBackListener {
+                    MobAgentUtil.onEvent("list_save_ok")
                     var compareList = CacheUtil.getCompareList()
                     var compareIds = mutableListOf<Int>()
                     compareList.forEach {
@@ -120,8 +134,10 @@ class CompareListFragment : BaseFragment<DictionaryViewModel, FragmentCompareLis
         }
         clear_btn.onClick {
             //清空
+
             if (intentType == COMPLEX_TYPE_NATIVE_COMPARE) {
                 //本地对比列表
+                MobAgentUtil.onEvent("list_clear")
                 DialogUtils.showNormalDoubleButtonDialog(
                     activity,
                     " ",
@@ -131,12 +147,18 @@ class CompareListFragment : BaseFragment<DictionaryViewModel, FragmentCompareLis
                     true
                 ) { dialog, isLeft ->
                     if (!isLeft) {
+                        MobAgentUtil.onEvent("list_clear_ok")
                         CacheUtil.setCompareList(arrayListOf())
                         listFragment.lazyLoadData()
                     }
                 }
             } else if (intentType == COMPLEX_TYPE_COMPARE) {
                 //图单对比列表
+                dictionarySetsBean?.let {
+                    var eventMap = mutableMapOf<String, Any?>()
+                    eventMap["tudan_id"] = it.id
+                    MobAgentUtil.onEvent("tudan_clear", eventMap)
+                }
                 DialogUtils.showNormalDoubleButtonDialog(
                     activity,
                     " ",
@@ -147,6 +169,9 @@ class CompareListFragment : BaseFragment<DictionaryViewModel, FragmentCompareLis
                 ) { dialog, isLeft ->
                     if (!isLeft) {
                         dictionarySetsBean?.let {
+                            var eventMap = mutableMapOf<String, Any?>()
+                            eventMap["tudan_id"] = it.id
+                            MobAgentUtil.onEvent("tudan_clear_ok", eventMap)
                             mViewModel.deleteCompare(it.id)
                         }
                     }
@@ -160,6 +185,10 @@ class CompareListFragment : BaseFragment<DictionaryViewModel, FragmentCompareLis
             bundle.putSerializable(Constant.INTENT_DATA, dictionarySetsBean)
             nav().navigateAction(R.id.action_compareListFragment_to_dictionaryFragment, bundle)
             Constant.compareItemPageData = listFragment.compareItemPageData
+
+            var eventMap = mutableMapOf<String, Any?>()
+            eventMap["tudan_id"] = dictionarySetsBean?.id
+            MobAgentUtil.onEvent("tudan_add", eventMap)
         }
         EventBus.getDefault().register(this)
     }

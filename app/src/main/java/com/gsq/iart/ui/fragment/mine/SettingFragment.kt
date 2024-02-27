@@ -96,15 +96,15 @@ class SettingFragment : BaseFragment<BaseViewModel, FragmentSettingBinding>() {
                 ToastUtils.showLong(it.errorMsg)
             }
         }
-        mLoginViewModel?.writeOffDataState?.observe(viewLifecycleOwner) {
-            if (it.isSuccess) {
-                MobAgentUtil.onEvent("writeoff")
-                ToastUtils.showLong("账号已注销")
-                CacheUtil.setUser(null)
-                nav().navigateUp()
-            } else {
-                ToastUtils.showLong(it.errorMsg)
-            }
-        }
+//        mLoginViewModel?.writeOffDataState?.observe(viewLifecycleOwner) {
+//            if (it.isSuccess) {
+//                MobAgentUtil.onEvent("writeoff")
+//                ToastUtils.showLong("账号已注销")
+//                CacheUtil.setUser(null)
+//                nav().navigateUp()
+//            } else {
+//                ToastUtils.showLong(it.errorMsg)
+//            }
+//        }
     }
 }

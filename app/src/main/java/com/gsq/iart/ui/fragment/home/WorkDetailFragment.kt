@@ -157,6 +157,11 @@ class WorkDetailFragment : BaseFragment<WorksViewModel, FragmentWorkDetailBindin
                     //加入对比列表
                     CacheUtil.addCompareList(it)
                     ToastUtils.showShort("加入成功")
+                    var eventMap = mutableMapOf<String, Any?>()
+                    eventMap["work_id"] = it.workId
+                    eventMap["work_name"] = it.name
+                    eventMap["main_work_id"] = it.mainWorkId
+                    MobAgentUtil.onEvent("add_qietu_details", eventMap)
                 }
                 it.isAddCompare = !it.isAddCompare
                 updateCompareStatus()
@@ -275,6 +280,14 @@ class WorkDetailFragment : BaseFragment<WorksViewModel, FragmentWorkDetailBindin
                     var eventMap = mutableMapOf<String, Any?>()
                     eventMap["work_id"] = worksBean?.id
                     MobAgentUtil.onEvent("collect", eventMap)
+                }?:let {
+                    dictionaryWorksBean?.let {
+                        var eventMap = mutableMapOf<String, Any?>()
+                        eventMap["work_id"] = it.workId
+                        eventMap["work_name"] = it.name
+                        eventMap["main_work_id"] = it.mainWorkId
+                        MobAgentUtil.onEvent("collect_qietu_details", eventMap)
+                    }
                 }
             } else {
                 //跳转登录界面
@@ -288,25 +301,38 @@ class WorkDetailFragment : BaseFragment<WorksViewModel, FragmentWorkDetailBindin
         }
         iv_download.onClick {
             if (CacheUtil.isLogin()) {
-                if (CacheUtil.getUserVipStatus() != 0 || BuildConfig.DEBUG) {
-                    //下载
-                    if (intentType == COMPLEX_TYPE_DICTIONARY) {
+                if (intentType == COMPLEX_TYPE_DICTIONARY) {
+                    if (CacheUtil.getUserVipStatus() != 99 || BuildConfig.DEBUG) {
+                        //不是超级会员
+                        var eventMap = mutableMapOf<String, Any?>()
+                        eventMap["type"] = "download"
+                        MobAgentUtil.onEvent("svip", eventMap)
+                        nav().navigateAction(
+                            R.id.action_workDetailFragment_to_memberFragment,
+                            bundleOf(MemberFragment.INTENT_KEY_TYPE to MemberFragment.INTENT_VALUE_DICTIONARY)
+                        )
+                    }else{
                         var eventMap = mutableMapOf<String, Any?>()
                         eventMap["work_id"] = dictionaryWorksBean?.id
-                        MobAgentUtil.onEvent("download", eventMap)
-                    } else {
+                        eventMap["work_name"] = dictionaryWorksBean?.name
+                        eventMap["main_work_id"] = dictionaryWorksBean?.mainWorkId
+                        MobAgentUtil.onEvent("download_qietu_details", eventMap)
+                        checkStoragePermission()
+                    }
+                }else{
+                    if (CacheUtil.getUserVipStatus() != 0 || BuildConfig.DEBUG) {
+                        //下载
                         var eventMap = mutableMapOf<String, Any?>()
                         eventMap["work_id"] = worksBean?.id
                         MobAgentUtil.onEvent("download", eventMap)
+                        checkStoragePermission()
+                    } else {
+                        //跳转到会员页
+                        nav().navigateAction(
+                            R.id.action_workDetailFragment_to_memberFragment,
+                            bundleOf(MemberFragment.INTENT_KEY_TYPE to MemberFragment.INTENT_VALUE_WORKS)
+                        )
                     }
-
-                    checkStoragePermission()
-                } else {
-                    //跳转到会员页
-                    nav().navigateAction(
-                        R.id.action_workDetailFragment_to_memberFragment,
-                        bundleOf(MemberFragment.INTENT_KEY_TYPE to MemberFragment.INTENT_VALUE_DOWNLOAD)
-                    )
                 }
             } else {
                 //跳转登录界面
@@ -321,9 +347,18 @@ class WorkDetailFragment : BaseFragment<WorksViewModel, FragmentWorkDetailBindin
         }
         iv_rota.setOnClickListener {
 //            (fragmentList[currentSelectedIndex] as PreviewImageFragment).getPhotoView().rotation -= 90
-            var eventMap = mutableMapOf<String, Any?>()
-            eventMap["work_id"] = worksBean?.id
-            MobAgentUtil.onEvent("rotate", eventMap)
+            if (intentType == COMPLEX_TYPE_DICTIONARY) {
+                var eventMap = mutableMapOf<String, Any?>()
+                eventMap["work_id"] = dictionaryWorksBean?.id
+                eventMap["work_name"] = dictionaryWorksBean?.name
+                eventMap["main_work_id"] = dictionaryWorksBean?.mainWorkId
+                MobAgentUtil.onEvent("rotate_qietu_details", eventMap)
+            }else{
+                var eventMap = mutableMapOf<String, Any?>()
+                eventMap["work_id"] = worksBean?.id
+                MobAgentUtil.onEvent("rotate", eventMap)
+            }
+
             var orientation =
                 (fragmentList[currentSelectedIndex] as PreviewImageFragment).getPhotoView().orientation
             when (orientation) {
