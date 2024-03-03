@@ -22,9 +22,9 @@ class SearchViewModel : BaseViewModel() {
     /**
      * 获取热门数据
      */
-    fun getHotData() {
+    fun getHotData(intentType: Int) {
         request(
-            { apiService.getHotSearch() },
+            { apiService.getHotSearch(intentType) },
             {
                 //请求成功
                 val updateDataUiState = ListDataUiState(
@@ -48,9 +48,24 @@ class SearchViewModel : BaseViewModel() {
     /**
      * 获取历史数据
      */
-    fun getHistoryData() {
+    fun getHistoryData(intentType: Int) {
         launch({
-            CacheUtil.getSearchHistoryData()
+            if(intentType == 2){
+                CacheUtil.getDictionarySearchHistoryData()
+            }else{
+                CacheUtil.getSearchHistoryData()
+            }
+
+        }, {
+            searchHistoryList.value = it
+        }, {
+            //获取本地历史数据出异常了
+        })
+    }
+
+    fun getDictionaryHistoryData() {
+        launch({
+            CacheUtil.getDictionarySearchHistoryData()
         }, {
             searchHistoryList.value = it
         }, {

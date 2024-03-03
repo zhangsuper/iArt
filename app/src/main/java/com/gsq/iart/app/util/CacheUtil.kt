@@ -133,6 +133,23 @@ object CacheUtil {
     }
 
     /**
+     * 获取图典搜索历史缓存数据
+     */
+    fun getDictionarySearchHistoryData(): ArrayList<String> {
+        val kv = MMKV.mmkvWithID("cache")
+        val searchCacheStr = kv.decodeString("dictionary_history")
+        if (!TextUtils.isEmpty(searchCacheStr)) {
+            return Gson().fromJson(searchCacheStr, object : TypeToken<ArrayList<String>>() {}.type)
+        }
+        return arrayListOf()
+    }
+
+    fun setDictionarySearchHistoryData(searchResponseStr: String) {
+        val kv = MMKV.mmkvWithID("cache")
+        kv.encode("dictionary_history", searchResponseStr)
+    }
+
+    /**
      * 获取对比列表
      */
     fun getCompareList(): ArrayList<DictionaryWorksBean> {

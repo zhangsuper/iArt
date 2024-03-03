@@ -141,7 +141,7 @@ interface ApiService {
      * 搜索热词
      */
     @POST("art/search/helper/hotSearch")
-    suspend fun getHotSearch(): ApiResponse<ArrayList<String>>
+    suspend fun getHotSearch(@Query("type") type: Int): ApiResponse<ArrayList<String>>
 
     /**
      * 下载次数加1

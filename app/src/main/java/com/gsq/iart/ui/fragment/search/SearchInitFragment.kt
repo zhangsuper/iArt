@@ -89,9 +89,9 @@ class SearchInitFragment : BaseFragment<SearchViewModel, FragmentSearchInitBindi
 
     override fun lazyLoadData() {
         //获取历史搜索词数据
-        mViewModel.getHistoryData()
+        mViewModel.getHistoryData(intentType)
         //获取热门数据
-        mViewModel.getHotData()
+        mViewModel.getHotData(intentType)
     }
 
     override fun createObserver() {
@@ -106,7 +106,11 @@ class SearchInitFragment : BaseFragment<SearchViewModel, FragmentSearchInitBindi
             }
             historyAdapter.data = it
             historyAdapter.notifyDataSetChanged()
-            CacheUtil.setSearchHistoryData(it.toJson())
+            if(intentType == 2){
+                CacheUtil.setDictionarySearchHistoryData(it.toJson())
+            }else{
+                CacheUtil.setSearchHistoryData(it.toJson())
+            }
         })
 
         mViewModel.hotSearchDataState.observe(viewLifecycleOwner) { resultState ->
