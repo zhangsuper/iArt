@@ -34,6 +34,7 @@ import com.gsq.iart.data.bean.WorkHdPics
 import com.gsq.iart.data.bean.WorksBean
 import com.gsq.iart.data.event.BigImageClickEvent
 import com.gsq.iart.databinding.FragmentWorkDetailBinding
+import com.gsq.iart.ui.dialog.DialogUtils
 import com.gsq.iart.ui.fragment.mine.MemberFragment
 import com.gsq.iart.viewmodel.WorksViewModel
 import com.gsq.mvvm.ext.nav
@@ -447,13 +448,7 @@ class WorkDetailFragment : BaseFragment<WorksViewModel, FragmentWorkDetailBindin
             }
         } else {
             // Do not have permissions, request them now
-            EasyPermissions.requestPermissions(
-                requireActivity(),
-                "应用程序需要您的存储权限",
-                RC_EXTERNAL_STORAGE_CODE,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                Manifest.permission.READ_EXTERNAL_STORAGE
-            )
+            requestPermissionsDialog()
         }
     }
 
@@ -490,6 +485,27 @@ class WorkDetailFragment : BaseFragment<WorksViewModel, FragmentWorkDetailBindin
                     ToastUtils.showLong("下载失败！")
                 }
             })
+    }
+
+    private fun requestPermissionsDialog(){
+        DialogUtils.showNormalDoubleButtonDialog(
+            activity,
+            "存储权限使用说明：",
+            "用于作品、图典下载等场景",
+            "去授权",
+            "再考虑下",
+            true
+        ) { dialog, isLeft ->
+            if (!isLeft) {
+                EasyPermissions.requestPermissions(
+                    requireActivity(),
+                    "应用程序需要您的存储权限",
+                    RC_EXTERNAL_STORAGE_CODE,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                    Manifest.permission.READ_EXTERNAL_STORAGE
+                )
+            }
+        }
     }
 
     private fun updateCollectState() {
