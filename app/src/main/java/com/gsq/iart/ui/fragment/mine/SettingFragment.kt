@@ -1,8 +1,16 @@
 package com.gsq.iart.ui.fragment.mine
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.text.TextPaint
+import android.text.style.ClickableSpan
+import android.view.View
+import android.webkit.WebView
+import android.widget.TextView
 import androidx.core.os.bundleOf
 import androidx.lifecycle.ViewModelProvider
+import com.blankj.utilcode.util.SpanUtils
 import com.blankj.utilcode.util.ToastUtils
 import com.gsq.iart.R
 import com.gsq.iart.app.base.BaseFragment
@@ -67,7 +75,21 @@ class SettingFragment : BaseFragment<BaseViewModel, FragmentSettingBinding>() {
         }
 
         mLoginViewModel = ViewModelProvider(this)[LoginViewModel::class.java]
-
+        val clickableSpan = object : ClickableSpan() {
+            override fun onClick(widget: View) {
+                //隐私政策
+//                var intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://beian.miit.gov.cn/"))
+//                startActivity(intent)
+                nav().navigateAction(
+                    R.id.action_settingFragment_to_userAgreementFragment,
+                    bundleOf(UserAgreementFragment.INTENT_KEY_TYPE to UserAgreementFragment.INTENT_VALUE_ICP)
+                )
+            }
+            override fun updateDrawState(ds: TextPaint) {
+                ds.isUnderlineText = false
+            }
+        }
+        SpanUtils.with(tv_icp).append("ICP备案号：浙ICP备2022026079号3A >").setClickSpan(clickableSpan).create()
     }
 
     override fun onResume() {
@@ -81,6 +103,7 @@ class SettingFragment : BaseFragment<BaseViewModel, FragmentSettingBinding>() {
             cancellation_btn.gone()
             sdk_information_btn.setItemDividerVisible(false)
         }
+
     }
 
     override fun createObserver() {

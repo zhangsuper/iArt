@@ -6,6 +6,7 @@ import androidx.activity.OnBackPressedCallback
 import com.gsq.iart.R
 import com.gsq.iart.app.base.BaseFragment
 import com.gsq.iart.app.network.ApiService.Companion.agreement_url
+import com.gsq.iart.app.network.ApiService.Companion.icp_url
 import com.gsq.iart.app.network.ApiService.Companion.personal_info_url
 import com.gsq.iart.app.network.ApiService.Companion.privacy_url
 import com.gsq.iart.app.network.ApiService.Companion.sdk_info_url
@@ -31,6 +32,7 @@ class UserAgreementFragment : BaseFragment<WebViewModel, FragmentUserAgreementBi
         const val INTENT_VALUE_PERSONAL_INFO = "personal_info"//个人信息协议
         const val INTENT_VALUE_SDK_INFO = "sdk_info"//第三方服务列表
         const val INTENT_VALUE_WRITE_OFF = "write_off"//注销重要提醒
+        const val INTENT_VALUE_ICP = "icp"
     }
 
     private var agreementType: String? = null
@@ -59,6 +61,9 @@ class UserAgreementFragment : BaseFragment<WebViewModel, FragmentUserAgreementBi
         } else if (agreementType == INTENT_VALUE_WRITE_OFF) {
             mViewModel.showTitle = getString(R.string.write_off_tips)
             mViewModel.url = write_off_remind_url
+        } else if(agreementType == INTENT_VALUE_ICP){
+            mViewModel.showTitle = "ICP/IP地址/域名信息备案管理系统"
+            mViewModel.url = icp_url
         }
         title_layout.setBackListener {
             nav().navigateUp()

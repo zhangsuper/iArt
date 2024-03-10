@@ -23,6 +23,7 @@ class SecretDialog : BaseDialog(R.layout.dialog_secret) {
     private val binding by viewBinding(DialogSecretBinding::bind)
     private var mAgentWeb: AgentWeb? = null
     private var preWeb: AgentWeb.PreAgentWeb? = null
+    var agreeListener: (() -> Unit)? = null
 
     override fun changeDialogStyle() {
         isCancelable = false
@@ -40,6 +41,7 @@ class SecretDialog : BaseDialog(R.layout.dialog_secret) {
                 UMConfigure.DEVICE_TYPE_PHONE, ""
             )
             MobAgentUtil.onEvent("policy")
+            agreeListener?.invoke()
         }
         binding.disagreeBtn.setOnClickListener {
             CacheUtil.setAgreePrivacyStatus(false)
@@ -55,5 +57,10 @@ class SecretDialog : BaseDialog(R.layout.dialog_secret) {
             .ready()
         mAgentWeb = preWeb?.go(personal_url)
         mAgentWeb?.agentWebSettings?.webSettings?.textZoom = 110
+    }
+
+    fun setBackListener(listener: (() -> Unit)): SecretDialog {
+        agreeListener = listener
+        return this
     }
 }

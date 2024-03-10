@@ -72,4 +72,15 @@
         android:layout_margin="@dimen/dp_16"
         app:layout_constraintBottom_toBottomOf="parent" />
 
+    <TextView
+        android:id="@+id/tv_icp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/dp_10"
+        android:text="ICP备案号：浙ICP备2022026079号3A >"
+        android:textSize="@dimen/dp_12"
+        app:layout_constraintBottom_toTopOf="@+id/login_out_btn"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

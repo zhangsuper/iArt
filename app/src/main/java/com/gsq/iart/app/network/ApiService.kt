@@ -26,6 +26,8 @@ interface ApiService {
         const val personal_info_url = "${H5_SERVER_URL}agreement/legal/info.html"//个人信息收集清单
         const val sdk_info_url = "${H5_SERVER_URL}agreement/legal/share.html"//信息共享清单
         const val write_off_remind_url = "${H5_SERVER_URL}agreement/legal/remind.html"//重要提醒
+
+        const val icp_url = "https://beian.miit.gov.cn/"
     }
 
     /**

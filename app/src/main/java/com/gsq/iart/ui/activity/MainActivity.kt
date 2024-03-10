@@ -74,7 +74,13 @@ class MainActivity : BaseActivity<AppViewModel, ActivityMainBinding>() {
             }
         })
         if (!CacheUtil.isAgreePrivacy()) {
-            SecretDialog().show(supportFragmentManager)
+            SecretDialog().setBackListener {
+                if (CacheUtil.isAgreePrivacy()) {
+                    initData()
+                }
+            }.show(supportFragmentManager)
+        } else {
+            initData()
         }
         if (CacheUtil.isLogin()) {
             mLoginViewModel = ViewModelProvider(this)[LoginViewModel::class.java]
@@ -84,20 +90,21 @@ class MainActivity : BaseActivity<AppViewModel, ActivityMainBinding>() {
 
     override fun onResume() {
         super.onResume()
-        if (CacheUtil.isAgreePrivacy()) {
-            WxLoginUtil.initWx(this)
-            ThreadUtils.getMainHandler().postDelayed({
-                if (DialogUtils.normalDialog == null) {
-                    mViewModel.checkAppVersion(BuildConfig.VERSION_CODE.toString())
-                } else {
-                    if (!DialogUtils.normalDialog.isShowing) {
-                        mViewModel.checkAppVersion(BuildConfig.VERSION_CODE.toString())
-                    }
-                }
+    }
 
-            }, 1000)
-            initBugly()
-        }
+    private fun initData(){
+        WxLoginUtil.initWx(this)
+        ThreadUtils.getMainHandler().postDelayed({
+            if (DialogUtils.normalDialog == null) {
+                mViewModel.checkAppVersion(BuildConfig.VERSION_CODE.toString())
+            } else {
+                if (!DialogUtils.normalDialog.isShowing) {
+                    mViewModel.checkAppVersion(BuildConfig.VERSION_CODE.toString())
+                }
+            }
+
+        }, 1000)
+        initBugly()
     }
 
     private fun initBugly() {
