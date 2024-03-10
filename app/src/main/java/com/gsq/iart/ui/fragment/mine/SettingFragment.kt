@@ -89,7 +89,7 @@ class SettingFragment : BaseFragment<BaseViewModel, FragmentSettingBinding>() {
                 ds.isUnderlineText = false
             }
         }
-        SpanUtils.with(tv_icp).append("ICP备案号：浙ICP备2022026079号3A >").setClickSpan(clickableSpan).create()
+        SpanUtils.with(tv_icp).append("ICP备案号：浙ICP备2022026079号-3A >").setClickSpan(clickableSpan).create()
     }
 
     override fun onResume() {
