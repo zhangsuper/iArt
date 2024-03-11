@@ -13,6 +13,7 @@
     <string name="http_error_net_disable">当前网络不可用</string>
     <string name="http_error_service">服务请求异常</string>
     <string name="http_error_data">数据解析失败</string>
+    <string name="http_error_data_retry">请检查网络后点击重新加载</string>
 
 
     <!-- BaseAdapter上拉加载更多的状态 -->
