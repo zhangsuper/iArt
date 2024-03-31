@@ -114,10 +114,16 @@ class SearchFragment : BaseFragment<SearchViewModel, FragmentSearchBinding>() {
 
     private fun transactionInitFragment() {
         transactionFragment(searchInitFragment)
-        isInitFragment = true
+
+        if(intentType == 2){
+            isInitDictionaryFragment = true
+        }else{
+            isInitFragment = true
+        }
     }
 
     private var isInitFragment = true
+    private var isInitDictionaryFragment = true
     private fun searchData(key: String) {
         hideSoftKeyboard(activity)
         var intentType = arguments?.getInt(Constant.INTENT_DATA)
@@ -135,7 +141,7 @@ class SearchFragment : BaseFragment<SearchViewModel, FragmentSearchBinding>() {
             }
             isInitFragment = false
         }else if(intentType == 2){
-            if (!isInitFragment) {
+            if (!isInitDictionaryFragment) {
                 dictionarySearchResultFragment?.let {
                     it.requestSearchData(key)
                 }
@@ -146,7 +152,7 @@ class SearchFragment : BaseFragment<SearchViewModel, FragmentSearchBinding>() {
             dictionarySearchResultFragment?.let {
                 transactionFragment(it)
             }
-            isInitFragment = false
+            isInitDictionaryFragment = false
         }
     }
 
