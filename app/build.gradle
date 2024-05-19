@@ -16,8 +16,8 @@ android {
         applicationId "com.gsq.iart"
         minSdk buildVers.min_sdk
         targetSdk buildVers.target_sdk
-        versionCode 4
-        versionName "1.2.3"
+        versionCode 5
+        versionName "1.2.4"
         multiDexEnabled true
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"

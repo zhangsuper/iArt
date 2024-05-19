@@ -57,7 +57,7 @@
             android:orientation="vertical"
             android:gravity="center_horizontal">
 
-            <com.yanzhenjie.recyclerview.SwipeRecyclerView
+            <com.gsq.iart.app.weight.recyclerview.MyRecyclerView
                 android:id="@+id/works_recycler_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

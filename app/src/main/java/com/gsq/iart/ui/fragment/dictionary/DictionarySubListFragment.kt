@@ -266,7 +266,12 @@ class DictionarySubListFragment :
         mViewBind.flowContentLayout.setOnclickListener(object : ClickListener{
             override fun onClick(tag: String?) {
                 tag?.let {
-                    tag3 = it
+                    if(tag == "全部"){
+                        tag3 = ""
+                    }else{
+                        tag3 = it
+                    }
+
                 }
                 if (tag.isNullOrEmpty()) {
                     fourth_recycler_view.gone()
@@ -396,6 +401,7 @@ class DictionarySubListFragment :
         mViewModel.classifySubList.observe(viewLifecycleOwner) {
             it?.let { subList ->
                 var list = mutableListOf<String>()
+                list.add("全部")
                 subList.forEach {
                     list.add(it.name)
                 }

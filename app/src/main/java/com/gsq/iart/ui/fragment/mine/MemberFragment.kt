@@ -182,11 +182,12 @@ class MemberFragment : BaseFragment<MemberViewModel, FragmentMemberBinding>() {
             }
         })
 
-        if(agreementType == INTENT_VALUE_WORKS){
-            mViewBind.memberViewPager.setCurrentItem(1, false)
-        }else{
-            mViewBind.memberViewPager.setCurrentItem(0, false)
-        }
+        mViewBind.memberViewPager.setCurrentItem(0, false)
+//        if(agreementType == INTENT_VALUE_WORKS){
+//            mViewBind.memberViewPager.setCurrentItem(1, false)
+//        }else{
+//            mViewBind.memberViewPager.setCurrentItem(0, false)
+//        }
     }
 
     override fun lazyLoadData() {
