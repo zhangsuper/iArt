@@ -85,6 +85,11 @@ class WorkDetailFragment : BaseFragment<WorksViewModel, FragmentWorkDetailBindin
             var eventMap = mutableMapOf<String, Any?>()
             eventMap["work_id"] = dictionaryWorksBean?.id
             MobAgentUtil.onEvent("preview_jump", eventMap)
+
+            tv_contrast.visible()
+            tv_collect.visible()
+            tv_download.visible()
+            tv_rota.visible()
         } else {
             worksBean = arguments?.getSerializable(DATA_WORK) as? WorksBean
             common_title_layout.visible()
@@ -173,8 +178,10 @@ class WorkDetailFragment : BaseFragment<WorksViewModel, FragmentWorkDetailBindin
     private fun updateCompareStatus() {
         if (dictionaryWorksBean?.isAddCompare == true) {
             iv_contrast.setImageResource(R.drawable.compare_remove)
+            tv_contrast.text = "-对比"
         } else {
             iv_contrast.setImageResource(R.drawable.icon_add)
+            tv_contrast.text = "+对比"
         }
     }
 

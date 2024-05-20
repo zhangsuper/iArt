@@ -120,13 +120,14 @@
             android:background="@drawable/bg_ccffffff_conner_12"
             app:layout_constraintBottom_toBottomOf="parent">
 
-            <RelativeLayout
+            <LinearLayout
                 android:id="@+id/contrast_view"
                 android:layout_width="@dimen/dp_0"
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:layout_weight="1"
                 android:visibility="gone"
+                android:orientation="vertical"
                 tools:visibility="visible">
 
                 <ImageView
@@ -135,14 +136,25 @@
                     android:layout_height="@dimen/dp_24"
                     android:src="@drawable/icon_contrast" />
 
-            </RelativeLayout>
+                <TextView
+                    android:id="@+id/tv_contrast"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="+对比"
+                    android:textColor="@color/color_141414"
+                    android:layout_marginTop="@dimen/dp_6"
+                    android:visibility="gone"/>
 
 
-            <RelativeLayout
+            </LinearLayout>
+
+
+            <LinearLayout
                 android:layout_width="@dimen/dp_0"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:layout_weight="1">
+                android:layout_weight="1"
+                android:orientation="vertical">
 
                 <ImageView
                     android:id="@+id/iv_collect"
@@ -150,13 +162,23 @@
                     android:layout_height="@dimen/dp_24"
                     android:src="@drawable/icon_shoucang" />
 
-            </RelativeLayout>
+                <TextView
+                    android:id="@+id/tv_collect"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="收藏"
+                    android:textColor="@color/color_141414"
+                    android:layout_marginTop="@dimen/dp_6"
+                    android:visibility="gone"/>
 
-            <RelativeLayout
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="@dimen/dp_0"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:layout_weight="1">
+                android:layout_weight="1"
+                android:orientation="vertical">
 
                 <ImageView
                     android:id="@+id/iv_download"
@@ -164,14 +186,23 @@
                     android:layout_height="@dimen/dp_24"
                     android:src="@drawable/icon_xiazai" />
 
-            </RelativeLayout>
+                <TextView
+                    android:id="@+id/tv_download"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="下载"
+                    android:textColor="@color/color_141414"
+                    android:layout_marginTop="@dimen/dp_6"
+                    android:visibility="gone"/>
+            </LinearLayout>
 
-            <RelativeLayout
+            <LinearLayout
                 android:layout_width="@dimen/dp_0"
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:layout_weight="1"
-                android:visibility="gone">
+                android:visibility="gone"
+                android:orientation="vertical">
 
                 <ImageView
                     android:id="@+id/iv_scale"
@@ -179,13 +210,14 @@
                     android:layout_height="@dimen/dp_24"
                     android:src="@drawable/icon_yuanda" />
 
-            </RelativeLayout>
+            </LinearLayout>
 
-            <RelativeLayout
+            <LinearLayout
                 android:layout_width="@dimen/dp_0"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:layout_weight="1">
+                android:layout_weight="1"
+                android:orientation="vertical">
 
                 <ImageView
                     android:id="@+id/iv_rota"
@@ -193,14 +225,24 @@
                     android:layout_height="@dimen/dp_24"
                     android:src="@drawable/icon_xuanzhuan" />
 
-            </RelativeLayout>
+                <TextView
+                    android:id="@+id/tv_rota"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="旋转"
+                    android:textColor="@color/color_141414"
+                    android:layout_marginTop="@dimen/dp_6"
+                    android:visibility="gone"/>
 
-            <RelativeLayout
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="@dimen/dp_0"
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:layout_weight="1"
-                android:visibility="gone">
+                android:visibility="gone"
+                android:orientation="vertical">
 
                 <ImageView
                     android:id="@+id/iv_share"
@@ -208,7 +250,16 @@
                     android:layout_height="@dimen/dp_24"
                     android:src="@drawable/icon_fenxiang" />
 
-            </RelativeLayout>
+                <TextView
+                    android:id="@+id/tv_share"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="分享"
+                    android:textColor="@color/color_141414"
+                    android:layout_marginTop="@dimen/dp_6"
+                    android:visibility="gone"/>
+
+            </LinearLayout>
 
         </LinearLayout>
 
