@@ -81,13 +81,13 @@ class WorkDetailFragment : BaseFragment<WorksViewModel, FragmentWorkDetailBindin
             work_source.text =
                 "来源：[${dictionaryWorksBean?.mainAge}]${dictionaryWorksBean?.mainName}"
             contrast_view.visible()
+            collect_view.gone()
 
             var eventMap = mutableMapOf<String, Any?>()
             eventMap["work_id"] = dictionaryWorksBean?.id
             MobAgentUtil.onEvent("preview_jump", eventMap)
 
             tv_contrast.visible()
-            tv_collect.visible()
             tv_download.visible()
             tv_rota.visible()
         } else {
@@ -95,6 +95,7 @@ class WorkDetailFragment : BaseFragment<WorksViewModel, FragmentWorkDetailBindin
             common_title_layout.visible()
             dictionary_title_layout.gone()
             contrast_view.gone()
+            collect_view.visible()
 
             var eventMap = mutableMapOf<String, Any?>()
             eventMap["work_id"] = worksBean?.id

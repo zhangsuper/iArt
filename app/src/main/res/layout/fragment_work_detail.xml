@@ -150,6 +150,7 @@
 
 
             <LinearLayout
+                android:id="@+id/collect_view"
                 android:layout_width="@dimen/dp_0"
                 android:layout_height="match_parent"
                 android:gravity="center"
