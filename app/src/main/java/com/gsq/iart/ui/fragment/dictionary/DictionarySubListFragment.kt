@@ -22,6 +22,7 @@ import com.gsq.iart.app.ext.showLoading
 import com.gsq.iart.app.util.CacheUtil
 import com.gsq.iart.app.util.MobAgentUtil
 import com.gsq.iart.app.weight.FlowContentLayout.ClickListener
+import com.gsq.iart.app.weight.OpenMemberFooterLayout
 import com.gsq.iart.data.Constant
 import com.gsq.iart.data.Constant.COMPLEX_TYPE_DICTIONARY
 import com.gsq.iart.data.bean.DictionaryArgsType
@@ -64,6 +65,10 @@ class DictionarySubListFragment :
                 requestData()
             }
         })
+    }
+
+    private val openMemberFooterLayout: OpenMemberFooterLayout by lazy {
+        OpenMemberFooterLayout(requireContext())
     }
 
     private val fourTagAdapter: DictionaryLevelAdapter by lazy { DictionaryLevelAdapter(arrayListOf()) }
@@ -313,6 +318,23 @@ class DictionarySubListFragment :
             }
             requestData(true)
         }
+        openMemberFooterLayout.setOnClickListener {
+            //开通超级会员
+            args.searchKey?.let {
+                var eventMap = mutableMapOf<String, Any?>()
+                eventMap["type"] = "search"
+                MobAgentUtil.onEvent("svip", eventMap)
+            }?:let {
+                var eventMap = mutableMapOf<String, Any?>()
+                eventMap["type"] = "qietu"
+                MobAgentUtil.onEvent("svip", eventMap)
+            }
+
+            nav().navigateAction(
+                R.id.action_dictionaryListFragment_to_memberFragment,
+                bundleOf(MemberFragment.INTENT_KEY_TYPE to MemberFragment.INTENT_VALUE_DICTIONARY)
+            )
+        }
         open_vip_btn.onClick {
             //开通超级会员
             args.searchKey?.let {
@@ -443,9 +465,13 @@ class DictionarySubListFragment :
                 Constant.COMPLEX_TYPE_DICTIONARY
             )
             if (it.isRefresh && it.listData.size > 8 && CacheUtil.getUserVipStatus() != 99) {
-                open_vip_btn.visible()
+//                open_vip_btn.gone()
+                worksAdapter.addFooterView(openMemberFooterLayout)
             } else {
-                open_vip_btn.gone()
+                if(worksAdapter.footerLayout is OpenMemberFooterLayout){
+                    worksAdapter.removeFooterView(openMemberFooterLayout)
+                }
+//                open_vip_btn.gone()
             }
         })
         mViewModel.compareItemPageDataState.observe(viewLifecycleOwner, Observer {
