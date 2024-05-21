@@ -466,11 +466,12 @@ class DictionarySubListFragment :
             )
             if (it.isRefresh && it.listData.size > 8 && CacheUtil.getUserVipStatus() != 99) {
 //                open_vip_btn.gone()
-                worksAdapter.addFooterView(openMemberFooterLayout)
+                mViewBind.worksRecyclerView.removeFooterView(openMemberFooterLayout)
+                mViewBind.worksRecyclerView.addFooterView(openMemberFooterLayout)
             } else {
-                if(worksAdapter.footerLayout is OpenMemberFooterLayout){
-                    worksAdapter.removeFooterView(openMemberFooterLayout)
-                }
+//                if(worksAdapter.footerLayout is OpenMemberFooterLayout){
+                    mViewBind.worksRecyclerView.removeFooterView(openMemberFooterLayout)
+//                }
 //                open_vip_btn.gone()
             }
         })
