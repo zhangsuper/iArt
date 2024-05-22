@@ -1,44 +1,30 @@
 package com.gsq.iart.ui.fragment.mine
 
 import android.os.Bundle
-import android.text.TextPaint
-import android.text.style.ClickableSpan
-import android.view.View
-import android.widget.TextView
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
+import com.blankj.utilcode.util.ColorUtils
 import com.blankj.utilcode.util.LogUtils
-import com.blankj.utilcode.util.SpanUtils
-import com.blankj.utilcode.util.ThreadUtils
 import com.blankj.utilcode.util.ToastUtils
 import com.gsq.iart.R
 import com.gsq.iart.app.base.BaseFragment
 import com.gsq.iart.app.ext.bindCustomerViewPager2
-import com.gsq.iart.app.ext.bindViewPager2
 import com.gsq.iart.app.ext.init
 import com.gsq.iart.app.image.GlideHelper
 import com.gsq.iart.app.util.CacheUtil
 import com.gsq.iart.app.util.MobAgentUtil
 import com.gsq.iart.app.util.StatusBarUtil
 import com.gsq.iart.app.util.WxLoginUtil
-import com.gsq.iart.data.bean.DictionaryArgsType
-import com.gsq.iart.data.bean.MemberArgsType
-import com.gsq.iart.data.bean.PayConfigBean
-import com.gsq.iart.data.bean.UserInfo
 import com.gsq.iart.data.bean.VipPriceBean
 import com.gsq.iart.data.event.PayResultEvent
 import com.gsq.iart.databinding.FragmentMemberBinding
 import com.gsq.iart.ui.adapter.VipPriceAdapter
-import com.gsq.iart.ui.fragment.dictionary.DictionarySubListFragment
 import com.gsq.iart.viewmodel.LoginViewModel
 import com.gsq.iart.viewmodel.MemberViewModel
 import com.gsq.mvvm.ext.nav
 import com.gsq.mvvm.ext.navigateAction
 import com.gsq.mvvm.ext.view.onClick
-import kotlinx.android.synthetic.main.fragment_dictionary_list.dictionary_magic_indicator
-import kotlinx.android.synthetic.main.fragment_dictionary_list.dictionary_view_pager
 import kotlinx.android.synthetic.main.fragment_member.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -267,7 +253,10 @@ class MemberFragment : BaseFragment<MemberViewModel, FragmentMemberBinding>() {
                 vip_status.text = "您暂未开通超级会员"
                 pay_button.text = "立即开通"
             }
-            mViewBind.userInfoView.setBackgroundResource(R.drawable.bg_f6cf88_ffecc7_conner_10)
+            mViewBind.userInfoView.setBackgroundResource(R.drawable.icon_svip_member_bg)
+            mViewBind.nikeName.setTextColor(ColorUtils.getColor(R.color.color_A26E44))
+            mViewBind.vipStatus.setTextColor(ColorUtils.getColor(R.color.color_A26E44))
+//            mViewBind.userInfoView.setBackgroundResource(R.drawable.bg_f6cf88_ffecc7_conner_10)
         }else if(memberType == 1){
             //国画通会员
             var memberBean = userInfo?.members?.find { it.memberType == 1 }
@@ -278,7 +267,10 @@ class MemberFragment : BaseFragment<MemberViewModel, FragmentMemberBinding>() {
                 vip_status.text = "您暂未开通国画通会员"
                 pay_button.text = "立即开通"
             }
-            mViewBind.userInfoView.setBackgroundResource(R.drawable.bg_de824e_faba97_conner_10)
+            mViewBind.userInfoView.setBackgroundResource(R.drawable.icon_vip_member_bg)
+            mViewBind.nikeName.setTextColor(ColorUtils.getColor(R.color.white))
+            mViewBind.vipStatus.setTextColor(ColorUtils.getColor(R.color.white))
+//            mViewBind.userInfoView.setBackgroundResource(R.drawable.bg_de824e_faba97_conner_10)
         }
     }
 
