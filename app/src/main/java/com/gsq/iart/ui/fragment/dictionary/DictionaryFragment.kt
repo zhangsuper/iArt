@@ -2,10 +2,15 @@ package com.gsq.iart.ui.fragment.dictionary
 
 import android.os.Bundle
 import androidx.core.os.bundleOf
+import com.blankj.utilcode.util.NetworkUtils
+import com.blankj.utilcode.util.StringUtils
 import com.blankj.utilcode.util.ThreadUtils
 import com.gsq.iart.BuildConfig
 import com.gsq.iart.R
 import com.gsq.iart.app.base.BaseFragment
+import com.gsq.iart.app.ext.loadServiceInit
+import com.gsq.iart.app.ext.showError
+import com.gsq.iart.app.ext.showLoading
 import com.gsq.iart.app.util.CacheUtil
 import com.gsq.iart.app.util.MobAgentUtil
 import com.gsq.iart.app.util.StatusBarUtil
@@ -22,6 +27,8 @@ import com.gsq.mvvm.ext.navigateAction
 import com.gsq.mvvm.ext.view.gone
 import com.gsq.mvvm.ext.view.onClick
 import com.gsq.mvvm.ext.view.visible
+import com.kingja.loadsir.core.LoadService
+import kotlinx.android.synthetic.main.fragment_dictionary.content_view
 import kotlinx.android.synthetic.main.fragment_dictionary.open_vip_btn
 import kotlinx.android.synthetic.main.fragment_dictionary.recycler_view
 import kotlinx.android.synthetic.main.fragment_home.*
@@ -38,6 +45,9 @@ class DictionaryFragment : BaseFragment<DictionaryViewModel, FragmentDictionaryB
     private var mAdapter: DictionaryMenuAdapter? = null
     private var isClickVipBtn = false
     private var intent_data:DictionarySetsBean? = null
+
+    //界面状态管理者
+    private lateinit var loadsir: LoadService<Any>
 
     override fun onResume() {
         super.onResume()
@@ -116,11 +126,24 @@ class DictionaryFragment : BaseFragment<DictionaryViewModel, FragmentDictionaryB
         mViewBind.ivClose.onClick {
             nav().popBackStack()
         }
+
+        //状态页配置
+        loadsir = loadServiceInit(content_view) {
+            //点击重试时触发的操作
+            loadsir.showLoading()
+            ThreadUtils.getMainHandler().postDelayed({
+                lazyLoadData()
+            },1000)
+        }
     }
 
     override fun lazyLoadData() {
         super.lazyLoadData()
-        mViewModel.getDictionaryClassifyList()//请求图典菜单列表
+        if(NetworkUtils.isConnected()){
+            mViewModel.getDictionaryClassifyList()//请求图典菜单列表
+        }else{
+            loadsir.showError(StringUtils.getString(R.string.http_error_data_retry))
+        }
     }
 
 
@@ -128,6 +151,7 @@ class DictionaryFragment : BaseFragment<DictionaryViewModel, FragmentDictionaryB
         super.createObserver()
         mViewModel.classifyList.observe(viewLifecycleOwner){
             if(it!=null){
+                loadsir.showSuccess()
                 if (it.size>6 && CacheUtil.getUserVipStatus() != 99 && !BuildConfig.DEBUG) {
                     mAdapter?.data = it.subList(0,6)
                     mAdapter?.notifyDataSetChanged()

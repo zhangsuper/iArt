@@ -24,7 +24,6 @@ import com.gsq.mvvm.ext.view.gone
 import com.gsq.mvvm.ext.view.visible
 import com.kingja.loadsir.core.LoadService
 import kotlinx.android.synthetic.main.fragment_home.*
-import kotlinx.android.synthetic.main.fragment_works_list.works_refresh_layout
 
 
 /**

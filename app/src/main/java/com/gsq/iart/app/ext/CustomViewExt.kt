@@ -59,7 +59,7 @@ import kotlin.math.roundToInt
 fun LoadService<*>.setErrorText(message: String) {
     if (message.isNotEmpty()) {
         this.setCallBack(ErrorCallback::class.java) { _, view ->
-            view.findViewById<TextView>(R.id.error_text).text = message
+//            view.findViewById<TextView>(R.id.error_text).text = message
         }
     }
 }
