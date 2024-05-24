@@ -298,7 +298,7 @@ public class FlowLayout extends ViewGroup {
         }
     }
 
-    private String selectedTag = "";
+    public String selectedTag = "";
 
 
 

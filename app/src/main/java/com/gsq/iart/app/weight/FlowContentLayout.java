@@ -88,6 +88,7 @@ public class FlowContentLayout extends RelativeLayout{
 //                addViews(list);
             }
         });
+        mFontFlowLayout.selectedTag = "全部";
     }
 
 
