@@ -2,6 +2,7 @@ package com.gsq.iart.ui.fragment.home
 
 import android.Manifest
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
@@ -397,7 +398,7 @@ class WorkDetailFragment : BaseFragment<WorksViewModel, FragmentWorkDetailBindin
                 requireContext(),
                 Manifest.permission.WRITE_EXTERNAL_STORAGE,
                 Manifest.permission.READ_EXTERNAL_STORAGE
-            )
+            ) || Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE
         ) {
             // Already have permission, do the thing
             if (intentType == COMPLEX_TYPE_DICTIONARY) {//图典

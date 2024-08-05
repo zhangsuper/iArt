@@ -190,7 +190,7 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'androidx.core:core-ktx:1.7.0'
+    implementation "androidx.core:core-ktx:$buildVers.kotlin_vrsion"
     implementation 'com.android.support:multidex:1.0.3'
 
     testImplementation 'junit:junit:4.13.2'
@@ -280,6 +280,8 @@ dependencies {
 //    implementation 'com.umeng.umsdk:apm:1.7.0' // 错误分析模块改为独立库，看crash和性能数据请一定集成
     implementation 'com.umeng.umsdk:uyumao:1.1.2'
     implementation 'com.umeng.umsdk:abtest:1.0.0'//使用U-App中ABTest能力，可选
+
+//    implementation 'com.guolindev.permissionx:permissionx:1.8.0'
 
     //https://github.com/ChuckerTeam/chucker//通知栏监听网络日志
 //    debugImplementation "com.github.chuckerteam.chucker:library:3.5.2"
