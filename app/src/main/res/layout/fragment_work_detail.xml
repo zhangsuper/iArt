@@ -175,6 +175,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/download_view"
                 android:layout_width="@dimen/dp_0"
                 android:layout_height="match_parent"
                 android:gravity="center"
@@ -198,6 +199,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/scale_view"
                 android:layout_width="@dimen/dp_0"
                 android:layout_height="match_parent"
                 android:gravity="center"
@@ -214,6 +216,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/rota_view"
                 android:layout_width="@dimen/dp_0"
                 android:layout_height="match_parent"
                 android:gravity="center"

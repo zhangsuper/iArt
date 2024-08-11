@@ -155,7 +155,7 @@ class WorkDetailFragment : BaseFragment<WorksViewModel, FragmentWorkDetailBindin
         tv_index.text = "1/${fragmentList.size}"
 
         updateCompareStatus()
-        iv_contrast.onClick {
+        contrast_view.onClick {
             dictionaryWorksBean?.let {
                 if (it.isAddCompare) {
                     //移除对比列表
@@ -274,7 +274,7 @@ class WorkDetailFragment : BaseFragment<WorksViewModel, FragmentWorkDetailBindin
             args.putSerializable(DATA_WORK, worksBean)
             nav().navigateAction(R.id.action_workDetailFragment_to_workIntroduceFragment, args)
         }
-        iv_collect.onClick {
+        collect_view.onClick {
             //收藏与取消收藏
             if (CacheUtil.isLogin()) {
                 worksBean?.let {
@@ -309,7 +309,7 @@ class WorkDetailFragment : BaseFragment<WorksViewModel, FragmentWorkDetailBindin
             }
 
         }
-        iv_download.onClick {
+        download_view.onClick {
             if (CacheUtil.isLogin()) {
                 if (intentType == COMPLEX_TYPE_DICTIONARY) {
                     if (CacheUtil.getUserVipStatus() != 99 || BuildConfig.DEBUG) {
@@ -349,13 +349,13 @@ class WorkDetailFragment : BaseFragment<WorksViewModel, FragmentWorkDetailBindin
                 nav().navigateAction(R.id.action_mainFragment_to_loginFragment)
             }
         }
-        iv_scale.setOnClickListener {
+        scale_view.setOnClickListener {
             (fragmentList[currentSelectedIndex] as PreviewImageFragment).getPhotoView()
                 .setScaleAndCenter(100f, null)
 //            (fragmentList[currentSelectedIndex] as PreviewImageFragment).getPhotoView().maximumScale
 //                .setScale(100f, true)
         }
-        iv_rota.setOnClickListener {
+        rota_view.setOnClickListener {
 //            (fragmentList[currentSelectedIndex] as PreviewImageFragment).getPhotoView().rotation -= 90
             if (intentType == COMPLEX_TYPE_DICTIONARY) {
                 var eventMap = mutableMapOf<String, Any?>()
