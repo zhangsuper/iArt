@@ -398,7 +398,7 @@ class WorkDetailFragment : BaseFragment<WorksViewModel, FragmentWorkDetailBindin
                 requireContext(),
                 Manifest.permission.WRITE_EXTERNAL_STORAGE,
                 Manifest.permission.READ_EXTERNAL_STORAGE
-            ) || Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE
+            ) || Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU
         ) {
             // Already have permission, do the thing
             if (intentType == COMPLEX_TYPE_DICTIONARY) {//图典
